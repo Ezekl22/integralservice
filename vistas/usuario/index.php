@@ -7,14 +7,14 @@
     <main class="main__flex">
         <article class="mt-4">
                 <h2 class="main__title">
-                    Menu
+                    Usuarios
                 </h2>
         </article>
         <article class="mt-5 d-flex flex-column align-items-center">
             <div class="grilla w-75 d-flex flex-column align-items-center rounded-4">
-                <div class="border w-75 mt-5 mb-5">
-                    <table class="w-100 grilla__contenedor border-0">
-                        <tr class="grilla">
+                <div class="border w-75 mt-5 mb-5 rounded-4">
+                    <table class="grilla__contenedor border-0">
+                        <tr class="grilla grilla__cabecera">
                             <th>Nombre</th>
                             <th>Apellido</th>
                             <th>Tipo</th>
@@ -28,8 +28,12 @@
                                 <td><?php echo $user['type']; ?></td>
                                 <td><?php echo $user['username']; ?></td>
                                 <td>
-                                    <a href="edit.php?id=<?php echo $user['id']; ?>">Editar</a>
-                                    <a href="delete.php?id=<?php echo $user['id']; ?>">Eliminar</a>
+                                    <a class="icono__contenedor me-3" href="edit.php?id=<?php echo $user['id']; ?>">
+                                        <img class="icono__imagen" src="./assets/img/iconoEditar.png" alt="icono de editar">
+                                    </a>
+                                    <a class="icono__contenedor" href="delete.php?id=<?php echo $user['id']; ?>">
+                                        <img class="icono__imagen" src="./assets/img/iconoEliminar.svg" alt="icono de eliminar">
+                                    </a>
                                 </td>
                             </tr>
                         <?php } ?>
