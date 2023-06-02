@@ -40,6 +40,7 @@ class UserController {
 
         // Mostrar el formulario de edición de usuario con los datos cargados
         require_once 'vistas/usuario/edit.php';
+        $this->index();
     }
 
     public function update($id, $data) {

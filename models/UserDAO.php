@@ -16,7 +16,26 @@ class UserDAO {
 
     public function updateUser(User $user) {
         // Código para actualizar un usuario existente en la base de datos
-        // ...
+        $stmt = Conexion::conectar()->prepare("UPDATE $tabla SET name=:name, lastname=:lastname, username=:username, password=:password, tipo = :tipo WHERE id= :id");
+
+		$stmt->bindParam(":name", $datos["name"], PDO::PARAM_STR);
+		$stmt->bindParam(":lastname", $datos["lastname"], PDO::PARAM_STR);
+        $stmt->bindParam(":username", $datos["username"], PDO::PARAM_STR);
+		$stmt->bindParam(":password", $datos["password"], PDO::PARAM_STR);
+		$stmt->bindParam(":type", $datos["type"], PDO::PARAM_INT);
+		$stmt->bindParam(":id", $datos["id"], PDO::PARAM_INT);
+
+		if($stmt->execute()){
+
+			return "ok";
+
+		}else{
+
+			print_r(Conexion::conectar()->errorInfo());
+
+		}
+        $stmt->close();
+        $stmt = null;
     }
 
     public function deleteUser($id) {
@@ -25,8 +44,12 @@ class UserDAO {
     }
 
     public function getUserById($id) {
-        // Código para obtener un usuario por su ID desde la base de datos
-        // ...
+        $stmt = $this->db->getConnection()->prepare("SELECT * FROM users WHERE id = ".$id);
+
+        $stmt->execute();
+        return $stmt -> fetchAll()[0];
+        $stmt->close();
+        $stmt = null;
     }
 
     public function getAllUsers() {
@@ -35,7 +58,7 @@ class UserDAO {
 
         $stmt->execute();
         return $stmt -> fetchAll();
-        //$stmt->close();
-//$stmt = null;
+        $stmt->close();
+        $stmt = null;
     }
 }

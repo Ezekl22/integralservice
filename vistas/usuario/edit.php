@@ -2,33 +2,49 @@
 <html>
 <head>
     <title>Editar Usuario</title>
-    <link rel="stylesheet" type="text/css" href="../assets/css/style.css">
 </head>
 <body>
-    <h1>Editar Usuario</h1>
-
-    <form action="" method="POST">
-        <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" name="nombre" value="<?php echo $user['nombre']; ?>" required>
-        
-        <label for="apellido">Apellido:</label>
-        <input type="text" id="apellido" name="apellido" value="<?php echo $user['apellido']; ?>" required>
-        
-        <label for="tipo">Tipo:</label>
-        <select id="tipo" name="tipo" required>
-            <option value="Administrador" <?php echo ($user['tipo'] == 'Administrador') ? 'selected' : ''; ?>>Administrador</option>
-            <option value="Vendedor" <?php echo ($user['tipo'] == 'Vendedor') ? 'selected' : ''; ?>>Vendedor</option>
-            <option value="Reparador" <?php echo ($user['tipo'] == 'Reparador') ? 'selected' : ''; ?>>Reparador</option>
-        </select>
-        
-        <label for="nombre_usuario">Nombre de usuario:</label>
-        <input type="text" id="nombre_usuario" name="nombre_usuario" value="<?php echo $user['nombre_usuario']; ?>" required>
-        
-        <label for="contrasena">Contraseña:</label>
-        <input type="password" id="contrasena" name="contrasena" required>
-        
-        <input type="submit" value="Guardar cambios">
-    </form>
-
+    <main class="d-flex flex-column align-items-center mt-2">
+        <article class="editar__contenedor rounded-4">
+            <form action="" method="POST" class="d-flex flex-column align-items-center border-1 border m-4 rounded-4">
+                <div class="d-flex flex-column align-items-center" id="contenedor">
+                    <h2 class="mt-2 text__white">Editar Usuario</h2>
+                    <div class="my-3 d-flex flex-row">
+                        <div class="input-group input-group-sm mb-3">
+                            <label class="input-group-text" for="nombre" id="inputGroup-sizing-sm">Nombre:</label>
+                            <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="nombre" name="nombre" value="<?php echo $user['name']; ?>" required>
+                        </div>
+                        <div class="input-group input-group-sm mb-3 ms-5">
+                            <label class="input-group-text" for="apellido" id="inputGroup-sizing-sm">Apellido:</label>
+                            <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="apellido" name="apellido" value="<?php echo $user['lastname']; ?>" required>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row">
+                        <div class="input-group input-group-sm mb-3">
+                            <label class="input-group-text" for="nombre_usuario" id="inputGroup-sizing-sm">Nombre de usuario:</label>
+                            <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="nombre_usuario" name="nombre_usuario" value="<?php echo $user['username']; ?>" required>
+                        </div>
+                        <div class="input-group input-group-sm mb-3 ms-5">
+                            <label class="input-group-text" for="contrasena" id="inputGroup-sizing-sm">Contraseña:</label>
+                            <input type="password" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="contrasena" name="contrasena" required>
+                        </div>
+                        <div class="input-group mb-2 ms-5">
+                            <label class="input-group-text" for="tipo">Tipo:</label>
+                            <select class="form-select" id="tipo" name="tipo" required>
+                                <option value="Administrador" <?php echo ($user['type'] == 'Administrador') ? 'selected' : ''; ?>>Administrador</option>
+                                <option value="Vendedor" <?php echo ($user['type'] == 'Vendedor') ? 'selected' : ''; ?>>Vendedor</option>
+                                <option value="Reparador" <?php echo ($user['type'] == 'Reparador') ? 'selected' : ''; ?>>Reparador</option>
+                            </select>
+                        </div>
+                    </div>
+                    <?php 
+                    // $editarUsuario = new ControladorUsuarios();
+                    // $editarUsuario -> ctrActualizarUsuario(); 
+                    ?>
+                    <input class="btn button my-2" onclick="onClickGuardar()" type="submit" value="Guardar cambios">
+                </div>
+            </form>
+        </article>
+    </main>
 </body>
 </html>

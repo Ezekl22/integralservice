@@ -148,6 +148,15 @@ footer{
     text-decoration: none;
   }
 
+.editar__contenedor{
+  width: 90%;
+  background-color: #0f7672;
+}
+
+.text__white{
+  color:#fff;
+}
+
 
 /* Estilos específicos del módulo de usuarios */
 .users-module {
