@@ -38,8 +38,9 @@
                         </div>
                     </div>
                     <?php 
-                    // $editarUsuario = new ControladorUsuarios();
-                    // $editarUsuario -> ctrActualizarUsuario(); 
+                    $id = isset($_GET['id']) ? $_GET['id'] : '';
+                    $UserController = new UserController();
+                    $UserController -> update($id,); 
                     ?>
                     <input class="btn button my-2" onclick="onClickGuardar()" type="submit" value="Guardar cambios">
                 </div>
