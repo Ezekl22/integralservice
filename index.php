@@ -174,7 +174,7 @@
             $indexPage = new UserController();
             switch ($action) {
                   case 'edit':
-                        $indexPage ->edit($id);
+                        $indexPage ->edit();
                         break;
                   
                   default:
