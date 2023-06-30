@@ -9,7 +9,8 @@
 <html>
 <head>
     <title>Editar Usuario</title>
-</head>
+</head> 
+
 <body>
     <main class="d-flex flex-column align-items-center mt-2">
         <article class="editar__contenedor rounded-4">
