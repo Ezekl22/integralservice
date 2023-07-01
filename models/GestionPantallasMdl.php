@@ -23,21 +23,21 @@ class GestionPantallasMdl {
         $this->id = $id;
     }
 
-    // public function getName() {
-    //     return $this->name;
-    // }
+    public function getName() {
+        return $this->name;
+    }
 
-    // public function setName($name) {
-    //     $this->name = $name;
-    // }
+    public function setName($name) {
+        $this->name = $name;
+    }
 
-    // public function getAction() {
-    //     return $this->action;
-    // }
+    public function getAction() {
+        return $this->action;
+    }
 
-    // public function setAction($action) {
-    //     $this->action = $action;
-    // }
+    public function setAction($action) {
+        $this->action = $action;
+    }
 
     public function getInUse() {
         return $this->inUse;

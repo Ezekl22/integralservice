@@ -14,17 +14,17 @@ class GestionPantallasControlador {
         return $this->GestionPantallasDAO;
     }
 
-    public function mostrarOcultarPantallaEditar(int $id): void {
+    public function mostrarOcultarPantallaEditar(int $id) {
         $gPantallas = $this->GestionPantallasDAO->getGestionPantallasById($id);
         $inUse = $gPantallas['inuse'] == 1? 0 : 1;
-        $gestionPantallas = new GestionPantallasMdl($gPantallas, $inUse);
+        $gestionPantallas = new GestionPantallasMdl($gPantallas['name'],$gPantallas['action'], $inUse, $id);
         $this->GestionPantallasDAO->updateGestionPantallas($gestionPantallas);
     }
 
     public function getGestionPantallasById($id) {
-        $gPResult = $this->getGestionPantallasDAO()->getGestionPantallasById($id);
-        $gPantallas = new GestionPantallasMdl($gPResult[''])
-        return $this->GestionPantallasDAO;
+        $gPResult = $this->GestionPantallasDAO->getGestionPantallasById($id);
+        $gPantallas = new GestionPantallasMdl($gPResult['name'],$gPResult['action'],$gPResult['inuse'],$id);
+        return $gPantallas;
     }
 
 

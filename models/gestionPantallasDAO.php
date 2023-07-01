@@ -11,7 +11,7 @@ class GestionPantallasDAO {
 
     public function updateGestionPantallas(GestionPantallasMdl $gestionPantallas) {
         // Código para actualizar si una pantalla se esta usando o no, por el momento solo se usa para la parte de editar
-        $stmt = $this->db->getConnection()->prepare("UPDATE gestionpantallas SET name=:inuse WHERE id= :id");
+        $stmt = $this->db->getConnection()->prepare("UPDATE gestionpantallas SET inuse=:inuse WHERE id= :id");
         
         $inUse = $gestionPantallas->getInUse();
         $id = $gestionPantallas->getId();
