@@ -54,4 +54,5 @@
         </article>
     </main>
 </body>
+<script>mostrarOcultarPantallaEditar('editUsuario')</script>
 </html>
