@@ -28,7 +28,7 @@
                                 <td><?php echo $user['type']; ?></td>
                                 <td><?php echo $user['username']; ?></td>
                                 <td>
-                                    <a class="icono__contenedor me-3" href="index.php?module=usuarios&action=edit&id=<?php echo $user['id']; ?>">
+                                    <a class="icono__contenedor me-3" onclic="mostrarpantallaEditar('editUsuario')" href="index.php?module=usuarios&action=edit&id=<?php echo $user['id']; ?>">
                                         <img class="icono__imagen" src="./assets/img/iconoEditar.png" alt="icono de editar">
                                     </a>
                                     <a class="icono__contenedor" href="./vistas/usuario/delete.php?id=<?php echo $user['id']; ?>">
