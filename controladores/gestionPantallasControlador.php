@@ -1,8 +1,8 @@
 <?php
-require_once 'models/GestionPantallas.php';
+require_once 'models/GestionPantallasMdl.php';
 require_once 'models/GestionPantallasDAO.php';
 
-class GestionPantallas {
+class GestionPantallasControlador {
     private $GestionPantallasDAO;
 
     public function __construct() {
@@ -14,11 +14,18 @@ class GestionPantallas {
         return $this->GestionPantallasDAO;
     }
 
-    public function update(intenger $id,boolean $inUse) {
-
-        if($inUse && $id){
-            $gestionPantallas = new GestionPantallas($id, $inUse);
-            $this->GestionPantallasDAO->updateGestionPantallas($gestionPantallas);
-        }
+    public function mostrarOcultarPantallaEditar(int $id): void {
+        $gPantallas = $this->GestionPantallasDAO->getGestionPantallasById($id);
+        $inUse = $gPantallas['inuse'] == 1? 0 : 1;
+        $gestionPantallas = new GestionPantallasMdl($gPantallas, $inUse);
+        $this->GestionPantallasDAO->updateGestionPantallas($gestionPantallas);
     }
+
+    public function getGestionPantallasById($id) {
+        $gPResult = $this->getGestionPantallasDAO()->getGestionPantallasById($id);
+        $gPantallas = new GestionPantallasMdl($gPResult[''])
+        return $this->GestionPantallasDAO;
+    }
+
+
 }

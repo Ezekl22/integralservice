@@ -2,12 +2,13 @@
 <?php 
     $id = isset($_GET['id']) ? $_GET['id'] : '';
     $UserController = new UserController();
+    $GestionPantallasCtr = new GestionPantallasControlador();
     $userr = $this->userDAO->getUserById($id);
     $UserController -> update($id);
+    echo($GestionPantallasCtr->getGestionPantallasDAO()->getGestionPantallasById(1)['inuse']);
+    $GestionPantallasCtr->mostrarOcultarPantallaEditar(1);
 ?>
-    
-
-
+<?php if($GestionPantallasCtr->getGestionPantallasDAO()->getGestionPantallasById(1)['inuse'] == 1){?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -56,3 +57,4 @@
 </body>
 <script>mostrarOcultarPantallaEditar('editUsuario')</script>
 </html>
+<?php }else {echo($GestionPantallasCtr->getGestionPantallasDAO()->getGestionPantallasById(1)['inuse']);} ?>

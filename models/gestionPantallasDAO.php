@@ -9,12 +9,12 @@ class GestionPantallasDAO {
         $this->db = DBConnection::getInstance();
     }
 
-    public function updateUser(GestionPantallas $gestionPantallas) {
+    public function updateGestionPantallas(GestionPantallasMdl $gestionPantallas) {
         // Código para actualizar si una pantalla se esta usando o no, por el momento solo se usa para la parte de editar
         $stmt = $this->db->getConnection()->prepare("UPDATE gestionpantallas SET name=:inuse WHERE id= :id");
         
-        $inUse = $inUse->getInUse();
-        $id = $user->getId();
+        $inUse = $gestionPantallas->getInUse();
+        $id = $gestionPantallas->getId();
         
 		$stmt->bindParam(":inuse", $inUse, PDO::PARAM_BOOL);
 		$stmt->bindParam(":id",$id , PDO::PARAM_INT);

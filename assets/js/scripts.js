@@ -5,15 +5,7 @@ const guardarEdicion = (id) =>{
     //window.location.href = "./index.php?module=usuarios";
     document.getElementById(id).style.display ="none";
 }
-
-const mostrarOcultarPantallaEditar = (id) =>{
-    const main = document.getElementById(id);
-    if(MOPantallaEditar){
-        main.style.display = "none";
-        MOPantallaEditar = false;
-    }else{
-        main.style.display ="flex";
-        MOPantallaEditar = true;
-    }
-        
+//verifico si la pantalla de editar esta a la vista y si lo esta le cambio el display para ocultarla
+const mostrarOcultarPantallaEditar = (id,inUse) =>{
+    document.getElementById(id).style.display = inUse ? "none" : "flex";
 }

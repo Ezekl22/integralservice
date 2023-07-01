@@ -1,16 +1,16 @@
 <?php
 
-class gestionPantallas {
+class GestionPantallasMdl {
     private $id;
     private $name;
     private $action;
     private $inUse;
 
-    public function __construct($inUse, $id) {
-        // $this->name = $name;
-        // $this->action = $action;
+    public function __construct($name, $action, $inUse, $id) {
+        $this->name = $name;
+        $this->action = $action;
         $this->inUse = $inUse;
-        $this->id = $id
+        $this->id = $id;
     }
 
     // Getters y setters
