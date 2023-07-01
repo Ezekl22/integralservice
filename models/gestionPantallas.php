@@ -6,9 +6,9 @@ class gestionPantallas {
     private $action;
     private $inUse;
 
-    public function __construct($name, $action, $inUse, $id) {
-        $this->name = $name;
-        $this->action = $action;
+    public function __construct($inUse, $id) {
+        // $this->name = $name;
+        // $this->action = $action;
         $this->inUse = $inUse;
         $this->id = $id
     }
@@ -23,21 +23,21 @@ class gestionPantallas {
         $this->id = $id;
     }
 
-    public function getName() {
-        return $this->name;
-    }
+    // public function getName() {
+    //     return $this->name;
+    // }
 
-    public function setName($name) {
-        $this->name = $name;
-    }
+    // public function setName($name) {
+    //     $this->name = $name;
+    // }
 
-    public function getAction() {
-        return $this->action;
-    }
+    // public function getAction() {
+    //     return $this->action;
+    // }
 
-    public function setAction($action) {
-        $this->action = $action;
-    }
+    // public function setAction($action) {
+    //     $this->action = $action;
+    // }
 
     public function getInUse() {
         return $this->inUse;

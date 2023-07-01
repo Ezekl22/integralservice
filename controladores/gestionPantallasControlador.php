@@ -13,4 +13,12 @@ class GestionPantallas {
         // Obtener la lista de usuarios desde el modelo
         return $this->GestionPantallasDAO;
     }
+
+    public function update(intenger $id,boolean $inUse) {
+
+        if($inUse && $id){
+            $gestionPantallas = new GestionPantallas($id, $inUse);
+            $this->GestionPantallasDAO->updateGestionPantallas($gestionPantallas);
+        }
+    }
 }
