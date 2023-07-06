@@ -34,7 +34,7 @@ class UserController {
         header('Location: index.php?action=index');
     }
 
-    public function edit() {
+    public function getPantallaEdit() {
         // Obtener el usuario desde el modelo
 
         // Mostrar el formulario de edición de usuario con los datos cargados
@@ -53,6 +53,11 @@ class UserController {
         // Redireccionar a la página principal de usuarios
         //header('Location: index.php?module=usuarios');
 
+    }
+
+    public function getPantallaDelete(){
+        require_once 'vistas/usuario/delete.php';
+        $this->index();
     }
 
     public function delete($id) {

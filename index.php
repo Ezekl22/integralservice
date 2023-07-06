@@ -11,6 +11,7 @@
 <body>
     <!-- Obtener el módulo actual -->
     <?php 
+    include './controladores/GestionPantallasControlador.php';
     $module = isset($_GET['module']) ? $_GET['module'] : ''; 
     $action = isset($_GET['action']) ? $_GET['action'] : '';
     $id = isset($_GET['id']) ? $_GET['id'] : '';
@@ -174,9 +175,11 @@
             $indexPage = new UserController();
             switch ($action) {
                   case 'edit':
-                        $indexPage ->edit();
+                        $indexPage ->getPantallaEdit();
                         break;
-                  
+                  case 'delete':
+                        $indexPage ->getPantallaDelete();
+                        break;
                   default:
                         $indexPage -> index();
                         break;
