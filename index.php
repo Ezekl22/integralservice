@@ -175,9 +175,11 @@
             $indexPage = new UserController();
             switch ($action) {
                   case 'edit':
-                        $indexPage ->edit();
+                        $indexPage ->getPantallaEdit();
                         break;
-                  
+                  case 'delete':
+                        $indexPage ->getPantallaDelete();
+                        break;
                   default:
                         $indexPage -> index();
                         break;
