@@ -40,7 +40,7 @@
                     </table>
                 </div>
             </div>
-            <a class="my-5 btn button" type="button" href="./vistas/usuario/create.php">Crear nuevo usuario</a>
+            <a class="my-5 btn button" type="button" href="index.php?module=usuarios&action=create">Crear nuevo usuario</a>
         </article>
     </main>
 </body>

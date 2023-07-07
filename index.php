@@ -180,6 +180,9 @@
                   case 'delete':
                         $indexPage ->getPantallaDelete();
                         break;
+                  case 'create':
+                        $indexPage ->getPantallaCreate();
+                        break;
                   default:
                         $indexPage -> index();
                         break;
