@@ -157,6 +157,7 @@
     switch ($module) {
         case 'presupuestos':
             include('./controladores/PresupuestoControlador.php');
+            $indexPage = new PresupuestoCtr();
             break;
         case 'reparacion':
             include('controladores/ReparacionControlador.php');
@@ -173,21 +174,6 @@
         case 'usuarios':
             include './controladores/UsuarioControlador.php';
             $indexPage = new UserController();
-            switch ($action) {
-                  case 'edit':
-                        $indexPage ->getPantallaEdit();
-                        break;
-                  case 'delete':
-                        $indexPage ->getPantallaDelete();
-                        break;
-                  case 'create':
-                        $indexPage ->getPantallaCreate();
-                        break;
-                  default:
-                        $indexPage -> index();
-                        break;
-            }
-            
             break;
         case 'menu':
             include './controladores/MenuControlador.php';
@@ -198,6 +184,22 @@
           include './vistas/inicio/index.php';
             break;
     }
+//     if($indexPage){
+//       switch ($action) {
+//             case 'edit':
+//                   $indexPage ->getPantallaEdit();
+//                   break;
+//             case 'delete':
+//                   $indexPage ->getPantallaDelete();
+//                   break;
+//             case 'create':
+//                   $indexPage ->getPantallaCreate();
+//                   break;
+//             default:
+//                   $indexPage -> index();
+//                   break;
+//       }
+//     }
     ?>
 
   <footer class="d-flex justify-content-end main__footer footer__index">
