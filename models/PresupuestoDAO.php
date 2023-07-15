@@ -30,7 +30,7 @@ class PresupuestoDAO {
         $stmt->bindParam(":estado", $estado, PDO::PARAM_STR);
 		$stmt->bindParam(":fecha", $fecha, PDO::PARAM_STR);
 		$stmt->bindParam(":puntoventa", $puntoVenta, PDO::PARAM_STR);
-        $stmt->bindParam(":total", $total, PDO::PARAM_FLOAT);
+        $stmt->bindParam(":total", $total, PDO::PARAM_STR_CHAR);
 		$stmt->bindParam(":idpresupuesto",$idPresupuesto , PDO::PARAM_INT);
 
 		if($stmt->execute()){

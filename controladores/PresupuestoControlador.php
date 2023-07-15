@@ -1,17 +1,17 @@
 <?php
-require_once 'models/User.php';
-require_once 'models/UserDAO.php';
+require_once 'models/PresupuestoMdl.php';
+require_once 'models/PresupuestoDAO.php';
 
 class PresupuestoCtr {
-    private $userDAO;
+    private $presupuestoDAO;
 
     public function __construct() {
-        $this->userDAO = new UserDAO();
+        $this->presupuestoDAO = new PresupuestoDAO();
     }
 
     public function index() {
         // Obtener la lista de usuarios desde el modelo
-        $users = $this->userDAO->getAllUsers();
+        $users = $this->presupuestoDAO->getAllPresupuestos();
 
         // Cargar la vista con los datos
         require_once 'vistas/usuario/index.php';
@@ -31,8 +31,8 @@ class PresupuestoCtr {
         // ...
 
         // Crear un nuevo usuario en la base de datos
-        $user = new User($data['name'], $data['lastname'], $data['type'], $data['username'], $data['password']);
-        $this->userDAO->createUser($user);
+        $presupuesto = new PresupuestoMdl($data['idclient'], $data['nrocomprobante'], $data['estado'], $data['fecha'], $data['puntoventa'], $data['total']);
+        $this->presupuestoDAO->createPresupuesto($presupuesto);
 
         // Redireccionar a la página principal de usuarios
         header('Location: index.php?action=index');
@@ -48,10 +48,10 @@ class PresupuestoCtr {
 
     public function update($id) {
 
-        if(isset($_POST["nombre"])){
-            $user = new User($_POST["nombre"], $_POST["apellido"], $_POST["tipo"], $_POST["nombre_usuario"], $_POST["contrasena"]);
-            $user->setId($id);
-            $this->userDAO->updateUser($user);
+        if(isset($_POST["idclient"])){
+            $presupuesto = new PresupuestoMdl($_POST["idclient"], $_POST["nrocomprobante"], $_POST["estado"], $_POST["fecha"], $_POST["puntoventa"], $_POST["total"]);
+            $presupuesto->setIdPresupuesto($id);
+            $this->presupuestoDAO->updatePresupuesto($presupuesto);
         }
 
         // Redireccionar a la página principal de usuarios
@@ -66,7 +66,7 @@ class PresupuestoCtr {
 
     public function delete($id) {
         // Eliminar el usuario de la base de datos
-        $this->userDAO->deleteUser($id);
+        $this->presupuestoDAO->deletePresupuesto($id);
 
         // Redireccionar a la página principal de usuarios
         header('Location: index.php?action=index');
