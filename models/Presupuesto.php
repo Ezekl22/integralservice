@@ -1,12 +1,13 @@
 <?php
 
 class PresupuestoMdl {
-    private $id;
-    private $name;
-    private $lastname;
-    private $type;
-    private $username;
-    private $password;
+    private $idpresupuesto;
+    private $idclient;
+    private $nrocomprobante;
+    private $estado;
+    private $fecha;
+    private $puntoventa;
+    private $total;
 
     public function __construct($name, $lastname, $type, $username, $password) {
         $this->name = $name;
