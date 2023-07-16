@@ -11,19 +11,19 @@ class PresupuestoCtr {
 
     public function index() {
         // Obtener la lista de usuarios desde el modelo
-        $users = $this->presupuestoDAO->getAllPresupuestos();
+        $presupuestos = $this->presupuestoDAO->getAllPresupuestos();
 
         // Cargar la vista con los datos
-        require_once 'vistas/usuario/index.php';
+        require_once 'vistas/presupuestos/index.php';
     }
 
     public function getPantallaCreate(){
-        require_once 'vistas/usuario/create.php';
+        require_once 'vistas/presupuestos/create.php';
     }
 
     public function create() {
         // Mostrar el formulario de creación de usuario
-        require_once 'vistas/usuario/create.php';
+        require_once 'vistas/presupuestos/create.php';
     }
 
     public function store($data) {
@@ -42,8 +42,13 @@ class PresupuestoCtr {
         // Obtener el usuario desde el modelo
 
         // Mostrar el formulario de edición de usuario con los datos cargados
-        require_once 'vistas/usuario/edit.php';
+        require_once 'vistas/presupuestos/edit.php';
         $this->index();
+    }
+
+    public function getNombreClienteById($id){
+        $cliente = $this->presupuestoDAO->getNombreClienteById($id);
+        return $cliente['nombre'].' '.$cliente['apellido'];
     }
 
     public function update($id) {

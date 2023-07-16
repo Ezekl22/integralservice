@@ -4,9 +4,9 @@ DROP TABLE IF EXISTS presupuestos;
 CREATE TABLE `presupuestos` (
   `idpresupuesto` int(11) NOT NULL,
   `idcliente` int(11) NOT NULL,
-  `nrocomprobante` int(11) NOT NULL,
+  `nrocomprobante` text NOT NULL,
   `estado` text NOT NULL,
-  `fecha` date NOT NULL,
+  `fecha` text NOT NULL,
   `puntoventa` int(11) NOT NULL,
   `total` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
