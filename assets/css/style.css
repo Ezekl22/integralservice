@@ -211,4 +211,12 @@ footer{
     color: red;
     margin-bottom: 10px;
   }
+  
+  .contenedor__mayor{
+    width: 90%;
+  }
+
+  .selector__cabecera{
+    margin-left: 8%;
+  }
 

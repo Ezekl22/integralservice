@@ -2,16 +2,18 @@
 
 class PresupuestoMdl {
     private $idpresupuesto;
-    private $idclient;
+    private $idcliente;
     private $nrocomprobante;
+    private $tipo;
     private $estado;
     private $fecha;
     private $puntoventa;
     private $total;
 
-    public function __construct($idclient, $nrocomprobante, $estado, $fecha, $puntoventa, $total) {
-        $this->idclient = $idclient;
+    public function __construct($idcliente, $nrocomprobante, $tipo, $estado, $fecha, $puntoventa, $total) {
+        $this->idcliente = $idcliente;
         $this->nrocomprobante = $nrocomprobante;
+        $this->tipo = $tipo;
         $this->estado = $estado;
         $this->fecha = $fecha;
         $this->puntoventa = $puntoventa;
@@ -28,12 +30,12 @@ class PresupuestoMdl {
         $this->idpresupuesto = $idpresupuesto;
     }
 
-    public function getIdClient() {
-        return $this->idclient;
+    public function getIdCliente() {
+        return $this->idcliente;
     }
 
-    public function setIdClient($idclient) {
-        $this->idclient = $idclient;
+    public function setIdCliente($idcliente) {
+        $this->idcliente = $idcliente;
     }
 
     public function getNroComprobante() {
@@ -74,5 +76,13 @@ class PresupuestoMdl {
 
     public function setTotal($total) {
         $this->total = $total;
+    }
+
+    public function getTipo() {
+        return $this->tipo;
+    }
+
+    public function setTipo($tipo) {
+        $this->tipo = $tipo;
     }
 }
