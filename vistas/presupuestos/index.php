@@ -12,7 +12,7 @@
                 </h2>
         </article>
         <article class="mt-5 d-flex flex-column align-items-center">
-            <div class="grilla w-75 d-flex flex-column align-items-center rounded-4">
+            <div class="grilla contenedor__mayor-grilla d-flex flex-column align-items-center rounded-4">
                 <div class="d-flex flex-row contenedor__mayor align-items-start mt-4">
                     <div class="d-flex w-100 alig-items-end">
                         <div class="form-check ms-3 text__white">
@@ -68,10 +68,22 @@
                                 <td><?php echo $presupuesto['puntoventa']; ?></td>
                                 <td><?php echo '$'.number_format($presupuesto['total'], 2); ?></td>
                                 <td>
-                                    <a class="icono__contenedor me-3" href="index.php?module=presupuestos&action=edit&id=<?php echo $presupuesto['idpresupuesto']; ?>">
+                                    <a class="icono__contenedor me-2 ms-2" href="index.php?module=presupuestos&action=cambiarestado&id=<?php echo $presupuesto['idpresupuesto']; ?>">
+                                        <img class="icono__imagen" src="./assets/img/iconoCambiarEstado.svg" alt="icono de cambiar estado">
+                                    </a>
+                                    <a class="icono__contenedor me-2 ms-2" href="index.php?module=presupuestos&action=facturar&id=<?php echo $presupuesto['idpresupuesto']; ?>">
+                                        <img class="icono__imagen" src="./assets/img/iconoFacturar.svg" alt="icono de Facturar">
+                                    </a>
+                                    <a class="icono__contenedor me-2 ms-2" href="index.php?module=presupuestos&action=imprimir&id=<?php echo $presupuesto['idpresupuesto']; ?>">
+                                        <img class="icono__imagen" src="./assets/img/iconoImprimir.svg" alt="icono de Imprimir">
+                                    </a>
+                                    <a class="icono__contenedor me-2" href="index.php?module=presupuestos&action=ver&id=<?php echo $presupuesto['idpresupuesto']; ?>">
+                                        <img class="icono__imagen" src="./assets/img/iconoVer.png" alt="icono de ver">
+                                    </a>
+                                    <a class="icono__contenedor me-2" href="index.php?module=presupuestos&action=edit&id=<?php echo $presupuesto['idpresupuesto']; ?>">
                                         <img class="icono__imagen" src="./assets/img/iconoEditar.png" alt="icono de editar">
                                     </a>
-                                    <a class="icono__contenedor" href="index.php?module=presupuestos&action=delete&id=<?php echo $presupuesto['idpresupuesto']; ?>">
+                                    <a class="icono__contenedor me-2" href="index.php?module=presupuestos&action=delete&id=<?php echo $presupuesto['idpresupuesto']; ?>">
                                         <img class="icono__imagen" src="./assets/img/iconoEliminar.svg" alt="icono de eliminar">
                                     </a>
                                 </td>

@@ -213,10 +213,13 @@ footer{
   }
   
   .contenedor__mayor{
-    width: 90%;
+    width: 95%;
   }
 
   .selector__cabecera{
     margin-left: 8%;
   }
 
+  .contenedor__mayor-grilla{
+    width: 85%;
+  }
