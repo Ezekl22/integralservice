@@ -39,7 +39,7 @@
                         </div>
                     </div>
                     <div class="d-flex w-100 justify-content-end">
-                        <div class="input-group w-75">
+                        <div class="input-group input-group-sm w-75">
                             <input type="text" class="form-control" placeholder="Ingrese su busqueda" aria-label="Recipient's username" aria-describedby="buscar">
                             <input class="btn btn-outline-secondary button" type="button" id="buscar" value="Buscar"></button>
                         </div>
