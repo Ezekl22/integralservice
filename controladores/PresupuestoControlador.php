@@ -31,7 +31,7 @@ class PresupuestoCtr {
         // ...
 
         // Crear un nuevo usuario en la base de datos
-        $presupuesto = new PresupuestoMdl($data['idclient'], $data['nrocomprobante'], $data['estado'], $data['fecha'], $data['puntoventa'], $data['total']);
+        $presupuesto = new PresupuestoMdl($data['idclient'], $data['nrocomprobante'], $data['tipo'], $data['estado'], $data['fecha'], $data['puntoventa'], $data['total']);
         $this->presupuestoDAO->createPresupuesto($presupuesto);
 
         // Redireccionar a la página principal de usuarios
@@ -39,9 +39,7 @@ class PresupuestoCtr {
     }
 
     public function getPantallaEdit() {
-        // Obtener el usuario desde el modelo
-
-        // Mostrar el formulario de edición de usuario con los datos cargados
+        
         require_once 'vistas/presupuestos/edit.php';
         $this->index();
     }
@@ -54,7 +52,7 @@ class PresupuestoCtr {
     public function update($id) {
 
         if(isset($_POST["idclient"])){
-            $presupuesto = new PresupuestoMdl($_POST["idclient"], $_POST["nrocomprobante"], $_POST["estado"], $_POST["fecha"], $_POST["puntoventa"], $_POST["total"]);
+            $presupuesto = new PresupuestoMdl($_POST["idclient"], $_POST["nrocomprobante"], $_POST['tipo'], $_POST["estado"], $_POST["fecha"], $_POST["puntoventa"], $_POST["total"]);
             $presupuesto->setIdPresupuesto($id);
             $this->presupuestoDAO->updatePresupuesto($presupuesto);
         }
@@ -75,5 +73,13 @@ class PresupuestoCtr {
 
         // Redireccionar a la página principal de usuarios
         header('Location: index.php?action=index');
+    }
+
+    public function getAllClientes(){
+        return $this->presupuestoDAO->getAllClientes();
+    }
+
+    public function getAllProductos(){
+        return $this->presupuestoDAO->getAllProductos();
     }
 }

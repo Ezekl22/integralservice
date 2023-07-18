@@ -17,7 +17,7 @@ class PresupuestoDAO {
         nrocomprobante=:nrocomprobante, estado=:estado, fecha=:fecha, puntoventa=:puntoventa,
          total=:total WHERE idpresupuesto= :idpresupuesto");
         
-        $idClient = $presupuesto->getIdClient();
+        $idClient = $presupuesto->getIdCliente();
         $nroComprobante = $presupuesto->getNrocomprobante();
         $estado = $presupuesto->getEstado();
         $fecha = $presupuesto->getFecha();
@@ -37,12 +37,8 @@ class PresupuestoDAO {
 
 			return "ok";
 
-		}else{
-
-			print_r(Conexion::conectar()->errorInfo());
-
 		}
-        $stmt->close();
+        $stmt->closeCursor();
         $stmt = null;
     }
 
@@ -56,7 +52,7 @@ class PresupuestoDAO {
 
         $stmt->execute();
         return $stmt -> fetchAll()[0];
-        $stmt->close();
+        $stmt->closeCursor();
         $stmt = null;
     }
 
@@ -65,7 +61,7 @@ class PresupuestoDAO {
 
         $stmt->execute();
         return $stmt -> fetchAll()[0];
-        $stmt->close();
+        $stmt->closeCursor();
         $stmt = null;
     }
 
@@ -75,7 +71,26 @@ class PresupuestoDAO {
 
         $stmt->execute();
         return $stmt -> fetchAll();
-        $stmt->close();
+        $stmt->closeCursor();
         $stmt = null;
     }
+
+    public function getAllClientes() {
+        $stmt = $this->db->getConnection()->prepare("SELECT * FROM clientes");
+
+        $stmt->execute();
+        return $stmt -> fetchAll();
+        $stmt->closeCursor();
+        $stmt = null;
+    }
+
+    public function getAllProductos() {
+        $stmt = $this->db->getConnection()->prepare("SELECT * FROM productos");
+
+        $stmt->execute();
+        return $stmt -> fetchAll();
+        $stmt->closeCursor();
+        $stmt = null;
+    }
+
 }

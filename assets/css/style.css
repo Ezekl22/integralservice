@@ -223,3 +223,20 @@ footer{
   .contenedor__mayor-grilla{
     width: 85%;
   }
+
+  .w-85{
+    width: 85%;
+  }
+
+  .mx-7{
+    margin-right: 6rem!important;
+    margin-left: 6rem!important;
+  }
+
+  .ms-7{
+    margin-left: 7rem!important;
+  }
+
+  .me-7{
+    margin-right: 7rem!important;
+  }

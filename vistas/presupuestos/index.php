@@ -50,11 +50,11 @@
                     <table class="grilla__contenedor border-0">
                         <tr class="grilla grilla__cabecera">
                             <th>Cliente</th>
-                            <th>Numero de comprobante</th>
+                            <th>Comprobante</th>
                             <th>Tipo</th>
                             <th>Estado</th>
                             <th>Fecha</th>
-                            <th>Puntoventa</th>
+                            <th>Punto de venta</th>
                             <th>Total</th>
                             <th>Acciones</th>
                         </tr>

@@ -1,60 +1,96 @@
-<!-- 
+
 <?php 
     $id = isset($_GET['id']) ? $_GET['id'] : '';
     $PresupuestoCtr = new PresupuestoCtr();
-    $presupuesto = $this->PresupuestoDAO->getUserById($id);
+    $presupuesto = $PresupuestoCtr->presupuestoDAO->getPresupuestoById($id);
     $PresupuestoCtr -> update($id);
+    $clientes = $PresupuestoCtr ->getAllClientes();
     $GestionPantallasCtr = new GestionPantallasControlador();
     $GestionPantallasCtr->mostrarOcultarPantallaEditar(4);
-
-    if($GestionPantallasCtr->getGestionPantallasById(4)->getInUse() && $id != ''){
+    $inUse = $GestionPantallasCtr->getGestionPantallasById(4)->getInUse();
+    $array = array('apple', 'banana', 'orange');
+    $json = json_encode($PresupuestoCtr->getAllProductos());
+    echo "<script>const productos = $json; console.log(productos);</script>";
+    ?>
+<?php 
+    if($inUse && $id != ''){
 ?>
         <!DOCTYPE html>
         <html>
         <head>
-            <title>Editar Usuario</title>
+            <title>Editar Presupuesto</title>
         </head>
         <body>
-            <main class="d-flex flex-column align-items-center mt-2" style="display: none !important;" id="editUsuario">
+            <main class="d-flex flex-column align-items-center mt-2" style="display: none !important;" id="editPresupuesto">
                 <article class="editar__contenedor rounded-4">
                     <form action="" method="POST" class="d-flex flex-column align-items-center border-1 border m-4 rounded-4">
-                        <div class="d-flex flex-column align-items-center" id="contenedor">
-                            
+                        <div class="d-flex flex-column align-items-center contenedor__mayor" id="contenedor">
                             <h2 class="mt-2 text__white">Editar Presupuesto</h2>
-                            <div class="my-3 d-flex flex-row">
-                                <div class="input-group input-group-sm mb-3">
-                                    <label class="input-group-text" for="cliente" id="inputGroup-sizing-sm">Cliente:</label>
-                                    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="cliente" name="cliente" value="<?php echo $PresupuestoCtr->getNombreClienteById($id); ?>" required>
+                            <div class="my-3 d-flex flex-row w-100">
+                                <div class="input-group input-group-sm ms-7">
+                                    <label class="input-group-text" for="cliente">Cliente:</label>
+                                    <select class="form-select" id="cliente" name="tipo" required>
+                                        <?php foreach ($clientes as $cliente) { ?>
+                                            <option value="<?php echo $cliente['idcliente'] ?>" <?php echo ($presupuesto['idcliente'] == $cliente['idcliente']) ? 'selected' : ''; ?>><?php echo $cliente['nombre'].' '.$cliente['apellido'] ?></option>
+                                        <?php } ?>
+                                    </select>
                                 </div>
-                                <div class="input-group input-group-sm mb-3 ms-5">
-                                    <label class="input-group-text" for="apellido" id="inputGroup-sizing-sm">Apellido:</label>
-                                    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="apellido" name="apellido" value="<?php echo $userr['lastname']; ?>" required>
+                                <div class="input-group input-group-sm mx-7">
+                                    <label class="input-group-text" for="nroComprobante" id="inputGroup-sizing-sm">Comprobante Numero:</label>
+                                    <input type="text" disabled class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="nroComprobante" name="nroComprobante" value="<?php echo $presupuesto['nrocomprobante']?>" required>
                                 </div>
-                            </div>
-                            <div class="d-flex flex-row">
-                                <div class="input-group input-group-sm mb-3">
-                                    <label class="input-group-text" for="nombre_usuario" id="inputGroup-sizing-sm">Nombre de usuario:</label>
-                                    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="nombre_usuario" name="nombre_usuario" value="<?php echo $userr['username']; ?>" required>
-                                </div>
-                                <div class="input-group input-group-sm mb-3 ms-5">
-                                    <label class="input-group-text" for="contrasena" id="inputGroup-sizing-sm">Contraseña:</label>
-                                    <input type="password" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="contrasena" name="contrasena" required>
-                                </div>
-                                <div class="input-group mb-2 ms-5">
-                                    <label class="input-group-text" for="tipo">Tipo:</label>
+                                <div class="input-group input-group-sm me-7">
+                                    <label class="input-group-text input-group-sm" for="tipo">Tipo:</label>
                                     <select class="form-select" id="tipo" name="tipo" required>
-                                        <option value="Administrador" <?php echo ($presupuesto['type'] == 'Administrador') ? 'selected' : ''; ?>>Administrador</option>
-                                        <option value="Vendedor" <?php echo ($presupuesto['type'] == 'Vendedor') ? 'selected' : ''; ?>>Vendedor</option>
-                                        <option value="Reparador" <?php echo ($presupuesto['type'] == 'Reparador') ? 'selected' : ''; ?>>Reparador</option>
+                                        <option value="Administrador" <?php echo ($presupuesto['tipo'] == 'venta') ? 'selected' : ''; ?>>Venta</option>
+                                        <option value="Vendedor" <?php echo ($presupuesto['tipo'] == 'reparacion') ? 'selected' : ''; ?>>Reparacion</option>
                                     </select>
                                 </div>
                             </div>
-                            <input class="btn button my-2" type="submit"  value="Guardar cambios" onclick="guardarEdicion('editUsuario')">
+                            <div class="my-3 d-flex flex-row w-100">
+                                <div class="input-group input-group-sm ms-7">
+                                    <label class="input-group-text" for="estado" id="inputGroup-sizing-sm">Estado:</label>
+                                    <input type="text" disabled class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="estado" name="estado" value="<?php echo $presupuesto['estado']?>" required>
+                                </div>
+                                <div class="input-group input-group-sm mx-7">
+                                    <label class="input-group-text" for="fecha" id="inputGroup-sizing-sm">Fecha:</label>
+                                    <input type="text" disabled class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="fecha" name="fecha" value="<?php echo $presupuesto['fecha']?>" required>
+                                </div>
+                                <div class="input-group input-group-sm me-7">
+                                    <label class="input-group-text" for="puntoVenta" id="inputGroup-sizing-sm">Punto de venta:</label>
+                                    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="puntoVenta" name="puntoVenta" value="<?php echo $presupuesto['puntoventa']?>" required>
+                                </div>
+                            </div>
+                            <h4 class="mt-2 text__white">Productos</h4>
+                            <div class="mt-3 d-flex flex-column w-100" id="contProductos">
+                            </div>
+                            <button class="btn btn-outline-secondary button ms-7 align-self-start" data-bs-target="#grillaProductos" data-bs-toggle="modal" type="button" id="agregar" onclick="mostrarGrillaProductos()">+</button>
+                            <!-- onclick="agregarComponenteProducto()" -->
+                            <input class="btn button my-2" type="submit"  value="Guardar cambios" onclick="guardarEdicion('editPresupuesto')">
                         </div>
                     </form>
                 </article>
+                <div class="modal fade" id="grillaProductos" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header headerPop__background">
+                                <img src="./assets/img/logo-IntegralService.png" class="shadow rounded-3 me-2 logo" alt="logo de integral Service">
+                                <h2 class="modal-title fs-5" id="exampleModalLabel">Productos</h2>
+                                <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body d-flex flex-column" id="contGrillaProducto">
+
+                                
+                            </div>
+                            <div class="modal-footer d-flex justify-content-center headerPop__background">
+                                <button type="button" class="btn button me-5" data-bs-dismiss="modal">Cancelar</button>
+                                <button type="button" onclick="cargarMenu()" data-bs-dismiss="modal" aria-label="Close" class="btn button ">Ingresar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </main>
         </body>
-        <script>mostrarOcultarPantallaEditar('editUsuario')</script>
+        <script>mostrarOcultarPantallaEditar('editPresupuesto','<?php echo $inUse;?>')</script>
         </html>
-<?php }?> -->
+<?php }?>

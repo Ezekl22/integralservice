@@ -2,12 +2,13 @@
 <?php 
     $id = isset($_GET['id']) ? $_GET['id'] : '';
     $UserController = new UserController();
-    $userr = $this->userDAO->getUserById($id);
+    $userr = $UserController->userDAO->getUserById($id);
     $UserController -> update($id);
     $GestionPantallasCtr = new GestionPantallasControlador();
     $GestionPantallasCtr->mostrarOcultarPantallaEditar(1);
+    $inUse = $GestionPantallasCtr->getGestionPantallasById(1)->getInUse();
 
-    if($GestionPantallasCtr->getGestionPantallasById(1)->getInUse() && $id != ''){
+    if($inUse  && $id != ''){
 ?>
         <!DOCTYPE html>
         <html>
