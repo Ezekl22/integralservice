@@ -16,18 +16,36 @@ const agregarComponenteProducto = () =>{
     let contComponente = document.createElement("div");
     let numContenedores = contProductos.childElementCount;
     let id = "producto"+(numContenedores+1);
+    let productoSeleccionado;
+    productos.forEach(producto=>{
+        const checkSeleccion = document.getElementById("seleccion"+producto[0]);
+        if (checkSeleccion.checked)
+            productoSeleccionado = producto;
+    });
     contComponente.className = "input-group input-group-sm mb-3";
     contComponente.id = id;
+
     contComponente.innerHTML = `<button class="btn btn-outline-secondary button ms-7 align-self-start" onclick="quitarComponenteProducto('${id}')" type="button" id="quitar">-</button>
                                 <label class="input-group-text" for="producto" id="inputGroup-sizing-sm">Producto:</label>
-                                <input type="text" class="form-control" disabled aria-label="Dollar amount (with dot and two decimal places)" id="producto">
+                                <input type="text" class="form-control w-25" disabled id="producto" value = "${productoSeleccionado[1]}">
                                 <label class="input-group-text" for="cantidad" id="inputGroup-sizing-sm">Cantidad:</label>
-                                <input type="text" class="form-control" aria-label="Dollar amount (with dot and two decimal places)" id="cantidad">
+                                <input type="text" class="form-control" aria-label="0" onchange="cantidadOnChange('${productoSeleccionado[0]}','${id}')" id="cantidad">
                                 <label class="input-group-text" for="valorunt" id="inputGroup-sizing-sm">Valor unitario:</label>
-                                <input type="text" class="form-control" disabled aria-label="Dollar amount (with dot and two decimal places)" id="valorunt">
-                                <label class="input-group-text" for="cantidad" id="inputGroup-sizing-sm">Total:</label>
-                                <input type="text" class="form-control me-7" disabled aria-label="Dollar amount (with dot and two decimal places)" id="cantidad">`;
+                                <input type="text" class="form-control" disabled value= "${currencyFormatter(productoSeleccionado[7])}" id="valorunt">
+                                <label class="input-group-text" for="totañ" id="inputGroup-sizing-sm">Total:</label>
+                                <input type="text" class="form-control me-7" disabled aria-label="0" id="total">`;
     contProductos.appendChild(contComponente);
+    cerrarGrilla('contGrillaProducto');
+}
+
+const currencyFormatter =(value)=> {
+    const currency = "USD";
+    const formatter = new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      minimumFractionDigits: 2,
+      currency
+    }) 
+    return formatter.format(value)
 }
 
 const mostrarGrillaProductos = ()=>{
@@ -36,7 +54,6 @@ const mostrarGrillaProductos = ()=>{
     let cuerpoGrilla = '';
     contenedor.className = "grilla d-flex flex-column align-items-center rounded-4";
     contenedor.style.width = "95%";
-    contenedor.innerHTML =  
     
     productos.forEach(producto => {
        cuerpoGrilla =cuerpoGrilla+ `<tr class="grilla__cuerpo">
@@ -82,19 +99,17 @@ const cerrarGrilla = (id) =>{
     document.getElementById(id).childNodes[1].remove();
 }
 
-const getProductoSeleccionado = ()=>{
-
-    let i = 0;
-    let checked = false;
-    while (i<= productos.length || checked) {
-        const checkSeleccion = document.getElementById("seleccion"+productos[i][0]);
-        checked = checkSeleccion.checked;
-        i++;
-    }
-
-    
-}
-
 const quitarComponenteProducto = (id) =>{
     document.getElementById(id).remove();
+}
+
+const cantidadOnChange = (idProducto,id) =>{
+    const inputTotal = document.querySelector('#'+id+' #total');
+    const cantidad = document.querySelector('#'+id+' #cantidad').value;
+    let i = 0;
+    while (productos[i][0] != parseInt(idProducto)) {
+        i++;
+    }
+    const producto = productos[i];
+    inputTotal.value =currencyFormatter(producto[7] * parseInt(cantidad));
 }

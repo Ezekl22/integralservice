@@ -65,7 +65,6 @@
                             <div class="mt-3 d-flex flex-column w-100" id="contProductos">
                             </div>
                             <button class="btn btn-outline-secondary button ms-7 align-self-start" data-bs-target="#grillaProductos" data-bs-toggle="modal" type="button" id="agregar" onclick="mostrarGrillaProductos()">+</button>
-                            <!-- onclick="agregarComponenteProducto()" -->
                             <input class="btn button my-2" type="submit"  value="Guardar cambios" onclick="guardarEdicion('editPresupuesto')">
                         </div>
                     </form>
@@ -83,7 +82,7 @@
                             </div>
                             <div class="modal-footer d-flex justify-content-center headerPop__background">
                                 <button type="button" class="btn button me-5" onclick="cerrarGrilla('contGrillaProducto')" data-bs-dismiss="modal">Cancelar</button>
-                                <button type="button" onclick="getProductoSeleccionado()" data-bs-dismiss="modal" aria-label="Close" class="btn button ">Seleccionar</button>
+                                <button type="button" onclick="agregarComponenteProducto()" data-bs-dismiss="modal" aria-label="Close" class="btn button ">Seleccionar</button>
                             </div>
                         </div>
                     </div>
