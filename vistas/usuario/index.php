@@ -12,7 +12,13 @@
         </article>
         <article class="mt-5 d-flex flex-column align-items-center">
             <div class="grilla w-75 d-flex flex-column align-items-center rounded-4">
-                <div class="border w-75 mt-5 mb-5 rounded-4">
+                <div class="d-flex w-75 justify-content-end mt-3">
+                    <div class="input-group input-group-sm w-25">
+                        <input type="text" class="form-control" placeholder="Ingrese su busqueda" aria-label="Recipient's username" aria-describedby="buscar">
+                        <input class="btn btn-outline-secondary button" type="button" id="buscar" value="Buscar"></button>
+                    </div>
+                </div>
+                <div class="border w-75 mt-3 mb-5 rounded-4">
                     <table class="grilla__contenedor border-0">
                         <tr class="grilla grilla__cabecera">
                             <th>Nombre</th>
@@ -40,7 +46,7 @@
                     </table>
                 </div>
             </div>
-            <a class="my-5 btn button" type="button" href="./vistas/usuario/create.php">Crear nuevo usuario</a>
+            <a class="my-5 btn button" type="button" href="index.php?module=usuarios&action=create">Crear nuevo usuario</a>
         </article>
     </main>
 </body>

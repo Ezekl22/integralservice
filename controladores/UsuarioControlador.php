@@ -17,6 +17,10 @@ class UserController {
         require_once 'vistas/usuario/index.php';
     }
 
+    public function getPantallaCreate(){
+        require_once 'vistas/usuario/create.php';
+    }
+
     public function create() {
         // Mostrar el formulario de creación de usuario
         require_once 'vistas/usuario/create.php';

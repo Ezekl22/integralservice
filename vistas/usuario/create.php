@@ -1,55 +1,60 @@
-
-<?php 
-    $id = isset($_GET['id']) ? $_GET['id'] : '';
-    $UserController = new UserController();
-    $userr = $this->userDAO->getUserById($id);
-    $UserController -> update($id);
-?>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Editar Usuario</title>
-</head> 
-
+    <title>Usuarios</title>
+</head>
 <body>
-    <main class="d-flex flex-column align-items-center mt-2">
-        <article class="editar__contenedor rounded-4">
-            <form action="" method="POST" class="d-flex flex-column align-items-center border-1 border m-4 rounded-4">
-                <div class="d-flex flex-column align-items-center" id="contenedor">
+    <main class="main__flex">
+        <article class="mt-4">
+                <h2 class="main__title">
+                    Crear Usuario
+                </h2>
+        </article>
+        <article class="mt-5 d-flex flex-column align-items-center">
+            <div class="grilla w-75 d-flex flex-column align-items-center rounded-4">
+                <form action="" method="POST" class="w-100 d-flex align-items-center flex-column">
+                    <div class="border w-75 mt-5 mb-2 rounded-4 d-flex flex-column align-items-center">
+                        <div class="w-75 d-flex mt-3">
+                            <div class="input-group input-group-sm mb-3">
+                                <span class="input-group-text" id="inputGroup-sizing-sm">Nombre</span>
+                                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="nombre" name="nombre" required>
+                            </div>
+                            <div class="input-group input-group-sm mb-3 ms-4">
+                                <span class="input-group-text" id="inputGroup-sizing-sm">Apellido</span>
+                                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="apellido" name="apellido" required>
+                            </div>
+                        </div>
+                        <div class="w-50 d-flex mt-3">
+                            <div class="input-group input-group-sm mb-3">
+                                <label class="input-group-text" for="tipo">Options</label>
+                                <select class="form-select" id="tipo" name="tipo" required>
+                                    <option selected>Administrador</option>
+                                    <option value="1">Vendedor</option>
+                                    <option value="2">Reparador</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="w-75 d-flex mt-3">
+                            <div class="input-group input-group-sm mb-3">
+                                <span class="input-group-text" id="inputGroup-sizing-sm">Nombre de usuario</span>
+                                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="nombre" name="nombre" required>
+                            </div>
+                            <div class="input-group input-group-sm mb-3 ms-4">
+                                <span class="input-group-text" id="inputGroup-sizing-sm">Contraseña</span>
+                                <input type="password" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="contrasena" name="contrasena" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-evenly w-75">
+                        <input class="my-5 btn button w-25" type="submit"  value="Guardar">
+                        <a class="my-5 btn button w-25" type="button" href="index.php?module=usuarios">Cancelar</a>
+                    </div>
                     
-                    <h2 class="mt-2 text__white">Editar Usuario</h2>
-                    <div class="my-3 d-flex flex-row">
-                        <div class="input-group input-group-sm mb-3">
-                            <label class="input-group-text" for="nombre" id="inputGroup-sizing-sm">Nombre:</label>
-                            <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="nombre" name="nombre" value="<?php echo $userr['name']; ?>" required>
-                        </div>
-                        <div class="input-group input-group-sm mb-3 ms-5">
-                            <label class="input-group-text" for="apellido" id="inputGroup-sizing-sm">Apellido:</label>
-                            <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="apellido" name="apellido" value="<?php echo $userr['lastname']; ?>" required>
-                        </div>
-                    </div>
-                    <div class="d-flex flex-row">
-                        <div class="input-group input-group-sm mb-3">
-                            <label class="input-group-text" for="nombre_usuario" id="inputGroup-sizing-sm">Nombre de usuario:</label>
-                            <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="nombre_usuario" name="nombre_usuario" value="<?php echo $userr['username']; ?>" required>
-                        </div>
-                        <div class="input-group input-group-sm mb-3 ms-5">
-                            <label class="input-group-text" for="contrasena" id="inputGroup-sizing-sm">Contraseña:</label>
-                            <input type="password" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="contrasena" name="contrasena" required>
-                        </div>
-                        <div class="input-group mb-2 ms-5">
-                            <label class="input-group-text" for="tipo">Tipo:</label>
-                            <select class="form-select" id="tipo" name="tipo" required>
-                                <option value="Administrador" <?php echo ($userr['type'] == 'Administrador') ? 'selected' : ''; ?>>Administrador</option>
-                                <option value="Vendedor" <?php echo ($userr['type'] == 'Vendedor') ? 'selected' : ''; ?>>Vendedor</option>
-                                <option value="Reparador" <?php echo ($userr['type'] == 'Reparador') ? 'selected' : ''; ?>>Reparador</option>
-                            </select>
-                        </div>
-                    </div>
-                    <input class="btn button my-2" type="submit"  value="Guardar cambios">
-                </div>
-            </form>
+                </form> 
+            </div>
         </article>
     </main>
 </body>
 </html>
+
+
