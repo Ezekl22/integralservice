@@ -8,7 +8,6 @@
     $GestionPantallasCtr = new GestionPantallasControlador();
     $GestionPantallasCtr->mostrarOcultarPantallaEditar(4);
     $inUse = $GestionPantallasCtr->getGestionPantallasById(4)->getInUse();
-    $array = array('apple', 'banana', 'orange');
     $json = json_encode($PresupuestoCtr->getAllProductos());
     echo "<script>const productos = $json; console.log(productos);</script>";
     ?>
