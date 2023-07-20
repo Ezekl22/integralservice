@@ -228,6 +228,10 @@ footer{
     width: 85%;
   }
 
+  .w-95{
+    width: 94%;
+  }
+
   .mx-7{
     margin-right: 6rem!important;
     margin-left: 6rem!important;

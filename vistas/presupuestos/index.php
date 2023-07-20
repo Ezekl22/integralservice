@@ -71,12 +71,9 @@
                                     <a class="icono__contenedor me-2 ms-2" href="index.php?module=presupuestos&action=cambiarestado&id=<?php echo $presupuesto['idpresupuesto']; ?>">
                                         <img class="icono__imagen" src="./assets/img/iconoCambiarEstado.svg" alt="icono de cambiar estado">
                                     </a>
-                                    <a class="icono__contenedor me-2 ms-2" href="index.php?module=presupuestos&action=facturar&id=<?php echo $presupuesto['idpresupuesto']; ?>">
+                                    <button class="icono__contenedor me-2 ms-2" style="border: none; background: none;" data-bs-target="#impresion" data-bs-toggle="modal">
                                         <img class="icono__imagen" src="./assets/img/iconoFacturar.svg" alt="icono de Facturar">
-                                    </a>
-                                    <a class="icono__contenedor me-2 ms-2" href="index.php?module=presupuestos&action=imprimir&id=<?php echo $presupuesto['idpresupuesto']; ?>">
-                                        <img class="icono__imagen" src="./assets/img/iconoImprimir.svg" alt="icono de Imprimir">
-                                    </a>
+                                    </button>
                                     <a class="icono__contenedor me-2" href="index.php?module=presupuestos&action=ver&id=<?php echo $presupuesto['idpresupuesto']; ?>">
                                         <img class="icono__imagen" src="./assets/img/iconoVer.png" alt="icono de ver">
                                     </a>
@@ -94,6 +91,40 @@
             </div>
             <a class="my-5 btn button" type="button" href="index.php?module=presupuestos&action=create">Crear nuevo presupuesto</a>
         </article>
+        <div class="modal fade" id="impresion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog justify-content-center d-flex" style="max-width:none;">
+                <div class="modal-content mx-3" style="width:80vw;">
+                    <div class="modal-header headerPop__background">
+                        <img src="./assets/img/logo-IntegralService.png" class="shadow rounded-3 me-2 logo" alt="logo de integral Service">
+                        <h2 class="modal-title fs-5" id="exampleModalLabel">Productos</h2>
+                        <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body d-flex flex-column align-items-center">
+                        <div class="d-flex flex-row w-100 mb-3">
+                            <div class="d-flex align-items-start w-50 flex-column ms-5">
+                                <h4> Integral Service</h4>
+                                <div>Servico tecnico de equipos de impresion</div>
+                            </div>
+                            <div class="d-flex align-items-end w-50 flex-column me-5">
+                                <div class="d-flex w-100 d-flex align-items-start">
+                                    <b class="me-2">Dirección: </b> Balcarce 653 <b class="mx-2">Provincia: </b> Ente Ríos <b class="mx-2">Localidad: </b> Concordia
+                                </div> 
+                                <div class="d-flex w-100 d-flex align-items-start">
+                                    <b class="me-2">CUIT: </b> 20-38926571-6
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex flex-row border-bottom border-secondary w-95"></div>
+                        <div class="d-flex align-items-start w-100 flex-column mt-3">
+                            <h5 class="ms-5">Cliente</h5>
+                        </div>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-center headerPop__background">
+                        <button type="button" class="btn button" data-bs-dismiss="modal">Imprimir</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 </body>
 </html>
