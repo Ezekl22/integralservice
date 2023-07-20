@@ -163,9 +163,24 @@
             break;
         case 'clientes':
             include('controladores/ClienteControlador.php');
+            $indexPage = new ClientController();
+            switch ($action) {
+                  case 'edit':
+                        $indexPage ->getPantallaEdit();
+                        break;
+                  case 'delete':
+                        $indexPage ->getPantallaDelete();
+                        break;
+                  case 'create':
+                        $indexPage ->getPantallaCreate();
+                        break;
+                  default:
+                        $indexPage -> index();
+                        break;
+            }
             break;
         case 'proveedores':
-            include('controladores/ProveedoresControlador.php');
+            include('controladores/ProveedorControlador.php');
             break;
       case 'pedidos':
             include('controladores/PedidoCompraControlador.php');

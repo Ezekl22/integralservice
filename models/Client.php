@@ -1,19 +1,23 @@
 <?php
 
-class User {
+class Client {
     private $id;
     private $name;
     private $lastname;
-    private $type;
-    private $username;
-    private $password;
+    private $dni;
+    private $phone;
+    private $adress;
+    private $mail;
+    private $balance;
 
-    public function __construct($name, $lastname, $type, $username, $password) {
+    public function __construct($name, $lastname, $dni, $phone, $adress, $mail, $balance) {
         $this->name = $name;
         $this->lastname = $lastname;
-        $this->type = $type;
-        $this->username = $username;
-        $this->password = $password;
+        $this->dni = $dni;
+        $this->phone = $phone;
+        $this->adress = $adress;
+        $this->mail = $mail;
+        $this->balance = $balance;
     }
 
     // Getters y setters
@@ -42,27 +46,43 @@ class User {
         $this->lastname = $lastname;
     }
 
-    public function getType() {
-        return $this->type;
+    public function getDni() {
+        return $this->dni;
     }
 
-    public function setType($type) {
-        $this->type = $type;
+    public function setDni($dni) {
+        $this->dni = $dni;
     }
 
-    public function getUsername() {
-        return $this->username;
+    public function getPhone() {
+        return $this->phone;
     }
 
-    public function setUsername($username) {
-        $this->username = $username;
+    public function setPhone($phone) {
+        $this->phone = $phone;
     }
 
-    public function getPassword() {
-        return $this->password;
+    public function getAdress() {
+        return $this->adress;
     }
 
-    public function setPassword($password) {
-        $this->password = $password;
+    public function setAdress($adress) {
+        $this->adress = $adress;
+    }
+    
+    public function getMail() {
+        return $this->mail;
+    }
+
+    public function setMail($mail) {
+        $this->mail = $mail;
+    }
+    
+    public function getBalance() {
+        return $this->balance;
+    }
+
+    public function setBalance($balance) {
+        $this->balance = $balance;
     }
 }
