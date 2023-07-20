@@ -17,6 +17,10 @@ class UserController {
         require_once 'vistas/usuario/index.php';
     }
 
+    public function getPantallaCreate(){
+        require_once 'vistas/usuario/create.php';
+    }
+
     public function create() {
         // Mostrar el formulario de creación de usuario
         require_once 'vistas/usuario/create.php';
@@ -34,25 +38,30 @@ class UserController {
         header('Location: index.php?action=index');
     }
 
-    public function edit($id) {
+    public function getPantallaEdit() {
         // Obtener el usuario desde el modelo
-        $user = $this->userDAO->getUserById($id);
 
         // Mostrar el formulario de edición de usuario con los datos cargados
         require_once 'vistas/usuario/edit.php';
+        $this->index();
     }
 
-    public function update($id, $data) {
-        // Validar los datos del formulario
-        // ...
+    public function update($id) {
 
-        // Actualizar el usuario en la base de datos
-        $user = new User($data['name'], $data['lastname'], $data['type'], $data['username'], $data['password']);
-        $user->setId($id);
-        $this->userDAO->updateUser($user);
+        if(isset($_POST["nombre"])){
+            $user = new User($_POST["nombre"], $_POST["apellido"], $_POST["tipo"], $_POST["nombre_usuario"], $_POST["contrasena"]);
+            $user->setId($id);
+            $this->userDAO->updateUser($user);
+        }
 
         // Redireccionar a la página principal de usuarios
-        header('Location: index.php?action=index');
+        //header('Location: index.php?module=usuarios');
+
+    }
+
+    public function getPantallaDelete(){
+        require_once 'vistas/usuario/delete.php';
+        $this->index();
     }
 
     public function delete($id) {
