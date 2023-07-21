@@ -21,22 +21,22 @@ class PresupuestoCtr {
         require_once 'vistas/presupuestos/create.php';
     }
 
-    public function create() {
-        // Mostrar el formulario de creación de usuario
-        require_once 'vistas/presupuestos/create.php';
-    }
+    // public function create() {
+    //     // Mostrar el formulario de creación de usuario
+    //     require_once 'vistas/presupuestos/create.php';
+    // }
 
-    public function store($data) {
-        // Validar los datos del formulario
-        // ...
+    // public function store($data) {
+    //     // Validar los datos del formulario
+    //     // ...
 
-        // Crear un nuevo usuario en la base de datos
-        $presupuesto = new PresupuestoMdl($data['idclient'], $data['nrocomprobante'], $data['tipo'], $data['estado'], $data['fecha'], $data['puntoventa'], $data['total']);
-        $this->presupuestoDAO->createPresupuesto($presupuesto);
+    //     // Crear un nuevo usuario en la base de datos
+    //     $presupuesto = new PresupuestoMdl($data['idclient'], $data['nrocomprobante'], $data['tipo'], $data['estado'], $data['fecha'], $data['puntoventa'], $data['total']);
+    //     $this->presupuestoDAO->createPresupuesto($presupuesto);
 
-        // Redireccionar a la página principal de usuarios
-        header('Location: index.php?action=index');
-    }
+    //     // Redireccionar a la página principal de usuarios
+    //     header('Location: index.php?action=index');
+    // }
 
     public function getPantallaEdit() {
         
@@ -57,23 +57,25 @@ class PresupuestoCtr {
             $this->presupuestoDAO->updatePresupuesto($presupuesto);
         }
 
-        // Redireccionar a la página principal de usuarios
-        //header('Location: index.php?module=usuarios');
-
     }
 
-    public function getPantallaDelete(){
-        require_once 'vistas/usuario/delete.php';
+    // public function getPantallaDelete(){
+    //     require_once 'vistas/usuario/delete.php';
+    //     $this->index();
+    // }
+
+    public function getPantallaSee(){
+        require_once 'vistas/presupuestos/see.php';
         $this->index();
     }
 
-    public function delete($id) {
-        // Eliminar el usuario de la base de datos
-        $this->presupuestoDAO->deletePresupuesto($id);
+    // public function delete($id) {
+    //     // Eliminar el usuario de la base de datos
+    //     $this->presupuestoDAO->deletePresupuesto($id);
 
-        // Redireccionar a la página principal de usuarios
-        header('Location: index.php?action=index');
-    }
+    //     // Redireccionar a la página principal de usuarios
+    //     header('Location: index.php?action=index');
+    // }
 
     public function getAllClientes(){
         return $this->presupuestoDAO->getAllClientes();

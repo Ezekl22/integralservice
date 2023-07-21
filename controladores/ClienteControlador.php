@@ -2,7 +2,7 @@
 require_once 'models/Client.php';
 require_once 'models/ClientDAO.php';
 
-class ClientController {
+class ClienteCtr{
     private $clientDAO;
 
     public function __construct() {
@@ -11,7 +11,7 @@ class ClientController {
 
     public function index() {
         // Obtener la lista de usuarios desde el modelo
-        $users = $this->userDAO->getAllUsers();
+        $clientes = $this->clientDAO->getAllClientes();
 
         // Cargar la vista con los datos
         require_once 'vistas/usuario/index.php';

@@ -1,4 +1,13 @@
-<?php $presupuestoCtr = New PresupuestoCtr()?>
+<?php 
+
+$action = isset($_GET['action']) ? $_GET['action'] : '';
+$id = $action != ''&& isset($_GET['id']) ? $_GET['id'] : '';
+$presupuestoCtr = New PresupuestoCtr();
+
+// $clienteCtr = new ClientController();
+// $clienteCte->getClienteById();
+
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -71,11 +80,11 @@
                                     <a class="icono__contenedor me-2 ms-2" href="index.php?module=presupuestos&action=cambiarestado&id=<?php echo $presupuesto['idpresupuesto']; ?>">
                                         <img class="icono__imagen" src="./assets/img/iconoCambiarEstado.svg" alt="icono de cambiar estado">
                                     </a>
-                                    <button class="icono__contenedor me-2 ms-2" style="border: none; background: none;" data-bs-target="#impresion" data-bs-toggle="modal">
-                                        <img class="icono__imagen" src="./assets/img/iconoFacturar.svg" alt="icono de Facturar">
-                                    </button>
-                                    <a class="icono__contenedor me-2" href="index.php?module=presupuestos&action=ver&id=<?php echo $presupuesto['idpresupuesto']; ?>">
+                                    <button class="icono__contenedor me-2 ms-2" style="border: none; background: none;" data-bs-target="#ver" data-bs-toggle="modal">
                                         <img class="icono__imagen" src="./assets/img/iconoVer.png" alt="icono de ver">
+                                    </button>
+                                    <a class="icono__contenedor me-2" href="index.php?module=presupuestos&action=facturar&id=<?php echo $presupuesto['idpresupuesto']; ?>">
+                                        <img class="icono__imagen" src="./assets/img/iconoFacturar.svg" alt="icono de Facturar">
                                     </a>
                                     <a class="icono__contenedor me-2" href="index.php?module=presupuestos&action=edit&id=<?php echo $presupuesto['idpresupuesto']; ?>">
                                         <img class="icono__imagen" src="./assets/img/iconoEditar.png" alt="icono de editar">
@@ -91,7 +100,7 @@
             </div>
             <a class="my-5 btn button" type="button" href="index.php?module=presupuestos&action=create">Crear nuevo presupuesto</a>
         </article>
-        <div class="modal fade" id="impresion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="ver" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog justify-content-center d-flex" style="max-width:none;">
                 <div class="modal-content mx-3" style="width:80vw;">
                     <div class="modal-header headerPop__background">
@@ -117,6 +126,9 @@
                         <div class="d-flex flex-row border-bottom border-secondary w-95"></div>
                         <div class="d-flex align-items-start w-100 flex-column mt-3">
                             <h5 class="ms-5">Cliente</h5>
+                            <div class="d-flex align-items-start w-100 flex-column mt-3">
+
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer d-flex justify-content-center headerPop__background">
