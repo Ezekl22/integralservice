@@ -1,34 +1,60 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Editar Usuario</title>
-    <link rel="stylesheet" type="text/css" href="../assets/css/style.css">
-</head>
-<body>
-    <h1>Editar Usuario</h1>
 
-    <form action="" method="POST">
-        <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" name="nombre" value="<?php echo $user['nombre']; ?>" required>
-        
-        <label for="apellido">Apellido:</label>
-        <input type="text" id="apellido" name="apellido" value="<?php echo $user['apellido']; ?>" required>
-        
-        <label for="tipo">Tipo:</label>
-        <select id="tipo" name="tipo" required>
-            <option value="Administrador" <?php echo ($user['tipo'] == 'Administrador') ? 'selected' : ''; ?>>Administrador</option>
-            <option value="Vendedor" <?php echo ($user['tipo'] == 'Vendedor') ? 'selected' : ''; ?>>Vendedor</option>
-            <option value="Reparador" <?php echo ($user['tipo'] == 'Reparador') ? 'selected' : ''; ?>>Reparador</option>
-        </select>
-        
-        <label for="nombre_usuario">Nombre de usuario:</label>
-        <input type="text" id="nombre_usuario" name="nombre_usuario" value="<?php echo $user['nombre_usuario']; ?>" required>
-        
-        <label for="contrasena">Contraseña:</label>
-        <input type="password" id="contrasena" name="contrasena" required>
-        
-        <input type="submit" value="Guardar cambios">
-    </form>
+<?php 
+    $id = isset($_GET['id']) ? $_GET['id'] : '';
+    $UserController = new UserController();
+    $userr = $this->userDAO->getUserById($id);
+    $UserController -> update($id);
+    $GestionPantallasCtr = new GestionPantallasControlador();
+    $GestionPantallasCtr->mostrarOcultarPantallaEditar(1);
 
-</body>
-</html>
+    if($GestionPantallasCtr->getGestionPantallasById(1)->getInUse() && $id != ''){
+?>
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Editar Usuario</title>
+        </head>
+        <body>
+            <main class="d-flex flex-column align-items-center mt-2" style="display: none !important;" id="editUsuario">
+                <article class="editar__contenedor rounded-4">
+                    <form action="" method="POST" class="d-flex flex-column align-items-center border-1 border m-4 rounded-4">
+                        <div class="d-flex flex-column align-items-center" id="contenedor">
+                            
+                            <h2 class="mt-2 text__white">Editar Usuario</h2>
+                            <div class="my-3 d-flex flex-row">
+                                <div class="input-group input-group-sm mb-3">
+                                    <label class="input-group-text" for="nombre" id="inputGroup-sizing-sm">Nombre:</label>
+                                    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="nombre" name="nombre" value="<?php echo $userr['name']; ?>" required>
+                                </div>
+                                <div class="input-group input-group-sm mb-3 ms-5">
+                                    <label class="input-group-text" for="apellido" id="inputGroup-sizing-sm">Apellido:</label>
+                                    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="apellido" name="apellido" value="<?php echo $userr['lastname']; ?>" required>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-row">
+                                <div class="input-group input-group-sm mb-3">
+                                    <label class="input-group-text" for="nombre_usuario" id="inputGroup-sizing-sm">Nombre de usuario:</label>
+                                    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="nombre_usuario" name="nombre_usuario" value="<?php echo $userr['username']; ?>" required>
+                                </div>
+                                <div class="input-group input-group-sm mb-3 ms-5">
+                                    <label class="input-group-text" for="contrasena" id="inputGroup-sizing-sm">Contraseña:</label>
+                                    <input type="password" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="contrasena" name="contrasena" required>
+                                </div>
+                                <div class="input-group mb-2 ms-5">
+                                    <label class="input-group-text" for="tipo">Tipo:</label>
+                                    <select class="form-select" id="tipo" name="tipo" required>
+                                        <option value="Administrador" <?php echo ($userr['type'] == 'Administrador') ? 'selected' : ''; ?>>Administrador</option>
+                                        <option value="Vendedor" <?php echo ($userr['type'] == 'Vendedor') ? 'selected' : ''; ?>>Vendedor</option>
+                                        <option value="Reparador" <?php echo ($userr['type'] == 'Reparador') ? 'selected' : ''; ?>>Reparador</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <input class="btn button my-2" type="submit"  value="Guardar cambios" onclick="guardarEdicion('editUsuario')">
+                        </div>
+                    </form>
+                </article>
+            </main>
+        </body>
+        <script>mostrarOcultarPantallaEditar('editUsuario')</script>
+        </html>
+<?php }?>

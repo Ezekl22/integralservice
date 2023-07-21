@@ -37,10 +37,6 @@ body{
   width: 14rem;
 }
 
-#grilla{
-  width: 95%;
-}
-
 .grilla{
   background-color:#0f7672 !important;
 }
@@ -79,6 +75,10 @@ footer{
 
 .grilla__contenedor{
   border: 1px solid grey;
+  border-collapse: unset;
+  width: 95%;
+  margin: 1% 2.5% 1.5% 2.5%;
+  text-align: center;
 }
 
 .grilla__cabecera{
@@ -139,6 +139,25 @@ footer{
   max-width: 800px !important;
 }
 
+.icono__contenedor{
+  text-decoration: none;
+}
+
+  .icono__imagen{
+    height: 25px;
+    text-decoration: none;
+  }
+
+.editar__contenedor{
+  width: 90%;
+  background-color: #0f7672;
+}
+
+.text__white{
+  color:#fff;
+}
+
+
 /* Estilos específicos del módulo de usuarios */
 .users-module {
     margin: 20px;
@@ -192,4 +211,3 @@ footer{
     color: red;
     margin-bottom: 10px;
   }
-  
