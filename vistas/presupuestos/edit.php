@@ -2,17 +2,18 @@
 <?php 
     $id = isset($_GET['id']) ? $_GET['id'] : '';
     $PresupuestoCtr = new PresupuestoCtr();
+    $action = isset($_GET['action']) ? $_GET['action'] : '';
     $presupuesto = $PresupuestoCtr->presupuestoDAO->getPresupuestoById($id);
-    $PresupuestoCtr -> update($id);
+    
     $clientes = $PresupuestoCtr ->getAllClientes();
     $GestionPantallasCtr = new GestionPantallasControlador();
     $GestionPantallasCtr->mostrarOcultarPantallaEditar(4);
     $inUse = $GestionPantallasCtr->getGestionPantallasById(4)->getInUse();
     $json = json_encode($PresupuestoCtr->getAllProductos());
-    echo "<script>const productos = $json; console.log(productos);</script>";
+    echo "<script>const productos = $json;</script>";
     ?>
 <?php 
-    if($inUse && $id != ''){
+    if($action == 'edit' && $id != ''){
 ?>
         <!DOCTYPE html>
         <html>
@@ -20,9 +21,9 @@
             <title>Editar Presupuesto</title>
         </head>
         <body>
-            <main class="d-flex flex-column align-items-center mt-2" style="display: none !important;" id="editPresupuesto">
+            <main class="d-flex flex-column align-items-center mt-2" id="editPresupuesto">
                 <article class="editar__contenedor rounded-4">
-                    <form action="" method="POST" class="d-flex flex-column align-items-center border-1 border m-4 rounded-4">
+                    <form action="index.php?module=presupuestos" method="POST" class="d-flex flex-column align-items-center border-1 border m-4 rounded-4">
                         <div class="d-flex flex-column align-items-center contenedor__mayor" id="contenedor">
                             <h2 class="mt-2 text__white">Editar Presupuesto</h2>
                             <div class="my-3 d-flex flex-row w-100">

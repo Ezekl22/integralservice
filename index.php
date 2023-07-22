@@ -195,9 +195,6 @@
             case 'create':
                   $indexPage ->getPantallaCreate();
                   break;
-            case 'see':
-                  $indexPage ->getPantallaSee();
-                  break;
             default:
                   $indexPage -> index();
                   break;

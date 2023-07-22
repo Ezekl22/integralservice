@@ -113,3 +113,8 @@ const cantidadOnChange = (idProducto,id) =>{
     const producto = productos[i];
     inputTotal.value =currencyFormatter(producto[7] * parseInt(cantidad));
 }
+
+const mostrarVentanaModal = () =>{
+    var miModal = new bootstrap.Modal(document.getElementById("ver"));
+    miModal.show();
+}       

@@ -6,7 +6,7 @@ class ClienteCtr{
     private $clientDAO;
 
     public function __construct() {
-        $this->clientDAO = new clientDAO();
+        $this->clientDAO = new ClienteDAO();
     }
 
     public function index() {
@@ -22,16 +22,20 @@ class ClienteCtr{
         require_once 'vistas/usuario/create.php';
     }
 
-    public function store($data) {
-        // Validar los datos del formulario
-        // ...
+    // public function store($data) {
+    //     // Validar los datos del formulario
+    //     // ...
 
-        // Crear un nuevo usuario en la base de datos
-        $user = new User($data['name'], $data['lastname'], $data['type'], $data['username'], $data['password']);
-        $this->userDAO->createUser($user);
+    //     // Crear un nuevo usuario en la base de datos
+    //     $user = new User($data['name'], $data['lastname'], $data['type'], $data['username'], $data['password']);
+    //     $this->userDAO->createUser($user);
 
-        // Redireccionar a la página principal de usuarios
-        header('Location: index.php?action=index');
+    //     // Redireccionar a la página principal de usuarios
+    //     header('Location: index.php?action=index');
+    // }
+
+    public function getClienteById($id) {
+        return $this->clientDAO->getClienteById($id);
     }
 
     public function edit() {

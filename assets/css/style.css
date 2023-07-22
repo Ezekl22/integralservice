@@ -244,3 +244,7 @@ footer{
   .me-7{
     margin-right: 7rem!important;
   }
+
+  .w-30{
+    width: 30% !important;
+  }

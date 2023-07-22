@@ -1,12 +1,15 @@
 <?php
 require_once 'models/PresupuestoMdl.php';
 require_once 'models/PresupuestoDAO.php';
+require_once 'controladores/ClienteControlador.php';
 
 class PresupuestoCtr {
     private $presupuestoDAO;
+    private $clienteCtr;
 
     public function __construct() {
         $this->presupuestoDAO = new PresupuestoDAO();
+        $this->clienteCtr = new ClienteCtr();
     }
 
     public function index() {
@@ -45,29 +48,34 @@ class PresupuestoCtr {
     }
 
     public function getNombreClienteById($id){
-        $cliente = $this->presupuestoDAO->getNombreClienteById($id);
+        $cliente = $this->clienteCtr->getClienteById($id);
         return $cliente['nombre'].' '.$cliente['apellido'];
+    }
+
+    public function getClienteById($id){
+        $cliente = $this->presupuestoDAO->getClienteById($id);
+        return $cliente;
     }
 
     public function update($id) {
 
-        if(isset($_POST["idclient"])){
-            $presupuesto = new PresupuestoMdl($_POST["idclient"], $_POST["nrocomprobante"], $_POST['tipo'], $_POST["estado"], $_POST["fecha"], $_POST["puntoventa"], $_POST["total"]);
-            $presupuesto->setIdPresupuesto($id);
-            $this->presupuestoDAO->updatePresupuesto($presupuesto);
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            if(isset($_POST["idclient"])){
+                $presupuesto = new PresupuestoMdl($_POST["idclient"], $_POST["nrocomprobante"], $_POST['tipo'], $_POST["estado"], $_POST["fecha"], $_POST["puntoventa"], $_POST["total"]);
+                $presupuesto->setIdPresupuesto($id);
+                $this->presupuestoDAO->updatePresupuesto($presupuesto);
+            }
         }
+    }
 
+    public function getPresupuestoById($id){
+        return $this->presupuestoDAO->getPresupuestoById($id);
     }
 
     // public function getPantallaDelete(){
     //     require_once 'vistas/usuario/delete.php';
     //     $this->index();
     // }
-
-    public function getPantallaSee(){
-        require_once 'vistas/presupuestos/see.php';
-        $this->index();
-    }
 
     // public function delete($id) {
     //     // Eliminar el usuario de la base de datos

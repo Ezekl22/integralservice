@@ -47,8 +47,8 @@ class PresupuestoDAO {
         // ...
     }
 
-    public function getPresupuestoById($idPresupuesto) {
-        $stmt = $this->db->getConnection()->prepare("SELECT * FROM presupuestos WHERE idPresupuesto = ".$idPresupuesto);
+    public function getPresupuestoById($id) {
+        $stmt = $this->db->getConnection()->prepare("SELECT * FROM presupuestos WHERE idPresupuesto = ".$id);
 
         $stmt->execute();
         return $stmt -> fetchAll()[0];
@@ -56,8 +56,8 @@ class PresupuestoDAO {
         $stmt = null;
     }
 
-    public function getNombreClienteById($id) {
-        $stmt = $this->db->getConnection()->prepare("SELECT nombre, apellido FROM clientes WHERE idcliente = ".$id);
+    public function getClienteById($id) {
+        $stmt = $this->db->getConnection()->prepare("SELECT * FROM clientes WHERE idcliente = ".$id);
 
         $stmt->execute();
         return $stmt -> fetchAll()[0];

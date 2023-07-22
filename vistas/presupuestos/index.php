@@ -3,7 +3,9 @@
 $action = isset($_GET['action']) ? $_GET['action'] : '';
 $id = $action != ''&& isset($_GET['id']) ? $_GET['id'] : '';
 $presupuestoCtr = New PresupuestoCtr();
-
+$presupuesto = $presupuestoCtr->getPresupuestoById($id);
+$nombreCliente = $presupuestoCtr->getNombreClienteById($presupuesto['idcliente']);
+$cliente = $presupuestoCtr->getClienteById($presupuesto['idcliente']);
 // $clienteCtr = new ClientController();
 // $clienteCte->getClienteById();
 
@@ -80,9 +82,9 @@ $presupuestoCtr = New PresupuestoCtr();
                                     <a class="icono__contenedor me-2 ms-2" href="index.php?module=presupuestos&action=cambiarestado&id=<?php echo $presupuesto['idpresupuesto']; ?>">
                                         <img class="icono__imagen" src="./assets/img/iconoCambiarEstado.svg" alt="icono de cambiar estado">
                                     </a>
-                                    <button class="icono__contenedor me-2 ms-2" style="border: none; background: none;" data-bs-target="#ver" data-bs-toggle="modal">
+                                    <a class="icono__contenedor me-2" href="index.php?module=presupuestos&action=see&id=<?php echo $presupuesto['idpresupuesto']; ?>">
                                         <img class="icono__imagen" src="./assets/img/iconoVer.png" alt="icono de ver">
-                                    </button>
+                                    </a>
                                     <a class="icono__contenedor me-2" href="index.php?module=presupuestos&action=facturar&id=<?php echo $presupuesto['idpresupuesto']; ?>">
                                         <img class="icono__imagen" src="./assets/img/iconoFacturar.svg" alt="icono de Facturar">
                                     </a>
@@ -100,7 +102,7 @@ $presupuestoCtr = New PresupuestoCtr();
             </div>
             <a class="my-5 btn button" type="button" href="index.php?module=presupuestos&action=create">Crear nuevo presupuesto</a>
         </article>
-        <div class="modal fade" id="ver" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade show" id="ver" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog justify-content-center d-flex" style="max-width:none;">
                 <div class="modal-content mx-3" style="width:80vw;">
                     <div class="modal-header headerPop__background">
@@ -108,26 +110,90 @@ $presupuestoCtr = New PresupuestoCtr();
                         <h2 class="modal-title fs-5" id="exampleModalLabel">Productos</h2>
                         <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body d-flex flex-column align-items-center">
-                        <div class="d-flex flex-row w-100 mb-3">
-                            <div class="d-flex align-items-start w-50 flex-column ms-5">
-                                <h4> Integral Service</h4>
-                                <div>Servico tecnico de equipos de impresion</div>
-                            </div>
-                            <div class="d-flex align-items-end w-50 flex-column me-5">
-                                <div class="d-flex w-100 d-flex align-items-start">
-                                    <b class="me-2">Dirección: </b> Balcarce 653 <b class="mx-2">Provincia: </b> Ente Ríos <b class="mx-2">Localidad: </b> Concordia
-                                </div> 
-                                <div class="d-flex w-100 d-flex align-items-start">
-                                    <b class="me-2">CUIT: </b> 20-38926571-6
+                    <div class="modal-body">
+                        <div class="w-100 d-flex flex-column align-items-center border border-2">
+                            <div class="d-flex flex-row w-100 my-3 align-items-end">
+                                <div class="d-flex align-items-start w-30 flex-column ms-5">
+                                    <h4> Integral Service</h4>
+                                    <div>Servico tecnico de equipos de impresion</div>
+                                </div>
+                                <div class="d-flex align-items-center w-30 flex-column ms-5">
+                                    <div class="h2 border border-2 py-2 px-2 rounded-4">X</div>
+                                    <div class="d-flex w-100 d-flex justify-content-center">
+                                        <b class="h3">Presupuesto </b>
+                                    </div> 
+                                </div>
+                                <div class="d-flex align-items-end w-30 flex-column me-5">
+                                    <div>
+                                        <div class="d-flex w-100 d-flex align-items-start">
+                                            <b class="me-2">Dirección: </b> Balcarce 653 <b class="mx-2">Provincia: </b> Ente Ríos
+                                        </div> 
+                                        <div class="d-flex w-100 align-items-start">
+                                            <b class="me-2">Localidad: </b> Concordia
+                                            <b class="mx-2 rounded-2">CUIT: </b> 20-38926571-6
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="d-flex flex-row border-bottom border-secondary w-95"></div>
-                        <div class="d-flex align-items-start w-100 flex-column mt-3">
-                            <h5 class="ms-5">Cliente</h5>
+                            <div class="d-flex flex-row border-bottom border-secondary w-95"></div>
                             <div class="d-flex align-items-start w-100 flex-column mt-3">
-
+                                <div class="w-100 d-flex justify-content-center">
+                                    Documento no valido como Factura
+                                </div>
+                                <h5 class="ms-5">Cliente</h5>
+                                <div class="px-5 d-flex w-100 justify-content-between">
+                                    <div class="w-30">
+                                        <?php echo '<b class="me-3">Señor/a(es/as):</b>'.$nombreCliente ?>
+                                    </div>
+                                    <div class="w-30 d-flex justify-content-center">
+                                        <?php echo '<b class="me-3">CUIT:</b> '.$cliente['cuit'] ?>
+                                    </div>
+                                    <div class="w-30 d-flex justify-content-end">
+                                        <div>
+                                            <?php echo '<b class="me-3">I.V.A:</b> '.$cliente['iva'] ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-95 px-5 border border-2">
+                                <table class="grilla__contenedor border-0">
+                                    <tr class="grilla grilla__cabecera">
+                                        <th>Nombre</th>
+                                        <th>Marca</th>
+                                        <th>Detalle</th>
+                                        <th>Cantidad</th>
+                                        <th>Precio unitario</th>
+                                        <th>Importe</th>
+                                    </tr>
+                                    <?php foreach ($presupuestos as $presupuesto) { ?>
+                                        <tr class="grilla__cuerpo">
+                                            <td><?php echo $presupuestoCtr->getNombreClienteById($presupuesto['idcliente']); ?></td>
+                                            <td><?php echo $presupuesto['nrocomprobante']; ?></td>
+                                            <td><?php echo $presupuesto['tipo']; ?></td>
+                                            <td><?php echo $presupuesto['estado']; ?></td>
+                                            <td><?php echo $presupuesto['fecha']; ?></td>
+                                            <td><?php echo $presupuesto['puntoventa']; ?></td>
+                                            <td><?php echo '$'.number_format($presupuesto['total'], 2); ?></td>
+                                            <td>
+                                                <a class="icono__contenedor me-2 ms-2" href="index.php?module=presupuestos&action=cambiarestado&id=<?php echo $presupuesto['idpresupuesto']; ?>">
+                                                    <img class="icono__imagen" src="./assets/img/iconoCambiarEstado.svg" alt="icono de cambiar estado">
+                                                </a>
+                                                <a class="icono__contenedor me-2" href="index.php?module=presupuestos&action=see&id=<?php echo $presupuesto['idpresupuesto']; ?>">
+                                                    <img class="icono__imagen" src="./assets/img/iconoVer.png" alt="icono de ver">
+                                                </a>
+                                                <a class="icono__contenedor me-2" href="index.php?module=presupuestos&action=facturar&id=<?php echo $presupuesto['idpresupuesto']; ?>">
+                                                    <img class="icono__imagen" src="./assets/img/iconoFacturar.svg" alt="icono de Facturar">
+                                                </a>
+                                                <a class="icono__contenedor me-2" href="index.php?module=presupuestos&action=edit&id=<?php echo $presupuesto['idpresupuesto']; ?>">
+                                                    <img class="icono__imagen" src="./assets/img/iconoEditar.png" alt="icono de editar">
+                                                </a>
+                                                <a class="icono__contenedor me-2" href="index.php?module=presupuestos&action=delete&id=<?php echo $presupuesto['idpresupuesto']; ?>">
+                                                    <img class="icono__imagen" src="./assets/img/iconoEliminar.svg" alt="icono de eliminar">
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    <?php } ?>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -139,5 +205,6 @@ $presupuestoCtr = New PresupuestoCtr();
         </div>
     </main>
 </body>
+    <?php echo $action == 'see' ? '<script> mostrarVentanaModal(); </script>':''?>
 </html>
 

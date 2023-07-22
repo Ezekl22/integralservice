@@ -5,14 +5,15 @@ CREATE TABLE `clientes` (
   `nombre` text DEFAULT NULL,
   `apellido` text DEFAULT NULL,
   `email` text DEFAULT NULL,
-  `dni` int(11) DEFAULT NULL,
+  `cuit` text DEFAULT NULL,
+  `iva` text DEFAULT NULL,
   `fechaCreacion` timestamp NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO `clientes` (`idcliente`, `nombre`, `apellido`, `email`, `dni`, `fechaCreacion`) VALUES
-(1, 'Carlos', 'Argento', 'carlosA@gmail.com', 37432645, current_timestamp()),
-(2, 'Daiana', 'Romero', 'Dai34@gmail.com', 32568790, current_timestamp()),
-(3, 'Alberto', 'Centurion', 'REPARADOR', 27587104, current_timestamp());
+INSERT INTO `clientes` (`idcliente`, `nombre`, `apellido`, `email`, `cuit`,`iva`, `fechaCreacion`) VALUES
+(1, 'Carlos', 'Argento', 'carlosA@gmail.com', '20-37432645-6','Consumidor final', current_timestamp()),
+(2, 'Daiana', 'Romero', 'Dai34@gmail.com', '27-32568790-2', 'Responsable inscripto',current_timestamp()),
+(3, 'Alberto', 'Centurion', 'REPARADOR', '23-27587104-6','Monotributista', current_timestamp());
 
 ALTER TABLE `clientes`
   ADD PRIMARY KEY (`idcliente`);
