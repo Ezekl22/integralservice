@@ -1,21 +1,23 @@
+DROP TABLE IF EXISTS proveedores;
 
-CREATE TABLE `suppliers` (
-  `id` int(11) NOT NULL,
-  `name` text NOT NULL,
-  `tax_category` text NOT NULL,
-  `adress` text NOT NULL,
-  `phone` int NOT NULL,
-  `mail` text NOT NULL,
-  `balance` float NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE `proveedores` (
+  `idproveedor` int(11) NOT NULL,
+  `nombre` text DEFAULT NULL,
+  `categoria_fiscal` text DEFAULT NULL,
+  `direccion` text DEFAULT NULL,
+  `telefono` int DEFAULT NULL,
+  `correo` text DEFAULT NULL,
+  `saldo` float DEFAULT NULL,
+  `fechaCreacion` timestamp NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO `suppliers` (`id`, `name`, `tax_category`, `adress`, `phone`, `mail`, `balance`) VALUES
-(1, 'Pepe', 'Monotributista', 'Irigoyen 1500', '3454021000', 'pepe@gmail.com', '500'),
-(2, 'Pepa', 'Responsable Inscripto', 'Urquiza 350', '3454085050', 'pepa@yahoo.com', '-340'),
-(3, 'Juan', 'Monotributista', 'Urdinarrain 1100', '3454200123', 'juan@hotmail.com', '10');
+INSERT INTO `proveedores` (`idproveedor`, `nombre`, `categoria_fiscal`, `direccion`, `telefono`, `correo`, `saldo`, `fechaCreacion`) VALUES
+(1, 'Carlos', 'monotributista', 'Urquiza 99', 3451234567, 'carlosA@gmail.com', 555, current_timestamp()),
+(2, 'Mariana', 'Responsable Inscripto', 'Pellegrini 99', 3457654321, 'mariana@gmail.com', 555, current_timestamp()),
+(3, 'Carlos', 'monotributista', 'Urquiza 99', 3451234567, 'carlosA@gmail.com', 555, current_timestamp()),
 
-ALTER TABLE `suppliers`
-ADD PRIMARY KEY (`id`);
+ALTER TABLE `proveedores`
+  ADD PRIMARY KEY (`idproveedor`);
 
-ALTER TABLE `suppliers`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+ALTER TABLE `proveedores`
+  MODIFY `idproveedor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
