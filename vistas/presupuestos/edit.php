@@ -65,6 +65,12 @@
                             <div class="mt-3 d-flex flex-column w-100" id="contProductos">
                             </div>
                             <button class="btn btn-outline-secondary button ms-7 align-self-start" data-bs-target="#grillaProductos" data-bs-toggle="modal" type="button" id="agregar" onclick="mostrarGrillaProductos()">+</button>
+                            <div class="text__white d-flex" id="">
+                                <div class="input-group input-group-sm mb-3">
+                                    <label class="input-group-text" for="totalProductos" id="inputGroup-sizing-sm">Total:</label>
+                                    <input type="text" class="form-control" disabled aria-label="0" id="totalProductos" value="$0,00">
+                                </div>
+                            </div>
                             <input class="btn button my-2" type="submit"  value="Guardar cambios" onclick="guardarEdicion('editPresupuesto')">
                         </div>
                     </form>

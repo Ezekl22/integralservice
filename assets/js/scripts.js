@@ -95,12 +95,25 @@ const mostrarGrillaProductos = ()=>{
     contGrilla.appendChild(contenedor);
 }
 
+
 const cerrarGrilla = (id) =>{
     document.getElementById(id).childNodes[1].remove();
 }
 
 const quitarComponenteProducto = (id) =>{
     document.getElementById(id).remove();
+}
+
+const recalcularTotal = () =>{
+    const totalesProductos = document.querySelectorAll('#total');
+    const importeTotal = document.getElementById('totalProductos');
+    let total = parseFloat(0);
+    totalesProductos.forEach(totalProducto =>{
+        console.log(totalProducto.value);
+        total = total + parseFloat(totalProducto.value.replace(/[$,]/g, ""));
+        
+    });
+    importeTotal.value = currencyFormatter(total);
 }
 
 const cantidadOnChange = (idProducto,id) =>{
@@ -112,6 +125,7 @@ const cantidadOnChange = (idProducto,id) =>{
     }
     const producto = productos[i];
     inputTotal.value =currencyFormatter(producto[7] * parseInt(cantidad));
+    recalcularTotal();
 }
 
 const mostrarVentanaModal = () =>{
