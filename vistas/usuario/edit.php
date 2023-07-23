@@ -1,6 +1,7 @@
 
 <?php 
     $id = isset($_GET['id']) ? $_GET['id'] : '';
+    $action = isset($_GET['action']) ? $_GET['action'] : '';
     $UserController = new UserController();
     $userr = $UserController->userDAO->getUserById($id);
     $UserController -> update($id);
@@ -8,7 +9,7 @@
     $GestionPantallasCtr->mostrarOcultarPantallaEditar(1);
     $inUse = $GestionPantallasCtr->getGestionPantallasById(1)->getInUse();
 
-    if($inUse  && $id != ''){
+    if($action == 'edit' && $id != ''){
 ?>
         <!DOCTYPE html>
         <html>
@@ -16,9 +17,9 @@
             <title>Editar Usuario</title>
         </head>
         <body>
-            <main class="d-flex flex-column align-items-center mt-2" style="display: none !important;" id="editUsuario">
+            <main class="d-flex flex-column align-items-center mt-2" id="editUsuario">
                 <article class="editar__contenedor rounded-4">
-                    <form action="" method="POST" class="d-flex flex-column align-items-center border-1 border m-4 rounded-4">
+                    <form action="index.php?module=usuarios" method="POST" class="d-flex flex-column align-items-center border-1 border m-4 rounded-4">
                         <div class="d-flex flex-column align-items-center" id="contenedor">
                             
                             <h2 class="mt-2 text__white">Editar Usuario</h2>
