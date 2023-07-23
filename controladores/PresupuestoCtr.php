@@ -2,14 +2,17 @@
 require_once 'models/PresupuestoMdl.php';
 require_once 'models/PresupuestoDAO.php';
 require_once 'controladores/ClienteControlador.php';
+require_once 'controladores/ProductoCtr.php';
 
 class PresupuestoCtr {
     private $presupuestoDAO;
     private $clienteCtr;
+    private $productoCtr;
 
     public function __construct() {
         $this->presupuestoDAO = new PresupuestoDAO();
         $this->clienteCtr = new ClienteCtr();
+        $this->productoCtr = new ProductoCtr();
     }
 
     public function index() {
@@ -53,8 +56,22 @@ class PresupuestoCtr {
     }
 
     public function getClienteById($id){
-        $cliente = $this->presupuestoDAO->getClienteById($id);
+        $cliente = $this->clienteCtr->getClienteById($id);
         return $cliente;
+    }
+
+    public function getProductoById($id){
+        $cliente = $this->productoCtr->getProductoById($id);
+        return $cliente;
+    }
+
+    public function getProductosById($id){
+        $cliente = $this->productoCtr->getProductosById($id);
+        return $cliente;
+    }
+
+    public function getProductosPresupuestoById($id) {
+        return $this->presupuestoDAO->getProductosPresupuestoById($id);
     }
 
     public function update($id) {
@@ -86,10 +103,10 @@ class PresupuestoCtr {
     // }
 
     public function getAllClientes(){
-        return $this->presupuestoDAO->getAllClientes();
+        return $this->clienteCtr->getAllClientes();
     }
 
     public function getAllProductos(){
-        return $this->presupuestoDAO->getAllProductos();
+        return $this->productoCtr->getAllProductos();
     }
 }

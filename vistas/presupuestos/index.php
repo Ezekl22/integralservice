@@ -1,11 +1,17 @@
 <?php 
 
 $action = isset($_GET['action']) ? $_GET['action'] : '';
-$id = $action != ''&& isset($_GET['id']) ? $_GET['id'] : '';
 $presupuestoCtr = New PresupuestoCtr();
-$presupuesto = $presupuestoCtr->getPresupuestoById($id);
+if ($action == 'see'){
+    $id = isset($_GET['id']) ? $_GET['id'] : '';
+    
+    $presupuesto = $presupuestoCtr->getPresupuestoById($id);
+    
 $nombreCliente = $presupuestoCtr->getNombreClienteById($presupuesto['idcliente']);
-$cliente = $presupuestoCtr->getClienteById($presupuesto['idcliente']);
+    $productosPre = $presupuestoCtr->getProductosPresupuestoById($presupuesto['idpresupuesto']);
+    $cliente = $presupuestoCtr->getClienteById($presupuesto['idcliente']);
+    $total = 0;
+}
 // $clienteCtr = new ClientController();
 // $clienteCte->getClienteById();
 
@@ -79,20 +85,20 @@ $cliente = $presupuestoCtr->getClienteById($presupuesto['idcliente']);
                                 <td><?php echo $presupuesto['puntoventa']; ?></td>
                                 <td><?php echo '$'.number_format($presupuesto['total'], 2); ?></td>
                                 <td>
-                                    <a class="icono__contenedor me-2 ms-2" href="index.php?module=presupuestos&action=cambiarestado&id=<?php echo $presupuesto['idpresupuesto']; ?>">
+                                    <a class="icono__contenedor me-2 ms-2" title="Cambiar estado" href="index.php?module=presupuestos&action=cambiarestado&id=<?php echo $presupuesto['idpresupuesto']; ?>">
                                         <img class="icono__imagen" src="./assets/img/iconoCambiarEstado.svg" alt="icono de cambiar estado">
                                     </a>
-                                    <a class="icono__contenedor me-2" href="index.php?module=presupuestos&action=see&id=<?php echo $presupuesto['idpresupuesto']; ?>">
+                                    <a class="icono__contenedor me-2" title="ver" href="index.php?module=presupuestos&action=see&id=<?php echo $presupuesto['idpresupuesto']; ?>">
                                         <img class="icono__imagen" src="./assets/img/iconoVer.png" alt="icono de ver">
                                     </a>
-                                    <a class="icono__contenedor me-2" href="index.php?module=presupuestos&action=facturar&id=<?php echo $presupuesto['idpresupuesto']; ?>">
+                                    <a class="icono__contenedor me-2" title="Facturar" href="index.php?module=presupuestos&action=facturar&id=<?php echo $presupuesto['idpresupuesto']; ?>">
                                         <img class="icono__imagen" src="./assets/img/iconoFacturar.svg" alt="icono de Facturar">
                                     </a>
-                                    <a class="icono__contenedor me-2" href="index.php?module=presupuestos&action=edit&id=<?php echo $presupuesto['idpresupuesto']; ?>">
+                                    <a class="icono__contenedor me-2" title="Editar" href="index.php?module=presupuestos&action=edit&id=<?php echo $presupuesto['idpresupuesto']; ?>">
                                         <img class="icono__imagen" src="./assets/img/iconoEditar.png" alt="icono de editar">
                                     </a>
-                                    <a class="icono__contenedor me-2" href="index.php?module=presupuestos&action=delete&id=<?php echo $presupuesto['idpresupuesto']; ?>">
-                                        <img class="icono__imagen" src="./assets/img/iconoEliminar.svg" alt="icono de eliminar">
+                                    <a class="icono__contenedor me-2" title="Cancelar" href="index.php?module=presupuestos&action=delete&id=<?php echo $presupuesto['idpresupuesto']; ?>">
+                                        <img class="icono__imagen" src="./assets/img/iconoCancelar.png" alt="icono de cancelar">
                                     </a>
                                 </td>
                             </tr>
@@ -102,7 +108,7 @@ $cliente = $presupuestoCtr->getClienteById($presupuesto['idcliente']);
             </div>
             <a class="my-5 btn button" type="button" href="index.php?module=presupuestos&action=create">Crear nuevo presupuesto</a>
         </article>
-        <div class="modal fade show" id="ver" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="ver" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog justify-content-center d-flex" style="max-width:none;">
                 <div class="modal-content mx-3" style="width:80vw;">
                     <div class="modal-header headerPop__background">
@@ -141,7 +147,7 @@ $cliente = $presupuestoCtr->getClienteById($presupuesto['idcliente']);
                                     Documento no valido como Factura
                                 </div>
                                 <h5 class="ms-5">Cliente</h5>
-                                <div class="px-5 d-flex w-100 justify-content-between">
+                                <div class="px-5 d-flex w-100 justify-content-between pb-4">
                                     <div class="w-30">
                                         <?php echo '<b class="me-3">Señor/a(es/as):</b>'.$nombreCliente ?>
                                     </div>
@@ -155,45 +161,31 @@ $cliente = $presupuestoCtr->getClienteById($presupuesto['idcliente']);
                                     </div>
                                 </div>
                             </div>
-                            <div class="w-95 px-5 border border-2">
-                                <table class="grilla__contenedor border-0">
-                                    <tr class="grilla grilla__cabecera">
-                                        <th>Nombre</th>
-                                        <th>Marca</th>
-                                        <th>Detalle</th>
-                                        <th>Cantidad</th>
-                                        <th>Precio unitario</th>
-                                        <th>Importe</th>
+                            <div class="w-100 px-5">
+                                <table class="text-center w-100 border-dark">
+                                    <tr class="cabecera-grilla__backgrond">
+                                        <th class="border border-1 border-dark">Nombre</th>
+                                        <th class="border border-1 border-dark">Marca</th>
+                                        <th class="border border-1 border-dark">Detalle</th>
+                                        <th class="border border-1 border-dark">Cantidad</th>
+                                        <th class="border border-1 border-dark">Precio unitario</th>
+                                        <th class="border border-1 border-dark">Importe</th>
                                     </tr>
-                                    <?php foreach ($presupuestos as $presupuesto) { ?>
+                                    <?php foreach ($productosPre as $productoPre) { ?>
                                         <tr class="grilla__cuerpo">
-                                            <td><?php echo $presupuestoCtr->getNombreClienteById($presupuesto['idcliente']); ?></td>
-                                            <td><?php echo $presupuesto['nrocomprobante']; ?></td>
-                                            <td><?php echo $presupuesto['tipo']; ?></td>
-                                            <td><?php echo $presupuesto['estado']; ?></td>
-                                            <td><?php echo $presupuesto['fecha']; ?></td>
-                                            <td><?php echo $presupuesto['puntoventa']; ?></td>
-                                            <td><?php echo '$'.number_format($presupuesto['total'], 2); ?></td>
-                                            <td>
-                                                <a class="icono__contenedor me-2 ms-2" href="index.php?module=presupuestos&action=cambiarestado&id=<?php echo $presupuesto['idpresupuesto']; ?>">
-                                                    <img class="icono__imagen" src="./assets/img/iconoCambiarEstado.svg" alt="icono de cambiar estado">
-                                                </a>
-                                                <a class="icono__contenedor me-2" href="index.php?module=presupuestos&action=see&id=<?php echo $presupuesto['idpresupuesto']; ?>">
-                                                    <img class="icono__imagen" src="./assets/img/iconoVer.png" alt="icono de ver">
-                                                </a>
-                                                <a class="icono__contenedor me-2" href="index.php?module=presupuestos&action=facturar&id=<?php echo $presupuesto['idpresupuesto']; ?>">
-                                                    <img class="icono__imagen" src="./assets/img/iconoFacturar.svg" alt="icono de Facturar">
-                                                </a>
-                                                <a class="icono__contenedor me-2" href="index.php?module=presupuestos&action=edit&id=<?php echo $presupuesto['idpresupuesto']; ?>">
-                                                    <img class="icono__imagen" src="./assets/img/iconoEditar.png" alt="icono de editar">
-                                                </a>
-                                                <a class="icono__contenedor me-2" href="index.php?module=presupuestos&action=delete&id=<?php echo $presupuesto['idpresupuesto']; ?>">
-                                                    <img class="icono__imagen" src="./assets/img/iconoEliminar.svg" alt="icono de eliminar">
-                                                </a>
-                                            </td>
+                                            <td class="border border-1 border-dark"><?php echo $productoPre['nombre']; ?></td>
+                                            <td class="border border-1 border-dark"><?php echo $productoPre['marca']; ?></td>
+                                            <td class="border border-1 border-dark"><?php echo $productoPre['detalle']; ?></td>
+                                            <td class="border border-1 border-dark"><?php echo $productoPre['cantidad']; ?></td>
+                                            <td class="border border-1 border-dark"><?php echo '$'.number_format($productoPre['precioventa'], 2); ?></td>
+                                            <td class="border border-1 border-dark"><?php echo '$'.number_format($productoPre['total'], 2);?></td>
+                                            <?php $total = $total +  $productoPre['total']; ?>
                                         </tr>
                                     <?php } ?>
                                 </table>
+                                <div class="d-flex w-100 justify-content-end pt-4">
+                                    <h4>Total: <?php echo '$'.number_format($total, 2);?></h4>
+                                </div>
                             </div>
                         </div>
                     </div>

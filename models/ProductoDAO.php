@@ -58,6 +58,15 @@ class ProductoDAO {
         $stmt = null;
     }
 
+    public function getProductosById($ids) {
+        $stmt = $this->db->getConnection()->prepare("SELECT * FROM productos WHERE idproducto in (".implode(", ", $ids).")");
+
+        $stmt->execute();
+        return $stmt -> fetchAll();
+        $stmt->close();
+        $stmt = null;
+    }
+
     public function getAllProductos() {
         // Código para obtener todos los usuarios desde la base de datos
         $stmt = $this->db->getConnection()->prepare("SELECT * FROM productos");

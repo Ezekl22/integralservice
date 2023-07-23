@@ -16,12 +16,31 @@ class ProductoCtr {
         // Cargar la vista con los datos
         require_once 'vistas/producto/index.php';
     }
-    public function getProducto($id) {
+    public function getProductoById($id) {
         return $this->productoDAO->getProductoById($id);
+    }
+
+    public function getAllProductos() {
+        return $this->productoDAO->getAllProductos();
     }
 
     public function getPantallaCreate(){
         require_once 'vistas/producto/create.php';
+    }
+
+    
+
+    public function getPantallaEdit() {
+        require_once 'vistas/producto/edit.php';
+        $this->index();
+    }
+
+    public function update($id) {
+        if(isset($_POST["nombre"])){
+            $producto = new ProductoMdl($_POST["nombre"], $_POST["marca"], $_POST["detalle"], $_POST["stock"], $_POST["tipo"], $_POST["preciocompra"], $_POST["precioventa"]);
+            $producto->setIdProducto($id);
+            $this->productoDAO->updateProducto($producto);
+        }
     }
 
     // public function create() {
@@ -40,19 +59,6 @@ class ProductoCtr {
     //     // Redireccionar a la página principal de usuarios
     //     header('Location: index.php?action=index');
     // }
-
-    public function getPantallaEdit() {
-        require_once 'vistas/producto/edit.php';
-        $this->index();
-    }
-
-    public function update($id) {
-        if(isset($_POST["nombre"])){
-            $producto = new ProductoMdl($_POST["nombre"], $_POST["marca"], $_POST["detalle"], $_POST["stock"], $_POST["tipo"], $_POST["preciocompra"], $_POST["precioventa"]);
-            $producto->setIdProducto($id);
-            $this->productoDAO->updateUser($producto);
-        }
-    }
 
     // public function getPantallaDelete(){
     //     require_once 'vistas/producto/delete.php';

@@ -42,10 +42,10 @@ class PresupuestoDAO {
         $stmt = null;
     }
 
-    public function deletePresupuesto($idPresupuesto) {
-        // Código para eliminar un usuario de la base de datos
-        // ...
-    }
+    // public function deletePresupuesto($idPresupuesto) {
+    //     // Código para eliminar un usuario de la base de datos
+    //     // ...
+    // }
 
     public function getPresupuestoById($id) {
         $stmt = $this->db->getConnection()->prepare("SELECT * FROM presupuestos WHERE idPresupuesto = ".$id);
@@ -56,16 +56,6 @@ class PresupuestoDAO {
         $stmt = null;
     }
 
-    public function getClienteById($id) {
-        $stmt = $this->db->getConnection()->prepare("SELECT * FROM clientes WHERE idcliente = ".$id);
-
-        $stmt->execute();
-        return $stmt -> fetchAll()[0];
-        $stmt->closeCursor();
-        $stmt = null;
-    }
-
-
     public function getAllPresupuestos() {
         $stmt = $this->db->getConnection()->prepare("SELECT * FROM presupuestos");
 
@@ -75,17 +65,12 @@ class PresupuestoDAO {
         $stmt = null;
     }
 
-    public function getAllClientes() {
-        $stmt = $this->db->getConnection()->prepare("SELECT * FROM clientes");
+    public function getProductosPresupuestoById($id){
 
-        $stmt->execute();
-        return $stmt -> fetchAll();
-        $stmt->closeCursor();
-        $stmt = null;
-    }
-
-    public function getAllProductos() {
-        $stmt = $this->db->getConnection()->prepare("SELECT * FROM productos");
+        $stmt = $this->db->getConnection()->prepare("SELECT productos.nombre,productos.marca, productos.detalle,productospresupuestos.cantidad, productos.precioventa , productospresupuestos.cantidad * productos.precioventa AS total
+                                                     FROM productospresupuestos
+                                                     INNER JOIN productos ON productospresupuestos.idproducto = productos.idproducto
+                                                     WHERE productospresupuestos.idpresupuesto = ".$id);
 
         $stmt->execute();
         return $stmt -> fetchAll();

@@ -156,7 +156,7 @@
     <?php
     switch ($module) {
         case 'presupuestos':
-            include('./controladores/PresupuestoControlador.php');
+            include('./controladores/PresupuestoCtr.php');
             $indexPage = new PresupuestoCtr();
             break;
         case 'reparacion':

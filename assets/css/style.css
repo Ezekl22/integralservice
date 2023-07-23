@@ -248,3 +248,8 @@ footer{
   .w-30{
     width: 30% !important;
   }
+
+  .cabecera-grilla__backgrond{
+    background-color: #dedede !important;
+    border: black 1px solid;
+  }

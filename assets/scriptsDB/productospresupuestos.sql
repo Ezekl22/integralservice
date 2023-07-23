@@ -10,7 +10,8 @@ CREATE TABLE `productospresupuestos` (
 INSERT INTO `productospresupuestos` (`idpresupuestoproducto`, `idpresupuesto`, `idproducto`, `cantidad`) VALUES
 (1, 2, 1, 2),
 (2, 1, 2, 1),
-(3, 3, 3, 1);
+(3, 1, 1, 2),
+(4, 3, 3, 1);
 
 ALTER TABLE `productospresupuestos`
   ADD PRIMARY KEY (`idpresupuestoproducto`),
@@ -18,7 +19,7 @@ ALTER TABLE `productospresupuestos`
   ADD KEY `idproducto` (`idproducto`);
 
 ALTER TABLE `productospresupuestos`
-  MODIFY `idpresupuestoproducto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `idpresupuestoproducto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 ALTER TABLE `productospresupuestos`
   ADD CONSTRAINT `productospresupuestos_ibfk_1` FOREIGN KEY (`idpresupuesto`) REFERENCES `presupuestos` (`idpresupuesto`) ON DELETE CASCADE ON UPDATE CASCADE,

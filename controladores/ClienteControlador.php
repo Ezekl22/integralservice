@@ -66,4 +66,8 @@ class ClienteCtr{
         // Redireccionar a la página principal de usuarios
         header('Location: index.php?action=index');
     }
+
+    public function getAllClientes(){
+        return $this->clientDAO->getAllClientes();
+    }
 }
