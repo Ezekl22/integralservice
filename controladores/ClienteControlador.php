@@ -49,7 +49,7 @@ class ClientController {
     public function update($id) {
 
         if(isset($_POST["nombre"])){
-            $client = new Client($_POST["nombre"], $_POST["apellido"], $_POST["dni"], $_POST["telefono"], $_POST["direccion"], $_POST["correo"], $_POST["saldo"]);
+            $client = new Client($_POST["nombre"], $_POST["apellido"], $_POST["dni"], $_POST["phone"], $_POST["adress"], $_POST["mail"], $_POST["balance"]);
             $client->setId($id);
             $this->clientDAO->updateClient($client);
         }

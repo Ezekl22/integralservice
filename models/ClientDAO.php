@@ -16,7 +16,7 @@ class ClientDAO {
 
     public function updateClient(Client $client) {
         // Código para actualizar un cliente existente en la base de datos
-        $stmt = $this->db->getConnection()->prepare("UPDATE clients SET name=:name, lastname=:lastname, dni=:dni, phone=:phone, adress=:adress, mail=:mail, balance=:balance WHERE id= :id");
+        $stmt = $this->db->getConnection()->prepare("UPDATE clientes SET name=:name, lastname=:lastname, dni=:dni, phone=:phone, adress=:adress, mail=:mail, balance=:balance WHERE idcliente= :idcliente");
         
         $name = $client->getName();
         $lastname = $client->getLastname();
@@ -34,7 +34,7 @@ class ClientDAO {
 		$stmt->bindParam(":adress", $adress, PDO::PARAM_STR);
 		$stmt->bindParam(":mail", $mail, PDO::PARAM_STR);
 		$stmt->bindParam(":balance", $balance, PDO::PARAM_STR);
-		$stmt->bindParam(":id",$id , PDO::PARAM_INT);
+		$stmt->bindParam(":idcliente",$id , PDO::PARAM_INT);
 
 		if($stmt->execute()){
 
@@ -55,7 +55,7 @@ class ClientDAO {
     }
 
     public function getClientById($id) {
-        $stmt = $this->db->getConnection()->prepare("SELECT * FROM clients WHERE id = ".$id);
+        $stmt = $this->db->getConnection()->prepare("SELECT * FROM clientes WHERE idcliente = ".$id);
 
         $stmt->execute();
         return $stmt -> fetchAll()[0];
@@ -65,7 +65,7 @@ class ClientDAO {
 
     public function getAllClients() {
         // Código para obtener todos los clientes desde la base de datos
-        $stmt = $this->db->getConnection()->prepare("SELECT * FROM clients");
+        $stmt = $this->db->getConnection()->prepare("SELECT * FROM clientes");
 
         $stmt->execute();
         return $stmt -> fetchAll();

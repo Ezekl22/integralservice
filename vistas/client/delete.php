@@ -32,7 +32,7 @@
     </table>
 
     <form action="" method="POST">
-        <input type="hidden" name="client_id" value="<?php echo $client['id']; ?>">
+        <input type="hidden" name="client_id" value="<?php echo $client['idcliente']; ?>">
         <input type="submit" value="Eliminar">
     </form> -->
 

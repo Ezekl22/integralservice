@@ -182,7 +182,7 @@
         case 'proveedores':
             include('controladores/ProveedorControlador.php');
             break;
-      case 'pedidos':
+        case 'pedidos':
             include('controladores/PedidoCompraControlador.php');
             break;
         case 'usuarios':

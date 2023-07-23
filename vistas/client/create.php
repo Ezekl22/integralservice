@@ -37,13 +37,12 @@
                             </div>
                             <div class="input-group input-group-sm mb-3 ms-4">
                                 <span class="input-group-text" id="inputGroup-sizing-sm">Correo</span>
-                                <input type="email" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="correo" name="correo" required>
+                                <input type="email" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="mail" name="mail" required>
                             </div>
                             <div class="input-group input-group-sm mb-3 ms-4">
                                 <span class="input-group-text" id="inputGroup-sizing-sm">Saldo</span>
                                 <input type="number" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="saldo" name="saldo" required>
                             </div>
-                        </div>
                     </div>
                     <div class="d-flex justify-content-evenly w-75">
                         <input class="my-5 btn button w-25" type="submit"  value="Guardar">

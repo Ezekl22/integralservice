@@ -39,7 +39,7 @@ class Client {
     }
 
     public function getLastname() {
-        return $this->lastname;
+        return $this->name;
     }
 
     public function setLastname($lastname) {
@@ -61,7 +61,7 @@ class Client {
     public function setPhone($phone) {
         $this->phone = $phone;
     }
-
+    
     public function getAdress() {
         return $this->adress;
     }
@@ -77,7 +77,7 @@ class Client {
     public function setMail($mail) {
         $this->mail = $mail;
     }
-    
+
     public function getBalance() {
         return $this->balance;
     }
