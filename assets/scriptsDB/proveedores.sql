@@ -12,9 +12,9 @@ CREATE TABLE `proveedores` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `proveedores` (`idproveedor`, `nombre`, `categoria_fiscal`, `direccion`, `telefono`, `correo`, `saldo`, `fechaCreacion`) VALUES
-(1, 'Carlos', 'monotributista', 'Urquiza 99', 3451234567, 'carlosA@gmail.com', 555, current_timestamp()),
+(1, 'Carlos', 'Monotributista', 'Urquiza 99', 3451234567, 'carlosA@gmail.com', 555, current_timestamp()),
 (2, 'Mariana', 'Responsable Inscripto', 'Pellegrini 99', 3457654321, 'mariana@gmail.com', 555, current_timestamp()),
-(3, 'Carlos', 'monotributista', 'Urquiza 99', 3451234567, 'carlosA@gmail.com', 555, current_timestamp()),
+(3, 'Carlos', 'Monotributista', 'Urquiza 99', 3451234567, 'carlosA@gmail.com', 555, current_timestamp());
 
 ALTER TABLE `proveedores`
   ADD PRIMARY KEY (`idproveedor`);

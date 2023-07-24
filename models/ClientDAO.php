@@ -2,35 +2,35 @@
 
 require_once 'includes/DBConnection.php';
 
-class ClienteDAO {
+class ClientDAO {
     private $db;
 
     public function __construct() {
         $this->db = DBConnection::getInstance();
     }
 
-    public function createUser(User $user) {
-        // Código para crear un nuevo usuario en la base de datos
+    public function createClient(Client $client) {
+        // Código para crear un nuevo cliente en la base de datos
         // ...
     }
 
-    public function updateUser(User $user) {
-        // Código para actualizar un usuario existente en la base de datos
-        $stmt = $this->db->getConnection()->prepare("UPDATE users SET name=:name, lastname=:lastname, username=:username, password=:password, type = :type WHERE id= :id");
+    public function updateClient(Client $client) {
+        // Código para actualizar un cliente existente en la base de datos
+        $stmt = $this->db->getConnection()->prepare("UPDATE clientes SET name=:name, lastname=:lastname, email=:email, cuit=:cuit, iva=:iva WHERE idcliente= :idcliente");
         
-        $name = $user->getName();
-        $lastname = $user->getLastname();
-        $username = $user->getUsername();
-        $password = $user->getPassword();
-        $type = $user->getType();
-        $id = $user->getId();
+        $name = $client->getName();
+        $lastname = $client->getLastname();
+        $email = $client->getEmail();
+        $cuit = $client->getCuit();
+        $iva = $client->getIva();
+        $id = $client->getId();
         
 		$stmt->bindParam(":name", $name, PDO::PARAM_STR);
 		$stmt->bindParam(":lastname", $lastname, PDO::PARAM_STR);
-        $stmt->bindParam(":username", $username, PDO::PARAM_STR);
-		$stmt->bindParam(":password", $password, PDO::PARAM_STR);
-		$stmt->bindParam(":type", $type, PDO::PARAM_STR);
-		$stmt->bindParam(":id",$id , PDO::PARAM_INT);
+        $stmt->bindParam(":email", $email, PDO::PARAM_STR);
+		$stmt->bindParam(":cuit", $cuit, PDO::PARAM_INT);
+		$stmt->bindParam(":iva", $iva, PDO::PARAM_STR);
+		$stmt->bindParam(":idcliente",$id , PDO::PARAM_INT);
 
 		if($stmt->execute()){
 
@@ -45,13 +45,13 @@ class ClienteDAO {
         $stmt = null;
     }
 
-    public function deleteUser($id) {
-        // Código para eliminar un usuario de la base de datos
+    public function deleteClient($id) {
+        // Código para eliminar un cliente de la base de datos
         // ...
     }
 
     public function getClienteById($id) {
-        $stmt = $this->db->getConnection()->prepare("SELECT * FROM clientes WHERE idCliente = ".$id);
+        $stmt = $this->db->getConnection()->prepare("SELECT * FROM clientes WHERE idcliente = ".$id);
 
         $stmt->execute();
         return $stmt -> fetchAll()[0];
