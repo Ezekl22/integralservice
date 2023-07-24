@@ -24,24 +24,16 @@
                                 <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="apellido" name="apellido" required>
                             </div>
                             <div class="input-group input-group-sm mb-3 ms-4">
-                                <span class="input-group-text" id="inputGroup-sizing-sm">Dni</span>
-                                <input type="number" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="dni" name="dni" required>
+                                <span class="input-group-text" id="inputGroup-sizing-sm">Email</span>
+                                <input type="email" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="email" name="email" required>
                             </div>
                             <div class="input-group input-group-sm mb-3 ms-4">
-                                <span class="input-group-text" id="inputGroup-sizing-sm">Telefono</span>
-                                <input type="number" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="telefono" name="telefono" required>
+                                <span class="input-group-text" id="inputGroup-sizing-sm">Cuit</span>
+                                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="cuit" name="cuit" required>
                             </div>
                             <div class="input-group input-group-sm mb-3 ms-4">
-                                <span class="input-group-text" id="inputGroup-sizing-sm">Direccion</span>
-                                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="direccion" name="direccion" required>
-                            </div>
-                            <div class="input-group input-group-sm mb-3 ms-4">
-                                <span class="input-group-text" id="inputGroup-sizing-sm">Correo</span>
-                                <input type="email" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="mail" name="mail" required>
-                            </div>
-                            <div class="input-group input-group-sm mb-3 ms-4">
-                                <span class="input-group-text" id="inputGroup-sizing-sm">Saldo</span>
-                                <input type="number" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="saldo" name="saldo" required>
+                                <span class="input-group-text" id="inputGroup-sizing-sm">Iva</span>
+                                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="iva" name="iva" required>
                             </div>
                     </div>
                     <div class="d-flex justify-content-evenly w-75">

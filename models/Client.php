@@ -4,20 +4,16 @@ class Client {
     private $id;
     private $name;
     private $lastname;
-    private $dni;
-    private $phone;
-    private $adress;
-    private $mail;
-    private $balance;
+    private $email;
+    private $cuit;
+    private $iva;
 
-    public function __construct($name, $lastname, $dni, $phone, $adress, $mail, $balance) {
+    public function __construct($name, $lastname, $email, $cuit, $iva) {
         $this->name = $name;
         $this->lastname = $lastname;
-        $this->dni = $dni;
-        $this->phone = $phone;
-        $this->adress = $adress;
-        $this->mail = $mail;
-        $this->balance = $balance;
+        $this->email = $email;
+        $this->cuit = $cuit;
+        $this->iva = $iva;
     }
 
     // Getters y setters
@@ -46,43 +42,27 @@ class Client {
         $this->lastname = $lastname;
     }
 
-    public function getDni() {
-        return $this->dni;
+    public function getEmail() {
+        return $this->email;
     }
 
-    public function setDni($dni) {
-        $this->dni = $dni;
+    public function setEmail($email) {
+        $this->email = $email;
     }
 
-    public function getPhone() {
-        return $this->phone;
+    public function getCuit() {
+        return $this->cuit;
     }
 
-    public function setPhone($phone) {
-        $this->phone = $phone;
+    public function setCuit($cuit) {
+        $this->cuit = $cuit;
     }
     
-    public function getAdress() {
-        return $this->adress;
+    public function getIva() {
+        return $this->iva;
     }
 
-    public function setAdress($adress) {
-        $this->adress = $adress;
-    }
-    
-    public function getMail() {
-        return $this->mail;
-    }
-
-    public function setMail($mail) {
-        $this->mail = $mail;
-    }
-
-    public function getBalance() {
-        return $this->balance;
-    }
-
-    public function setBalance($balance) {
-        $this->balance = $balance;
+    public function setIva($iva) {
+        $this->iva = $iva;
     }
 }

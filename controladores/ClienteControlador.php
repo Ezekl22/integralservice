@@ -31,7 +31,7 @@ class ClientController {
         // ...
 
         // Crear un nuevo cliente en la base de datos
-        $client = new Client($data['name'], $data['lastname'], $data['dni'], $data['phone'], $data['adress'], $data['mail'], $data['balance']);
+        $client = new Client($data['name'], $data['lastname'], $data['email'], $data['cuit'], $data['iva']);
         $this->clientDAO->createClient($client);
 
         // Redireccionar a la página principal de clientes
@@ -49,7 +49,7 @@ class ClientController {
     public function update($id) {
 
         if(isset($_POST["nombre"])){
-            $client = new Client($_POST["nombre"], $_POST["apellido"], $_POST["dni"], $_POST["phone"], $_POST["adress"], $_POST["mail"], $_POST["balance"]);
+            $client = new Client($_POST["nombre"], $_POST["apellido"], $_POST["email"], $_POST["cuit"], $_POST["iva"]);
             $client->setId($id);
             $this->clientDAO->updateClient($client);
         }
@@ -70,5 +70,9 @@ class ClientController {
 
         // Redireccionar a la página principal de clientes
         header('Location: index.php?action=index');
+    }
+
+    public function getClientById($id){
+        return $this->clientDAO->getClientById($id);
     }
 }

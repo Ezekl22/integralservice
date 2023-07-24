@@ -23,22 +23,18 @@
                         <tr class="grilla grilla__cabecera">
                             <th>Nombre</th>
                             <th>Apellido</th>
-                            <th>Dni</th>
-                            <th>Telefono</th>
-                            <th>Direccion</th>
-                            <th>Correo</th>
-                            <th>Saldo</th>
+                            <th>Email</th>
+                            <th>Cuit</th>
+                            <th>Iva</th>
                             <th>Acciones</th>
                         </tr>
                         <?php foreach ($clients as $client) { ?>
                             <tr class="grilla__cuerpo">
                                 <td><?php echo $client['nombre']; ?></td>
                                 <td><?php echo $client['apellido']; ?></td>
-                                <td><?php echo $client['dni']; ?></td>
-                                <td><?php echo $client['telefono']; ?></td>
-                                <td><?php echo $client['direccion']; ?></td>
-                                <td><?php echo $client['correo']; ?></td>
-                                <td><?php echo $client['saldo']; ?></td>
+                                <td><?php echo $client['email']; ?></td>
+                                <td><?php echo $client['cuit']; ?></td>
+                                <td><?php echo $client['iva']; ?></td>
                                 <td>
                                     <a class="icono__contenedor me-3" href="index.php?module=clientes&action=edit&id=<?php echo $client['idcliente']; ?>">
                                         <img class="icono__imagen" src="./assets/img/iconoEditar.png" alt="icono de editar">

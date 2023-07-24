@@ -16,24 +16,20 @@ class ClientDAO {
 
     public function updateClient(Client $client) {
         // Código para actualizar un cliente existente en la base de datos
-        $stmt = $this->db->getConnection()->prepare("UPDATE clientes SET name=:name, lastname=:lastname, dni=:dni, phone=:phone, adress=:adress, mail=:mail, balance=:balance WHERE idcliente= :idcliente");
+        $stmt = $this->db->getConnection()->prepare("UPDATE clientes SET name=:name, lastname=:lastname, email=:email, cuit=:cuit, iva=:iva WHERE idcliente= :idcliente");
         
         $name = $client->getName();
         $lastname = $client->getLastname();
-        $dni = $client->getDni();
-        $phone = $client->getPhone();
-        $adress = $client->getAdress();
-        $mail = $client->getMail();
-        $balance = $client->getBalance();
+        $email = $client->getEmail();
+        $cuit = $client->getCuit();
+        $iva = $client->getIva();
         $id = $client->getId();
         
 		$stmt->bindParam(":name", $name, PDO::PARAM_STR);
 		$stmt->bindParam(":lastname", $lastname, PDO::PARAM_STR);
-        $stmt->bindParam(":dni", $dni, PDO::PARAM_INT);
-		$stmt->bindParam(":phone", $phone, PDO::PARAM_INT);
-		$stmt->bindParam(":adress", $adress, PDO::PARAM_STR);
-		$stmt->bindParam(":mail", $mail, PDO::PARAM_STR);
-		$stmt->bindParam(":balance", $balance, PDO::PARAM_STR);
+        $stmt->bindParam(":email", $email, PDO::PARAM_STR);
+		$stmt->bindParam(":cuit", $cuit, PDO::PARAM_INT);
+		$stmt->bindParam(":iva", $iva, PDO::PARAM_STR);
 		$stmt->bindParam(":idcliente",$id , PDO::PARAM_INT);
 
 		if($stmt->execute()){

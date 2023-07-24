@@ -23,11 +23,9 @@
         <tr>
             <td><?php echo $client['nombre']; ?></td>
             <td><?php echo $client['apellido']; ?></td>
-            <td><?php echo $client['dni']; ?></td>
-            <td><?php echo $client['telefono']; ?></td>
-            <td><?php echo $client['direccion']; ?></td>
-            <td><?php echo $client['correo']; ?></td>
-            <td><?php echo $client['saldo']; ?></td>
+            <td><?php echo $client['email']; ?></td>
+            <td><?php echo $client['cuit']; ?></td>
+            <td><?php echo $client['iva']; ?></td>
         </tr>
     </table>
 
