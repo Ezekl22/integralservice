@@ -165,8 +165,8 @@
             include('controladores/ClienteControlador.php');
             break;
         case 'proveedores':
-            include('controladores/ProveedorControlador.php');
-            $indexPage = new SupplierController();
+            include('controladores/ProveedorCtr.php');
+            $indexPage = new ProveedorCtr();
             switch ($action) {
                   case 'edit':
                         $indexPage ->getPantallaEdit();

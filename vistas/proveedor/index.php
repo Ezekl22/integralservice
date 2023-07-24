@@ -21,21 +21,24 @@
                             <th>Telefono</th>
                             <th>Correo</th>
                             <th>Saldo</th>
+                            <th>Fecha</th>
                             <th>Acciones</th>
                         </tr>
-                        <?php foreach ($suppliers as $supplier) { ?>
+                        <?php foreach ($proveedores as $proveedor) { 
+                            $fecha = new DateTime($proveedor['fechaCreacion'])?>
                             <tr class="grilla__cuerpo">
-                                <td><?php echo $supplier['name']; ?></td>
-                                <td><?php echo $supplier['tax_category']; ?></td>
-                                <td><?php echo $supplier['adress']; ?></td>
-                                <td><?php echo $supplier['phone']; ?></td>
-                                <td><?php echo $supplier['mail']; ?></td>
-                                <td><?php echo $supplier['balance']; ?></td>
+                                <td><?php echo $proveedor['nombre']; ?></td>
+                                <td><?php echo $proveedor['categoria_fiscal']; ?></td>
+                                <td><?php echo $proveedor['direccion']; ?></td>
+                                <td><?php echo $proveedor['telefono']; ?></td>
+                                <td><?php echo $proveedor['correo']; ?></td>
+                                <td><?php echo $proveedor['saldo']; ?></td>
+                                <td><?php echo $fecha->format('Y-m-d'); ?></td>
                                 <td>
-                                    <a class="icono__contenedor me-3" href="index.php?module=proveedores&action=edit&id=<?php echo $supplier['id']; ?>">
+                                    <a class="icono__contenedor me-3" href="index.php?module=proveedores&action=edit&id=<?php echo $proveedor['idproveedor']; ?>">
                                         <img class="icono__imagen" src="./assets/img/iconoEditar.png" alt="icono de editar">
                                     </a>
-                                    <a class="icono__contenedor" href="index.php?module=proveedores&action=delete&id=<?php echo $supplier['id']; ?>">
+                                    <a class="icono__contenedor" href="index.php?module=proveedores&action=delete&id=<?php echo $proveedor['idproveedor']; ?>">
                                         <img class="icono__imagen" src="./assets/img/iconoEliminar.svg" alt="icono de eliminar">
                                     </a>
                                 </td>
