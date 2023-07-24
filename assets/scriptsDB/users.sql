@@ -1,4 +1,4 @@
-
+DROP TABLE IF EXISTS users;
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `name` text NOT NULL,

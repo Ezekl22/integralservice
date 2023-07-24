@@ -28,4 +28,8 @@ class DBConnection {
     public function getConnection() {
         return $this->connection;
     }
+
+    public function closeConection() {
+        $this->connection = null;
+    }
 }

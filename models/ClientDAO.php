@@ -2,7 +2,7 @@
 
 require_once 'includes/DBConnection.php';
 
-class UserDAO {
+class ClienteDAO {
     private $db;
 
     public function __construct() {
@@ -50,8 +50,8 @@ class UserDAO {
         // ...
     }
 
-    public function getUserById($id) {
-        $stmt = $this->db->getConnection()->prepare("SELECT * FROM users WHERE id = ".$id);
+    public function getClienteById($id) {
+        $stmt = $this->db->getConnection()->prepare("SELECT * FROM clientes WHERE idCliente = ".$id);
 
         $stmt->execute();
         return $stmt -> fetchAll()[0];
@@ -59,9 +59,9 @@ class UserDAO {
         $stmt = null;
     }
 
-    public function getAllUsers() {
+    public function getAllClientes() {
         // Código para obtener todos los usuarios desde la base de datos
-        $stmt = $this->db->getConnection()->prepare("SELECT * FROM users");
+        $stmt = $this->db->getConnection()->prepare("SELECT * FROM clientes");
 
         $stmt->execute();
         return $stmt -> fetchAll();

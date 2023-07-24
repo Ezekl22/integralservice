@@ -211,3 +211,45 @@ footer{
     color: red;
     margin-bottom: 10px;
   }
+  
+  .contenedor__mayor{
+    width: 95%;
+  }
+
+  .selector__cabecera{
+    margin-left: 8%;
+  }
+
+  .contenedor__mayor-grilla{
+    width: 85%;
+  }
+
+  .w-85{
+    width: 85%;
+  }
+
+  .w-95{
+    width: 94%;
+  }
+
+  .mx-7{
+    margin-right: 6rem!important;
+    margin-left: 6rem!important;
+  }
+
+  .ms-7{
+    margin-left: 7rem!important;
+  }
+
+  .me-7{
+    margin-right: 7rem!important;
+  }
+
+  .w-30{
+    width: 30% !important;
+  }
+
+  .cabecera-grilla__backgrond{
+    background-color: #dedede !important;
+    border: black 1px solid;
+  }

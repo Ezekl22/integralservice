@@ -2,16 +2,16 @@
 require_once 'models/Client.php';
 require_once 'models/ClientDAO.php';
 
-class ClientController {
+class ClienteCtr{
     private $clientDAO;
 
     public function __construct() {
-        $this->clientDAO = new clientDAO();
+        $this->clientDAO = new ClienteDAO();
     }
 
     public function index() {
         // Obtener la lista de usuarios desde el modelo
-        $users = $this->userDAO->getAllUsers();
+        $clientes = $this->clientDAO->getAllClientes();
 
         // Cargar la vista con los datos
         require_once 'vistas/usuario/index.php';
@@ -22,16 +22,20 @@ class ClientController {
         require_once 'vistas/usuario/create.php';
     }
 
-    public function store($data) {
-        // Validar los datos del formulario
-        // ...
+    // public function store($data) {
+    //     // Validar los datos del formulario
+    //     // ...
 
-        // Crear un nuevo usuario en la base de datos
-        $user = new User($data['name'], $data['lastname'], $data['type'], $data['username'], $data['password']);
-        $this->userDAO->createUser($user);
+    //     // Crear un nuevo usuario en la base de datos
+    //     $user = new User($data['name'], $data['lastname'], $data['type'], $data['username'], $data['password']);
+    //     $this->userDAO->createUser($user);
 
-        // Redireccionar a la página principal de usuarios
-        header('Location: index.php?action=index');
+    //     // Redireccionar a la página principal de usuarios
+    //     header('Location: index.php?action=index');
+    // }
+
+    public function getClienteById($id) {
+        return $this->clientDAO->getClienteById($id);
     }
 
     public function edit() {
@@ -61,5 +65,9 @@ class ClientController {
 
         // Redireccionar a la página principal de usuarios
         header('Location: index.php?action=index');
+    }
+
+    public function getAllClientes(){
+        return $this->clientDAO->getAllClientes();
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-class User {
+class cliente {
     private $id;
     private $name;
     private $lastname;
