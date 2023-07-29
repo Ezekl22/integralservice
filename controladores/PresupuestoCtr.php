@@ -65,9 +65,8 @@ class PresupuestoCtr {
         return $cliente;
     }
 
-    public function getProductosById($id){
-        $cliente = $this->productoCtr->getProductosById($id);
-        return $cliente;
+    public function getProductosById($ids){
+        return $this->productoCtr->getProductosById($ids);
     }
 
     public function getProductosPresupuestoById($id) {

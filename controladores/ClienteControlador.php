@@ -53,21 +53,17 @@ class ClienteCtr{
             $user->setId($id);
             $this->userDAO->updateUser($user);
         }
-
-        // Redireccionar a la página principal de usuarios
-        //header('Location: index.php?module=usuarios');
-
-    }
-
-    public function delete($id) {
-        // Eliminar el usuario de la base de datos
-        $this->userDAO->deleteUser($id);
-
-        // Redireccionar a la página principal de usuarios
-        header('Location: index.php?action=index');
     }
 
     public function getAllClientes(){
         return $this->clientDAO->getAllClientes();
     }
+
+    // public function delete($id) {
+    //     // Eliminar el usuario de la base de datos
+    //     $this->userDAO->deleteUser($id);
+
+    // //     // Redireccionar a la página principal de usuarios
+    // //     header('Location: index.php?action=index');
+    // }
 }

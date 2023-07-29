@@ -140,6 +140,9 @@ $nombreCliente = $presupuestoCtr->getNombreClienteById($presupuesto['idcliente']
                                         </div>
                                     </div>
                                 </div>
+                                <div class="d-flex w-100 d-flex align-items-start">
+                                    <div class="me-2"><?php ?> </div>
+                                </div>
                             </div>
                             <div class="d-flex flex-row border-bottom border-secondary w-95"></div>
                             <div class="d-flex align-items-start w-100 flex-column mt-3">
