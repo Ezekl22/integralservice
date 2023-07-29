@@ -6,68 +6,67 @@ class ClienteCtr{
     private $clientDAO;
 
     public function __construct() {
-        $this->clientDAO = new ClienteDAO();
+        $this->clientDAO = new ClientDAO();
     }
 
     public function index() {
-        // Obtener la lista de usuarios desde el modelo
-        $clientes = $this->clientDAO->getAllClientes();
+        // Obtener la lista de clientes desde el modelo
+        $clients = $this->clientDAO->getAllClientes();
 
         // Cargar la vista con los datos
-        require_once 'vistas/usuario/index.php';
+        require_once 'vistas/cliente/index.php';
+    }
+
+    public function getPantallaCreate(){
+        require_once 'vistas/cliente/create.php';
     }
 
     public function create() {
-        // Mostrar el formulario de creación de usuario
-        require_once 'vistas/usuario/create.php';
-    }
+        // Mostrar el formulario de creación de cliente
+        require_once 'vistas/cliente/create.php';
 
     // public function store($data) {
     //     // Validar los datos del formulario
     //     // ...
 
-    //     // Crear un nuevo usuario en la base de datos
-    //     $user = new User($data['name'], $data['lastname'], $data['type'], $data['username'], $data['password']);
-    //     $this->userDAO->createUser($user);
+        // Crear un nuevo cliente en la base de datos
+        $client = new Client($data['name'], $data['lastname'], $data['email'], $data['cuit'], $data['iva']);
+        $this->clientDAO->createClient($client);
 
-    //     // Redireccionar a la página principal de usuarios
-    //     header('Location: index.php?action=index');
-    // }
-
-    public function getClienteById($id) {
-        return $this->clientDAO->getClienteById($id);
+        // Redireccionar a la página principal de clientes
+        header('Location: index.php?action=index');
     }
 
-    public function edit() {
-        // Obtener el usuario desde el modelo
+    public function getPantallaEdit() {
+        // Obtener el cliente desde el modelo
 
-        // Mostrar el formulario de edición de usuario con los datos cargados
-        require_once 'vistas/usuario/edit.php';
+        // Mostrar el formulario de edición de cliente con los datos cargados
+        require_once 'vistas/cliente/edit.php';
         $this->index();
     }
 
     public function update($id) {
 
         if(isset($_POST["nombre"])){
-            $user = new User($_POST["nombre"], $_POST["apellido"], $_POST["tipo"], $_POST["nombre_usuario"], $_POST["contrasena"]);
-            $user->setId($id);
-            $this->userDAO->updateUser($user);
+            $client = new Client($_POST["nombre"], $_POST["apellido"], $_POST["email"], $_POST["cuit"], $_POST["iva"]);
+            $client->setId($id);
+            $this->clientDAO->updateClient($client);
         }
-
-        // Redireccionar a la página principal de usuarios
-        //header('Location: index.php?module=usuarios');
-
-    }
-
-    public function delete($id) {
-        // Eliminar el usuario de la base de datos
-        $this->userDAO->deleteUser($id);
-
-        // Redireccionar a la página principal de usuarios
-        header('Location: index.php?action=index');
     }
 
     public function getAllClientes(){
         return $this->clientDAO->getAllClientes();
+    }
+
+    // public function delete($id) {
+    //     // Eliminar el usuario de la base de datos
+    //     $this->userDAO->deleteUser($id);
+
+    // //     // Redireccionar a la página principal de usuarios
+    // //     header('Location: index.php?action=index');
+    // }
+    
+    public function getClienteById($id){
+        return $this->clientDAO->getClienteById($id);
     }
 }
