@@ -1,36 +1,36 @@
-<!-- views/client/delete.php -->
+<!-- views/supplier/delete.php -->
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Eliminar Cliente</title>
+    <title>Eliminar Proveedor</title>
     <link rel="stylesheet" type="text/css" href="../assets/css/style.css">
 </head>
 <body>
-    <!-- <h1>Eliminar Cliente</h1>
+    <!-- <h1>Eliminar Proveedor</h1>
 
-    <p>¿Estás seguro de que deseas eliminar este cliente?</p>
+    <p>¿Estás seguro de que deseas eliminar este proveedor?</p>
     
     <table>
         <tr>
             <th>Nombre</th>
-            <th>Apellido</th>
-            <th>Dni</th>
-            <th>Telefono</th>
+            <th>Categoria Fiscal</th>
             <th>Direccion</th>
+            <th>Telefono</th>
             <th>Correo</th>
             <th>Saldo</th>
         </tr>
         <tr>
-            <td><?php echo $client['nombre']; ?></td>
-            <td><?php echo $client['apellido']; ?></td>
-            <td><?php echo $client['email']; ?></td>
-            <td><?php echo $client['cuit']; ?></td>
-            <td><?php echo $client['iva']; ?></td>
+            <td><?php echo $supplier['nombre']; ?></td>
+            <td><?php echo $supplier['categoria_fiscal']; ?></td>
+            <td><?php echo $supplier['direccion']; ?></td>
+            <td><?php echo $supplier['telefono']; ?></td>
+            <td><?php echo $supplier['correo']; ?></td>
+            <td><?php echo $supplier['saldo']; ?></td>
         </tr>
     </table>
 
     <form action="" method="POST">
-        <input type="hidden" name="client_id" value="<?php echo $client['idcliente']; ?>">
+        <input type="hidden" name="supplier_id" value="<?php echo $supplier['id']; ?>">
         <input type="submit" value="Eliminar">
     </form> -->
 
@@ -43,7 +43,7 @@
                     <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body d-flex flex-column">
-                    <input type="text" class="mb-4 mx-5" placeholder="cliente">
+                    <input type="text" class="mb-4 mx-5" placeholder="proveedor">
                     <input type="text" class="mx-5"placeholder="contraseña">
                     <div class="d-flex justify-content-center">
                         <button type="button" class="btn btn-link btn__recuperarC" data-bs-dismiss="modal" aria-label="Close" data-bs-toggle="modal" data-bs-target="#recuperarCon">

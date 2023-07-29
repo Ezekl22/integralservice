@@ -1,19 +1,19 @@
 <?php
 
-class cliente {
+class Client {
     private $id;
     private $name;
     private $lastname;
-    private $type;
-    private $username;
-    private $password;
+    private $email;
+    private $cuit;
+    private $iva;
 
-    public function __construct($name, $lastname, $type, $username, $password) {
+    public function __construct($name, $lastname, $email, $cuit, $iva) {
         $this->name = $name;
         $this->lastname = $lastname;
-        $this->type = $type;
-        $this->username = $username;
-        $this->password = $password;
+        $this->email = $email;
+        $this->cuit = $cuit;
+        $this->iva = $iva;
     }
 
     // Getters y setters
@@ -35,34 +35,34 @@ class cliente {
     }
 
     public function getLastname() {
-        return $this->lastname;
+        return $this->name;
     }
 
     public function setLastname($lastname) {
         $this->lastname = $lastname;
     }
 
-    public function getType() {
-        return $this->type;
+    public function getEmail() {
+        return $this->email;
     }
 
-    public function setType($type) {
-        $this->type = $type;
+    public function setEmail($email) {
+        $this->email = $email;
     }
 
-    public function getUsername() {
-        return $this->username;
+    public function getCuit() {
+        return $this->cuit;
     }
 
-    public function setUsername($username) {
-        $this->username = $username;
+    public function setCuit($cuit) {
+        $this->cuit = $cuit;
+    }
+    
+    public function getIva() {
+        return $this->iva;
     }
 
-    public function getPassword() {
-        return $this->password;
-    }
-
-    public function setPassword($password) {
-        $this->password = $password;
+    public function setIva($iva) {
+        $this->iva = $iva;
     }
 }

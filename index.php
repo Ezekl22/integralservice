@@ -164,9 +164,39 @@
             break;
         case 'clientes':
             include('controladores/ClienteControlador.php');
+            $indexPage = new ClienteCtr();
+            switch ($action) {
+                  case 'edit':
+                        $indexPage ->getPantallaEdit();
+                        break;
+                  case 'delete':
+                        $indexPage ->getPantallaDelete();
+                        break;
+                  case 'create':
+                        $indexPage ->getPantallaCreate();
+                        break;
+                  default:
+                        $indexPage -> index();
+                        break;
+            }
             break;
         case 'proveedores':
-            include('controladores/ProveedoresControlador.php');
+            include('controladores/ProveedorCtr.php');
+            $indexPage = new ProveedorCtr();
+            switch ($action) {
+                  case 'edit':
+                        $indexPage ->getPantallaEdit();
+                        break;
+                  case 'delete':
+                        $indexPage ->getPantallaDelete();
+                        break;
+                  case 'create':
+                        $indexPage ->getPantallaCreate();
+                        break;
+                  default:
+                        $indexPage -> index();
+                        break;
+            }
             break;
       case 'pedidos':
             include('controladores/PedidoCompraControlador.php');
