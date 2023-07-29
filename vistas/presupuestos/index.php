@@ -63,7 +63,6 @@ $nombreCliente = $presupuestoCtr->getNombreClienteById($presupuesto['idcliente']
                     </div>
                 </div>
                 <div class="border contenedor__mayor mt-3 mb-5 rounded-4">
-                    
                     <table class="grilla__contenedor border-0">
                         <tr class="grilla grilla__cabecera">
                             <th>Cliente</th>
@@ -108,6 +107,7 @@ $nombreCliente = $presupuestoCtr->getNombreClienteById($presupuesto['idcliente']
             </div>
             <a class="my-5 btn button" type="button" href="index.php?module=presupuestos&action=create">Crear nuevo presupuesto</a>
         </article>
+        <!-------------------------------------------------- Pop up ver presupuesto ---------------------------------------------->
         <div class="modal fade" id="ver" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog justify-content-center d-flex" style="max-width:none;">
                 <div class="modal-content mx-3" style="width:80vw;">
@@ -139,9 +139,6 @@ $nombreCliente = $presupuestoCtr->getNombreClienteById($presupuesto['idcliente']
                                             <b class="mx-2 rounded-2">CUIT: </b> 20-38926571-6
                                         </div>
                                     </div>
-                                </div>
-                                <div class="d-flex w-100 d-flex align-items-start">
-                                    <div class="me-2"><?php ?> </div>
                                 </div>
                             </div>
                             <div class="d-flex flex-row border-bottom border-secondary w-95"></div>
