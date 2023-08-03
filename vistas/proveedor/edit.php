@@ -2,13 +2,14 @@
 <?php 
     $id = isset($_GET['id']) ? $_GET['id'] : '';
     $ProveedorCtr = new ProveedorCtr();
+    $action = isset($_GET['action']) ? $_GET['action'] : '';
     $proveedorr = $ProveedorCtr->proveedorDAO->getProveedorById($id);
     $ProveedorCtr -> update($id);
     $fecha = new DateTime($proveedorr['fechaCreacion']);
     $GestionPantallasCtr = new GestionPantallasControlador();
     $GestionPantallasCtr->mostrarOcultarPantallaEditar(1);
 
-    if($GestionPantallasCtr->getGestionPantallasById(1)->getInUse() && $id != ''){
+    if($action == 'edit' && $id != ''){
 ?>
         <!DOCTYPE html>
         <html>
@@ -16,9 +17,9 @@
             <title>Editar Proveedor</title>
         </head>
         <body>
-            <main class="d-flex flex-column align-items-center mt-2" style="display: none !important;" id="editProveedor">
+            <main class="d-flex flex-column align-items-center mt-2" id="editProveedor">
                 <article class="editar__contenedor rounded-4">
-                    <form action="" method="POST" class="d-flex flex-column align-items-center border-1 border m-4 rounded-4">
+                    <form action="index.php?module=proveedores" method="POST" class="d-flex flex-column align-items-center border-1 border m-4 rounded-4">
                         <div class="d-flex flex-column align-items-center" id="contenedor">
                             
                             <h2 class="mt-2 text__white">Editar Proveedor</h2>

@@ -17,6 +17,10 @@ class ProveedorCtr {
         require_once 'vistas/proveedor/index.php';
     }
 
+    public function getProveedorById($id) {
+        return $this->proveedorDAO->getProveedorById($id);
+    }
+
     public function getPantallaCreate(){
         require_once 'vistas/proveedor/create.php';
     }
