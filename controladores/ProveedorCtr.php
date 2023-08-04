@@ -65,6 +65,10 @@ class ProveedorCtr {
         $this->index();
     }
 
+    public function getAllProveedores(){
+        return $this->proveedorDAO->getAllProveedores();
+    }
+
     // public function delete($id) {
     //     // Eliminar el proveedor de la base de datos
     //     $this->proveedorDAO->deleteProveedor($id);
