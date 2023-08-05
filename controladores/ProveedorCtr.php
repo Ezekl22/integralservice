@@ -43,9 +43,6 @@ class ProveedorCtr {
     // }
 
     public function getPantallaEdit() {
-        // Obtener el proveedor desde el modelo
-
-        // Mostrar el formulario de edición de proveedor con los datos cargados
         require_once 'vistas/proveedor/edit.php';
         $this->index();
     }

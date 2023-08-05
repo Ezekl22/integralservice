@@ -63,7 +63,7 @@ class PedidoCompraDAO {
         $stmt = null;
     }
 
-    public function getProductosPresupuestoById($id){
+    public function getProductosPedidoCompraById($id){
 
         $stmt = $this->db->getConnection()->prepare("SELECT productos.nombre,productos.marca, productos.detalle,productospresupuestos.cantidad, productos.precioventa , productospresupuestos.cantidad * productos.precioventa AS total
                                                      FROM productospresupuestos
