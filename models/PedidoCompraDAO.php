@@ -46,7 +46,7 @@ class PedidoCompraDAO {
     // }
 
     public function getPedidoCompraById($id) {
-        $stmt = $this->db->getConnection()->prepare("SELECT * FROM presupuestos WHERE idPresupuesto = ".$id);
+        $stmt = $this->db->getConnection()->prepare("SELECT * FROM pedidoscompras WHERE idPresupuesto = ".$id);
 
         $stmt->execute();
         return $stmt -> fetchAll()[0];
@@ -55,7 +55,7 @@ class PedidoCompraDAO {
     }
 
     public function getAllPedidosCompras() {
-        $stmt = $this->db->getConnection()->prepare("SELECT * FROM presupuestos");
+        $stmt = $this->db->getConnection()->prepare("SELECT * FROM pedidoscompras");
 
         $stmt->execute();
         return $stmt -> fetchAll();

@@ -43,7 +43,7 @@ class PedidoCompraCtr {
     //     // Redireccionar a la página principal de usuarios
     //     header('Location: index.php?action=index');
     // }
-    public function getProveedorByid($id) {
+    public function getProveedorById($id) {
         return $this->proveedorCtr->getProveedorById($id);
     }
 

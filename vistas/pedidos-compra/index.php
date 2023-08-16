@@ -60,8 +60,8 @@ $total = 0;
                             </select>
                         </div>
                     </div> -->
-                    <div class="d-flex w-100 justify-content-end">
-                        <div class="input-group input-group-sm w-75">
+                    <div class="d-flex w-75 justify-content-end">
+                        <div class="input-group input-group-sm w-50">
                             <input type="text" class="form-control" placeholder="Ingrese su busqueda" aria-label="Recipient's username" aria-describedby="buscar">
                             <input class="btn btn-outline-secondary button" type="button" id="buscar" value="Buscar"></button>
                         </div>
@@ -75,18 +75,15 @@ $total = 0;
                             <th>Fecha</th>
                             <th>Estado</th>
                             <th>Total</th>
-                            <th>Total</th>
                             <th>Acciones</th>
                         </tr>
-                        <?php foreach ($presupuestos as $presupuesto) { ?>
+                        <?php foreach ($pedidosCompras as $pedidoCompra) { ?>
                             <tr class="grilla__cuerpo">
-                                <td><?php echo $presupuestoCtr->getNombreClienteById($presupuesto['idcliente']); ?></td>
-                                <td><?php echo $presupuesto['nrocomprobante']; ?></td>
-                                <td><?php echo $presupuesto['tipo']; ?></td>
-                                <td><?php echo $presupuesto['estado']; ?></td>
-                                <td><?php echo $presupuesto['fecha']; ?></td>
-                                <td><?php echo $presupuesto['puntoventa']; ?></td>
-                                <td><?php echo '$'.number_format($presupuesto['total'], 2); ?></td>
+                                <td><?php echo $pedidoCompra['nrocomprobante']; ?></td>
+                                <td><?php echo $pedidoCompraCtr->getProveedorById($pedidoCompra['idproveedor'])['nombre']; ?></td>
+                                <td><?php echo $pedidoCompra['fecha']; ?></td>
+                                <td><?php echo $pedidoCompra['estado']; ?></td>
+                                <td><?php echo '$'.number_format($pedidoCompra['total'], 2); ?></td>
                                 <td>
                                     <a class="icono__contenedor me-2 ms-2" title="Cambiar estado" href="index.php?module=presupuestos&action=cambiarestado&id=<?php echo $presupuesto['idpresupuesto']; ?>">
                                         <img class="icono__imagen" src="./assets/img/iconoCambiarEstado.svg" alt="icono de cambiar estado">
@@ -109,7 +106,7 @@ $total = 0;
                     </table>
                 </div>
             </div>
-            <a class="my-5 btn button" type="button" href="index.php?module=presupuestos&action=create">Crear nuevo presupuesto</a>
+            <a class="my-5 btn button" type="button" href="index.php?module=presupuestos&action=create">Crear nuevo pedido de compra</a>
         </article>
         <!-------------------------------------------------- Pop up ver presupuesto ---------------------------------------------->
         <div class="modal fade" id="ver" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

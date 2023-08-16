@@ -171,7 +171,8 @@
             $indexPage = new ProveedorCtr();
             break;
       case 'pedidos':
-            include('controladores/PedidoCompraControlador.php');
+            include('controladores/PedidoCompraCtr.php');
+            $indexPage = new PedidoCompraCtr();
             break;
         case 'usuarios':
             include './controladores/UsuarioControlador.php';
