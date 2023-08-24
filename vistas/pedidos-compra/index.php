@@ -31,13 +31,13 @@ $total = 0;
             <div class="grilla contenedor__mayor-grilla d-flex flex-column align-items-center rounded-4">
                 <div class="d-flex flex-row contenedor__mayor align-items-start mt-4">
                     <div class="d-flex w-100 alig-items-end">
-                        <div class="form-check ms-3 text__white">
+                        <div class="form-check ms-4 text__white">
                             <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
                             <label class="form-check-label" for="flexCheckDefault">
                                 Pedidos
                             </label>
                         </div>
-                        <div class="form-check ms-3 text__white">
+                        <div class="form-check ms-4 text__white">
                             <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
                             <label class="form-check-label" for="flexCheckDefault">
                                 Cancelados
@@ -50,16 +50,6 @@ $total = 0;
                             </label>
                         </div>
                     </div>
-                    <!-- <div class="d-flex w-100 justify-content-center">
-                        <div class="input-group w-75 input-group-sm">
-                            <label class="input-group-text input-group-sm" for="inputGroupSelect01">Tipo</label>
-                            <select class="form-select input-group-sm" id="inputGroupSelect01">
-                                <option selected value="0">Todos</option>
-                                <option value="1">Ventas</option>
-                                <option value="2">Reparaciones</option>
-                            </select>
-                        </div>
-                    </div> -->
                     <div class="d-flex w-75 justify-content-end">
                         <div class="input-group input-group-sm w-50">
                             <input type="text" class="form-control" placeholder="Ingrese su busqueda" aria-label="Recipient's username" aria-describedby="buscar">
@@ -106,7 +96,7 @@ $total = 0;
                     </table>
                 </div>
             </div>
-            <a class="my-5 btn button" type="button" href="index.php?module=presupuestos&action=create">Crear nuevo pedido de compra</a>
+            <a class="my-5 btn button" type="button" href="index.php?module=pedidos&action=create">Crear nuevo pedido de compra</a>
         </article>
         <!-------------------------------------------------- Pop up ver presupuesto ---------------------------------------------->
         <div class="modal fade" id="ver" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

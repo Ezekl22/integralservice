@@ -23,6 +23,10 @@ class PedidoCompraCtr {
         require_once 'vistas/pedidos-compra/index.php';
     }
 
+    public function getPantallaCreate(){
+        require_once 'vistas/pedidos-compra/create.php';
+    }
+
     public function getAllPedidosCompras(){
         return $this->pedidoCompraDAO->getAllPedidosCompras();
     }
@@ -53,7 +57,7 @@ class PedidoCompraCtr {
         require_once 'vistas/pedidos-compra/edit.php';
     }
 
-    public function getAllClientes(){
+    public function getAllProveedores(){
         return $this->proveedorCtr->getAllProveedores();
     }
 
