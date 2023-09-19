@@ -33,7 +33,7 @@ const agregarComponenteProducto = () =>{
                                 <label class="input-group-text" for="producto" id="inputGroup-sizing-sm">Producto:</label>
                                 <input type="text" class="form-control w-25" disabled id="producto" value = "${productoSeleccionado[1]}">
                                 <label class="input-group-text" for="cantidad" id="inputGroup-sizing-sm">Cantidad:</label>
-                                <input type="text" class="form-control" aria-label="0" onchange="cantidadOnChange('${productoSeleccionado[0]}','${id}')" id="cantidad">
+                                <input type="text" class="form-control" aria-label="0" onchange="cantidadOnChange('${productoSeleccionado[0]}','${id}', ${modulo == "presupuesto"? true:false})" id="cantidad">
                                 <label class="input-group-text" for="valorunt" id="inputGroup-sizing-sm">Valor unitario:</label>
                                 <input type="text" class="form-control" disabled value= "${currencyFormatter(modulo == "pedidos"?productoSeleccionado[6]:productoSeleccionado[7])}" id="valorunt">
                                 <label class="input-group-text" for="totañ" id="inputGroup-sizing-sm">Total:</label>
@@ -113,14 +113,13 @@ const recalcularTotal = () =>{
     const importeTotal = document.getElementById('totalProductos');
     let total = parseFloat(0);
     totalesProductos.forEach(totalProducto =>{
-        console.log(totalProducto.value);
         total = total + parseFloat(totalProducto.value.replace(/[$,]/g, ""));
         
     });
     importeTotal.value = currencyFormatter(total);
 }
 
-const cantidadOnChange = (idProducto,id) =>{
+const cantidadOnChange = (idProducto,id,esVenta) =>{
     const inputTotal = document.querySelector('#'+id+' #total');
     const cantidad = document.querySelector('#'+id+' #cantidad').value;
     let i = 0;
@@ -128,7 +127,7 @@ const cantidadOnChange = (idProducto,id) =>{
         i++;
     }
     const producto = productos[i];
-    inputTotal.value =currencyFormatter(producto[7] * parseInt(cantidad));
+    inputTotal.value =currencyFormatter(esVenta? producto[7]:producto[6] * parseInt(cantidad));
     recalcularTotal();
 }
 

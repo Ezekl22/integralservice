@@ -8,11 +8,20 @@ class PedidoCompraCtr {
     private $pedidoCompraDAO;
     private $proveedorCtr;
     private $productoCtr;
+    public $idPedidoSeleccionado;
+    public $action;
+    private $module;
+    public $pedidoSeleccionado;
 
     public function __construct() {
         $this->pedidoCompraDAO = new PedidoCompraDAO();
         $this->proveedorCtr = new ProveedorCtr();
         $this->productoCtr = new ProductoCtr();
+        $this->idPedidoSeleccionado = isset($_GET['id']) ? $_GET['id'] : '';
+        $this->action = isset($_GET['action']) ? $_GET['action'] : '';
+        $this->module = isset($_GET['module']) ? $_GET['module'] : '';
+        // hago este codigo para que solo se utilice en pedidos de compra para la pantalla de editar
+        $this->pedidoSeleccionado = ($this->idPedidoSeleccionado && $this->module == "pedidos")? $this->pedidoCompraDAO->getPedidoCompraById($this->idPedidoSeleccionado) : "";
     }
 
     public function index() {
@@ -51,10 +60,11 @@ class PedidoCompraCtr {
         return $this->proveedorCtr->getProveedorById($id);
     }
 
-    public function getPantallaEdit($id) {
-        $pedidoCompra = $this->getPedidoCompraById($id);
+    public function getPantallaEdit() {
+        //$pedidoCompra = $this->getPedidoCompraById($id);
 
         require_once 'vistas/pedidos-compra/edit.php';
+        $this->index();
     }
 
     public function getAllProveedores(){

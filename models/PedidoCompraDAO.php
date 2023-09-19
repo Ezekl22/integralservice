@@ -46,7 +46,7 @@ class PedidoCompraDAO {
     // }
 
     public function getPedidoCompraById($id) {
-        $stmt = $this->db->getConnection()->prepare("SELECT * FROM pedidoscompras WHERE idPresupuesto = ".$id);
+        $stmt = $this->db->getConnection()->prepare("SELECT * FROM pedidoscompras WHERE idpedidocompra = ".$id);
 
         $stmt->execute();
         return $stmt -> fetchAll()[0];
@@ -68,7 +68,7 @@ class PedidoCompraDAO {
         $stmt = $this->db->getConnection()->prepare("SELECT productos.nombre,productos.marca, productos.detalle,productospresupuestos.cantidad, productos.precioventa , productospresupuestos.cantidad * productos.precioventa AS total
                                                      FROM productospresupuestos
                                                      INNER JOIN productos ON productospresupuestos.idproducto = productos.idproducto
-                                                     WHERE productospresupuestos.idpresupuesto = ".$id);
+                                                     WHERE productospresupuestos.idpedidocompra = ".$id);
 
         $stmt->execute();
         return $stmt -> fetchAll();

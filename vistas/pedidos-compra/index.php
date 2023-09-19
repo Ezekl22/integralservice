@@ -8,7 +8,7 @@ if($id){
     $pedidoCompra = $pedidoCompraCtr->getPedidoCompraById($id);
     $nombreProveedor = $pedidoCompraCtr->getProveedorById($pedidoCompra['idproveedor'])['$nombre'];
     $productosPre = $pedidoCompraCtr->getProductosPedidoCompraById($pedidoCompra['idpedidocompra']);
-    $proveedor = $presupuestoCtr->getClienteById($pedidoCompra['idproveedor']);
+    $proveedor = $pedidoCompraCtr->getProveedorById($pedidoCompra['idproveedor']);
 }    
 
 $total = 0;
@@ -75,19 +75,16 @@ $total = 0;
                                 <td><?php echo $pedidoCompra['estado']; ?></td>
                                 <td><?php echo '$'.number_format($pedidoCompra['total'], 2); ?></td>
                                 <td>
-                                    <a class="icono__contenedor me-2 ms-2" title="Cambiar estado" href="index.php?module=presupuestos&action=cambiarestado&id=<?php echo $presupuesto['idpresupuesto']; ?>">
+                                    <a class="icono__contenedor me-2 ms-2" title="Cambiar estado" href="index.php?module=pedidos&action=cambiarestado&id=<?php echo $pedidoCompra['idpedidocompra']; ?>">
                                         <img class="icono__imagen" src="./assets/img/iconoCambiarEstado.svg" alt="icono de cambiar estado">
                                     </a>
-                                    <a class="icono__contenedor me-2" title="ver" href="index.php?module=presupuestos&action=see&id=<?php echo $presupuesto['idpresupuesto']; ?>">
+                                    <a class="icono__contenedor me-2" title="ver" href="index.php?module=pedidos&action=see&id=<?php echo $pedidoCompra['idpedidocompra']; ?>">
                                         <img class="icono__imagen" src="./assets/img/iconoVer.png" alt="icono de ver">
                                     </a>
-                                    <a class="icono__contenedor me-2" title="Facturar" href="index.php?module=presupuestos&action=facturar&id=<?php echo $presupuesto['idpresupuesto']; ?>">
-                                        <img class="icono__imagen" src="./assets/img/iconoFacturar.svg" alt="icono de Facturar">
-                                    </a>
-                                    <a class="icono__contenedor me-2" title="Editar" href="index.php?module=presupuestos&action=edit&id=<?php echo $presupuesto['idpresupuesto']; ?>">
+                                    <a class="icono__contenedor me-2" title="Editar" href="index.php?module=pedidos&action=edit&id=<?php echo $pedidoCompra['idpedidocompra']; ?>">
                                         <img class="icono__imagen" src="./assets/img/iconoEditar.png" alt="icono de editar">
                                     </a>
-                                    <a class="icono__contenedor me-2" title="Cancelar" href="index.php?module=presupuestos&action=delete&id=<?php echo $presupuesto['idpresupuesto']; ?>">
+                                    <a class="icono__contenedor me-2" title="Cancelar" href="index.php?module=pedidos&action=delete&id=<?php echo $pedidoCompra['idpedidocompra']; ?>">
                                         <img class="icono__imagen" src="./assets/img/iconoCancelar.png" alt="icono de cancelar">
                                     </a>
                                 </td>
@@ -140,7 +137,7 @@ $total = 0;
                                 <h5 class="ms-5">Cliente</h5>
                                 <div class="px-5 d-flex w-100 justify-content-between pb-4">
                                     <div class="w-30">
-                                        <?php echo '<b class="me-3">Señor/a(es/as):</b>'.$nombreCliente ?>
+                                        <?php echo '<b class="me-3">Señor/a(es/as):</b>'.$pedidoCompraCtr->getProveedorById($pedidoCompra['idproveedor'])['nombre'] ?>
                                     </div>
                                     <div class="w-30 d-flex justify-content-center">
                                         <?php echo '<b class="me-3">CUIT:</b> '.$cliente['cuit'] ?>
