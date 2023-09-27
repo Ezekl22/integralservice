@@ -31,7 +31,7 @@ class UserController {
         // ...
 
         // Crear un nuevo usuario en la base de datos
-        $user = new User($data['name'], $data['lastname'], $data['type'], $data['username'], $data['password']);
+        $user = new User($data['name'], $data['lastname'], $data['type'], $data['mail'], $data['password']);
         $this->userDAO->createUser($user);
 
         // Redireccionar a la página principal de usuarios

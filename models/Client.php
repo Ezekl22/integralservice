@@ -5,14 +5,14 @@ class cliente {
     private $name;
     private $lastname;
     private $type;
-    private $username;
+    private $mail;
     private $password;
 
-    public function __construct($name, $lastname, $type, $username, $password) {
+    public function __construct($name, $lastname, $type, $mail, $password) {
         $this->name = $name;
         $this->lastname = $lastname;
         $this->type = $type;
-        $this->username = $username;
+        $this->mail = $mail;
         $this->password = $password;
     }
 
@@ -50,12 +50,12 @@ class cliente {
         $this->type = $type;
     }
 
-    public function getUsername() {
-        return $this->username;
+    public function getmail() {
+        return $this->mail;
     }
 
-    public function setUsername($username) {
-        $this->username = $username;
+    public function setmail($mail) {
+        $this->mail = $mail;
     }
 
     public function getPassword() {
