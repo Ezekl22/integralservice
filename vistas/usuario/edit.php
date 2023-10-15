@@ -35,8 +35,8 @@
                             </div>
                             <div class="d-flex flex-row">
                                 <div class="input-group input-group-sm mb-3">
-                                    <label class="input-group-text" for="nombre_usuario" id="inputGroup-sizing-sm">Nombre de usuario:</label>
-                                    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="nombre_usuario" name="nombre_usuario" value="<?php echo $userr['username']; ?>" required>
+                                    <label class="input-group-text" for="nombre_usuario" id="inputGroup-sizing-sm">Mail:</label>
+                                    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="mail" name="mail" value="<?php echo $userr['mail']; ?>" required>
                                 </div>
                                 <div class="input-group input-group-sm mb-3 ms-5">
                                     <label class="input-group-text" for="contrasena" id="inputGroup-sizing-sm">Contraseña:</label>

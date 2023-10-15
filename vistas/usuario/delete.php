@@ -39,17 +39,13 @@
                     <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body d-flex flex-column">
-                    <input type="text" class="mb-4 mx-5" placeholder="usuario">
-                    <input type="text" class="mx-5"placeholder="contraseña">
-                    <div class="d-flex justify-content-center">
-                        <button type="button" class="btn btn-link btn__recuperarC" data-bs-dismiss="modal" aria-label="Close" data-bs-toggle="modal" data-bs-target="#recuperarCon">
-                            recuperar contraseña
-                        </button>
-                    </div>
+                    <label class="mb-4 mx-5">
+                        Esta seguro/a de eliminar este 
+                    </label>
                 </div>
                 <div class="modal-footer d-flex justify-content-center headerPop__background">
                     <button type="button" class="btn button me-5" data-bs-dismiss="modal">Cancelar</button>
-                    <a aria-label="Close" class="btn button " href="index.php?module=menu">Ingresar</a>
+                    <a aria-label="Close" class="btn button " href="index.php?module=usuarios&action=deleted&id=<?php echo $_GET['id']?>">Eliminar</a>
                 </div>
             </div>
         </div>

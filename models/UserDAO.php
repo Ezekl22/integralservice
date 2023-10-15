@@ -10,14 +10,13 @@ class UserDAO {
     }
 
     public function createUser(User $user) {
-        $stmt = $this->db->getConnection()->prepare("INSERT INTO users (name, lastname, mail, password, type) values(name=:name, lastname=:lastname, mail=:mail, password=:password, type = :type)");
+        $stmt = $this->db->getConnection()->prepare("INSERT INTO users (name, lastname, mail, password, type) VALUES (:name, :lastname, :mail, :password, :type)");
         
         $name = $user->getName();
         $lastname = $user->getLastname();
         $mail = $user->getMail();
         $password = $user->getPassword();
         $type = $user->getType();
-        $id = $user->getId();
         
 		$stmt->bindParam(":name", $name, PDO::PARAM_STR);
 		$stmt->bindParam(":lastname", $lastname, PDO::PARAM_STR);
@@ -70,8 +69,17 @@ class UserDAO {
     }
 
     public function deleteUser($id) {
-        // Código para eliminar un usuario de la base de datos
-        // ...
+        $stmt = $this->db->getConnection()->prepare("DELETE FROM users WHERE id = :id");
+        $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+    
+        if ($stmt->execute()) {
+            // La eliminación fue exitosa
+            return "ok";
+        } else {
+            // Manejar errores si es necesario
+            print_r($this->db->getConnection()->errorInfo());
+            return "error";
+        }
     }
 
     public function getUserById($id) {
