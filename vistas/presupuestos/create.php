@@ -10,7 +10,7 @@ echo "<script>const productos = $json;</script>";
     <title>Crear Presupuesto</title>
 </head>
 <body>
-    <main class="d-flex flex-column align-items-center mt-2 main__flex" id="editPresupuesto">
+    <main class="d-flex flex-column align-items-center mt-2 mb-4 main__flex" id="editPresupuesto">
         <article class="mt-4">
                 <h2 class="main__title mb-5">
                     Crear Presupuesto

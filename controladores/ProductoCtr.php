@@ -43,6 +43,10 @@ class ProductoCtr {
         }
     }
 
+    public function getProductosById($ids){
+        return $this->productoDAO->getProductosById($ids);
+    }
+
     // public function create() {
     //     // Mostrar el formulario de creación de usuario
     //     require_once 'vistas/usuario/create.php';

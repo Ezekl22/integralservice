@@ -26,6 +26,4 @@ class GestionPantallasControlador {
         $gPantallas = new GestionPantallasMdl($gPResult['name'],$gPResult['action'],$gPResult['inuse'],$id);
         return $gPantallas;
     }
-
-
 }

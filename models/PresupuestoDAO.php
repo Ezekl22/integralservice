@@ -13,11 +13,11 @@ class PresupuestoDAO {
     }
 
     public function updatePresupuesto(PresupuestoMdl $presupuesto) {
-        $stmt = $this->db->getConnection()->prepare("UPDATE presupuestos SET idclient=:idclient, 
+        $stmt = $this->db->getConnection()->prepare("UPDATE presupuestos SET idcliente=:idcliente, 
         nrocomprobante=:nrocomprobante, estado=:estado, fecha=:fecha, puntoventa=:puntoventa,
          total=:total WHERE idpresupuesto= :idpresupuesto");
         
-        $idClient = $presupuesto->getIdCliente();
+        $idCliente = $presupuesto->getIdCliente();
         $nroComprobante = $presupuesto->getNrocomprobante();
         $estado = $presupuesto->getEstado();
         $fecha = $presupuesto->getFecha();
@@ -25,7 +25,7 @@ class PresupuestoDAO {
         $total = $presupuesto->getTotal();
         $idPresupuesto = $presupuesto->getIdPresupuesto();
         
-		$stmt->bindParam(":idclient", $idClient, PDO::PARAM_INT);
+		$stmt->bindParam(":idcliente", $idCliente, PDO::PARAM_INT);
 		$stmt->bindParam(":nrocomprobante", $nroComprobante, PDO::PARAM_INT);
         $stmt->bindParam(":estado", $estado, PDO::PARAM_STR);
 		$stmt->bindParam(":fecha", $fecha, PDO::PARAM_STR);

@@ -37,7 +37,7 @@ class PresupuestoCtr {
     //     // ...
 
     //     // Crear un nuevo usuario en la base de datos
-    //     $presupuesto = new PresupuestoMdl($data['idclient'], $data['nrocomprobante'], $data['tipo'], $data['estado'], $data['fecha'], $data['puntoventa'], $data['total']);
+    //     $presupuesto = new PresupuestoMdl($data['idcliente'], $data['nrocomprobante'], $data['tipo'], $data['estado'], $data['fecha'], $data['puntoventa'], $data['total']);
     //     $this->presupuestoDAO->createPresupuesto($presupuesto);
 
     //     // Redireccionar a la página principal de usuarios
@@ -65,9 +65,8 @@ class PresupuestoCtr {
         return $cliente;
     }
 
-    public function getProductosById($id){
-        $cliente = $this->productoCtr->getProductosById($id);
-        return $cliente;
+    public function getProductosById($ids){
+        return $this->productoCtr->getProductosById($ids);
     }
 
     public function getProductosPresupuestoById($id) {
@@ -77,8 +76,8 @@ class PresupuestoCtr {
     public function update($id) {
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            if(isset($_POST["idclient"])){
-                $presupuesto = new PresupuestoMdl($_POST["idclient"], $_POST["nrocomprobante"], $_POST['tipo'], $_POST["estado"], $_POST["fecha"], $_POST["puntoventa"], $_POST["total"]);
+            if(isset($_POST["idcliente"])){
+                $presupuesto = new PresupuestoMdl($_POST["idcliente"], $_POST["nrocomprobante"], $_POST['tipo'], $_POST["estado"], $_POST["fecha"], $_POST["puntoventa"], $_POST["total"]);
                 $presupuesto->setIdPresupuesto($id);
                 $this->presupuestoDAO->updatePresupuesto($presupuesto);
             }
