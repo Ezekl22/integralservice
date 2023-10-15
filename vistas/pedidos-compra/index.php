@@ -4,12 +4,12 @@ $action = isset($_GET['action']) ? $_GET['action'] : '';
 $pedidoCompraCtr = New PedidoCompraCtr();
 if ($action == 'see'){
     $id = isset($_GET['id']) ? $_GET['id'] : '';
-if($id){
-    $pedidoCompra = $pedidoCompraCtr->getPedidoCompraById($id);
-    $nombreProveedor = $pedidoCompraCtr->getProveedorById($pedidoCompra['idproveedor'])['$nombre'];
-    $productosPre = $pedidoCompraCtr->getProductosPedidoCompraById($pedidoCompra['idpedidocompra']);
-    $proveedor = $pedidoCompraCtr->getProveedorById($pedidoCompra['idproveedor']);
-}    
+    if($id){
+        $pedidoCompra = $pedidoCompraCtr->getPedidoCompraById($id);
+        $nombreProveedor = $pedidoCompraCtr->getProveedorById($pedidoCompra['idproveedor'])['$nombre'];
+        $productosPre = $pedidoCompraCtr->getProductosPedidoCompraById($pedidoCompra['idpedidocompra']);
+        $proveedor = $presupuestoCtr->getClienteById($pedidoCompra['idproveedor']);
+    }    
 
 $total = 0;
 }
