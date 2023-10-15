@@ -7,14 +7,23 @@ class UserController {
 
     public function __construct() {
         $this->userDAO = new UserDAO();
+        $action = isset($_GET['action'])?$_GET['action']:'';
+        if($action === "created"){
+            $this->create();
+        }
+        
     }
 
     public function index() {
         // Obtener la lista de usuarios desde el modelo
-        $users = $this->userDAO->getAllUsers();
+        $users = $this->getAllUsers();
 
         // Cargar la vista con los datos
         require_once 'vistas/usuario/index.php';
+    }
+
+    public function getAllUsers(){
+        return $this->userDAO->getAllUsers();
     }
 
     public function getPantallaCreate(){
@@ -22,8 +31,14 @@ class UserController {
     }
 
     public function create() {
-        // Mostrar el formulario de creación de usuario
-        require_once 'vistas/usuario/create.php';
+        $nombre = isset($_POST['nombre']) ? $_POST['nombre'] : '';
+        $apellido = isset($_POST['apellido']) ? $_POST['apellido'] : '';
+        $tipo = isset($_POST['tipo']) ? $_POST['tipo'] : '';
+        $mail = isset($_POST['mail']) ? $_POST['mail'] : '';
+        $contrasena = isset($_POST['contrasena']) ? $_POST['contrasena'] : '';
+        $user = new User($nombre, $apellido, $tipo, $mail, $contrasena);
+        $this->userDAO->createUser($user);
+
     }
 
     public function store($data) {
