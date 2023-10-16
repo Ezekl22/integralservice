@@ -10,26 +10,49 @@ class ClientDAO {
     }
 
     public function createClient(Client $client) {
-        // Código para crear un nuevo cliente en la base de datos
-        // ...
-    }
-
-    public function updateClient(Client $client) {
-        // Código para actualizar un cliente existente en la base de datos
-        $stmt = $this->db->getConnection()->prepare("UPDATE clientes SET name=:name, lastname=:lastname, email=:email, cuit=:cuit, iva=:iva WHERE idcliente= :idcliente");
+        $stmt = $this->db->getConnection()->prepare("INSERT INTO clientes (nombre, apellido, email, cuit, categoriafiscal) VALUES (:nombre, :apellido, :email, :cuit, :categoriaFiscal)");
         
-        $name = $client->getName();
-        $lastname = $client->getLastname();
+        $nombre = $client->getName();
+        $apellido = $client->getLastname();
         $email = $client->getEmail();
         $cuit = $client->getCuit();
-        $iva = $client->getIva();
+        $categoriaFiscal = $client->getCategoriaFiscal();
+        
+		$stmt->bindParam(":nombre", $nombre, PDO::PARAM_STR);
+		$stmt->bindParam(":apellido", $apellido, PDO::PARAM_STR);
+        $stmt->bindParam(":email", $email, PDO::PARAM_STR);
+		$stmt->bindParam(":cuit", $cuit, PDO::PARAM_STR);
+		$stmt->bindParam(":categoriaFiscal", $categoriaFiscal, PDO::PARAM_STR);
+
+		if($stmt->execute()){
+
+			return "ok";
+
+		}else{
+
+			print_r(Conexion::conectar()->errorInfo());
+
+		}
+        $stmt->close();
+        $stmt = null;
+    }
+
+    public function update(Client $client) {
+        // Código para actualizar un cliente existente en la base de datos
+        $stmt = $this->db->getConnection()->prepare("UPDATE clientes SET nombre=:nombre, apellido=:apellido, email=:email, cuit=:cuit, categoriafiscal=:categoriafiscal WHERE idcliente= :idcliente");
+        
+        $nombre = $client->getName();
+        $apellido = $client->getLastname();
+        $email = $client->getEmail();
+        $cuit = $client->getCuit();
+        $categoriaFiscal = $client->getCategoriaFiscal();
         $id = $client->getId();
         
-		$stmt->bindParam(":name", $name, PDO::PARAM_STR);
-		$stmt->bindParam(":lastname", $lastname, PDO::PARAM_STR);
+		$stmt->bindParam(":nombre", $nombre, PDO::PARAM_STR);
+		$stmt->bindParam(":apellido", $apellido, PDO::PARAM_STR);
         $stmt->bindParam(":email", $email, PDO::PARAM_STR);
 		$stmt->bindParam(":cuit", $cuit, PDO::PARAM_INT);
-		$stmt->bindParam(":iva", $iva, PDO::PARAM_STR);
+		$stmt->bindParam(":categoriafiscal", $categoriaFiscal, PDO::PARAM_STR);
 		$stmt->bindParam(":idcliente",$id , PDO::PARAM_INT);
 
 		if($stmt->execute()){
@@ -45,8 +68,8 @@ class ClientDAO {
         $stmt = null;
     }
 
-    public function deleteClient($id) {
-        $stmt = $this->db->getConnection()->prepare("DELETE FROM clientes WHERE id = :id");
+    public function delete($id) {
+        $stmt = $this->db->getConnection()->prepare("DELETE FROM clientes WHERE idcliente = :id");
         $stmt->bindParam(":id", $id, PDO::PARAM_INT);
     
         if ($stmt->execute()) {

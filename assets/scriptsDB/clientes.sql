@@ -6,11 +6,11 @@ CREATE TABLE `clientes` (
   `apellido` text DEFAULT NULL,
   `email` text DEFAULT NULL,
   `cuit` text DEFAULT NULL,
-  `iva` text DEFAULT NULL,
+  `categoriafiscal` text DEFAULT NULL,
   `fechaCreacion` timestamp NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO `clientes` (`idcliente`, `nombre`, `apellido`, `email`, `cuit`,`iva`, `fechaCreacion`) VALUES
+INSERT INTO `clientes` (`idcliente`, `nombre`, `apellido`, `email`, `cuit`,`categoriafiscal`, `fechaCreacion`) VALUES
 (1, 'Carlos', 'Argento', 'carlosA@gmail.com', '20-37432645-6','Consumidor final', current_timestamp()),
 (2, 'Daiana', 'Romero', 'Dai34@gmail.com', '27-32568790-2', 'Responsable inscripto',current_timestamp()),
 (3, 'Alberto', 'Centurion', 'REPARADOR', '23-27587104-6','Monotributista', current_timestamp());

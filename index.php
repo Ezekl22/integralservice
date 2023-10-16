@@ -165,6 +165,7 @@
         case 'clientes':
             include('controladores/ClienteControlador.php');
             $indexPage = new ClienteCtr();
+            break;
         case 'proveedores':
             include('controladores/ProveedorCtr.php');
             $indexPage = new ProveedorCtr();

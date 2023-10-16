@@ -6,14 +6,14 @@ class Client {
     private $lastname;
     private $email;
     private $cuit;
-    private $iva;
+    private $categoriaFiscal;
 
-    public function __construct($name, $lastname, $email, $cuit, $iva) {
+    public function __construct($name, $lastname, $email, $cuit, $categoriaFiscal) {
         $this->name = $name;
         $this->lastname = $lastname;
         $this->email = $email;
         $this->cuit = $cuit;
-        $this->iva = $iva;
+        $this->categoriaFiscal = $categoriaFiscal;
     }
 
     // Getters y setters
@@ -35,7 +35,7 @@ class Client {
     }
 
     public function getLastname() {
-        return $this->name;
+        return $this->lastname;
     }
 
     public function setLastname($lastname) {
@@ -58,11 +58,11 @@ class Client {
         $this->cuit = $cuit;
     }
     
-    public function getIva() {
-        return $this->iva;
+    public function getCategoriaFiscal() {
+        return $this->categoriaFiscal;
     }
 
-    public function setIva($iva) {
-        $this->iva = $iva;
+    public function setCategoriaFiscal($categoriaFiscal) {
+        $this->categoriaFiscal = $categoriaFiscal;
     }
 }

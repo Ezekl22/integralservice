@@ -1,13 +1,11 @@
 
 <?php 
     $id = isset($_GET['id']) ? $_GET['id'] : '';
+    $action = isset($_GET['action']) ? $_GET['action'] : '';
     $ClientController = new ClienteCtr();
     $clientt = $ClientController->clientDAO->getClienteById($id);
-    $ClientController -> update($id);
-    $GestionPantallasCtr = new GestionPantallasControlador();
-    $GestionPantallasCtr->mostrarOcultarPantallaEditar(1);
 
-    if($GestionPantallasCtr->getGestionPantallasById(1)->getInUse() && $id != ''){
+    if($action == 'edit' && $id != ''){
 ?>
         <!DOCTYPE html>
         <html>
@@ -15,9 +13,9 @@
             <title>Editar Cliente</title>
         </head>
         <body>
-            <main class="d-flex flex-column align-items-center mt-2" style="display: none !important;" id="editCliente">
+            <main class="d-flex flex-column align-items-center mt-2 mb-5" id="editCliente">
                 <article class="editar__contenedor rounded-4">
-                    <form action="" method="POST" class="d-flex flex-column align-items-center border-1 border m-4 rounded-4">
+                    <form action="index.php?module=clientes&action=edited&id=<?php echo $id?>" method="POST" class="d-flex flex-column align-items-center border-1 border m-4 rounded-4">
                         <div class="d-flex flex-column align-items-center" id="contenedor">
                             
                             <h2 class="mt-2 text__white">Editar Cliente</h2>
@@ -39,16 +37,15 @@
                                     <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="cuit" name="cuit" value="<?php echo $clientt['cuit']; ?>" required>
                                 </div>
                                 <div class="input-group input-group-sm mb-3 ms-5">
-                                    <label class="input-group-text" for="iva" id="inputGroup-sizing-sm">Iva:</label>
-                                    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="iva" name="iva" value="<?php echo $clientt['iva']; ?>" required>
+                                    <label class="input-group-text" for="iva" id="inputGroup-sizing-sm">Categoria fiscal:</label>
+                                    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="categoriafiscal" name="categoriafiscal" value="<?php echo $clientt['categoriafiscal']; ?>" required>
                                 </div>
                             </div>
-                            <input class="btn button my-2" type="submit"  value="Guardar cambios" onclick="guardarEdicion('editCliente')">
+                            <input class="btn button my-2" type="submit"  value="Guardar cambios">
                         </div>
                     </form>
                 </article>
             </main>
         </body>
-        <script>mostrarOcultarPantallaEditar('editCliente')</script>
         </html>
 <?php }?>
