@@ -197,6 +197,6 @@ $nombreCliente = $presupuestoCtr->getNombreClienteById($presupuesto['idcliente']
         </div>
     </main>
 </body>
-    <?php echo $action == 'see' ? '<script> mostrarVentanaModal(); </script>':''?>
+    <?php echo $action == 'see' ? '<script> mostrarVentanaModal("ver"); </script>':''?>
 </html>
 

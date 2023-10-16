@@ -8,13 +8,18 @@ class UserController {
     public function __construct() {
         $this->userDAO = new UserDAO();
         $action = isset($_GET['action'])?$_GET['action']:'';
-        if($action === "created"){
-            $this->create();
+        $id = isset($_GET['id'])?$_GET['id']:'';
+        switch ($action) {
+            case 'created':
+                $this->create();
+                break;
+            case 'deleted':
+                $this->delete($id);
+                break;
+            case 'edited':
+                $this->update($id);
+                break;
         }
-        if($action === "deleted"){
-            $this->delete($_GET['id']);
-        }
-        
     }
 
     public function index() {
@@ -57,16 +62,11 @@ class UserController {
     }
 
     public function update($id) {
-
         if(isset($_POST["nombre"])){
             $user = new User($_POST["nombre"], $_POST["apellido"], $_POST["tipo"], $_POST["mail"], $_POST["contrasena"]);
             $user->setId($id);
             $this->userDAO->updateUser($user);
         }
-
-        // Redireccionar a la página principal de usuarios
-        //header('Location: index.php?module=usuarios');
-
     }
 
     public function getPantallaDelete(){

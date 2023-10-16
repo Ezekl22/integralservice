@@ -28,9 +28,9 @@
                             <div class="input-group input-group-sm mb-3">
                                 <label class="input-group-text" for="tipo">Options</label>
                                 <select class="form-select" id="tipo" name="tipo" required>
-                                    <option selected>Administrador</option>
-                                    <option value="1">Vendedor</option>
-                                    <option value="2">Reparador</option>
+                                    <option value="Administrador" selected>Administrador</option>
+                                    <option value="Vendedor">Vendedor</option>
+                                    <option value="Reparador">Reparador</option>
                                 </select>
                             </div>
                         </div>
