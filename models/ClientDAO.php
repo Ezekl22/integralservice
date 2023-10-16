@@ -46,8 +46,17 @@ class ClientDAO {
     }
 
     public function deleteClient($id) {
-        // Código para eliminar un cliente de la base de datos
-        // ...
+        $stmt = $this->db->getConnection()->prepare("DELETE FROM clientes WHERE id = :id");
+        $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+    
+        if ($stmt->execute()) {
+            // La eliminación fue exitosa
+            return "ok";
+        } else {
+            // Manejar errores si es necesario
+            print_r($this->db->getConnection()->errorInfo());
+            return "error";
+        }
     }
 
     public function getClienteById($id) {

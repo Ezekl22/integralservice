@@ -7,6 +7,19 @@ class ClienteCtr{
 
     public function __construct() {
         $this->clientDAO = new ClientDAO();
+        $action = isset($_GET['action'])?$_GET['action']:'';
+        $id = isset($_GET['id'])?$_GET['id']:'';
+        switch ($action) {
+            case 'created':
+                $this->create();
+                break;
+            case 'deleted':
+                $this->delete($id);
+                break;
+            case 'edited':
+                $this->update($id);
+                break;
+        }
     }
 
     public function index() {
@@ -18,6 +31,7 @@ class ClienteCtr{
     }
 
     public function getPantallaCreate(){
+        $this->index();
         require_once 'vistas/cliente/create.php';
     }
 
@@ -25,16 +39,8 @@ class ClienteCtr{
         // Mostrar el formulario de creación de cliente
         require_once 'vistas/cliente/create.php';
 
-    // public function store($data) {
-    //     // Validar los datos del formulario
-    //     // ...
-
-        // Crear un nuevo cliente en la base de datos
         $client = new Client($data['name'], $data['lastname'], $data['email'], $data['cuit'], $data['iva']);
         $this->clientDAO->createClient($client);
-
-        // Redireccionar a la página principal de clientes
-        header('Location: index.php?action=index');
     }
 
     public function getPantallaEdit() {
@@ -52,6 +58,10 @@ class ClienteCtr{
             $client->setId($id);
             $this->clientDAO->updateClient($client);
         }
+    }
+    
+    public function delete($id) {
+        $this->clientDAO->deleteUser($id);
     }
 
     public function getAllClientes(){
