@@ -7,13 +7,23 @@ class ProductoCtr {
 
     public function __construct() {
         $this->productoDAO = new ProductoDAO();
+        $action = isset($_GET['action'])?$_GET['action']:'';
+        $id = isset($_GET['id'])?$_GET['id']:'';
+        switch ($action) {
+            case 'created':
+                $this->create();
+                break;
+            case 'deleted':
+                $this->delete($id);
+                break;
+            case 'edited':
+                $this->update($id);
+                break;
+        }
     }
 
     public function index() {
-        // Obtener la lista de usuarios desde el modelo
-        $users = $this->productoDAO->getAllProductos();
-
-        // Cargar la vista con los datos
+        $productos = $this->productoDAO->getAllProductos();
         require_once 'vistas/producto/index.php';
     }
     public function getProductoById($id) {
@@ -28,8 +38,22 @@ class ProductoCtr {
         require_once 'vistas/producto/create.php';
     }
 
+    public function create() {
+        if (isset($_POST['nombre'])) {
+            $nombre = $_POST['nombre'];
+            $marca = $_POST['marca'];
+            $detalle = $_POST['detalle'];
+            $stock = $_POST['stock'];
+            $tipo = $_POST['tipo'];
+            $preciocompra = $_POST['preciocompra'];
+            $precioventa = $_POST['precioventa'];
     
-
+            $producto = new ProductoMdl($nombre, $marca, $detalle, $stock, $tipo, $preciocompra, $precioventa);
+    
+            $this->productoDAO->create($producto);
+        }
+    }
+    
     public function getPantallaEdit() {
         require_once 'vistas/producto/edit.php';
         $this->index();

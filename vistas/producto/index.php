@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Usuarios</title>
+    <title>Productos</title>
 </head>
 <body>
     <main class="main__flex">
         <article class="mt-4">
                 <h2 class="main__title">
-                    Usuarios
+                    Productos
                 </h2>
         </article>
         <article class="mt-5 d-flex flex-column align-items-center">
@@ -22,10 +22,12 @@
                     <table class="grilla__contenedor border-0">
                         <tr class="grilla grilla__cabecera">
                             <th>Nombre</th>
-                            <th>Apellido</th>
+                            <th>Marca</th>
+                            <th>Detalle</th>
+                            <th>Stock</th>
                             <th>Tipo</th>
-                            <th>Nombre de usuario</th>
-                            <th>Acciones</th>
+                            <th>Precio de compra</th>
+                            <th>Precio de venta</th>
                         </tr>
                         <?php foreach ($users as $user) { ?>
                             <tr class="grilla__cuerpo">
