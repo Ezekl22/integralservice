@@ -30,6 +30,7 @@ class UserController {
     }
 
     public function getPantallaCreate(){
+        $this->index();
         require_once 'vistas/usuario/create.php';
     }
 
