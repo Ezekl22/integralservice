@@ -28,12 +28,12 @@
                                 <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="marca" name="marca" required>
                             </div>
                         </div>
-                        <div class="w-50 d-flex mt-3">
-                            <div class="input-group input-group-sm mb-3 ms-4">
+                        <div class="w-75 d-flex mt-3">
+                            <div class="input-group input-group-sm mb-3">
                                 <span class="input-group-text" id="inputGroup-sizing-sm">Stock</span>
                                 <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="marca" name="marca" required>
                             </div>
-                            <div class="input-group input-group-sm mb-3">
+                            <div class="input-group input-group-sm mb-3 ms-4">
                                 <label class="input-group-text" for="tipo">Tipo</label>
                                 <select class="form-select" id="tipo" name="tipo" required>
                                     <option value="Producto" selected>Producto</option>
@@ -43,12 +43,12 @@
                         </div>
                         <div class="w-75 d-flex mt-3">
                             <div class="input-group input-group-sm mb-3">
-                                <span class="input-group-text" id="inputGroup-sizing-sm">Mail</span>
-                                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="mail" name="mail" required>
+                                <span class="input-group-text" id="inputGroup-sizing-sm">Precio de compra</span>
+                                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="preciocompra" name="preciocompra" required>
                             </div>
                             <div class="input-group input-group-sm mb-3 ms-4">
-                                <span class="input-group-text" id="inputGroup-sizing-sm">Contraseña</span>
-                                <input type="password" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="contrasena" name="contrasena" required>
+                                <span class="input-group-text" id="inputGroup-sizing-sm">Precio de venta</span>
+                                <input type="password" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="precioventa" name="precioventa" required>
                             </div>
                         </div>
                     </div>
