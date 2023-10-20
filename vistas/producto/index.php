@@ -11,7 +11,7 @@
                 </h2>
         </article>
         <article class="mt-5 d-flex flex-column align-items-center">
-            <div class="grilla w-75 d-flex flex-column align-items-center rounded-4">
+            <div class="grilla w-95 d-flex flex-column align-items-center rounded-4">
                 <div class="d-flex w-95 justify-content-end mt-3">
                     <div class="input-group input-group-sm w-25">
                         <input type="text" class="form-control" placeholder="Ingrese su busqueda" aria-label="Recipient's username" aria-describedby="buscar">
@@ -39,10 +39,10 @@
                                 <td><?php echo $producto['preciocompra']; ?></td>
                                 <td><?php echo $producto['precioventa']; ?></td>
                                 <td>
-                                    <a class="icono__contenedor me-3" href="index.php?module=usuarios&action=edit&id=<?php echo $user['id']; ?>">
+                                    <a class="icono__contenedor me-3" href="index.php?module=productos&action=edit&id=<?php echo $producto['idproducto']; ?>">
                                         <img class="icono__imagen" src="./assets/img/iconoEditar.png" alt="icono de editar">
                                     </a>
-                                    <a class="icono__contenedor" href="index.php?module=usuarios&action=delete&id=<?php echo $user['id']; ?>">
+                                    <a class="icono__contenedor" href="index.php?module=productos&action=delete&id=<?php echo $producto['idproducto']; ?>">
                                         <img class="icono__imagen" src="./assets/img/iconoEliminar.svg" alt="icono de eliminar">
                                     </a>
                                 </td>
