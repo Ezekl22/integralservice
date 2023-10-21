@@ -10,7 +10,7 @@ class ProductoDAO {
 
     public function update(ProductoMdl $producto) {
         // Código para actualizar un usuario existente en la base de datos
-        $stmt = $this->db->getConnection()->prepare("UPDATE productos SET nombre=:nombre, marca=:marca, detalle=:detalle, stock=:stock, tipo = :tipo, preciocompra = :preciocompra, precioventa = :precioventa WHERE idproducto= :id");
+        $stmt = $this->db->getConnection()->prepare("UPDATE productos SET nombre=:nombre, marca=:marca, detalle=:detalle, stock=:stock, tipo = :tipo, preciocompra = :preciocompra, precioventa = :precioventa WHERE idproducto= :idproducto");
         
         $nombre = $producto->getNombre();
         $marca = $producto->getNombre();

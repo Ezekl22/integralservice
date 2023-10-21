@@ -35,6 +35,7 @@ class ProductoCtr {
     }
 
     public function getPantallaCreate(){
+        $this->index();
         require_once 'vistas/producto/create.php';
     }
 

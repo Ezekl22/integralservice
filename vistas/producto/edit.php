@@ -16,7 +16,7 @@
             <main class="main__flex mb-5">
                 <article class="mt-4">
                         <h2 class="main__title">
-                            Crear Producto
+                        Editar Producto
                         </h2>
                 </article>
                 <article class="mt-5 d-flex flex-column align-items-center">
