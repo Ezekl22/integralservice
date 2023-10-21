@@ -48,7 +48,11 @@
                     </table>
                 </div>
             </div>
-            <a class="my-5 btn button" type="button" href="index.php?module=clientes&action=create">Crear nuevo cliente</a>
+            <?php 
+            $action = isset($_GET['action'])?$_GET['action']:'';
+            if(($action != 'edit' && $action != 'create') ){ ?>
+                <a class="my-5 btn button" type="button" href="index.php?module=clientes&action=create">Crear nuevo cliente</a>
+            <?php } ?>
         </article>
     </main>
 </body>

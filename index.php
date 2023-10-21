@@ -163,7 +163,7 @@
             include('controladores/ReparacionControlador.php');
             break;
         case 'clientes':
-            include('controladores/ClienteControlador.php');
+            include('controladores/ClienteCtr.php');
             $indexPage = new ClienteCtr();
             break;
       case 'productos':
