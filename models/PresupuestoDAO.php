@@ -67,7 +67,7 @@ class PresupuestoDAO {
 
     public function getProductosPresupuestoById($id){
 
-        $stmt = $this->db->getConnection()->prepare("SELECT productos.nombre,productos.marca, productos.detalle,productospresupuestos.cantidad, productos.precioventa , productospresupuestos.cantidad * productos.precioventa AS total
+        $stmt = $this->db->getConnection()->prepare("SELECT productos.idproducto, productos.nombre, productos.marca, productos.detalle, productospresupuestos.cantidad, productos.precioventa , productospresupuestos.cantidad * productos.precioventa AS total
                                                      FROM productospresupuestos
                                                      INNER JOIN productos ON productospresupuestos.idproducto = productos.idproducto
                                                      WHERE productospresupuestos.idpresupuesto = ".$id);

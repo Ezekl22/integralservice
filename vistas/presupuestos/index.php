@@ -156,7 +156,7 @@ $nombreCliente = $presupuestoCtr->getNombreClienteById($presupuesto['idcliente']
                                     </div>
                                     <div class="w-30 d-flex justify-content-end">
                                         <div>
-                                            <?php echo '<b class="me-3">I.V.A:</b> '.$cliente['iva'] ?>
+                                            <?php echo '<b class="me-3">I.V.A:</b> '.$cliente['categoriafiscal'] ?>
                                         </div>
                                     </div>
                                 </div>

@@ -45,9 +45,8 @@ class PresupuestoCtr {
     // }
 
     public function getPantallaEdit() {
-        
-        require_once 'vistas/presupuestos/edit.php';
         $this->index();
+        require_once 'vistas/presupuestos/edit.php';
     }
 
     public function getNombreClienteById($id){
@@ -65,10 +64,6 @@ class PresupuestoCtr {
         return $cliente;
     }
 
-    public function getProductosById($ids){
-        return $this->productoCtr->getProductosById($ids);
-    }
-
     public function getProductosPresupuestoById($id) {
         return $this->presupuestoDAO->getProductosPresupuestoById($id);
     }
@@ -82,6 +77,10 @@ class PresupuestoCtr {
                 $this->presupuestoDAO->updatePresupuesto($presupuesto);
             }
         }
+    }
+
+    public function getProductosPresupuesto($id) {
+
     }
 
     public function getPresupuestoById($id){
