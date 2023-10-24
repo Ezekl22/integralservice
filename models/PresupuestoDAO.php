@@ -9,7 +9,32 @@ class PresupuestoDAO {
         $this->db = DBConnection::getInstance();
     }
 
-    public function createPresupuesto(PresupuestoMdl $presupuesto) {
+    public function create(PresupuestoMdl $presupuesto) {
+        $stmt = $this->db->getConnection()->prepare("INSERT INTO users (name, lastname, mail, password, type) VALUES (:name, :lastname, :mail, :password, :type)");
+        
+        $name = $user->getName();
+        $lastname = $user->getLastname();
+        $mail = $user->getMail();
+        $password = $user->getPassword();
+        $type = $user->getType();
+        
+		$stmt->bindParam(":name", $name, PDO::PARAM_STR);
+		$stmt->bindParam(":lastname", $lastname, PDO::PARAM_STR);
+        $stmt->bindParam(":mail", $mail, PDO::PARAM_STR);
+		$stmt->bindParam(":password", $password, PDO::PARAM_STR);
+		$stmt->bindParam(":type", $type, PDO::PARAM_STR);
+
+		if($stmt->execute()){
+
+			return "ok";
+
+		}else{
+
+			print_r(Conexion::conectar()->errorInfo());
+
+		}
+        $stmt->close();
+        $stmt = null;
     }
 
     public function updatePresupuesto(PresupuestoMdl $presupuesto) {

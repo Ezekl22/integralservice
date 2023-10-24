@@ -17,7 +17,7 @@ echo "<script>const productos = $json;</script>";
                 </h2>
         </article>
         <article class="editar__contenedor rounded-4">
-            <form action="" method="POST" class="d-flex flex-column align-items-center border-1 border m-4 rounded-4">
+            <form action="index.php?module=presupuestos&action=created" method="POST" class="d-flex flex-column align-items-center border-1 border m-4 rounded-4">
                 <div class="d-flex flex-column align-items-center contenedor__mayor" id="contenedor">
                     <div class="my-5 d-flex flex-row w-100">
                         <div class="input-group input-group-sm mx-7">
