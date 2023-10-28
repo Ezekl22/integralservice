@@ -7,18 +7,21 @@ class ProductoCtr {
 
     public function __construct() {
         $this->productoDAO = new ProductoDAO();
+        $module = isset($_GET['module']) ? $_GET['module'] :'';
         $action = isset($_GET['action'])?$_GET['action']:'';
         $id = isset($_GET['id'])?$_GET['id']:'';
-        switch ($action) {
-            case 'created':
-                $this->create();
-                break;
-            case 'deleted':
-                $this->delete($id);
-                break;
-            case 'edited':
-                $this->update($id);
-                break;
+        if ($module == 'productos') {
+            switch ($action) {
+                case 'created':
+                    $this->create();
+                    break;
+                case 'deleted':
+                    $this->delete($id);
+                    break;
+                case 'edited':
+                    $this->update($id);
+                    break;
+            }
         }
     }
 
