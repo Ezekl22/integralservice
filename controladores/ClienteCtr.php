@@ -8,17 +8,20 @@ class ClienteCtr{
     public function __construct() {
         $this->clientDAO = new ClientDAO();
         $action = isset($_GET['action'])?$_GET['action']:'';
+        $module = isset($_GET['module'])?$_GET['module']:'';
         $id = isset($_GET['id'])?$_GET['id']:'';
-        switch ($action) {
-            case 'created':
-                $this->create();
-                break;
-            case 'deleted':
-                $this->delete($id);
-                break;
-            case 'edited':
-                $this->update($id);
-                break;
+        if($module == 'clientes'){
+            switch ($action) {
+                case 'created':
+                    $this->create();
+                    break;
+                case 'deleted':
+                    $this->delete($id);
+                    break;
+                case 'edited':
+                    $this->update($id);
+                    break;
+            }
         }
     }
 
