@@ -1,7 +1,7 @@
 <?php
 require_once 'models/PresupuestoMdl.php';
 require_once 'models/PresupuestoDAO.php';
-require_once 'controladores/ClienteControlador.php';
+require_once 'controladores/ClienteCtr.php';
 require_once 'controladores/ProductoCtr.php';
 
 class PresupuestoCtr {
@@ -27,22 +27,22 @@ class PresupuestoCtr {
         require_once 'vistas/presupuestos/create.php';
     }
 
-    // public function create() {
-    //     // Mostrar el formulario de creación de usuario
-    //     require_once 'vistas/presupuestos/create.php';
-    // }
-
-    // public function store($data) {
-    //     // Validar los datos del formulario
-    //     // ...
-
-    //     // Crear un nuevo usuario en la base de datos
-    //     $presupuesto = new PresupuestoMdl($data['idcliente'], $data['nrocomprobante'], $data['tipo'], $data['estado'], $data['fecha'], $data['puntoventa'], $data['total']);
-    //     $this->presupuestoDAO->createPresupuesto($presupuesto);
-
-    //     // Redireccionar a la página principal de usuarios
-    //     header('Location: index.php?action=index');
-    // }
+    public function create() {
+        // Verifica si se han enviado datos por POST
+        if (isset($_POST['nombre'])) {
+            $nombre = $_POST['nombre'];
+            $apellido = $_POST['apellido'];
+            $tipo = $_POST['tipo'];
+            $mail = $_POST['mail'];
+            $contrasena = $_POST['contrasena'];
+    
+            // Crea un nuevo objeto User con los datos del formulario
+            $user = new User($nombre, $apellido, $tipo, $mail, $contrasena);
+    
+            // Llama a la función para crear el usuario en la base de datos
+            $this->userDAO->createUser($user);
+        }
+    }
 
     public function getPantallaEdit() {
         $this->index();
