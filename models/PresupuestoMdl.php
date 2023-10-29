@@ -8,10 +8,12 @@ class PresupuestoMdl {
     private $estado;
     private $fecha;
     private $puntoventa;
+    private $productos;
     private $total;
 
-    public function __construct($idcliente, $nrocomprobante, $tipo, $estado, $fecha, $puntoventa, $total) {
+    public function __construct($idcliente, $productos, $nrocomprobante, $tipo, $estado, $fecha, $puntoventa, $total) {
         $this->idcliente = $idcliente;
+        $this->productos = $productos;
         $this->nrocomprobante = $nrocomprobante;
         $this->tipo = $tipo;
         $this->estado = $estado;
@@ -36,6 +38,14 @@ class PresupuestoMdl {
 
     public function setIdCliente($idcliente) {
         $this->idcliente = $idcliente;
+    }
+
+    public function getProductos() {
+        return $this->productos;
+    }
+
+    public function setProductos($productos) {
+        $this->productos = $productos;
     }
 
     public function getNroComprobante() {
