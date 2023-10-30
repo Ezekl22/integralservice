@@ -11,13 +11,12 @@ class PresupuestoMdl {
     private $productos;
     private $total;
 
-    public function __construct($idcliente, $productos, $nrocomprobante, $tipo, $estado, $fecha, $puntoventa, $total) {
+    public function __construct($idcliente, $productos, $nrocomprobante, $tipo, $estado, $puntoventa, $total) {
         $this->idcliente = $idcliente;
         $this->productos = $productos;
         $this->nrocomprobante = $nrocomprobante;
         $this->tipo = $tipo;
         $this->estado = $estado;
-        $this->fecha = $fecha;
         $this->puntoventa = $puntoventa;
         $this->total = $total;
     }

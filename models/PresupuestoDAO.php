@@ -31,6 +31,8 @@ class PresupuestoDAO {
         $puntoVenta = $presupuesto->getPuntoVenta();
         $total = $presupuesto->getTotal();
 
+        echo $total;
+
         $stmt->bindParam(":idcliente", $idCliente, PDO::PARAM_INT);
 		$stmt->bindParam(":nrocomprobante", $nroComprobante, PDO::PARAM_STR);
         $stmt->bindParam(":tipo", $tipo, PDO::PARAM_STR);
@@ -87,6 +89,10 @@ class PresupuestoDAO {
     //     // ...
     // }
 
+    public function getNuevoNroComprobante(){
+
+    }
+    
     public function getPresupuestoById($id) {
         $stmt = $this->db->getConnection()->prepare("SELECT * FROM presupuestos WHERE idPresupuesto = ".$id);
 

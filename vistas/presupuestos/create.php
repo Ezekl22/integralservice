@@ -22,7 +22,7 @@ echo "<script>const productos = $json;</script>";
                     <div class="my-5 d-flex flex-row w-100">
                         <div class="input-group input-group-sm mx-7">
                             <label class="input-group-text" for="cliente">Cliente:</label>
-                            <select class="form-select" id="cliente" name="tipo" required>
+                            <select class="form-select" id="idcliente" name="idcliente" required>
                                 <?php foreach ($clientes as $cliente) { ?>
                                     <option value="<?php echo $cliente['idcliente'] ?>"><?php echo $cliente['nombre'].' '.$cliente['apellido'] ?></option>
                                 <?php } ?>
@@ -43,7 +43,7 @@ echo "<script>const productos = $json;</script>";
                     <div class="text__white d-flex" id="">
                         <div class="input-group input-group-sm mb-3">
                             <label class="input-group-text" for="totalProductos" id="inputGroup-sizing-sm">Total:</label>
-                            <input type="text" class="form-control" disabled aria-label="0" id="totalProductos" value="$0,00">
+                            <input type="text" class="form-control" disabled aria-label="0" id="totalproductos" name="totalproductos" value="$0,00">
                         </div>
                     </div>
                     <input class="btn button my-2" type="submit"  value="Guardar cambios">

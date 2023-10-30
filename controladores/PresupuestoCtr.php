@@ -13,6 +13,19 @@ class PresupuestoCtr {
         $this->presupuestoDAO = new PresupuestoDAO();
         $this->clienteCtr = new ClienteCtr();
         $this->productoCtr = new ProductoCtr();
+        $action = isset($_GET['action'])?$_GET['action']:'';
+        $id = isset($_GET['id'])?$_GET['id']:'';
+        switch ($action) {
+            case 'created':
+                $this->create();
+                break;
+            case 'deleted':
+                $this->delete($id);
+                break;
+            case 'edited':
+                $this->update($id);
+                break;
+        }
     }
 
     public function index() {
@@ -29,24 +42,30 @@ class PresupuestoCtr {
 
     public function create() {
         // Verifica si se han enviado datos por POST
-        if (isset($_POST['nombre'])) {
-            $nombre = $_POST['nombre'];
-            $apellido = $_POST['apellido'];
-            $tipo = $_POST['tipo'];
-            $mail = $_POST['mail'];
-            $contrasena = $_POST['contrasena'];
+        
+        if (isset($_POST['idcliente'])) {
+            $productos = [] ;
+            echo $_POST['nrocomprobante'];
+            foreach ($_POST['idproductos'] as $index => $idproducto) {
+                $producto = new ProductoPresupuestoMdl($idproducto, $_POST['preciounit'][$index], $_POST['cantidad'][$index]);
+                array_push($productos, $producto);
+            }
+            $presupuesto = new PresupuestoMdl($_POST['idcliente'], $productos, $_POST['nrocomprobante'], $_POST['tipo'], $_POST['estado'], $_POST['puntoventa'], $_POST['totalproductos']);
     
-            // Crea un nuevo objeto User con los datos del formulario
-            $user = new User($nombre, $apellido, $tipo, $mail, $contrasena);
-    
-            // Llama a la función para crear el usuario en la base de datos
-            $this->userDAO->createUser($user);
+            $this->presupuestoDAO->create($presupuesto);
+            echo "chau";
         }
     }
 
     public function getPantallaEdit() {
         $this->index();
         require_once 'vistas/presupuestos/edit.php';
+    }
+
+    public function getNuevoNroComprobante() {
+        $auxNroComprobante = $this->presupuestoDAO->getNroComprobante() + 1;
+        $nroComprobante = str_pad($auxNroComprobante, 10, 0, STR_PAD_LEFT);
+        return $nroComprobante;
     }
 
     public function getNombreClienteById($id){

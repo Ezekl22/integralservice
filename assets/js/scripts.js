@@ -34,7 +34,7 @@ const agregarComponenteProducto = () =>{
                                 <input type="text" class="form-control" disabled value= "${currencyFormatter(productoSeleccionado[7])}" id="valorunt" name="valorunt[]">
                                 <label class="input-group-text" for="totañ" id="inputGroup-sizing-sm">Total:</label>
                                 <input type="text" class="form-control me-7" disabled aria-label="0" id="total">
-                                <input type="hidden" class="form-control me-7" disabled aria-label="0" name="idproductos[]" value="${productoSeleccionado[0]}" id="idproductos">`;
+                                <input type="hidden" class="form-control me-7" disabled aria-label="0" value="${productoSeleccionado[0]}" id="idproductos" name="idproductos[]">`;
     contProductos.appendChild(contComponente);
     cerrarGrilla('contGrillaProducto');
 }
