@@ -45,15 +45,14 @@ class PresupuestoCtr {
         
         if (isset($_POST['idcliente'])) {
             $productos = [] ;
-            echo $_POST['nrocomprobante'];
             foreach ($_POST['idproductos'] as $index => $idproducto) {
                 $producto = new ProductoPresupuestoMdl($idproducto, $_POST['preciounit'][$index], $_POST['cantidad'][$index]);
                 array_push($productos, $producto);
             }
-            $presupuesto = new PresupuestoMdl($_POST['idcliente'], $productos, $_POST['nrocomprobante'], $_POST['tipo'], $_POST['estado'], $_POST['puntoventa'], $_POST['totalproductos']);
+            $presupuesto = new PresupuestoMdl($_POST['idcliente'], $productos, $this->presupuestoDAO->getNuevoNroComprobante(), 
+                                              $_POST['tipo'], $_POST['estado'], 0001, $_POST['totalproductos']);
     
             $this->presupuestoDAO->create($presupuesto);
-            echo "chau";
         }
     }
 
@@ -63,7 +62,7 @@ class PresupuestoCtr {
     }
 
     public function getNuevoNroComprobante() {
-        $auxNroComprobante = $this->presupuestoDAO->getNroComprobante() + 1;
+        $auxNroComprobante = $this->presupuestoDAO->getNuevoNroComprobante() + 1;
         $nroComprobante = str_pad($auxNroComprobante, 10, 0, STR_PAD_LEFT);
         return $nroComprobante;
     }

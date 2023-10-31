@@ -90,7 +90,12 @@ class PresupuestoDAO {
     // }
 
     public function getNuevoNroComprobante(){
+        $stmt = $this->db->getConnection()->prepare("SELECT MAX(idpresupuesto) FROM presupuestos");
 
+        $stmt->execute();
+        return $stmt -> fetchAll()[0];
+        $stmt->closeCursor();
+        $stmt = null;
     }
     
     public function getPresupuestoById($id) {
