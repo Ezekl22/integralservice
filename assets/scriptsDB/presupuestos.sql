@@ -15,11 +15,11 @@ CREATE TABLE `presupuestos` (
 INSERT INTO `presupuestos` (`idpresupuesto`, `idcliente`,`nrocomprobante`, `tipo`, `estado`, `fecha`,`puntoventa`,`total`) VALUES
 (1, 2, 'C-013456789', 'venta', 'Presupuestado', '05-02-2023', '0001', 140000),
 (2, 1, 'C-098735610', 'venta', 'Pendiente presupuesto', '09-05-2023','0001', 100000),
-(3, 3, 'C-312751963', 'reparacion', 'Reparado', '08-06-2023', '0001', 50000);
+(3, 1, 'C-312751963', 'reparacion', 'Reparado', '08-06-2023', '0001', 50000);
 
 ALTER TABLE `presupuestos`
   ADD PRIMARY KEY (`idpresupuesto`),
-  ADD UNIQUE KEY `idcliente` (`idcliente`);
+  ADD KEY `idcliente` (`idcliente`);
 
 
 ALTER TABLE `presupuestos`

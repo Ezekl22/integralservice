@@ -46,4 +46,12 @@ class ProductoPresupuestoMdl {
     public function setPreciounit($preciounit) {
         $this->preciounit = $preciounit;
     }
+
+    public function getCantidad() {
+        return $this->cantidad;
+    }
+
+    public function setCantidad($cantidad) {
+        $this->cantidad = $cantidad;
+    }
 }

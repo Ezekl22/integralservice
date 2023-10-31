@@ -12,16 +12,16 @@ class PresupuestoDAO {
     public function create(PresupuestoMdl $presupuesto) {
         $productos = $presupuesto->getProductos();
         $productosValues = "";
-        foreach ($productos as $index => $producto) {
+        foreach ($productos as $producto) {
             $idProducto = $producto->getIdProducto();
             $preciounit = $producto->getPreciounit();
             $cantidad = $producto->getCantidad();
             $productosValues = `(@idpresupuesto, $idProducto, $preciounit, $cantidad)`;
         }
-        $stmt = $this->db->getConnection()->prepare(`INSERT INTO presupuestos (idcliente, nrocomprobante, tipo, estado, fecha, puntoventa, total) 
-                                                     VALUES (:idcliente, :nrocomprobante, :tipo, :estado, :fecha, :puntoventa, :total);
-                                                     SET @idpresupuesto = LAST_INSERT_ID();
-                                                     INSERT INTO presupuestos (idpresupuesto, idproducto, preciounit, cantidad) VALUES `.$productosValues);
+        $stmt = $this->db->getConnection()->prepare('INSERT INTO presupuestos (idcliente, nrocomprobante, tipo, estado, fecha, puntoventa, total)'. 
+                                                     'VALUES (:idcliente, :nrocomprobante, :tipo, :estado, :fecha, :puntoventa, :total);'.
+                                                     'SET @idpresupuesto = LAST_INSERT_ID();'.
+                                                     'INSERT INTO presupuestos (idpresupuesto, idproducto, preciounit, cantidad) VALUES'.$productosValues);
 
         $idCliente = $presupuesto->getIdCliente();
         $nroComprobante = $presupuesto->getNroComprobante();
@@ -30,8 +30,6 @@ class PresupuestoDAO {
         $fecha = date("d-m-Y");
         $puntoVenta = $presupuesto->getPuntoVenta();
         $total = $presupuesto->getTotal();
-
-        echo $total;
 
         $stmt->bindParam(":idcliente", $idCliente, PDO::PARAM_INT);
 		$stmt->bindParam(":nrocomprobante", $nroComprobante, PDO::PARAM_STR);
@@ -93,7 +91,7 @@ class PresupuestoDAO {
         $stmt = $this->db->getConnection()->prepare("SELECT MAX(idpresupuesto) FROM presupuestos");
 
         $stmt->execute();
-        return $stmt -> fetchAll()[0];
+        return $stmt -> fetchAll()[0][0];
         $stmt->closeCursor();
         $stmt = null;
     }

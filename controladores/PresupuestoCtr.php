@@ -1,6 +1,7 @@
 <?php
 require_once 'models/PresupuestoMdl.php';
 require_once 'models/PresupuestoDAO.php';
+require_once 'models/ProductoPresupuestoMdl.php';
 require_once 'controladores/ClienteCtr.php';
 require_once 'controladores/ProductoCtr.php';
 
@@ -46,11 +47,11 @@ class PresupuestoCtr {
         if (isset($_POST['idcliente'])) {
             $productos = [] ;
             foreach ($_POST['idproductos'] as $index => $idproducto) {
-                $producto = new ProductoPresupuestoMdl($idproducto, $_POST['preciounit'][$index], $_POST['cantidad'][$index]);
+                $producto = new ProductoPresupuestoMdl($idproducto, $_POST['valorunt'][$index], $_POST['cantidad'][$index]);
                 array_push($productos, $producto);
             }
             $presupuesto = new PresupuestoMdl($_POST['idcliente'], $productos, $this->presupuestoDAO->getNuevoNroComprobante(), 
-                                              $_POST['tipo'], $_POST['estado'], 0001, $_POST['totalproductos']);
+                                              $_POST['tipo'], "Presupuestado", 0001, $_POST['totalproductos']);
     
             $this->presupuestoDAO->create($presupuesto);
         }
@@ -62,7 +63,7 @@ class PresupuestoCtr {
     }
 
     public function getNuevoNroComprobante() {
-        $auxNroComprobante = $this->presupuestoDAO->getNuevoNroComprobante() + 1;
+        $auxNroComprobante = strval($this->presupuestoDAO->getNuevoNroComprobante() + 1);
         $nroComprobante = str_pad($auxNroComprobante, 10, 0, STR_PAD_LEFT);
         return $nroComprobante;
     }
