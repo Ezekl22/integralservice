@@ -46,12 +46,16 @@ class PresupuestoCtr {
         
         if (isset($_POST['idcliente'])) {
             $productos = [] ;
+            $precioTotal = 0;
             foreach ($_POST['idproductos'] as $index => $idproducto) {
-                $producto = new ProductoPresupuestoMdl($idproducto, $_POST['valorunt'][$index], $_POST['cantidad'][$index]);
+                $precioUnit = $this->productoCtr->getProductoById($idproducto)['precioventa'];
+                $cantidad = intval($_POST['cantidad'][$index]);
+                $producto = new ProductoPresupuestoMdl($idproducto, $precioUnit, $cantidad);
+                $precioTotal += $precioUnit * $cantidad;
                 array_push($productos, $producto);
             }
-            $presupuesto = new PresupuestoMdl($_POST['idcliente'], $productos, $this->presupuestoDAO->getNuevoNroComprobante(), 
-                                              $_POST['tipo'], "Presupuestado", 0001, $_POST['totalproductos']);
+            $presupuesto = new PresupuestoMdl($_POST['idcliente'], $productos, $this->getNuevoNroComprobante(), 
+                                              $_POST['tipo'], "Presupuestado", '0001', $precioTotal);
     
             $this->presupuestoDAO->create($presupuesto);
         }

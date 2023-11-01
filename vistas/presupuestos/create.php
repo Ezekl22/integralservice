@@ -43,7 +43,7 @@ echo "<script>const productos = $json;</script>";
                     <div class="text__white d-flex" id="">
                         <div class="input-group input-group-sm mb-3">
                             <label class="input-group-text" for="totalProductos" id="inputGroup-sizing-sm">Total:</label>
-                            <input type="text" class="form-control" readonly aria-label="0" id="totalproductos" name="totalproductos" value="$0,00">
+                            <input type="text" class="form-control" disabled aria-label="0" id="totalproductos" value="$0,00">
                         </div>
                     </div>
                     <input class="btn button my-2" type="submit"  value="Guardar cambios">

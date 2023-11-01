@@ -12,16 +12,21 @@ class PresupuestoDAO {
     public function create(PresupuestoMdl $presupuesto) {
         $productos = $presupuesto->getProductos();
         $productosValues = "";
-        foreach ($productos as $producto) {
-            $idProducto = $producto->getIdProducto();
-            $preciounit = $producto->getPreciounit();
-            $cantidad = $producto->getCantidad();
-            $productosValues = `(@idpresupuesto, $idProducto, $preciounit, $cantidad)`;
+        for($i = 0; $i < count($productos); $i++) {
+            $idProducto = $productos[$i]->getIdProducto();
+            $preciounit = $productos[$i]->getPreciounit();
+            $cantidad = $productos[$i]->getCantidad();
+            $separacion = $i != count($productos)-1?', ': ';';
+            $productosValues = $productosValues.' (@idpresupuesto, '.$idProducto.', '.$preciounit.', '.$cantidad.')'.$separacion;
         }
+        foreach ($productos as $index => $producto) {
+            
+        }
+        echo  $productosValues;
         $stmt = $this->db->getConnection()->prepare('INSERT INTO presupuestos (idcliente, nrocomprobante, tipo, estado, fecha, puntoventa, total)'. 
                                                      'VALUES (:idcliente, :nrocomprobante, :tipo, :estado, :fecha, :puntoventa, :total);'.
                                                      'SET @idpresupuesto = LAST_INSERT_ID();'.
-                                                     'INSERT INTO presupuestos (idpresupuesto, idproducto, preciounit, cantidad) VALUES'.$productosValues);
+                                                     'INSERT INTO productospresupuestos (idpresupuesto, idproducto, preciounit, cantidad) VALUES '.$productosValues);
 
         $idCliente = $presupuesto->getIdCliente();
         $nroComprobante = $presupuesto->getNroComprobante();
@@ -81,11 +86,6 @@ class PresupuestoDAO {
         $stmt->closeCursor();
         $stmt = null;
     }
-
-    // public function deletePresupuesto($idPresupuesto) {
-    //     // Código para eliminar un usuario de la base de datos
-    //     // ...
-    // }
 
     public function getNuevoNroComprobante(){
         $stmt = $this->db->getConnection()->prepare("SELECT MAX(idpresupuesto) FROM presupuestos");
