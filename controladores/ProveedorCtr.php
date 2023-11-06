@@ -7,57 +7,68 @@ class ProveedorCtr {
 
     public function __construct() {
         $this->proveedorDAO = new ProveedorDAO();
+        $action = isset($_GET['action'])?$_GET['action']:'';
+        $id = isset($_GET['id'])?$_GET['id']:'';
+        switch ($action) {
+            case 'created':
+                $this->create();
+                break;
+            case 'deleted':
+                $this->delete($id);
+                break;
+            case 'edited':
+                $this->update($id);
+                break;
+        }
     }
 
     public function index() {
         // Obtener la lista de proveedores desde el modelo
-        $proveedores = $this->proveedorDAO->getAllProveedores();
+        $proveedores = $this->getAllProveedores();
 
         // Cargar la vista con los datos
         require_once 'vistas/proveedor/index.php';
     }
 
-    public function getProveedorById($id) {
-        return $this->proveedorDAO->getProveedorById($id);
+    public function getAllProveedores(){
+        return $this->proveedorDAO->getAllProveedores();
     }
 
     public function getPantallaCreate(){
+        $this->index();
         require_once 'vistas/proveedor/create.php';
     }
 
     public function create() {
-        // Mostrar el formulario de creación de proveedor
-        require_once 'vistas/proveedor/create.php';
+        // Verifica si se han enviado datos por POST
+        if (isset($_POST['nombre'])) {
+            $nombre = $_POST['nombre'];
+            $categoria_fiscal = $_POST['categoria_fiscal'];
+            $direccion = $_POST['direccion'];
+            $correo = $_POST['correo'];
+            $telefono = $_POST['telefono'];
+            $saldo = $_POST['saldo'];
+            $fechaCreacion = $_POST['fechaCreacion'];
+    
+            // Crea un nuevo objeto ProveedorMdl con los datos del formulario
+            $proveedor = new ProveedorMdl($nombre, $categoria_fiscal, $direccion, $correo, $telefono, $saldo, $fechaCreacion);
+    
+            // Llama a la función para crear el proveedor en la base de datos
+            $this->proveedorDAO->createProveedor($proveedor);
+        }
     }
 
-    // public function store($data) {
-    //     // Validar los datos del formulario
-    //     // ...
-
-    //     // Crear un nuevo proveedor en la base de datos
-    //     $proveedor = new ProveedorMdl($data['name'], $data['tax_category'], $data['adress'], $data['phone'], $data['mail'], $data['balance']);
-    //     $this->proveedorDAO->createProveedor($proveedor);
-
-    //     // Redireccionar a la página principal de proveedores
-    //     header('Location: index.php?action=index');
-    // }
-
     public function getPantallaEdit() {
-        // Obtener el proveedor desde el modelo
-
-        // Mostrar el formulario de edición de proveedor con los datos cargados
-        require_once 'vistas/proveedor/edit.php';
         $this->index();
+        require_once 'vistas/proveedor/edit.php';
     }
 
     public function update($id) {
-
         if(isset($_POST["nombre"])){
             $proveedor = new ProveedorMdl($_POST["nombre"], $_POST["cateogria_fiscal"], $_POST["direccion"], $_POST["correo"], $_POST["telefono"], $_POST["saldo"], $_POST["fechaCreacion"]);
             $proveedor->setId($id);
             $this->proveedorDAO->updateProveedor($proveedor);
         }
-
     }
 
     public function getPantallaDelete(){
@@ -65,15 +76,7 @@ class ProveedorCtr {
         $this->index();
     }
 
-    public function getAllProveedores(){
-        return $this->proveedorDAO->getAllProveedores();
+    public function delete($id) {
+        $this->proveedorDAO->deleteProveedor($id);
     }
-
-    // public function delete($id) {
-    //     // Eliminar el proveedor de la base de datos
-    //     $this->proveedorDAO->deleteProveedor($id);
-
-    //     // Redireccionar a la página principal de proveedores
-    //     header('Location: index.php?action=index');
-    // }
 }
