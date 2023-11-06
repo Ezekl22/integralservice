@@ -52,28 +52,19 @@ class ClienteCtr{
             $client->setId($id);
             $this->clientDAO->updateClient($client);
         }
-
-        // Redireccionar a la página principal de clientes
-        //header('Location: index.php?module=clientes');
-
-    }
-
-    public function getPantallaDelete(){
-        require_once 'vistas/cliente/delete.php';
-        $this->index();
-    }
-
-    public function delete($id) {
-        // Eliminar el cliente de la base de datos
-        $this->clientDAO->deleteClient($id);
-
-        // Redireccionar a la página principal de clientes
-        header('Location: index.php?action=index');
     }
 
     public function getAllClientes(){
         return $this->clientDAO->getAllClientes();
     }
+
+    // public function delete($id) {
+    //     // Eliminar el usuario de la base de datos
+    //     $this->userDAO->deleteUser($id);
+
+    // //     // Redireccionar a la página principal de usuarios
+    // //     header('Location: index.php?action=index');
+    // }
     
     public function getClienteById($id){
         return $this->clientDAO->getClienteById($id);

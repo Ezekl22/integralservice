@@ -17,6 +17,10 @@ class ProveedorCtr {
         require_once 'vistas/proveedor/index.php';
     }
 
+    public function getProveedorById($id) {
+        return $this->proveedorDAO->getProveedorById($id);
+    }
+
     public function getPantallaCreate(){
         require_once 'vistas/proveedor/create.php';
     }
@@ -59,6 +63,10 @@ class ProveedorCtr {
     public function getPantallaDelete(){
         require_once 'vistas/proveedor/delete.php';
         $this->index();
+    }
+
+    public function getAllProveedores(){
+        return $this->proveedorDAO->getAllProveedores();
     }
 
     // public function delete($id) {
