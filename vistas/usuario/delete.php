@@ -1,4 +1,3 @@
-<!-- views/user/delete.php -->
 <!DOCTYPE html>
 <html>
 <head>

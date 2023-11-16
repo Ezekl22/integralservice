@@ -20,8 +20,8 @@ class PresupuestoCtr {
             case 'created':
                 $this->create();
                 break;
-            case 'deleted':
-                $this->delete($id);
+            case 'canceled':
+                $this->canceled($id);
                 break;
             case 'edited':
                 $this->update($id);
@@ -110,18 +110,14 @@ class PresupuestoCtr {
         return $this->presupuestoDAO->getPresupuestoById($id);
     }
 
-    // public function getPantallaDelete(){
-    //     require_once 'vistas/usuario/delete.php';
-    //     $this->index();
-    // }
+    public function getPantallaDelete(){
+        require_once 'vistas/presupuestos/delete.php';
+        $this->index();
+    }
 
-    // public function delete($id) {
-    //     // Eliminar el usuario de la base de datos
-    //     $this->presupuestoDAO->deletePresupuesto($id);
-
-    //     // Redireccionar a la página principal de usuarios
-    //     header('Location: index.php?action=index');
-    // }
+    public function canceled($id){
+        $this->presupuestoDAO->cancel($id);
+    }
 
     public function getAllClientes(){
         return $this->clienteCtr->getAllClientes();

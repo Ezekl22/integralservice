@@ -19,9 +19,7 @@ class PresupuestoDAO {
             $separacion = $i != count($productos)-1?', ': ';';
             $productosValues = $productosValues.' (@idpresupuesto, '.$idProducto.', '.$preciounit.', '.$cantidad.')'.$separacion;
         }
-        foreach ($productos as $index => $producto) {
-            
-        }
+
         echo  $productosValues;
         $stmt = $this->db->getConnection()->prepare('INSERT INTO presupuestos (idcliente, nrocomprobante, tipo, estado, fecha, puntoventa, total)'. 
                                                      'VALUES (:idcliente, :nrocomprobante, :tipo, :estado, :fecha, :puntoventa, :total);'.
@@ -106,7 +104,7 @@ class PresupuestoDAO {
     }
 
     public function getAllPresupuestos() {
-        $stmt = $this->db->getConnection()->prepare("SELECT * FROM presupuestos");
+        $stmt = $this->db->getConnection()->prepare("SELECT * FROM presupuestos WHERE estado != 'cancelado'");
 
         $stmt->execute();
         return $stmt -> fetchAll();
@@ -115,11 +113,28 @@ class PresupuestoDAO {
     }
 
     public function getProductosPresupuestoById($id){
-
         $stmt = $this->db->getConnection()->prepare("SELECT productos.idproducto, productos.nombre, productos.marca, productos.detalle, productospresupuestos.cantidad, productos.precioventa , productospresupuestos.cantidad * productos.precioventa AS total
                                                      FROM productospresupuestos
                                                      INNER JOIN productos ON productospresupuestos.idproducto = productos.idproducto
                                                      WHERE productospresupuestos.idpresupuesto = ".$id);
+
+        $stmt->execute();
+        return $stmt -> fetchAll();
+        $stmt->closeCursor();
+        $stmt = null;
+    }
+
+    public function cancel($id){
+        $stmt = $this->db->getConnection()->prepare("UPDATE presupuestos SET estado = 'cancelado' WHERE idPresupuesto = ".$id);
+
+        $stmt->execute();
+        return $stmt -> fetchAll();
+        $stmt->closeCursor();
+        $stmt = null;
+    }
+
+    public function facturar($id){
+        $stmt = $this->db->getConnection()->prepare("UPDATE presupuestos SET estado = 'facturado' WHERE idPresupuesto = ".$id." AND estado NOT IN  ('cancelado','Pendiente presupuesto')");
 
         $stmt->execute();
         return $stmt -> fetchAll();
