@@ -116,6 +116,8 @@ class PresupuestoCtr {
     }
 
     public function canceled($id){
+        $estado = $this->presupuestoDAO->getEstado($id);
+        if($estado != 'Pendiente presupuesto' || $estado != 'En reparacion' || $estado != '')
         $this->presupuestoDAO->cancel($id);
     }
 

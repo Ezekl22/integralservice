@@ -48,10 +48,11 @@ class PresupuestoDAO {
 
 		}else{
 
-			print_r(Conexion::conectar()->errorInfo());
+			print_r($stmt->errorInfo());
 
 		}
-        $stmt->close();
+
+        $stmt->closeCursor();
         $stmt = null;
     }
 
@@ -80,6 +81,10 @@ class PresupuestoDAO {
 
 			return "ok";
 
+		}else{
+
+			print_r($stmt->errorInfo());
+
 		}
         $stmt->closeCursor();
         $stmt = null;
@@ -89,27 +94,33 @@ class PresupuestoDAO {
         $stmt = $this->db->getConnection()->prepare("SELECT MAX(idpresupuesto) FROM presupuestos");
 
         $stmt->execute();
-        return $stmt -> fetchAll()[0][0];
+        $resultado = $stmt -> fetchAll()[0][0];
         $stmt->closeCursor();
         $stmt = null;
+        return $resultado;
+        
     }
     
     public function getPresupuestoById($id) {
         $stmt = $this->db->getConnection()->prepare("SELECT * FROM presupuestos WHERE idPresupuesto = ".$id);
 
         $stmt->execute();
-        return $stmt -> fetchAll()[0];
+        $resultado = $stmt -> fetchAll()[0];
         $stmt->closeCursor();
         $stmt = null;
+        return $resultado; 
+        
     }
 
     public function getAllPresupuestos() {
         $stmt = $this->db->getConnection()->prepare("SELECT * FROM presupuestos WHERE estado != 'cancelado'");
 
         $stmt->execute();
-        return $stmt -> fetchAll();
+        $resultado = $stmt -> fetchAll();
         $stmt->closeCursor();
         $stmt = null;
+        return $resultado;
+        
     }
 
     public function getProductosPresupuestoById($id){
@@ -119,25 +130,41 @@ class PresupuestoDAO {
                                                      WHERE productospresupuestos.idpresupuesto = ".$id);
 
         $stmt->execute();
-        return $stmt -> fetchAll();
+        $resultado = $stmt -> fetchAll();
         $stmt->closeCursor();
         $stmt = null;
+        return $resultado;
+        
     }
 
     public function cancel($id){
         $stmt = $this->db->getConnection()->prepare("UPDATE presupuestos SET estado = 'cancelado' WHERE idPresupuesto = ".$id);
 
-        $stmt->execute();
-        return $stmt -> fetchAll();
+        if($stmt->execute()){
+
+			return "ok";
+
+		}else{
+
+			print_r($stmt->errorInfo());
+
+		}
         $stmt->closeCursor();
         $stmt = null;
     }
 
     public function facturar($id){
-        $stmt = $this->db->getConnection()->prepare("UPDATE presupuestos SET estado = 'facturado' WHERE idPresupuesto = ".$id." AND estado NOT IN  ('cancelado','Pendiente presupuesto')");
+        $stmt = $this->db->getConnection()->prepare("UPDATE presupuestos SET estado = 'Facturado' WHERE idPresupuesto = ".$id." AND estado NOT IN  ('Cancelado','Pendiente presupuesto','En reparacion')");
 
-        $stmt->execute();
-        return $stmt -> fetchAll();
+        if($stmt->execute()){
+
+			return "ok";
+
+		}else{
+
+			print_r($stmt->errorInfo());
+
+		}
         $stmt->closeCursor();
         $stmt = null;
     }
