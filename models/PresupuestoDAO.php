@@ -19,8 +19,6 @@ class PresupuestoDAO {
             $separacion = $i != count($productos)-1?', ': ';';
             $productosValues = $productosValues.' (@idpresupuesto, '.$idProducto.', '.$preciounit.', '.$cantidad.')'.$separacion;
         }
-
-        echo  $productosValues;
         $stmt = $this->db->getConnection()->prepare('INSERT INTO presupuestos (idcliente, nrocomprobante, tipo, estado, fecha, puntoventa, total)'. 
                                                      'VALUES (:idcliente, :nrocomprobante, :tipo, :estado, :fecha, :puntoventa, :total);'.
                                                      'SET @idpresupuesto = LAST_INSERT_ID();'.
@@ -124,7 +122,9 @@ class PresupuestoDAO {
     }
 
     public function getProductosPresupuestoById($id){
-        $stmt = $this->db->getConnection()->prepare("SELECT productos.idproducto, productos.nombre, productos.marca, productos.detalle, productospresupuestos.cantidad, productos.precioventa , productospresupuestos.cantidad * productos.precioventa AS total
+        $stmt = $this->db->getConnection()->prepare("SELECT productos.idproducto, productos.nombre, productos.marca, productos.detalle, 
+                                                     productospresupuestos.cantidad, productos.precioventa, 
+                                                     productospresupuestos.cantidad * productos.precioventa AS total
                                                      FROM productospresupuestos
                                                      INNER JOIN productos ON productospresupuestos.idproducto = productos.idproducto
                                                      WHERE productospresupuestos.idpresupuesto = ".$id);
@@ -134,7 +134,6 @@ class PresupuestoDAO {
         $stmt->closeCursor();
         $stmt = null;
         return $resultado;
-        
     }
 
     public function cancel($id){

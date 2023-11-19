@@ -1,21 +1,3 @@
-<?php 
-
-$action = isset($_GET['action']) ? $_GET['action'] : '';
-$presupuestoCtr = New PresupuestoCtr();
-if ($action == 'see'){
-    $id = isset($_GET['id']) ? $_GET['id'] : '';
-    
-    $presupuesto = $presupuestoCtr->getPresupuestoById($id);
-    
-$nombreCliente = $presupuestoCtr->getNombreClienteById($presupuesto['idcliente']);
-    $productosPre = $presupuestoCtr->getProductosPresupuestoById($presupuesto['idpresupuesto']);
-    $cliente = $presupuestoCtr->getClienteById($presupuesto['idcliente']);
-    $total = 0;
-}
-// $clienteCtr = new ClientController();
-// $clienteCte->getClienteById();
-
-?>
 <!DOCTYPE html>
 <html>
 <head>

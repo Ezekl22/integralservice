@@ -32,6 +32,18 @@ class PresupuestoCtr {
     public function index() {
         // Obtener la lista de usuarios desde el modelo
         $presupuestos = $this->presupuestoDAO->getAllPresupuestos();
+        $action = isset($_GET['action']) ? $_GET['action'] : '';
+        $presupuestoCtr = New PresupuestoCtr();
+        if ($action == 'see'){
+            $id = isset($_GET['id']) ? $_GET['id'] : '';
+            
+            $presupuesto = $presupuestoCtr->getPresupuestoById($id);
+            
+            $nombreCliente = $presupuestoCtr->getNombreClienteById($presupuesto->getIdCliente());
+            $productosPre = $presupuestoCtr->getProductosPresupuestoById($presupuesto->getIdPresupuesto());
+            $cliente = $presupuestoCtr->getClienteById($presupuesto->getIdCliente());
+            $total = 0;
+        }
 
         // Cargar la vista con los datos
         require_once 'vistas/presupuestos/index.php';
@@ -83,8 +95,8 @@ class PresupuestoCtr {
     }
 
     public function getProductoById($id){
-        $cliente = $this->productoCtr->getProductoById($id);
-        return $cliente;
+        $producto = $this->productoCtr->getProductoById($id);
+        return $producto;
     }
 
     public function getProductosPresupuestoById($id) {
@@ -102,12 +114,11 @@ class PresupuestoCtr {
         }
     }
 
-    public function getProductosPresupuesto($id) {
-
-    }
-
     public function getPresupuestoById($id){
-        return $this->presupuestoDAO->getPresupuestoById($id);
+        $presupuestoBD = $this->presupuestoDAO->getPresupuestoById($id);
+        $productosPresupuestoBD = $this->presupuestoDAO->getProductosPresupuestoById($id);
+        $presupuesto = NEW PresupuestoMdl($presupuestoBD['idcliente'], $productosPresupuestoBD, $presupuestoBD['nrocomprobante'], $presupuestoBD['tipo'], $presupuestoBD['estado'], $presupuestoBD['puntoventa'], $presupuestoBD['total']);
+        return  $presupuesto;
     }
 
     public function getPantallaDelete(){
