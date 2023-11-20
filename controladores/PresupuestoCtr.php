@@ -26,6 +26,9 @@ class PresupuestoCtr {
             case 'edited':
                 $this->update($id);
                 break;
+            case 'facturar':
+                $this->facturar($id);
+                break;
         }
     }
 
@@ -36,12 +39,10 @@ class PresupuestoCtr {
         $presupuestoCtr = New PresupuestoCtr();
         if ($action == 'see'){
             $id = isset($_GET['id']) ? $_GET['id'] : '';
-            
-            $presupuesto = $presupuestoCtr->getPresupuestoById($id);
-            
-            $nombreCliente = $presupuestoCtr->getNombreClienteById($presupuesto->getIdCliente());
-            $productosPre = $presupuestoCtr->getProductosPresupuestoById($presupuesto->getIdPresupuesto());
-            $cliente = $presupuestoCtr->getClienteById($presupuesto->getIdCliente());
+            $presupuesto = $this->getPresupuestoById($id);
+            $cliente = $this->getClienteById($presupuesto->getIdCliente());
+            $nombreCliente = $cliente['nombre'].' '.$cliente['apellido'];
+            $productosPre = $this->getProductosPresupuestoById($presupuesto->getIdPresupuesto());
             $total = 0;
         }
 
@@ -118,6 +119,8 @@ class PresupuestoCtr {
         $presupuestoBD = $this->presupuestoDAO->getPresupuestoById($id);
         $productosPresupuestoBD = $this->presupuestoDAO->getProductosPresupuestoById($id);
         $presupuesto = NEW PresupuestoMdl($presupuestoBD['idcliente'], $productosPresupuestoBD, $presupuestoBD['nrocomprobante'], $presupuestoBD['tipo'], $presupuestoBD['estado'], $presupuestoBD['puntoventa'], $presupuestoBD['total']);
+        $presupuesto->setIdPresupuesto($id);
+        $presupuesto->setFecha($presupuestoBD['fecha']);
         return  $presupuesto;
     }
 
@@ -127,9 +130,10 @@ class PresupuestoCtr {
     }
 
     public function canceled($id){
-        $estado = $this->presupuestoDAO->getEstado($id);
+        $presupuesto = $this->getPresupuestoById($id);
+        $estado = $presupuesto->getEstado();
         if($estado != 'Pendiente presupuesto' || $estado != 'En reparacion' || $estado != '')
-        $this->presupuestoDAO->cancel($id);
+            $this->presupuestoDAO->cancel($id);
     }
 
     public function getAllClientes(){
@@ -138,5 +142,15 @@ class PresupuestoCtr {
 
     public function getAllProductos(){
         return $this->productoCtr->getAllProductos();
+    }
+
+    public function facturar($id){
+        $presupuesto = $this->getPresupuestoById($id);
+        $estado = $presupuesto->getEstado();
+        if($estado != 'Pendiente presupuesto' && $estado != 'En reparacion' && $estado != '' && $estado != 'Facturado'){
+            $presupuesto->setEstado('Facturado');
+            $presupuesto->setNroComprobante('C-'.$presupuesto->getNroComprobante().'-0001');
+            $this->presupuestoDAO->updatePresupuesto($presupuesto);
+        }
     }
 }

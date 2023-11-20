@@ -68,7 +68,7 @@ class PresupuestoDAO {
         $idPresupuesto = $presupuesto->getIdPresupuesto();
 
 		$stmt->bindParam(":idcliente", $idCliente, PDO::PARAM_INT);
-		$stmt->bindParam(":nrocomprobante", $nroComprobante, PDO::PARAM_INT);
+		$stmt->bindParam(":nrocomprobante", $nroComprobante, PDO::PARAM_STR);
         $stmt->bindParam(":estado", $estado, PDO::PARAM_STR);
 		$stmt->bindParam(":fecha", $fecha, PDO::PARAM_STR);
 		$stmt->bindParam(":puntoventa", $puntoVenta, PDO::PARAM_STR);
@@ -151,21 +151,4 @@ class PresupuestoDAO {
         $stmt->closeCursor();
         $stmt = null;
     }
-
-    public function facturar($id){
-        $stmt = $this->db->getConnection()->prepare("UPDATE presupuestos SET estado = 'Facturado' WHERE idPresupuesto = ".$id." AND estado NOT IN  ('Cancelado','Pendiente presupuesto','En reparacion')");
-
-        if($stmt->execute()){
-
-			return "ok";
-
-		}else{
-
-			print_r($stmt->errorInfo());
-
-		}
-        $stmt->closeCursor();
-        $stmt = null;
-    }
-
 }
