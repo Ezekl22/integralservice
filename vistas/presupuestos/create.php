@@ -31,8 +31,8 @@ echo "<script>const productos = $json;</script>";
                         <div class="input-group input-group-sm mx-7">
                             <label class="input-group-text input-group-sm" for="tipo">Tipo:</label>
                             <select class="form-select" id="tipo" name="tipo" required>
-                                <option value="Administrador">Venta</option>
-                                <option value="Vendedor">Reparacion</option>
+                                <option value="Venta">Venta</option>
+                                <option value="Reparacion">Reparacion</option>
                             </select>
                         </div>
                     </div>
