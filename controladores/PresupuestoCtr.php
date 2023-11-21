@@ -36,7 +36,7 @@ class PresupuestoCtr {
         // Obtener la lista de usuarios desde el modelo
         $presupuestos = $this->presupuestoDAO->getAllPresupuestos();
         $action = isset($_GET['action']) ? $_GET['action'] : '';
-        $presupuestoCtr = New PresupuestoCtr();
+        $presupuestoCtr = $this;
         if ($action == 'see'){
             $id = isset($_GET['id']) ? $_GET['id'] : '';
             $presupuesto = $this->getPresupuestoById($id);
@@ -55,11 +55,10 @@ class PresupuestoCtr {
     }
 
     public function create() {
-        // Verifica si se han enviado datos por POST
-        
         if (isset($_POST['idcliente'])) {
             $productos = [] ;
             $precioTotal = 0;
+            $estado = isset($_POST['tipo'])? $_POST['tipo'] == 'Venta'? 'Presupuestado': 'Pendiente presupuesto' :'';
             foreach ($_POST['idproductos'] as $index => $idproducto) {
                 $precioUnit = $this->productoCtr->getProductoById($idproducto)['precioventa'];
                 $cantidad = intval($_POST['cantidad'][$index]);
@@ -68,7 +67,7 @@ class PresupuestoCtr {
                 array_push($productos, $producto);
             }
             $presupuesto = new PresupuestoMdl($_POST['idcliente'], $productos, $this->getNuevoNroComprobante(), 
-                                              $_POST['tipo'], "Presupuestado", '0001', $precioTotal);
+                                              $_POST['tipo'], $estado, '0001', $precioTotal);
     
             $this->presupuestoDAO->create($presupuesto);
         }
