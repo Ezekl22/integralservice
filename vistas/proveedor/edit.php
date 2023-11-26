@@ -6,8 +6,6 @@
     $proveedorr = $ProveedorCtr->proveedorDAO->getProveedorById($id);
     $ProveedorCtr -> update($id);
     $fecha = new DateTime($proveedorr['fechaCreacion']);
-    $GestionPantallasCtr = new GestionPantallasControlador();
-    $GestionPantallasCtr->mostrarOcultarPantallaEditar(1);
 
     if($action == 'edit' && $id != ''){
 ?>

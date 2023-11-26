@@ -35,10 +35,10 @@ class ProveedorDAO {
 
 		}else{
 
-			print_r(Conexion::conectar()->errorInfo());
+			print_r($stmt->errorInfo());
 
 		}
-        $stmt->close();
+        $stmt->closeCursor();
         $stmt = null;
     }
 
@@ -68,10 +68,10 @@ class ProveedorDAO {
 
 		}else{
 
-			print_r(Conexion::conectar()->errorInfo());
+			print_r($stmt->errorInfo());
 
 		}
-        $stmt->close();
+        $stmt->closeCursor();
         $stmt = null;
     }
 
@@ -94,18 +94,19 @@ class ProveedorDAO {
         $stmt = $this->db->getConnection()->prepare("SELECT * FROM proveedores WHERE idproveedor = ".$id);
 
         $stmt->execute();
-        return $stmt -> fetchAll()[0];
-        $stmt->close();
+        $valor = $stmt -> fetchAll()[0];
+        $stmt->closeCursor();
         $stmt = null;
+        return $valor;
     }
 
     public function getAllProveedores() {
         // Código para obtener todos los proveedors desde la base de datos
         $stmt = $this->db->getConnection()->prepare("SELECT * FROM proveedores");
-
         $stmt->execute();
-        return $stmt -> fetchAll();
-        $stmt->close();
+        $valor = $stmt -> fetchAll();
+        $stmt->closeCursor();
         $stmt = null;
+        return $valor;
     }
 }
