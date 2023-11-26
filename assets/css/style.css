@@ -253,3 +253,7 @@ footer{
     background-color: #dedede !important;
     border: black 1px solid;
   }
+
+  .svg-disabled-color{
+    fill: #666;
+  }
