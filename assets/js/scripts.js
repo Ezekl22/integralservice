@@ -128,7 +128,7 @@ const cantidadOnChange = (idProducto,id) =>{
     recalcularTotal();
 }
 
-const mostrarVentanaModal = () =>{
-    var miModal = new bootstrap.Modal(document.getElementById("ver"));
+const mostrarVentanaModal = (id) =>{
+    var miModal = new bootstrap.Modal(document.getElementById(id));
     miModal.show();
 }       

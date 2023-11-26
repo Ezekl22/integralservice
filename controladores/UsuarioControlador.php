@@ -7,56 +7,66 @@ class UserController {
 
     public function __construct() {
         $this->userDAO = new UserDAO();
+        $action = isset($_GET['action'])?$_GET['action']:'';
+        $id = isset($_GET['id'])?$_GET['id']:'';
+        switch ($action) {
+            case 'created':
+                $this->create();
+                break;
+            case 'deleted':
+                $this->delete($id);
+                break;
+            case 'edited':
+                $this->update($id);
+                break;
+        }
     }
 
     public function index() {
         // Obtener la lista de usuarios desde el modelo
-        $users = $this->userDAO->getAllUsers();
+        $users = $this->getAllUsers();
 
         // Cargar la vista con los datos
         require_once 'vistas/usuario/index.php';
     }
 
+    public function getAllUsers(){
+        return $this->userDAO->getAllUsers();
+    }
+
     public function getPantallaCreate(){
+        $this->index();
         require_once 'vistas/usuario/create.php';
     }
 
     public function create() {
-        // Mostrar el formulario de creación de usuario
-        require_once 'vistas/usuario/create.php';
-    }
-
-    public function store($data) {
-        // Validar los datos del formulario
-        // ...
-
-        // Crear un nuevo usuario en la base de datos
-        $user = new User($data['name'], $data['lastname'], $data['type'], $data['username'], $data['password']);
-        $this->userDAO->createUser($user);
-
-        // Redireccionar a la página principal de usuarios
-        header('Location: index.php?action=index');
+        // Verifica si se han enviado datos por POST
+        if (isset($_POST['nombre'])) {
+            $nombre = $_POST['nombre'];
+            $apellido = $_POST['apellido'];
+            $tipo = $_POST['tipo'];
+            $mail = $_POST['mail'];
+            $contrasena = $_POST['contrasena'];
+    
+            // Crea un nuevo objeto User con los datos del formulario
+            $user = new User($nombre, $apellido, $tipo, $mail, $contrasena);
+    
+            // Llama a la función para crear el usuario en la base de datos
+            $this->userDAO->createUser($user);
+        }
     }
 
     public function getPantallaEdit() {
-        // Obtener el usuario desde el modelo
-
-        // Mostrar el formulario de edición de usuario con los datos cargados
-        require_once 'vistas/usuario/edit.php';
         $this->index();
+        require_once 'vistas/usuario/edit.php';
     }
 
     public function update($id) {
-
         if(isset($_POST["nombre"])){
-            $user = new User($_POST["nombre"], $_POST["apellido"], $_POST["tipo"], $_POST["nombre_usuario"], $_POST["contrasena"]);
+            $user = new User($_POST["nombre"], $_POST["apellido"], $_POST["tipo"], $_POST["mail"], $_POST["contrasena"]);
             $user->setId($id);
             $this->userDAO->updateUser($user);
         }
-
-        // Redireccionar a la página principal de usuarios
-        //header('Location: index.php?module=usuarios');
-
     }
 
     public function getPantallaDelete(){
@@ -65,10 +75,6 @@ class UserController {
     }
 
     public function delete($id) {
-        // Eliminar el usuario de la base de datos
         $this->userDAO->deleteUser($id);
-
-        // Redireccionar a la página principal de usuarios
-        header('Location: index.php?action=index');
     }
 }
