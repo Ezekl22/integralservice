@@ -25,7 +25,7 @@
                             <th>Apellido</th>
                             <th>Email</th>
                             <th>Cuit</th>
-                            <th>Iva</th>
+                            <th>Categoria fiscal</th>
                             <th>Acciones</th>
                         </tr>
                         <?php foreach ($clients as $client) { ?>
@@ -34,7 +34,7 @@
                                 <td><?php echo $client['apellido']; ?></td>
                                 <td><?php echo $client['email']; ?></td>
                                 <td><?php echo $client['cuit']; ?></td>
-                                <td><?php echo $client['iva']; ?></td>
+                                <td><?php echo $client['categoriafiscal']; ?></td>
                                 <td>
                                     <a class="icono__contenedor me-3" href="index.php?module=clientes&action=edit&id=<?php echo $client['idcliente']; ?>">
                                         <img class="icono__imagen" src="./assets/img/iconoEditar.png" alt="icono de editar">
@@ -48,7 +48,11 @@
                     </table>
                 </div>
             </div>
-            <a class="my-5 btn button" type="button" href="index.php?module=clientes&action=create">Crear nuevo cliente</a>
+            <?php 
+            $action = isset($_GET['action'])?$_GET['action']:'';
+            if(($action != 'edit' && $action != 'create') ){ ?>
+                <a class="my-5 btn button" type="button" href="index.php?module=clientes&action=create">Crear nuevo cliente</a>
+            <?php } ?>
         </article>
     </main>
 </body>

@@ -24,7 +24,7 @@
                             <th>Nombre</th>
                             <th>Apellido</th>
                             <th>Tipo</th>
-                            <th>Nombre de usuario</th>
+                            <th>Mail</th>
                             <th>Acciones</th>
                         </tr>
                         <?php foreach ($users as $user) { ?>
@@ -32,7 +32,7 @@
                                 <td><?php echo $user['name']; ?></td>
                                 <td><?php echo $user['lastname']; ?></td>
                                 <td><?php echo $user['type']; ?></td>
-                                <td><?php echo $user['username']; ?></td>
+                                <td><?php echo $user['mail']; ?></td>
                                 <td>
                                     <a class="icono__contenedor me-3" href="index.php?module=usuarios&action=edit&id=<?php echo $user['id']; ?>">
                                         <img class="icono__imagen" src="./assets/img/iconoEditar.png" alt="icono de editar">
@@ -46,7 +46,11 @@
                     </table>
                 </div>
             </div>
-            <a class="my-5 btn button" type="button" href="index.php?module=usuarios&action=create">Crear nuevo usuario</a>
+            <?php 
+            $action = isset($_GET['action'])?$_GET['action']:'';
+            if(($action != 'edit' && $action != 'create') ){ ?>
+                <a class="my-5 btn button" type="button" href="index.php?module=usuarios&action=create">Crear nuevo usuario</a>
+            <?php } ?>
         </article>
     </main>
 </body>

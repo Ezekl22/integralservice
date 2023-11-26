@@ -4,7 +4,7 @@
     <title>Proveedores</title>
 </head>
 <body>
-    <main class="main__flex">
+    <main class="main__flex mb-5">
         <article class="mt-4">
                 <h2 class="main__title">
                     Crear Proveedor

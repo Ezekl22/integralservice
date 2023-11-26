@@ -163,10 +163,14 @@
             include('controladores/ReparacionControlador.php');
             break;
         case 'clientes':
-            include('controladores/ClienteControlador.php');
+            include('controladores/ClienteCtr.php');
             $indexPage = new ClienteCtr();
             break;
-        case 'proveedores':
+      case 'productos':
+            include('./controladores/ProductoCtr.php');
+            $indexPage = new ProductoCtr();
+            break;
+      case 'proveedores':
             include('controladores/ProveedorCtr.php');
             $indexPage = new ProveedorCtr();
             break;
@@ -174,11 +178,11 @@
             include('controladores/PedidoCompraCtr.php');
             $indexPage = new PedidoCompraCtr();
             break;
-        case 'usuarios':
+      case 'usuarios':
             include './controladores/UsuarioControlador.php';
             $indexPage = new UserController();
             break;
-        case 'menu':
+      case 'menu':
             include './controladores/MenuControlador.php';
             $indexPage = new MenuController();
             $indexPage -> index();
