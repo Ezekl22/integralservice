@@ -68,39 +68,46 @@
                                     <td><?php echo '$'.number_format($presupuesto['total'], 2); ?></td>
                                     <td>
                                         <?php if($presupuesto['estado'] != 'Facturado') {?>
-                                            <a class="icono__contenedor me-2 ms-2" title="Cambiar estado" href="index.php?module=presupuestos&action=cambiarestado&id=<?php echo $presupuesto['idpresupuesto']; ?>">
-                                                <img class="icono__imagen" src="./assets/img/iconoCambiarEstado.svg" alt="icono de cambiar estado">
-                                            </a>
+                                            
                                         <?php } else {?>
-                                            <label class="icono__contenedor me-2 ms-2" title="Cambiar estado">
-                                                <img class="icono__imagen svg-disabled-color" src="./assets/img/iconoCambiarEstadoDeshabilitado.svg" alt="icono de cambiar estado">
-                                            </label>
+                                            
                                         <?php }?>
                                         <a class="icono__contenedor me-2" title="ver" href="index.php?module=presupuestos&action=see&id=<?php echo $presupuesto['idpresupuesto']; ?>">
                                             <img class="icono__imagen" src="./assets/img/iconoVer.png" alt="icono de ver">
                                         </a>
                                         <?php if($presupuesto['estado'] != 'Facturado') {?>
-                                            <a class="icono__contenedor me-2" title="Facturar" href="index.php?module=presupuestos&action=facturar&id=<?php echo $presupuesto['idpresupuesto']; ?>">
-                                                <img class="icono__imagen" src="./assets/img/iconoFacturar.svg" alt="icono de Facturar">
-                                            </a>
+                                            
                                         <?php } else {?>
-                                            <label class="icono__contenedor me-2" title="Facturar">
-                                                <img class="icono__imagen" src="./assets/img/iconoFacturarDeshabilitado.svg" alt="icono de Facturar">
-                                            </label>
+                                            
                                         <?php }?>
                                         
                                         <?php if($presupuesto['estado'] != 'Facturado') {?>
+                                            <a class="icono__contenedor me-2 ms-2" title="Cambiar estado" href="index.php?module=presupuestos&action=cambiarestado&id=<?php echo $presupuesto['idpresupuesto']; ?>">
+                                                <img class="icono__imagen" src="./assets/img/iconoCambiarEstado.svg" alt="icono de cambiar estado">
+                                            </a>
+                                            <a class="icono__contenedor me-2" title="Facturar" href="index.php?module=presupuestos&action=facturar&id=<?php echo $presupuesto['idpresupuesto']; ?>">
+                                                <img class="icono__imagen" src="./assets/img/iconoFacturar.svg" alt="icono de Facturar">
+                                            </a>
                                             <a class="icono__contenedor me-2" title="Editar" href="index.php?module=presupuestos&action=edit&id=<?php echo $presupuesto['idpresupuesto']; ?>">
                                                 <img class="icono__imagen" src="./assets/img/iconoEditar.png" alt="icono de editar">
                                             </a>
+                                            <a class="icono__contenedor me-2" title="Cancelar" href="index.php?module=presupuestos&action=delete&id=<?php echo $presupuesto['idpresupuesto']; ?>">
+                                                <img class="icono__imagen" src="./assets/img/iconoCancelar.png" alt="icono de cancelar">
+                                            </a>
                                         <?php } else {?>
+                                            <label class="icono__contenedor me-2 ms-2" title="Cambiar estado">
+                                                <img class="icono__imagen svg-disabled-color" src="./assets/img/iconoCambiarEstadoDeshabilitado.svg" alt="icono de cambiar estado">
+                                            </label>
+                                            <label class="icono__contenedor me-2" title="Facturar">
+                                                <img class="icono__imagen" src="./assets/img/iconoFacturarDeshabilitado.svg" alt="icono de Facturar">
+                                            </label>
                                             <label class="icono__contenedor me-2" title="Editar">
                                                 <img class="icono__imagen" src="./assets/img/iconoEditarDeshabilitado.png" alt="icono de editar deshabilitado">
                                             </label>
+                                            <label class="icono__contenedor me-2" title="Cancelar" href="index.php?module=presupuestos&action=delete&id=<?php echo $presupuesto['idpresupuesto']; ?>">
+                                                <img class="icono__imagen" src="./assets/img/iconoCancelarDeshabilitar.png" alt="icono de cancelar">
+                                            </label>
                                         <?php }?>
-                                        <a class="icono__contenedor me-2" title="Cancelar" href="index.php?module=presupuestos&action=delete&id=<?php echo $presupuesto['idpresupuesto']; ?>">
-                                            <img class="icono__imagen" src="./assets/img/iconoCancelar.png" alt="icono de cancelar">
-                                        </a>
                                     </td>
                                 </tr>
                             <?php } ?>

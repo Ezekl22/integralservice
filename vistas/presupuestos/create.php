@@ -62,7 +62,7 @@ echo "<script>const productos = $json;</script>";
                         </div>
                         <div class="modal-footer d-flex justify-content-center headerPop__background">
                             <button type="button" class="btn button me-5" onclick="cerrarGrilla('contGrillaProducto')" data-bs-dismiss="modal">Cancelar</button>
-                            <button type="button" onclick="agregarComponenteProducto()" data-bs-dismiss="modal" aria-label="Close" class="btn button ">Seleccionar</button>
+                            <button type="button" onclick="cargarGrillaProducto()" data-bs-dismiss="modal" aria-label="Close" class="btn button ">Seleccionar</button>
                         </div>
                     </div>
                 </div>
