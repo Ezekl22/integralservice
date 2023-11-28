@@ -37,9 +37,14 @@ echo "<script>const productos = $json;</script>";
                         </div>
                     </div>
                     <h4 class="mt-2 text__white">Productos</h4>
-                    <div class="mt-3 d-flex flex-column w-100" id="contProductos">
+                    <div class="d-flex justify-content-start w-100">
+                    <button class="btn btn-outline-secondary button align-self-start ms-5" data-bs-target="#grillaProductos" data-bs-toggle="modal" type="button" id="agregar" onclick="mostrarGrillaProductos()">Agregar producto</button>
+                    <button class="btn btn-outline-secondary button ms-3 align-self-start" disabled onclick="quitarComponenteProducto('${id}')" type="button" id="quitar">Quitar productos</button>
                     </div>
-                    <button class="btn btn-outline-secondary button ms-7 align-self-start" data-bs-target="#grillaProductos" data-bs-toggle="modal" type="button" id="agregar" onclick="mostrarGrillaProductos()">+</button>
+                    
+                    <div class="my-3 d-flex flex-column w-100" id="contProductos">
+                        <?php include "vistas/otros/grillaProductosSeleccionados.php" ?>
+                    </div>
                     <div class="text__white d-flex" id="">
                         <div class="input-group input-group-sm mb-3">
                             <label class="input-group-text" for="totalProductos" id="inputGroup-sizing-sm">Total:</label>
@@ -49,6 +54,8 @@ echo "<script>const productos = $json;</script>";
                     <input class="btn button my-2" type="submit"  value="Guardar cambios">
                 </div>
             </form>
+
+
             <div class="modal fade" id="grillaProductos" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog justify-content-center d-flex" style="max-width:none;">
                     <div class="modal-content mx-3" style="width:80vw;">
@@ -58,7 +65,7 @@ echo "<script>const productos = $json;</script>";
                             <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body d-flex flex-column align-items-center" id="contGrillaProducto">
-                            
+                        
                         </div>
                         <div class="modal-footer d-flex justify-content-center headerPop__background">
                             <button type="button" class="btn button me-5" onclick="cerrarGrilla('contGrillaProducto')" data-bs-dismiss="modal">Cancelar</button>

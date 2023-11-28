@@ -257,3 +257,20 @@ footer{
   .svg-disabled-color{
     fill: #666;
   }
+
+  
+
+  .grilla-productos__cont{
+    max-height: 500px; 
+    overflow-y: auto;
+  }
+
+    .grilla-productos__cuerpo{
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    .grilla-productos__cabecera{
+      position: sticky;
+      top: 0px;
+    }
