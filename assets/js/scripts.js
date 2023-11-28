@@ -37,7 +37,8 @@ const agregarComponenteProducto = () =>{
                                 <label class="input-group-text" for="valorunt" id="inputGroup-sizing-sm">Valor unitario:</label>
                                 <input type="text" class="form-control" disabled value= "${currencyFormatter(modulo == "pedidos"?productoSeleccionado[6]:productoSeleccionado[7])}" id="valorunt">
                                 <label class="input-group-text" for="totañ" id="inputGroup-sizing-sm">Total:</label>
-                                <input type="text" class="form-control me-7" disabled aria-label="0" id="total">`;
+                                <input type="text" class="form-control me-7" disabled aria-label="0" id="total">
+                                <input type="hidden" class="form-control me-7" aria-label="0" value="${productoSeleccionado[0]}" id="idproductos" name="idproductos[]">`;
     contProductos.appendChild(contComponente);
     cerrarGrilla('contGrillaProducto');
 }
@@ -87,7 +88,7 @@ const mostrarGrillaProductos = ()=>{
                                         <th>Nombre</th>
                                         <th>Marca</th>
                                         <th>Detalle</th>
-                                        <th>Stock de usuario</th>
+                                        <th>Stock</th>
                                         <th>Tipo</th>
                                         <th>preciocompra</th>
                                         <th>precioventa</th>
@@ -95,6 +96,12 @@ const mostrarGrillaProductos = ()=>{
                                     </tr>
                                     ${cuerpoGrilla}
                                 </table>
+                                <div class="d-flex justify-content-center">
+                                    <div class="input-group input-group-sm mb-3 w-25">
+                                        <label class="input-group-text" for="cantidad" id="inputGroup-sizing-sm">Cantidad:</label>
+                                        <input type="text" class="form-control" aria-label="0" id="cantidadProducto" value="1">
+                                    </div>
+                                </div>
                             </div>`;
     contGrilla.appendChild(contenedor);
 }
@@ -110,7 +117,7 @@ const quitarComponenteProducto = (id) =>{
 
 const recalcularTotal = () =>{
     const totalesProductos = document.querySelectorAll('#total');
-    const importeTotal = document.getElementById('totalProductos');
+    const importeTotal = document.getElementById('totalproductos');
     let total = parseFloat(0);
     totalesProductos.forEach(totalProducto =>{
         total = total + parseFloat(totalProducto.value.replace(/[$,]/g, ""));
@@ -119,7 +126,18 @@ const recalcularTotal = () =>{
     importeTotal.value = currencyFormatter(total);
 }
 
-const cantidadOnChange = (idProducto,id,esVenta) =>{
+const recalcularTotall = () =>{
+    const totalesProductos = document.querySelectorAll('#total');
+    const importeTotal = document.getElementById('totalproductos');
+    let total = parseFloat(0);
+    totalesProductos.forEach(totalProducto =>{
+        total = total + parseFloat(totalProducto.childNodes[0].data.replace(/[$,]/g, ""));
+        
+    });
+    importeTotal.value = currencyFormatter(total);
+}
+
+const cantidadOnChange = (idProducto,id) =>{
     const inputTotal = document.querySelector('#'+id+' #total');
     const cantidad = document.querySelector('#'+id+' #cantidad').value;
     let i = 0;
@@ -134,4 +152,41 @@ const cantidadOnChange = (idProducto,id,esVenta) =>{
 const mostrarVentanaModal = (id) =>{
     var miModal = new bootstrap.Modal(document.getElementById(id));
     miModal.show();
-}       
+} 
+
+const cargarGrillaProducto = () =>{
+    let contProductos = document.getElementById("grilla");
+    let contComponente = document.createElement("div");
+    const cantidad = document.getElementById("cantidadProducto").value;
+    let productoSeleccionado;
+    productos.forEach(producto=>{
+        const checkSeleccion = document.getElementById("seleccion"+producto[0]);
+        if (checkSeleccion.checked)
+            productoSeleccionado = producto;
+    });
+    let id = "producto"+(productoSeleccionado[0]);
+    // contComponente.className = "input-group input-group-sm mb-3";
+    // contComponente.id = id;
+
+    contProductos.innerHTML = contProductos.innerHTML + `<tr class="grilla__cuerpo">
+                                                            <td id="producto"> ${productoSeleccionado[1]} </td>
+                                                            <td class="form-control" id="cantidad" name="cantidad[]"> ${cantidad} </td>
+                                                            <td id="valorunt"> ${currencyFormatter(productoSeleccionado[7])} </td>
+                                                            <td id="total"> ${currencyFormatter(parseInt(cantidad) * productoSeleccionado[7])} </td>
+                                                            <td><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"></td>
+                                                        </tr>`;
+
+    // `<button class="btn btn-outline-secondary button ms-7 align-self-start" onclick="quitarComponenteProducto('${id}')" type="button" id="quitar">-</button>
+    //                             <label class="input-group-text" for="producto" id="inputGroup-sizing-sm">Producto:</label>
+    //                             <input type="text" class="form-control w-25" disabled id="producto" value = "${productoSeleccionado[1]}">
+    //                             <label class="input-group-text" for="cantidad" id="inputGroup-sizing-sm">Cantidad:</label>
+    //                             <input type="text" class="form-control" aria-label="0" onchange="cantidadOnChange('${productoSeleccionado[0]}','${id}')" id="cantidad" name="cantidad[]">
+    //                             <label class="input-group-text" for="valorunt" id="inputGroup-sizing-sm">Valor unitario:</label>
+    //                             <input type="text" class="form-control" disabled value= "${currencyFormatter(productoSeleccionado[7])}" id="valorunt">
+    //                             <label class="input-group-text" for="totañ" id="inputGroup-sizing-sm">Total:</label>
+    //                             <input type="text" class="form-control me-7" disabled aria-label="0" id="total">
+    //                             <input type="hidden" class="form-control me-7" aria-label="0" value="${productoSeleccionado[0]}" id="idproductos" name="idproductos[]">`;
+    contProductos.appendChild(contComponente);
+    recalcularTotall();
+    cerrarGrilla('contGrillaProducto');
+}
