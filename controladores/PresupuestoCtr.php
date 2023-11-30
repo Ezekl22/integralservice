@@ -1,7 +1,8 @@
 <?php
 require_once 'models/PresupuestoMdl.php';
 require_once 'models/PresupuestoDAO.php';
-require_once 'controladores/ClienteControlador.php';
+require_once 'models/ProductoPresupuestoMdl.php';
+require_once 'controladores/ClienteCtr.php';
 require_once 'controladores/ProductoCtr.php';
 
 class PresupuestoCtr {
@@ -13,11 +14,37 @@ class PresupuestoCtr {
         $this->presupuestoDAO = new PresupuestoDAO();
         $this->clienteCtr = new ClienteCtr();
         $this->productoCtr = new ProductoCtr();
+        $action = isset($_GET['action'])?$_GET['action']:'';
+        $id = isset($_GET['id'])?$_GET['id']:'';
+        switch ($action) {
+            case 'created':
+                $this->create();
+                break;
+            case 'canceled':
+                $this->canceled($id);
+                break;
+            case 'edited':
+                $this->update($id);
+                break;
+            case 'facturar':
+                $this->facturar($id);
+                break;
+        }
     }
 
     public function index() {
         // Obtener la lista de usuarios desde el modelo
         $presupuestos = $this->presupuestoDAO->getAllPresupuestos();
+        $action = isset($_GET['action']) ? $_GET['action'] : '';
+        $presupuestoCtr = $this;
+        if ($action == 'see'){
+            $id = isset($_GET['id']) ? $_GET['id'] : '';
+            $presupuesto = $this->getPresupuestoById($id);
+            $cliente = $this->getClienteById($presupuesto->getIdCliente());
+            $nombreCliente = $cliente['nombre'].' '.$cliente['apellido'];
+            $productosPre = $this->getProductosPresupuestoById($presupuesto->getIdPresupuesto());
+            $total = 0;
+        }
 
         // Cargar la vista con los datos
         require_once 'vistas/presupuestos/index.php';
@@ -27,27 +54,34 @@ class PresupuestoCtr {
         require_once 'vistas/presupuestos/create.php';
     }
 
-    // public function create() {
-    //     // Mostrar el formulario de creación de usuario
-    //     require_once 'vistas/presupuestos/create.php';
-    // }
-
-    // public function store($data) {
-    //     // Validar los datos del formulario
-    //     // ...
-
-    //     // Crear un nuevo usuario en la base de datos
-    //     $presupuesto = new PresupuestoMdl($data['idcliente'], $data['nrocomprobante'], $data['tipo'], $data['estado'], $data['fecha'], $data['puntoventa'], $data['total']);
-    //     $this->presupuestoDAO->createPresupuesto($presupuesto);
-
-    //     // Redireccionar a la página principal de usuarios
-    //     header('Location: index.php?action=index');
-    // }
+    public function create() {
+        if (isset($_POST['idcliente'])) {
+            $productos = [] ;
+            $precioTotal = 0;
+            $estado = isset($_POST['tipo'])? $_POST['tipo'] == 'Venta'? 'Presupuestado': 'Pendiente presupuesto' :'';
+            foreach ($_POST['idproductos'] as $index => $idproducto) {
+                $precioUnit = $this->productoCtr->getProductoById($idproducto)['precioventa'];
+                $cantidad = intval($_POST['cantidad'][$index]);
+                $producto = new ProductoPresupuestoMdl($idproducto, $precioUnit, $cantidad);
+                $precioTotal += $precioUnit * $cantidad;
+                array_push($productos, $producto);
+            }
+            $presupuesto = new PresupuestoMdl($_POST['idcliente'], $productos, $this->getNuevoNroComprobante(), 
+                                              $_POST['tipo'], $estado, '0001', $precioTotal);
+    
+            $this->presupuestoDAO->create($presupuesto);
+        }
+    }
 
     public function getPantallaEdit() {
-        
-        require_once 'vistas/presupuestos/edit.php';
         $this->index();
+        require_once 'vistas/presupuestos/edit.php';
+    }
+
+    public function getNuevoNroComprobante() {
+        $auxNroComprobante = strval($this->presupuestoDAO->getNuevoNroComprobante() + 1);
+        $nroComprobante = str_pad($auxNroComprobante, 10, 0, STR_PAD_LEFT);
+        return $nroComprobante;
     }
 
     public function getNombreClienteById($id){
@@ -61,12 +95,8 @@ class PresupuestoCtr {
     }
 
     public function getProductoById($id){
-        $cliente = $this->productoCtr->getProductoById($id);
-        return $cliente;
-    }
-
-    public function getProductosById($ids){
-        return $this->productoCtr->getProductosById($ids);
+        $producto = $this->productoCtr->getProductoById($id);
+        return $producto;
     }
 
     public function getProductosPresupuestoById($id) {
@@ -85,21 +115,25 @@ class PresupuestoCtr {
     }
 
     public function getPresupuestoById($id){
-        return $this->presupuestoDAO->getPresupuestoById($id);
+        $presupuestoBD = $this->presupuestoDAO->getPresupuestoById($id);
+        $productosPresupuestoBD = $this->presupuestoDAO->getProductosPresupuestoById($id);
+        $presupuesto = NEW PresupuestoMdl($presupuestoBD['idcliente'], $productosPresupuestoBD, $presupuestoBD['nrocomprobante'], $presupuestoBD['tipo'], $presupuestoBD['estado'], $presupuestoBD['puntoventa'], $presupuestoBD['total']);
+        $presupuesto->setIdPresupuesto($id);
+        $presupuesto->setFecha($presupuestoBD['fecha']);
+        return  $presupuesto;
     }
 
-    // public function getPantallaDelete(){
-    //     require_once 'vistas/usuario/delete.php';
-    //     $this->index();
-    // }
+    public function getPantallaDelete(){
+        require_once 'vistas/presupuestos/delete.php';
+        $this->index();
+    }
 
-    // public function delete($id) {
-    //     // Eliminar el usuario de la base de datos
-    //     $this->presupuestoDAO->deletePresupuesto($id);
-
-    //     // Redireccionar a la página principal de usuarios
-    //     header('Location: index.php?action=index');
-    // }
+    public function canceled($id){
+        $presupuesto = $this->getPresupuestoById($id);
+        $estado = $presupuesto->getEstado();
+        if($estado != 'Pendiente presupuesto' || $estado != 'En reparacion' || $estado != '')
+            $this->presupuestoDAO->cancel($id);
+    }
 
     public function getAllClientes(){
         return $this->clienteCtr->getAllClientes();
@@ -108,4 +142,16 @@ class PresupuestoCtr {
     public function getAllProductos(){
         return $this->productoCtr->getAllProductos();
     }
+
+    public function facturar($id){
+        $presupuesto = $this->getPresupuestoById($id);
+        $estado = $presupuesto->getEstado();
+        if($estado != 'Pendiente presupuesto' && $estado != 'En reparacion' && $estado != '' && $estado != 'Facturado'){
+            $presupuesto->setEstado('Facturado');
+            $presupuesto->setNroComprobante('C-'.$presupuesto->getNroComprobante().'-0001');
+            $this->presupuestoDAO->updatePresupuesto($presupuesto);
+        }
+    }
 }
+
+?>

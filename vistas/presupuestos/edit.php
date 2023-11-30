@@ -9,6 +9,7 @@
     $GestionPantallasCtr = new GestionPantallasControlador();
     $GestionPantallasCtr->mostrarOcultarPantallaEditar(4);
     $inUse = $GestionPantallasCtr->getGestionPantallasById(4)->getInUse();
+    $productos = $PresupuestoCtr->getProductosPresupuestoById($id);
     $json = json_encode($PresupuestoCtr->getAllProductos());
     echo "<script>const productos = $json;</script>";
     ?>
@@ -21,7 +22,7 @@
             <title>Editar Presupuesto</title>
         </head>
         <body>
-            <main class="d-flex flex-column align-items-center mt-2" id="editPresupuesto">
+            <main class="d-flex flex-column align-items-center mt-2 mb-5" id="editPresupuesto">
                 <article class="editar__contenedor rounded-4">
                     <form action="index.php?module=presupuestos" method="POST" class="d-flex flex-column align-items-center border-1 border m-4 rounded-4">
                         <div class="d-flex flex-column align-items-center contenedor__mayor" id="contenedor">
@@ -63,6 +64,19 @@
                             </div>
                             <h4 class="mt-2 text__white">Productos</h4>
                             <div class="mt-3 d-flex flex-column w-100" id="contProductos">
+                                <?php foreach ($productos as $producto) { ?>
+                                    <div class="input-group input-group-sm mb-3">
+                                        <button class="btn btn-outline-secondary button ms-7 align-self-start" onclick="quitarComponenteProducto('<?php echo $id ?>')" type="button" id="quitar">-</button>
+                                        <label class="input-group-text" for="producto" id="inputGroup-sizing-sm">Producto:</label>
+                                        <input type="text" class="form-control w-25" disabled id="producto" value = "<?php echo $producto['nombre'] ?>">
+                                        <label class="input-group-text" for="cantidad" id="inputGroup-sizing-sm">Cantidad:</label>
+                                        <input type="text" class="form-control" aria-label="0" onchange="cantidadOnChange('<?php echo $producto['idproducto']?>','<?php echo $id?>')" value="<?php echo $producto['cantidad']?>" id="cantidad">
+                                        <label class="input-group-text" for="valorunt" id="inputGroup-sizing-sm">Valor unitario:</label>
+                                        <input type="text" class="form-control" disabled value= "<?php echo "$ ".number_format($producto['precioventa'], 2, ',', '.');?>" id="valorunt">
+                                        <label class="input-group-text" for="totañ" id="inputGroup-sizing-sm">Total:</label>
+                                        <input type="text" class="form-control me-7" disabled aria-label="0" value="<?php echo "$ ".number_format($producto['cantidad'] * $producto['precioventa'], 2, ',', '.');?>" id="total">
+                                    </div>
+                               <?php } ?>
                             </div>
                             <button class="btn btn-outline-secondary button ms-7 align-self-start" data-bs-target="#grillaProductos" data-bs-toggle="modal" type="button" id="agregar" onclick="mostrarGrillaProductos()">+</button>
                             <div class="text__white d-flex" id="">
