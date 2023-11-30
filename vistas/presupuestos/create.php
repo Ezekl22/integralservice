@@ -30,7 +30,7 @@ echo "<script>const productos = $json;</script>";
                         </div>
                         <div class="input-group input-group-sm mx-7">
                             <label class="input-group-text input-group-sm" for="tipo">Tipo:</label>
-                            <select class="form-select" id="tipo" name="tipo" required>
+                            <select class="form-select" id="tipo" name="tipo" onchange="tipoOnChange(event)" required>
                                 <option value="Venta">Venta</option>
                                 <option value="Reparacion">Reparacion</option>
                             </select>
@@ -45,7 +45,7 @@ echo "<script>const productos = $json;</script>";
                     <div class="my-3 d-flex flex-column w-100" id="contProductos">
                         <?php include "vistas/otros/grillaProductosSeleccionados.php" ?>
                     </div>
-                    <div class="text__white d-flex" id="">
+                    <div class="d-flex" id="">
                         <div class="input-group input-group-sm mb-3">
                             <label class="input-group-text" for="totalProductos" id="inputGroup-sizing-sm">Total:</label>
                             <input type="text" class="form-control" disabled aria-label="0" id="totalproductos" value="$0,00">

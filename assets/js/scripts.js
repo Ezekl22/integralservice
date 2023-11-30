@@ -187,3 +187,9 @@ const cargarGrillaProducto = () =>{
     recalcularTotall();
     cerrarGrilla('contGrillaProducto');
 }
+
+const tipoOnChange = (selector) =>{
+    console.log(selector.target.value);
+    const tipo = selector.target.value;
+    tipo == 'Reparacion';
+}
