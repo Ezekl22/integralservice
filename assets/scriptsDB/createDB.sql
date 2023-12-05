@@ -7,32 +7,27 @@ USE integralservice;
 -- tabla de usuarios
 
 DROP TABLE IF EXISTS users;
-
 CREATE TABLE `users` (
-  `iduser` int(11) NOT NULL,
+  `id` int(11) NOT NULL,
   `name` text NOT NULL,
   `lastname` text NOT NULL,
   `type` text NOT NULL,
-  `username` text NOT NULL,
+  `mail` text NOT NULL,
   `password` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-
-
-INSERT INTO `users` (`iduser`, `name`, `lastname`, `type`, `username`, `password`) VALUES
-(1, 'Pedro1', 'Pintoss', 'Administrador', 'Pedro22', '123'),
-(2, 'ADMINISTRADOR', 'ADMIN', 'ADMINISTRADOR', 'ADMINISTRADOR', '123'),
-(3, 'Alberto', 'Centurion', 'REPARADOR', 'Alberto22', '123');
+INSERT INTO `users` (`id`, `name`, `lastname`, `type`, `mail`, `password`) VALUES
+(1, 'Pedro1', 'Pintoss', 'Administrador', 'Pedro22@gmail.com', '123'),
+(2, 'ADMINISTRADOR', 'ADMIN', 'ADMINISTRADOR', 'ADMINISTRADOR@gmail.com', '123'),
+(3, 'Alberto', 'Centurion', 'REPARADOR', 'Alberto22@gmail.com', '123');
 
 ALTER TABLE `users`
-ADD PRIMARY KEY (`iduser`);
+ADD PRIMARY KEY (`id`);
 
 ALTER TABLE `users`
-MODIFY `iduser` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 -- tabla de gestion de pantallas
-
-DROP TABLE IF EXISTS gestionpantallas;
 
 CREATE TABLE `gestionpantallas` (
   `idgestionpantalla` int(11) NOT NULL,

@@ -29,4 +29,6 @@ $datosCards = array(
                     Solo pueden acceder los usuarios de tipo vendedor o administrador."
                 ]
             );
+
+$GrillaUsuariosIndex = array("Nombre","Apellido","Tipo","Mail");
 ?>
