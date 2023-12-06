@@ -18,7 +18,8 @@
                         <input class="btn btn-outline-secondary button" type="button" id="buscar" value="Buscar"></button>
                     </div>
                 </div>
-                <div class="border w-75 mt-3 mb-5 rounded-4">
+                <?php require_once 'vistas/otros/grilla.php' ?>
+                <!-- <div class="border w-75 mt-3 mb-5 rounded-4">
                     <table class="grilla__contenedor border-0">
                         <tr class="grilla grilla__cabecera">
                             <th>Nombre</th>
@@ -44,7 +45,7 @@
                             </tr>
                         <?php } ?>
                     </table>
-                </div>
+                </div> -->
             </div>
             <?php 
             $action = isset($_GET['action'])?$_GET['action']:'';

@@ -1,53 +1,53 @@
 <?php
 
 class User {
-    private $id;
-    private $name;
-    private $lastname;
-    private $type;
+    private $idusuario;
+    private $nombre;
+    private $apellido;
+    private $tipo;
     private $mail;
-    private $password;
+    private $contrasena;
 
-    public function __construct($name, $lastname, $type, $mail, $password) {
-        $this->name = $name;
-        $this->lastname = $lastname;
-        $this->type = $type;
+    public function __construct($nombre, $apellido, $tipo, $mail, $contrasena) {
+        $this->nombre = $nombre;
+        $this->apellido = $apellido;
+        $this->tipo = $tipo;
         $this->mail = $mail;
-        $this->password = $password;
+        $this->contrasena = $contrasena;
     }
 
     // Getters y setters
 
-    public function getId() {
-        return $this->id;
+    public function getIdUsuario() {
+        return $this->idusuario;
     }
 
-    public function setId($id) {
-        $this->id = $id;
+    public function setIdUsuario($id) {
+        $this->idusuario = $id;
     }
 
-    public function getName() {
-        return $this->name;
+    public function getNombre() {
+        return $this->nombre;
     }
 
-    public function setName($name) {
-        $this->name = $name;
+    public function setNombre($nombre) {
+        $this->nombre = $nombre;
     }
 
-    public function getLastname() {
-        return $this->lastname;
+    public function getApellido() {
+        return $this->apellido;
     }
 
-    public function setLastname($lastname) {
-        $this->lastname = $lastname;
+    public function setApellido($apellido) {
+        $this->apellido = $apellido;
     }
 
-    public function getType() {
-        return $this->type;
+    public function getTipo() {
+        return $this->tipo;
     }
 
-    public function setType($type) {
-        $this->type = $type;
+    public function setTipo($tipo) {
+        $this->tipo = $tipo;
     }
 
     public function getMail() {
@@ -58,11 +58,11 @@ class User {
         $this->mail = $mail;
     }
 
-    public function getPassword() {
-        return $this->password;
+    public function getContrasena() {
+        return $this->contrasena;
     }
 
-    public function setPassword($password) {
-        $this->password = $password;
+    public function setContrasena($contrasena) {
+        $this->contrasena = $contrasena;
     }
 }
