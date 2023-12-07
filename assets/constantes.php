@@ -31,5 +31,4 @@ $datosCards = array(
             );
 
 $GrillaUsuariosIndex = array("Nombre","Apellido","Tipo","Mail");
-global $GrillaUsuariosIndex;
 ?>

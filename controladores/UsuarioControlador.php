@@ -64,7 +64,7 @@ class UserController {
     public function update($id) {
         if(isset($_POST["nombre"])){
             $user = new User($_POST["nombre"], $_POST["apellido"], $_POST["tipo"], $_POST["mail"], $_POST["contrasena"]);
-            $user->setId($id);
+            $user->setIdUsuario($id);
             $this->userDAO->updateUser($user);
         }
     }

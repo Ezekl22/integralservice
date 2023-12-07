@@ -12,9 +12,7 @@
     <!-- Obtener el módulo actual -->
     <?php 
     include './controladores/GestionPantallasControlador.php';
-    $module = isset($_GET['module']) ? $_GET['module'] : ''; 
-    $action = isset($_GET['action']) ? $_GET['action'] : '';
-    $id = isset($_GET['id']) ? $_GET['id'] : '';
+    $GestionPantallaCtr = new GestionPantallasControlador;
     ?>
 
     <nav class="navbar navbar-expand-lg nav__background">
@@ -28,8 +26,8 @@
               </button>
               <div class="collapse navbar-collapse d-flex justify-content-end me-5" id="navbarNavDropdown">
                     <ul class="navbar-nav">
-                          <a type="button" class="btn button" <?php if($module!=''){echo 'href="index.php"';}else{echo 'data-bs-target="#inicioSesion" data-bs-toggle="modal"';}?>>
-                                <?php if($module!=''){echo "Cerrar sesión";} else{echo "Iniciar sesión";} ?>
+                          <a type="button" class="btn button" <?php if($GestionPantallaCtr->getModule()!=''){echo 'href="index.php"';}else{echo 'data-bs-target="#inicioSesion" data-bs-toggle="modal"';}?>>
+                                <?php if($GestionPantallaCtr->getModule()!=''){echo "Cerrar sesión";} else{echo "Iniciar sesión";} ?>
                           </a>
                     </ul>
               </div>
@@ -152,72 +150,7 @@
               </div>
         </div>
     </main>
-
-    <?php
-    switch ($module) {
-        case 'presupuestos':
-            include('./controladores/PresupuestoCtr.php');
-            $indexPage = new PresupuestoCtr();
-            break;
-        case 'reparacion':
-            include('controladores/ReparacionControlador.php');
-            break;
-        case 'clientes':
-            include('controladores/ClienteControlador.php');
-            $indexPage = new ClienteCtr();
-            switch ($action) {
-                  case 'edit':
-                        $indexPage ->getPantallaEdit();
-                        break;
-                  case 'delete':
-                        $indexPage ->getPantallaDelete();
-                        break;
-                  case 'create':
-                        $indexPage ->getPantallaCreate();
-                        break;
-                  default:
-                        $indexPage -> index();
-                        break;
-            }
-            break;
-        case 'proveedores':
-            include('controladores/ProveedorCtr.php');
-            $indexPage = new ProveedorCtr();
-            break;
-      case 'pedidos':
-            include('controladores/PedidoCompraControlador.php');
-            break;
-        case 'usuarios':
-            include './controladores/UsuarioControlador.php';
-            $indexPage = new UserController();
-            break;
-        case 'menu':
-            include './controladores/MenuControlador.php';
-            $indexPage = new MenuController();
-            $indexPage -> index();
-            break;
-        default:
-          include './vistas/inicio/index.php';
-            break;
-    }
-    if($module){
-      switch ($action) {
-            case 'edit':
-                  $indexPage ->getPantallaEdit();
-                  break;
-            case 'delete':
-                  $indexPage ->getPantallaDelete();
-                  break;
-            case 'create':
-                  $indexPage ->getPantallaCreate();
-                  break;
-            default:
-                  $indexPage -> index();
-                  break;
-      }
-    }
-    ?>
-
+      <?php $GestionPantallaCtr->cargarPantalla(); ?>
   <footer class="d-flex justify-content-end main__footer footer__index">
         <div class="text-end me-5 p-4">
               Creado por:  Matias Premat y Ezequiel Centurion

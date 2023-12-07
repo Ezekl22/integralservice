@@ -4,25 +4,22 @@ $grillaCtr = new GrillaCtr;?>
     <table class="grilla__contenedor border-0">
         <tr class="grilla grilla__cabecera">
             <?php 
-            echo $grillaCtr->getDatosCabecera();
                 foreach ($grillaCtr->getDatosCabecera() as $datoCabecera) {
                    echo "<th>$datoCabecera</th>";
                 }
             ?>
             <th>Acciones</th>
         </tr>
-        <?php foreach ($grillaCtr->getDatosCuerpo() as $user) { ?>
+        <?php foreach ($grillaCtr->getDatosCuerpo() as $datoCuerpo) { ?>
             <tr class="grilla__cuerpo">
-            <?php foreach ($grillaCtr->getDatosCuerpo() as $datoCuerpo) { 
-                foreach ($grillaCtr->getDatosCabecera() as $datoCabecera){
+            <?php foreach ($grillaCtr->getDatosCabecera() as $datoCabecera) { 
                     echo '<td>'.$datoCuerpo[strtolower($datoCabecera)].'</td>';
-                }
-             }?>
+                }?>
                 <td>
-                    <a class="icono__contenedor me-3" href="index.php?module=usuarios&action=edit&id=<?php echo $user['id']; ?>">
+                    <a class="icono__contenedor me-3" href="index.php?module=usuarios&action=edit&id=<?php echo $datoCuerpo[0]; ?>">
                         <img class="icono__imagen" src="./assets/img/iconoEditar.png" alt="icono de editar">
                     </a>
-                    <a class="icono__contenedor" href="index.php?module=usuarios&action=delete&id=<?php echo $user['id']; ?>">
+                    <a class="icono__contenedor" href="index.php?module=usuarios&action=delete&id=<?php echo $datoCuerpo[0]; ?>">
                         <img class="icono__imagen" src="./assets/img/iconoEliminar.svg" alt="icono de eliminar">
                     </a>
                 </td>
