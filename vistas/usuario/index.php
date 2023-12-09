@@ -18,7 +18,7 @@
                         <input class="btn btn-outline-secondary button" type="button" id="buscar" value="Buscar"></button>
                     </div>
                 </div>
-                <?php require_once 'vistas/otros/grilla.php' ?>
+                <?php $grillaCtr->mostrarGrilla(); ?>
             </div>
             <?php 
             $action = isset($_GET['action'])?$_GET['action']:'';

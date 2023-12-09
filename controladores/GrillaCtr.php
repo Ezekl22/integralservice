@@ -1,23 +1,20 @@
 <?php
+require_once 'controladores/UsuarioCtr.php';
 class GrillaCtr{
-    private $datosCabecera;
-    private $datosCuerpo;
+    private $controlador;
+    private $grillaMdl;
 
-    public function __construct() {
-        $this->cargarDatosGrilla();
+    public function __construct(GrillaMdl $grillaMdl) {
+        $this->grillaMdl = $grillaMdl;
+        $this->cargarDatosGrilla($grillaMdl);
     }
 
-    private function cargarDatosGrilla(){
-        require_once './assets/constantes.php';
-        
+    private function cargarDatosGrilla(GrillaMdl $grillaMdl){
         $module = isset($_GET['module'])?$_GET['module']:'';
         
         switch ($module) {
             case 'usuarios':
-                require_once 'UsuarioControlador.php';
-                $usuarioCtr = new UserController;
-                $this->datosCabecera = $GrillaUsuariosIndex;
-                $this->datosCuerpo = $usuarioCtr->getAllUsers();
+                $this->controlador = new UsuarioCtr;
                 break;
             
             default:
@@ -26,12 +23,12 @@ class GrillaCtr{
         }
     }
 
-    public function getDatosCabecera(){
-        return $this->datosCabecera;
+    public function mostrarGrilla(){
+        require_once 'vistas/otros/grilla.php';
     }
 
-    public function getDatosCuerpo(){
-        return $this->datosCuerpo;
+    public function getGrillaMdl(){
+        return $this->grillaMdl;
     }
 }
 ?>

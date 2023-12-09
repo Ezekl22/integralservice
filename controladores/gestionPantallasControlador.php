@@ -1,6 +1,7 @@
 <?php
 require_once 'models/GestionPantallasMdl.php';
 require_once 'models/GestionPantallasDAO.php';
+require_once 'models/PopUpMdl.php';
 
 class GestionPantallasControlador {
     //private $GestionPantallasDAO;
@@ -36,8 +37,8 @@ class GestionPantallasControlador {
                 include('controladores/PedidoCompraControlador.php');
                 break;
             case 'usuarios':
-                include './controladores/UsuarioControlador.php';
-                $indexPage = new UserController();
+                include './controladores/UsuarioCtr.php';
+                $indexPage = new UsuarioCtr();
                 break;
             case 'menu':
                 include './controladores/MenuControlador.php';
@@ -64,6 +65,11 @@ class GestionPantallasControlador {
                         break;
             }
         }
+    }
+
+    public function mostrarPopUp(PopUpMdl $popUpMdl){
+        $popUpM = $popUpMdl;
+        include 'vistas/otros/popUp.php';
     }
 
     public function getModule(){

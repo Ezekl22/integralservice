@@ -1,18 +1,17 @@
-<?php require_once 'controladores/GrillaCtr.php';
-$grillaCtr = new GrillaCtr;?>
 <div class="border w-75 mt-3 mb-5 rounded-4">
     <table class="grilla__contenedor border-0">
         <tr class="grilla grilla__cabecera">
             <?php 
-                foreach ($grillaCtr->getDatosCabecera() as $datoCabecera) {
+                $grillaMdl = $grillaCtr->getGrillaMdl();
+                foreach ($grillaMdl->getDatosCabecera() as $datoCabecera) {
                    echo "<th>$datoCabecera</th>";
                 }
             ?>
             <th>Acciones</th>
         </tr>
-        <?php foreach ($grillaCtr->getDatosCuerpo() as $datoCuerpo) { ?>
+        <?php foreach ($grillaMdl->getDatosCuerpo() as $datoCuerpo) { ?>
             <tr class="grilla__cuerpo">
-            <?php foreach ($grillaCtr->getDatosCabecera() as $datoCabecera) { 
+            <?php foreach ($grillaMdl->getDatosCabecera() as $datoCabecera) { 
                     echo '<td>'.$datoCuerpo[strtolower($datoCabecera)].'</td>';
                 }?>
                 <td>
