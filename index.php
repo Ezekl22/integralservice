@@ -11,7 +11,8 @@
 <body>
     <!-- Obtener el módulo actual -->
     <?php 
-    include './controladores/GestionPantallasControlador.php';
+    require_once './controladores/GestionPantallasControlador.php';
+    require_once './assets/constantes.php';
     $GestionPantallaCtr = new GestionPantallasControlador;
     ?>
 
@@ -38,19 +39,10 @@
             
         </section>
         <?php 
-        $cuerpoPopUp = '<input type="text" class="mb-4 mx-5" placeholder="usuario">
-                        <input type="text" class="mx-5"placeholder="contraseña">
-                        <div class="d-flex justify-content-center">
-                              <button type="button" class="btn btn-link btn__recuperarC" data-bs-dismiss="modal" aria-label="Close" data-bs-toggle="modal" data-bs-target="#recuperarCon">
-                                    recuperar contraseña
-                              </button>
-                        </div>';
-       $botones = array(["texto" => "cancelar","tipo" => "button","href" => ""],["texto" => "Ingresar","tipo" => "a","href" => "index.php?module=menu"]);
-        
-
-        $popUpMdl = new PopUpMdl('inicioSesion','',$cuerpoPopUp,$botones);
-        $GestionPantallaCtr->mostrarPopUp($popUpMdl);
-        
+            $GestionPantallaCtr->crearPopUp(new PopUpMdl('inicioSesion','Inicio de sesión',$inicioSesionCuerpoP,$InicioSesionBotonesP,'index.php?action=login'));
+            $GestionPantallaCtr->crearPopUp(new PopUpMdl('recuperarCon','Recuperar contraseña',$recuperarContrasenaCuerpoP,$recuperarContrasenaBotonesP));
+            $GestionPantallaCtr->crearPopUp(new PopUpMdl('ingCodigo','Ingresar código',$ingresarCodigoCuerpoP,$ingresarCodigoBotonesP));
+            $GestionPantallaCtr->crearPopUp(new PopUpMdl('nuevaCont','Cambiar contraseña',$cambiarContrasenaCuerpoP,$cambiarContrasenaBotonesP));
         ?>
       
 

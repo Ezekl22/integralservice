@@ -31,4 +31,40 @@ $datosCards = array(
             );
 
 $GrillaUsuariosIndex = array("Nombre","Apellido","Tipo","Mail");
+
+
+// Datos del popup de inicio de sesion
+$inicioSesionCuerpoP = '<input id="mail" type="text" class="mb-4 mx-5 form-control w-75" name="mail" placeholder="Mail">
+                        <input type="text" id="contrasena"  name="contrasena" class="mx-5 form-control w-75" placeholder="Contraseña">
+                        <div class="d-flex justify-content-center">
+                            <button type="button" class="btn btn-link btn__recuperarC" data-bs-dismiss="modal" aria-label="Close" data-bs-toggle="modal" data-bs-target="#recuperarCon">
+                                    Recuperar contraseña
+                            </button>
+                        </div>';
+
+$InicioSesionBotonesP = array(["texto" => "Cancelar","tipo" => "button","href" => ""],["texto" => "Ingresar","tipo" => "submit","href" => ""]);
+
+// Datos del popup de recuperar contraseña
+$recuperarContrasenaCuerpoP = '<form action="index.php?action=login" method="POST" class=" d-flex flex-column align-items-center">
+                                    <div class="d-flex mb-4 mx-5">Ingrese su correo electrónico y recibirá un código de verificación.</div>
+                                    <input type="text" class="mb-4 mx-5 form-control w-75" placeholder="mail">
+                                </form>';
+
+$recuperarContrasenaBotonesP = array(["texto" => "cancelar","tipo" => "button","href" => ""],["texto" => "Enviar","tipo" => "submit","href" => ""]);
+
+// Datos del popup de inicio de ingresar codigo
+$ingresarCodigoCuerpoP = '<div class="d-flex mb-4 mx-5">Ingrese el codigo que se envio a su correo.</div>
+                          <input type="text" class="mx-5 mb-4" placeholder="Código">';
+
+$ingresarCodigoBotonesP = array(["texto" => "cancelar","tipo" => "button","href" => ""],["texto" => "Verificar","tipo" => "submit","href" => ""]);
+
+// Datos del popup de inicio de ingresar codigo
+$cambiarContrasenaCuerpoP = '<form action="index.php?action=login" method="POST" class=" d-flex flex-column align-items-center">
+                                <div class="d-flex mb-4 mx-5">Ingrese el codigo que se envio a su correo.</div>
+                                <input type="text" class="mx-5 mb-4" placeholder="Código">
+                            </form>';
+
+$cambiarContrasenaBotonesP = array(["texto" => "cancelar","tipo" => "button","href" => ""],["texto" => "Guardar","tipo" => "submit","href" => ""]);
+
 ?>
+

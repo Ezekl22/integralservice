@@ -104,4 +104,17 @@ class UserDAO {
         $stmt = null;
         return $retorno;
     }
+
+    public function getUsuarioByMailContra($mail,$contrasena){
+        $query = "SELECT * FROM usuarios WHERE mail = :mail AND contrasena = :contrasena";
+        $stmt = $this->db->getConnection()->prepare($query);
+        
+		$stmt->bindParam(":mail", $mail, PDO::PARAM_STR);
+        $stmt->bindParam(":contrasena", $contrasena, PDO::PARAM_STR);
+        $stmt->execute();
+        $retorno = $stmt -> fetchAll();
+        $stmt->closeCursor();
+        $stmt = null;
+        return empty($retorno)?[]:$retorno[0];
+    }
 }

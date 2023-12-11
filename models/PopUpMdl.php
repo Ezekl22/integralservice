@@ -5,12 +5,14 @@ class PopUpMdl {
     private $titulo;
     private $datosCuerpo;
     private $botones;
+    private $accion;
 
-    public function __construct($id,$titulo,$datosCuerpo = "", $botones = []) {
+    public function __construct($id,$titulo,$datosCuerpo = "", $botones = [], $action = "W") {
         $this->id = $id;
         $this->titulo = $titulo;
         $this->datosCuerpo = $datosCuerpo;
         $this->botones = $botones;
+        $this->accion = $action;
     }
 
     public function getId() {
@@ -42,5 +44,13 @@ class PopUpMdl {
 
     public function setBotones(array $Botones) {
        $this->botones = $Botones;
+    }
+
+    public function getAccion(){
+        return $this->accion;
+    }
+
+    public function setAccion($accion){
+        $this->accion = $accion;
     }
 }

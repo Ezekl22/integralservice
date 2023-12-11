@@ -8,7 +8,7 @@ class User {
     private $mail;
     private $contrasena;
 
-    public function __construct($nombre, $apellido, $tipo, $mail, $contrasena) {
+    public function __construct($nombre, $apellido, $tipo, $mail, $contrasena ="") {
         $this->nombre = $nombre;
         $this->apellido = $apellido;
         $this->tipo = $tipo;

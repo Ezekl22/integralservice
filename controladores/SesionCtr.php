@@ -1,27 +1,24 @@
 <?php
 require_once 'models/User.php';
+session_start();
+ob_start();
 
 class SesionCtr {
     private $usuarioSesionado;
 
     public function __construct() {
-        // $this->userDAO = new UserDAO();
-        // $action = isset($_GET['action'])?$_GET['action']:'';
-        // $id = isset($_GET['id'])?$_GET['id']:'';
-        // switch ($action) {
-        //     case 'created':
-        //         $this->create();
-        //         break;
-        //     case 'deleted':
-        //         $this->delete($id);
-        //         break;
-        //     case 'edited':
-        //         $this->update($id);
-        //         break;
-        // }
+        
     }
 
-    private function verificarInicioSesion(){
-        
+    public function verificarInicioSesion(){
+        if(isset($_POST['mail']) && isset($_POST['contrasena'])){
+            $usuarioCtr = new UsuarioCtr;
+            $usuario = $usuarioCtr->getUsuarioByMailContra($_POST['mail'], $_POST['contrasena']);
+            if(!empty($usuario)){
+                echo $usuario->getNombre();
+                $_SESSION['tipoUsuario'] = $usuario->getTipo();
+                header("Location: index.php?module=menu");
+            }
+        }
     }
 }

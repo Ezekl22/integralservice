@@ -2,6 +2,8 @@
 require_once 'models/GestionPantallasMdl.php';
 require_once 'models/GestionPantallasDAO.php';
 require_once 'models/PopUpMdl.php';
+require_once 'controladores/SesionCtr.php';
+require_once 'controladores/UsuarioCtr.php';
 
 class GestionPantallasControlador {
     //private $GestionPantallasDAO;
@@ -64,10 +66,16 @@ class GestionPantallasControlador {
                         $indexPage -> index();
                         break;
             }
+        }else{
+            if ($this->action && $this->action == 'login') {
+                $sesionCtr = new SesionCtr();
+                $sesionCtr->verificarInicioSesion();
+            }
+                
         }
     }
 
-    public function mostrarPopUp(PopUpMdl $popUpMdl){
+    public function crearPopUp(PopUpMdl $popUpMdl){
         $popUpM = $popUpMdl;
         include 'vistas/otros/popUp.php';
     }

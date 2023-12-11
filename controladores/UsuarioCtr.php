@@ -82,4 +82,11 @@ class UsuarioCtr {
     public function delete($id) {
         $this->userDAO->deleteUser($id);
     }
+
+    public function getUsuarioByMailContra($mail,$contrasena){
+        $usuarioDB = $this->userDAO->getUsuarioByMailContra($mail,$contrasena);
+
+        $usuario = count($usuarioDB) > 0? new User($usuarioDB['nombre'], $usuarioDB['apellido'],$usuarioDB['tipo'],$usuarioDB['mail']) : $usuarioDB;
+        return $usuario;
+    }
 }
