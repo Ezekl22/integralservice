@@ -131,4 +131,8 @@ const cantidadOnChange = (idProducto,id) =>{
 const mostrarVentanaModal = (id) =>{
     var miModal = new bootstrap.Modal(document.getElementById(id));
     miModal.show();
-}       
+}    
+
+const validarFormulario = () =>{
+    
+}

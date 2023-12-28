@@ -3,7 +3,6 @@ require_once 'models/GestionPantallasMdl.php';
 require_once 'models/GestionPantallasDAO.php';
 require_once 'models/PopUpMdl.php';
 require_once 'controladores/SesionCtr.php';
-require_once 'controladores/UsuarioCtr.php';
 
 class GestionPantallasControlador {
     //private $GestionPantallasDAO;
@@ -21,33 +20,33 @@ class GestionPantallasControlador {
     public function cargarPantalla(){
         switch ( $this->module) {
             case 'presupuestos':
-                include('./controladores/PresupuestoCtr.php');
+                include_once('./controladores/PresupuestoCtr.php');
                 $indexPage = new PresupuestoCtr();
                 break;
             case 'reparacion':
-                include('controladores/ReparacionControlador.php');
+                include_once('controladores/ReparacionControlador.php');
                 break;
             case 'clientes':
-                include('controladores/ClienteControlador.php');
+                include_once('controladores/ClienteControlador.php');
                 $indexPage = new ClienteCtr();
                 break;
             case 'proveedores':
-                include('controladores/ProveedorCtr.php');
+                include_once('controladores/ProveedorCtr.php');
                 $indexPage = new ProveedorCtr();
                 break;
           case 'pedidos':
-                include('controladores/PedidoCompraControlador.php');
+                include_once('controladores/PedidoCompraControlador.php');
                 break;
             case 'usuarios':
-                include './controladores/UsuarioCtr.php';
+                include_once './controladores/UsuarioCtr.php';
                 $indexPage = new UsuarioCtr();
                 break;
             case 'menu':
-                include './controladores/MenuControlador.php';
+                include_once './controladores/MenuControlador.php';
                 $indexPage = new MenuController();
                 break;
             default:
-              include './vistas/inicio/index.php';
+                include_once './vistas/inicio/index.php';
                 break;
         }
 

@@ -24,6 +24,7 @@ class GrillaCtr{
     }
 
     public function mostrarGrilla(){
+        $grillaMdl = $this->getGrillaMdl();
         require_once 'vistas/otros/grilla.php';
     }
 

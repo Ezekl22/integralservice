@@ -25,9 +25,8 @@ class UsuarioCtr {
     }
 
     public function index() {
-        require_once 'assets/constantes.php';
         $users = $this->getAllUsers();
-        $grillaMdl = new GrillaMdl($GrillaUsuariosIndex,$this->getAllUsers(),[0,1]);
+        $grillaMdl = new GrillaMdl(GRILLA_USUARIOS,$this->getAllUsers(),[0,1]);
         $grillaCtr = new GrillaCtr($grillaMdl);
 
 

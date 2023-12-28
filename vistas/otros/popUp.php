@@ -1,6 +1,6 @@
 <div class="modal fade" id="<?php echo $popUpM->getId(); ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-    <form action="<?php echo $popUpM->getAccion();?>" method="POST">
+    <form action="<?php echo $popUpM->getAccion();?>" method="POST" onsubmit="return validarFormulario()">
         <div class="modal-content">
             <div class="modal-header headerPop__background">
                 <img src="./assets/img/logo-IntegralService.png" class="shadow rounded-3 me-2 logo" alt="logo de integral Service">
@@ -9,6 +9,7 @@
             </div>
             
                 <div class="modal-body d-flex flex-column">
+                    <div id="mensaje-error" class="text-danger"><?php echo $mensajeError; ?></div>
                     <?php echo $popUpM->getDatosCuerpo(); ?>
                 </div>
                 <div class="modal-footer d-flex justify-content-center headerPop__background">

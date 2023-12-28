@@ -7,7 +7,7 @@ class PopUpMdl {
     private $botones;
     private $accion;
 
-    public function __construct($id,$titulo,$datosCuerpo = "", $botones = [], $action = "W") {
+    public function __construct($id,$titulo,$datosCuerpo = "", $botones = [], $action = "") {
         $this->id = $id;
         $this->titulo = $titulo;
         $this->datosCuerpo = $datosCuerpo;

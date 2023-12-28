@@ -10,7 +10,7 @@ class UserDAO {
     }
 
     public function createUser(User $user) {
-        $stmt = $this->db->getConnection()->prepare("INSERT INTO users (nombre, apellido, mail, contrasena, tipo) VALUES (:nombre, :apellido, :mail, :contrasena, :tipo)");
+        $stmt = $this->db->getConnection()->prepare("INSERT INTO usuarios (nombre, apellido, mail, contrasena, tipo) VALUES (:nombre, :apellido, :mail, :contrasena, :tipo)");
         
         $nombre = $user->getNombre();
         $apellido = $user->getApellido();

@@ -2,7 +2,7 @@
     <table class="grilla__contenedor border-0">
         <tr class="grilla grilla__cabecera">
             <?php 
-                $grillaMdl = $grillaCtr->getGrillaMdl();
+                // $grillaMdl = $grillaCtr->getGrillaMdl();
                 foreach ($grillaMdl->getDatosCabecera() as $datoCabecera) {
                    echo "<th>$datoCabecera</th>";
                 }
