@@ -26,7 +26,7 @@
                         </div>
                         <div class="w-50 d-flex mt-3">
                             <div class="input-group input-group-sm mb-3">
-                                <label class="input-group-text" for="tipo">Options</label>
+                                <label class="input-group-text" for="tipo">Tipo</label>
                                 <select class="form-select" id="tipo" name="tipo" required>
                                     <option value="Administrador" selected>Administrador</option>
                                     <option value="Vendedor">Vendedor</option>

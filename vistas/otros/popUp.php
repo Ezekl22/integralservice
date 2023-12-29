@@ -9,7 +9,7 @@
             </div>
             
                 <div class="modal-body d-flex flex-column">
-                    <div id="mensaje-error" class="text-danger"><?php echo $mensajeError; ?></div>
+                    <!-- <div id="mensaje-error" class="text-danger"><?php echo $mensajeError; ?></div> -->
                     <?php echo $popUpM->getDatosCuerpo(); ?>
                 </div>
                 <div class="modal-footer d-flex justify-content-center headerPop__background">
