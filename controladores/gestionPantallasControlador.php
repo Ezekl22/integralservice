@@ -41,6 +41,10 @@ class GestionPantallasControlador {
                 include_once './controladores/UsuarioCtr.php';
                 $indexPage = new UsuarioCtr();
                 break;
+            case 'productos':
+                include_once './controladores/ProductoCtr.php';
+                $indexPage = new ProductoCtr();
+                break;
             case 'menu':
                 include_once './controladores/MenuControlador.php';
                 $indexPage = new MenuController();
