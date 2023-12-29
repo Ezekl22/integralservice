@@ -7,7 +7,7 @@ require_once 'controladores/SesionCtr.php';
 class GestionPantallasControlador {
     //private $GestionPantallasDAO;
     private $action;
-    private $module;
+    private $module; 
 
     public function __construct() {
         $this->module = isset($_GET['module']) ? $_GET['module'] : ''; 
