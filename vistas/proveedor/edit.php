@@ -6,8 +6,6 @@
     $proveedorr = $ProveedorCtr->proveedorDAO->getProveedorById($id);
     $ProveedorCtr -> update($id);
     $fecha = new DateTime($proveedorr['fechaCreacion']);
-    $GestionPantallasCtr = new GestionPantallasControlador();
-    $GestionPantallasCtr->mostrarOcultarPantallaEditar(1);
 
     if($action == 'edit' && $id != ''){
 ?>
@@ -17,9 +15,9 @@
             <title>Editar Proveedor</title>
         </head>
         <body>
-            <main class="d-flex flex-column align-items-center mt-2" id="editProveedor">
+            <main class="d-flex flex-column align-items-center mt-2 mb-5" id="editProveedor">
                 <article class="editar__contenedor rounded-4">
-                    <form action="index.php?module=proveedores" method="POST" class="d-flex flex-column align-items-center border-1 border m-4 rounded-4">
+                    <form action="index.php?module=proveedores&action=edited&id=<?php echo $id?>" method="POST" class="d-flex flex-column align-items-center border-1 border m-4 rounded-4">
                         <div class="d-flex flex-column align-items-center" id="contenedor">
                             
                             <h2 class="mt-2 text__white">Editar Proveedor</h2>
@@ -32,7 +30,7 @@
                                     <label class="input-group-text" for="tipo">Categoria Fiscal:</label>
                                     <select class="form-select" id="tipo" name="tipo" required>
                                         <option value="Administrador" <?php echo ($proveedorr['categoria_fiscal'] == 'Monotributista') ? 'selected' : ''; ?>>Monotributista</option>
-                                        <option value="Vendedor" <?php echo ($proveedorr['categoria_fiscal'] == 'Responsable inscript') ? 'selected' : ''; ?>>Responsable inscript</option>
+                                        <option value="Vendedor" <?php echo ($proveedorr['categoria_fiscal'] == 'Responsable inscript') ? 'selected' : ''; ?>>Responsable Inscripto</option>
                                         <option value="Reparador" <?php echo ($proveedorr['categoria_fiscal'] == 'Excento') ? 'selected' : ''; ?>>Excento</option>
                                     </select>
                                 </div>

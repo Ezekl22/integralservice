@@ -15,8 +15,6 @@ ALTER TABLE `reparaciones`
   ADD PRIMARY KEY (`idreparacion`),
   ADD KEY `idpresupuesto` (`idpresupuesto`);
 
-ALTER TABLE `reparaciones`
-  ADD CONSTRAINT `reparaciones_ibfk_1` FOREIGN KEY (`idpresupuesto`) REFERENCES `presupuestos` (`idpresupuesto`) ON DELETE CASCADE ON UPDATE CASCADE;
 -- ALTER TABLE `presupuestos`
 --   MODIFY `idpresupuesto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4 ;
 -- ALTER TABLE `reparaciones`

@@ -4,18 +4,19 @@ CREATE TABLE `productospresupuestos` (
   `idpresupuestoproducto` int(11) NOT NULL,
   `idpresupuesto` int(11) NOT NULL,
   `idproducto` int(11) NOT NULL,
+  `preciounit` double NOT NULL,
   `cantidad` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-INSERT INTO `productospresupuestos` (`idpresupuestoproducto`, `idpresupuesto`, `idproducto`, `cantidad`) VALUES
-(1, 2, 1, 2),
-(2, 1, 2, 1),
-(3, 1, 1, 2),
-(4, 3, 3, 1);
+INSERT INTO `productospresupuestos` (`idpresupuestoproducto`, `idpresupuesto`, `idproducto`, `preciounit`, `cantidad`) VALUES
+(1, 2, 1, 70000, 2),
+(2, 1, 2, 100000, 1),
+(3, 1, 1, 70000, 2),
+(4, 3, 3, 35000, 1);
 
 ALTER TABLE `productospresupuestos`
   ADD PRIMARY KEY (`idpresupuestoproducto`),
-  ADD UNIQUE KEY `idpresupuesto` (`idpresupuesto`,`idproducto`),
+  ADD KEY `idpresupuesto` (`idpresupuesto`,`idproducto`),
   ADD KEY `idproducto` (`idproducto`);
 
 ALTER TABLE `productospresupuestos`

@@ -6,7 +6,9 @@ USE integralservice;
 
 -- tabla de usuarios
 
-DROP TABLE IF EXISTS users;
+
+-- DROP TABLE IF EXISTS users;
+
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `name` text NOT NULL,
@@ -29,31 +31,34 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 -- tabla de gestion de pantallas
 
-CREATE TABLE `gestionpantallas` (
-  `idgestionpantalla` int(11) NOT NULL,
-  `name` text NOT NULL,
-  `action` text NOT NULL,
-  `inuse` tinyint(2) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-INSERT INTO `gestionpantallas` (`idgestionpantalla`, `name`, `action`, `inuse`) VALUES
-(1, 'usuarios', 'editar', false),
-(2, 'clientes', 'editar', false),
-(3, 'proveedores', 'editar', false),
-(4, 'presupuestos', 'editar', false),
-(5, 'pedidosCompra', 'editar', false),
-(6, 'productos', 'editar', false),
-(7, 'reparaciones', 'editar', false);
+-- DROP TABLE IF EXISTS gestionpantallas;
 
-ALTER TABLE `gestionpantallas`
-ADD PRIMARY KEY (`idgestionpantalla`);
+-- CREATE TABLE `gestionpantallas` (
+--   `idgestionpantalla` int(11) NOT NULL,
+--   `name` text NOT NULL,
+--   `action` text NOT NULL,
+--   `inuse` tinyint(2) NOT NULL
+-- ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-ALTER TABLE `gestionpantallas`
-MODIFY `idgestionpantalla` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+-- INSERT INTO `gestionpantallas` (`idgestionpantalla`, `name`, `action`, `inuse`) VALUES
+-- (1, 'usuarios', 'editar', false),
+-- (2, 'clientes', 'editar', false),
+-- (3, 'proveedores', 'editar', false),
+-- (4, 'presupuestos', 'editar', false),
+-- (5, 'pedidosCompra', 'editar', false),
+-- (6, 'productos', 'editar', false),
+-- (7, 'reparaciones', 'editar', false);
+
+-- ALTER TABLE `gestionpantallas`
+-- ADD PRIMARY KEY (`idgestionpantalla`);
+
+-- ALTER TABLE `gestionpantallas`
+-- MODIFY `idgestionpantalla` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --tabla de clientes
 
-DROP TABLE IF EXISTS clients;
+-- DROP TABLE IF EXISTS clients;
 
 CREATE TABLE `clients` (
   `idclient` int(11) NOT NULL,

@@ -10,6 +10,7 @@ CREATE TABLE `usuarios` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 INSERT INTO `usuarios` (`idusuario`, `nombre`, `apellido`, `tipo`, `mail`, `contrasena`) VALUES
+
 (1, 'Pedro1', 'Pintoss', 'Administrador', 'Pedro22@gmail.com', '123'),
 (2, 'ADMINISTRADOR', 'ADMIN', 'ADMINISTRADOR', 'ADMINISTRADOR@gmail.com', '123'),
 (3, 'Alberto', 'Centurion', 'REPARADOR', 'Alberto22@gmail.com', '123');
@@ -19,3 +20,4 @@ ADD PRIMARY KEY (`idusuario`);
 
 ALTER TABLE `usuarios`
 MODIFY `idusuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+

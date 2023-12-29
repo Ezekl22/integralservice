@@ -136,6 +136,7 @@
         </div> -->
     </main>
       <?php $GestionPantallaCtr->cargarPantalla(); ?>
+
   <footer class="d-flex justify-content-end main__footer footer__index">
         <div class="text-end me-5 p-4">
               Creado por:  Matias Premat y Ezequiel Centurion
