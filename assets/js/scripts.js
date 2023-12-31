@@ -175,10 +175,11 @@ const cargarGrillaProducto = () =>{
 
     contProductos.innerHTML = contProductos.innerHTML + `<tr class="grilla__cuerpo">
                                                             <td id="producto"> ${productoSeleccionado[1]} </td>
-                                                            <td class="form-control" id="cantidad" name="cantidad[]"> ${cantidad} </td>
+                                                            <td> <input type="number" value="${cantidad}" class="form-control" onchange="cantidadOnChange('${productoSeleccionado[0]}','${id}')" id="cantidad" name="cantidad[]" min="1"</td>
                                                             <td id="valorunt"> ${currencyFormatter(productoSeleccionado[7])} </td>
                                                             <td id="total"> ${currencyFormatter(parseInt(cantidad) * productoSeleccionado[7])} </td>
                                                             <td><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"></td>
+                                                            <input type="hidden" class="form-control me-7" aria-label="0" value="${productoSeleccionado[0]}" id="idproductos" name="idproductos[]">
                                                         </tr>`;
 
     // `<button class="btn btn-outline-secondary button ms-7 align-self-start" onclick="quitarComponenteProducto('${id}')" type="button" id="quitar">-</button>
@@ -190,7 +191,7 @@ const cargarGrillaProducto = () =>{
     //                             <input type="text" class="form-control" disabled value= "${currencyFormatter(productoSeleccionado[7])}" id="valorunt">
     //                             <label class="input-group-text" for="totañ" id="inputGroup-sizing-sm">Total:</label>
     //                             <input type="text" class="form-control me-7" disabled aria-label="0" id="total">
-    //                             <input type="hidden" class="form-control me-7" aria-label="0" value="${productoSeleccionado[0]}" id="idproductos" name="idproductos[]">`;
+    //                             
     contProductos.appendChild(contComponente);
     recalcularTotall();
     cerrarGrilla('contGrillaProducto');

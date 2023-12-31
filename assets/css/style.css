@@ -275,3 +275,8 @@ footer{
       position: sticky;
       top: 0px;
     }
+
+
+.form-control{
+  border-radius: 0 !important;
+}

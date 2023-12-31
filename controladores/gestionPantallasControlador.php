@@ -12,9 +12,6 @@ class GestionPantallasControlador {
     public function __construct() {
         $this->module = isset($_GET['module']) ? $_GET['module'] : ''; 
         $this->action = isset($_GET['action']) ? $_GET['action'] : '';
-        //$this->cargarPantalla();
-        //$id = isset($_GET['id']) ? $_GET['id'] : '';
-        //$this->GestionPantallasDAO = new GestionPantallasDAO();
     }
 
     public function cargarPantalla(){
@@ -86,22 +83,4 @@ class GestionPantallasControlador {
     public function getAction(){
         return $this->action;
     }
-
-    // public function getGestionPantallasDAO() {
-    //     // Obtener la lista de usuarios desde el modelo
-    //     return $this->GestionPantallasDAO;
-    // }
-
-    // public function mostrarOcultarPantallaEditar(int $id) {
-    //     $gPantallas = $this->GestionPantallasDAO->getGestionPantallasById($id);
-    //     $inUse = $gPantallas['inuse'] == 1? 0 : 1;
-    //     $gestionPantallas = new GestionPantallasMdl($gPantallas['name'],$gPantallas['action'], $inUse, $id);
-    //     $this->GestionPantallasDAO->updateGestionPantallas($gestionPantallas);
-    // }
-
-    // public function getGestionPantallasById($id) {
-    //     $gPResult = $this->GestionPantallasDAO->getGestionPantallasById($id);
-    //     $gPantallas = new GestionPantallasMdl($gPResult['name'],$gPResult['action'],$gPResult['inuse'],$id);
-    //     return $gPantallas;
-    // }
 }
