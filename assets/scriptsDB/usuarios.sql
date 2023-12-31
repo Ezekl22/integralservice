@@ -11,9 +11,9 @@ CREATE TABLE `usuarios` (
 
 INSERT INTO `usuarios` (`idusuario`, `nombre`, `apellido`, `tipo`, `mail`, `contrasena`) VALUES
 
-(1, 'Pedro1', 'Pintoss', 'Administrador', 'Pedro22@gmail.com', '123'),
-(2, 'ADMINISTRADOR', 'ADMIN', 'ADMINISTRADOR', 'ADMINISTRADOR@gmail.com', '123'),
-(3, 'Alberto', 'Centurion', 'REPARADOR', 'Alberto22@gmail.com', '123');
+(1, 'Pedro1', 'Pintoss', 'Reparador', 'Pedro22@gmail.com', '123'),
+(2, 'ADMINISTRADOR', 'ADMIN', 'Administrador base', 'ADMINISTRADOR@gmail.com', '123'),
+(3, 'Alberto', 'Centurion', 'Vendedor', 'Alberto22@gmail.com', '123');
 
 ALTER TABLE `usuarios`
 ADD PRIMARY KEY (`idusuario`);

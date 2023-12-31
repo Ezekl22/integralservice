@@ -27,7 +27,7 @@
               </button>
               <div class="collapse navbar-collapse d-flex justify-content-end me-5" id="navbarNavDropdown">
                     <ul class="navbar-nav">
-                          <a type="button" class="btn button" <?php if($GestionPantallaCtr->getModule()!=''){echo 'href="index.php"';}else{echo 'data-bs-target="#inicioSesion" data-bs-toggle="modal"';}?>>
+                          <a type="button" class="btn button" <?php if($GestionPantallaCtr->getModule()!=''){echo 'href="index.php?action=logout"';}else{echo 'data-bs-target="#inicioSesion" data-bs-toggle="modal"';}?>>
                                 <?php if($GestionPantallaCtr->getModule()!=''){echo "Cerrar sesión";} else{echo "Iniciar sesión";} ?>
                           </a>
                     </ul>
