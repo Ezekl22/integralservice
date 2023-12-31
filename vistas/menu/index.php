@@ -1,4 +1,3 @@
-<?php include './assets/constantes.php'; ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,7 +12,7 @@
         </article>
         <article class="d-flex flex-row justify-content-evenly mt-5">
             <?php
-            $iterador = new RecursiveArrayIterator($datosCards);
+            $iterador = new RecursiveArrayIterator($datos);
             foreach (new RecursiveIteratorIterator($iterador) as $key => $value) { ?>
                 <a type="button" class="card card__Style" href=<?php echo "index.php?module=".strtolower(trim($key))?>>
                     <div class="card-body">

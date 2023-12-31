@@ -2,8 +2,8 @@
 <?php 
     $id = isset($_GET['id']) ? $_GET['id'] : '';
     $action = isset($_GET['action']) ? $_GET['action'] : '';
-    $UserController = new UserController();
-    $user = $UserController->userDAO->getUserById($id);
+    $usuarioCtr = new UsuarioCtr();
+    $user = $usuarioCtr->userDAO->getUserById($id);
 
     if($action == 'edit' && $id != ''){
 ?>

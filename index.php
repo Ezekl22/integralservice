@@ -11,10 +11,9 @@
 <body>
     <!-- Obtener el módulo actual -->
     <?php 
-    include './controladores/GestionPantallasControlador.php';
-    $module = isset($_GET['module']) ? $_GET['module'] : ''; 
-    $action = isset($_GET['action']) ? $_GET['action'] : '';
-    $id = isset($_GET['id']) ? $_GET['id'] : '';
+    require_once './controladores/GestionPantallasControlador.php';
+    require_once './assets/constantes.php';
+    $GestionPantallaCtr = new GestionPantallasControlador;
     ?>
 
     <nav class="navbar navbar-expand-lg nav__background">
@@ -28,8 +27,8 @@
               </button>
               <div class="collapse navbar-collapse d-flex justify-content-end me-5" id="navbarNavDropdown">
                     <ul class="navbar-nav">
-                          <a type="button" class="btn button" <?php if($module!=''){echo 'href="index.php"';}else{echo 'data-bs-target="#inicioSesion" data-bs-toggle="modal"';}?>>
-                                <?php if($module!=''){echo "Cerrar sesión";} else{echo "Iniciar sesión";} ?>
+                          <a type="button" class="btn button" <?php if($GestionPantallaCtr->getModule()!=''){echo 'href="index.php"';}else{echo 'data-bs-target="#inicioSesion" data-bs-toggle="modal"';}?>>
+                                <?php if($GestionPantallaCtr->getModule()!=''){echo "Cerrar sesión";} else{echo "Iniciar sesión";} ?>
                           </a>
                     </ul>
               </div>
@@ -39,31 +38,15 @@
         <section>
             
         </section>
-        <div class="modal fade" id="inicioSesion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-              <div class="modal-dialog">
-                    <div class="modal-content">
-                          <div class="modal-header headerPop__background">
-                                <img src="./assets/img/logo-IntegralService.png" class="shadow rounded-3 me-2 logo" alt="logo de integral Service">
-                                <h2 class="modal-title fs-5" id="exampleModalLabel">Inicio de sesion</h2>
-                                <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                          </div>
-                          <div class="modal-body d-flex flex-column">
-                                <input type="text" class="mb-4 mx-5" placeholder="usuario">
-                                <input type="text" class="mx-5"placeholder="contraseña">
-                                <div class="d-flex justify-content-center">
-                                      <button type="button" class="btn btn-link btn__recuperarC" data-bs-dismiss="modal" aria-label="Close" data-bs-toggle="modal" data-bs-target="#recuperarCon">
-                                            recuperar contraseña
-                                      </button>
-                                </div>
-                          </div>
-                          <div class="modal-footer d-flex justify-content-center headerPop__background">
-                                <button type="button" class="btn button me-5" data-bs-dismiss="modal">Cancelar</button>
-                                <a aria-label="Close" class="btn button " href="index.php?module=menu">Ingresar</a>
-                          </div>
-                    </div>
-              </div>
-        </div>
-        <div class="modal fade" id="inicioSesion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <?php 
+            $GestionPantallaCtr->crearPopUp(new PopUpMdl('inicioSesion','Inicio de sesión',$inicioSesionCuerpoP,$InicioSesionBotonesP,'index.php?action=login'));
+            $GestionPantallaCtr->crearPopUp(new PopUpMdl('recuperarCon','Recuperar contraseña',$recuperarContrasenaCuerpoP,$recuperarContrasenaBotonesP));
+            $GestionPantallaCtr->crearPopUp(new PopUpMdl('ingCodigo','Ingresar código',$ingresarCodigoCuerpoP,$ingresarCodigoBotonesP));
+            $GestionPantallaCtr->crearPopUp(new PopUpMdl('nuevaCont','Cambiar contraseña',$cambiarContrasenaCuerpoP,$cambiarContrasenaBotonesP));
+        ?>
+      
+
+        <!-- <div class="modal fade" id="inicioSesion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div class="modal-dialog">
                     <div class="modal-content">
                           <div class="modal-header headerPop__background">
@@ -150,63 +133,9 @@
                           </div>
                     </div>
               </div>
-        </div>
+        </div> -->
     </main>
-
-    <?php
-    switch ($module) {
-        case 'presupuestos':
-            include('./controladores/PresupuestoCtr.php');
-            $indexPage = new PresupuestoCtr();
-            break;
-        case 'reparacion':
-            include('controladores/ReparacionControlador.php');
-            break;
-        case 'clientes':
-            include('controladores/ClienteCtr.php');
-            $indexPage = new ClienteCtr();
-            break;
-      case 'productos':
-            include('./controladores/ProductoCtr.php');
-            $indexPage = new ProductoCtr();
-            break;
-      case 'proveedores':
-            include('controladores/ProveedorCtr.php');
-            $indexPage = new ProveedorCtr();
-            break;
-      case 'pedidos':
-            include('controladores/PedidoCompraControlador.php');
-            break;
-      case 'usuarios':
-            include './controladores/UsuarioControlador.php';
-            $indexPage = new UserController();
-            break;
-      case 'menu':
-            include './controladores/MenuControlador.php';
-            $indexPage = new MenuController();
-            $indexPage -> index();
-            break;
-        default:
-          include './vistas/inicio/index.php';
-            break;
-    }
-    if($module){
-      switch ($action) {
-            case 'edit':
-                  $indexPage ->getPantallaEdit();
-                  break;
-            case 'delete':
-                  $indexPage ->getPantallaDelete();
-                  break;
-            case 'create':
-                  $indexPage ->getPantallaCreate();
-                  break;
-            default:
-                  $indexPage -> index();
-                  break;
-      }
-    }
-    ?>
+      <?php $GestionPantallaCtr->cargarPantalla(); ?>
 
   <footer class="d-flex justify-content-end main__footer footer__index">
         <div class="text-end me-5 p-4">

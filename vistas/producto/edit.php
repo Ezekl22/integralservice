@@ -1,11 +1,13 @@
 
 <?php 
     $id = isset($_GET['id']) ? $_GET['id'] : '';
+
     $action = isset($_GET['action']) ? $_GET['action'] : '';
     $productoCtr = new ProductoCtr();
     $producto = $productoCtr->getProductoById($id);
 
     if($action == 'edit' && $id != ''){
+
 ?>
         <!DOCTYPE html>
         <html>

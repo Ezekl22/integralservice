@@ -6,59 +6,59 @@ USE integralservice;
 
 -- tabla de usuarios
 
-DROP TABLE IF EXISTS users;
+
+-- DROP TABLE IF EXISTS users;
 
 CREATE TABLE `users` (
-  `iduser` int(11) NOT NULL,
+  `id` int(11) NOT NULL,
   `name` text NOT NULL,
   `lastname` text NOT NULL,
   `type` text NOT NULL,
-  `username` text NOT NULL,
+  `mail` text NOT NULL,
   `password` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-
-
-INSERT INTO `users` (`iduser`, `name`, `lastname`, `type`, `username`, `password`) VALUES
-(1, 'Pedro1', 'Pintoss', 'Administrador', 'Pedro22', '123'),
-(2, 'ADMINISTRADOR', 'ADMIN', 'ADMINISTRADOR', 'ADMINISTRADOR', '123'),
-(3, 'Alberto', 'Centurion', 'REPARADOR', 'Alberto22', '123');
+INSERT INTO `users` (`id`, `name`, `lastname`, `type`, `mail`, `password`) VALUES
+(1, 'Pedro1', 'Pintoss', 'Administrador', 'Pedro22@gmail.com', '123'),
+(2, 'ADMINISTRADOR', 'ADMIN', 'ADMINISTRADOR', 'ADMINISTRADOR@gmail.com', '123'),
+(3, 'Alberto', 'Centurion', 'REPARADOR', 'Alberto22@gmail.com', '123');
 
 ALTER TABLE `users`
-ADD PRIMARY KEY (`iduser`);
+ADD PRIMARY KEY (`id`);
 
 ALTER TABLE `users`
-MODIFY `iduser` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 -- tabla de gestion de pantallas
 
-DROP TABLE IF EXISTS gestionpantallas;
 
-CREATE TABLE `gestionpantallas` (
-  `idgestionpantalla` int(11) NOT NULL,
-  `name` text NOT NULL,
-  `action` text NOT NULL,
-  `inuse` tinyint(2) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+-- DROP TABLE IF EXISTS gestionpantallas;
 
-INSERT INTO `gestionpantallas` (`idgestionpantalla`, `name`, `action`, `inuse`) VALUES
-(1, 'usuarios', 'editar', false),
-(2, 'clientes', 'editar', false),
-(3, 'proveedores', 'editar', false),
-(4, 'presupuestos', 'editar', false),
-(5, 'pedidosCompra', 'editar', false),
-(6, 'productos', 'editar', false),
-(7, 'reparaciones', 'editar', false);
+-- CREATE TABLE `gestionpantallas` (
+--   `idgestionpantalla` int(11) NOT NULL,
+--   `name` text NOT NULL,
+--   `action` text NOT NULL,
+--   `inuse` tinyint(2) NOT NULL
+-- ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-ALTER TABLE `gestionpantallas`
-ADD PRIMARY KEY (`idgestionpantalla`);
+-- INSERT INTO `gestionpantallas` (`idgestionpantalla`, `name`, `action`, `inuse`) VALUES
+-- (1, 'usuarios', 'editar', false),
+-- (2, 'clientes', 'editar', false),
+-- (3, 'proveedores', 'editar', false),
+-- (4, 'presupuestos', 'editar', false),
+-- (5, 'pedidosCompra', 'editar', false),
+-- (6, 'productos', 'editar', false),
+-- (7, 'reparaciones', 'editar', false);
 
-ALTER TABLE `gestionpantallas`
-MODIFY `idgestionpantalla` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+-- ALTER TABLE `gestionpantallas`
+-- ADD PRIMARY KEY (`idgestionpantalla`);
+
+-- ALTER TABLE `gestionpantallas`
+-- MODIFY `idgestionpantalla` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --tabla de clientes
 
-DROP TABLE IF EXISTS clients;
+-- DROP TABLE IF EXISTS clients;
 
 CREATE TABLE `clients` (
   `idclient` int(11) NOT NULL,
