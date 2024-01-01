@@ -74,6 +74,10 @@ class GestionPantallasControlador {
                     $this->redireccionar('menu');
                 }
                 break;
+            case 'productos':
+                include_once './controladores/ProductoCtr.php';
+                $indexPage = new ProductoCtr();
+                break;
             case 'menu':
                 include_once './controladores/MenuControlador.php';
                 $indexPage = new MenuController();
