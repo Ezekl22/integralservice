@@ -15,28 +15,68 @@ class GestionPantallasControlador {
     }
 
     public function cargarPantalla(){
+        $tipoUsuario = "";
+        //verifico si hay un parametro get de module, si lo hay, traigo el tipo de usuario
+        if ($this->module && !empty($this->module)) {
+            $sesionCtr = $_SESSION['session'];
+            $tipoUsuario = $sesionCtr->getUsuarioSesionado()->getTipo();
+        }
         switch ( $this->module) {
             case 'presupuestos':
-                include_once('./controladores/PresupuestoCtr.php');
-                $indexPage = new PresupuestoCtr();
+                // verifico que el tipo de usuario no tiene acceso al modulo y si no lo tiene lo redirijo al menu
+                if ( strtoupper($tipoUsuario) != "REPARADOR") {
+                    include_once('./controladores/PresupuestoCtr.php');
+                    $indexPage = new PresupuestoCtr();
+                }else{
+                    $this->redireccionar('menu');
+                }
                 break;
             case 'reparacion':
-                include_once('controladores/ReparacionControlador.php');
+                // verifico que el tipo de usuario no tiene acceso al modulo y si no lo tiene lo redirijo al menu
+                if ( strtoupper($tipoUsuario)!= "VENDEDOR") {
+                    include_once('controladores/ReparacionControlador.php');
+                }else{
+                    $this->redireccionar('menu');
+                }
                 break;
             case 'clientes':
-                include_once('controladores/ClienteControlador.php');
-                $indexPage = new ClienteCtr();
+                // verifico que el tipo de usuario no tiene acceso al modulo y si no lo tiene lo redirijo al menu
+                if ( strtoupper($tipoUsuario) != "REPARADOR")  {
+                    include_once('controladores/ClienteControlador.php');
+                    $indexPage = new ClienteCtr();
+                }else{
+                    $this->redireccionar('menu');
+                }
                 break;
             case 'proveedores':
-                include_once('controladores/ProveedorCtr.php');
-                $indexPage = new ProveedorCtr();
+                // verifico que el tipo de usuario no tiene acceso al modulo y si no lo tiene lo redirijo al menu
+                if ( strtoupper($tipoUsuario) == "ADMINISTRADOR" || strtoupper($tipoUsuario) == "ADMINISTRADOR BASE")  {
+                    include_once('controladores/ProveedorCtr.php');
+                    $indexPage = new ProveedorCtr();
+                }else{
+                    $this->redireccionar('menu');
+                }
                 break;
           case 'pedidos':
-                include_once('controladores/PedidoCompraControlador.php');
+                // verifico que el tipo de usuario no tiene acceso al modulo y si no lo tiene lo redirijo al menu
+                if ( strtoupper($tipoUsuario) != "REPARADOR") {
+                    include_once('controladores/PedidoCompraControlador.php');
+                }else{
+                    $this->redireccionar('menu');
+                }
                 break;
             case 'usuarios':
-                include_once './controladores/UsuarioCtr.php';
-                $indexPage = new UsuarioCtr();
+                // verifico que el tipo de usuario no tiene acceso al modulo y si no lo tiene lo redirijo al menu
+                if ( strtoupper($tipoUsuario) == "ADMINISTRADOR" || strtoupper($tipoUsuario) == "ADMINISTRADOR BASE")  {
+                    include_once './controladores/UsuarioCtr.php';
+                    $indexPage = new UsuarioCtr();
+                }else{
+                    $this->redireccionar('menu');
+                }
+                break;
+            case 'productos':
+                include_once './controladores/ProductoCtr.php';
+                $indexPage = new ProductoCtr();
                 break;
             case 'menu':
                 include_once './controladores/MenuControlador.php';
@@ -63,12 +103,23 @@ class GestionPantallasControlador {
                         break;
             }
         }else{
-            if ($this->action && $this->action == 'login') {
-                $sesionCtr = new SesionCtr();
-                $sesionCtr->verificarInicioSesion();
+            if ($this->action) {
+                if ($this->action == 'login') {
+                    $sesionCtr = new SesionCtr();
+                    $sesionCtr->verificarInicioSesion();
+                }else if($this->action == 'logout'){
+                    $sesionCtr = $_SESSION['session'];
+                    $sesionCtr->cerrarSesion($this);
+                }
             }
                 
         }
+    }
+
+    public function redireccionar($modulo){
+        ob_start();
+        header("Location: index.php?".($modulo && $modulo != "" ?"module=$modulo":""));
+        ob_end_flush();
     }
 
     public function crearPopUp(PopUpMdl $popUpMdl){
