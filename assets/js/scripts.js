@@ -33,7 +33,7 @@ const agregarComponenteProducto = () =>{
                                 <label class="input-group-text" for="producto" id="inputGroup-sizing-sm">Producto:</label>
                                 <input type="text" class="form-control w-25" disabled id="producto" value = "${productoSeleccionado[1]}">
                                 <label class="input-group-text" for="cantidad" id="inputGroup-sizing-sm">Cantidad:</label>
-                                <input type="text" class="form-control" aria-label="0" onchange="cantidadOnChange('${productoSeleccionado[0]}','${id}', ${modulo == "presupuesto"? true:false})" id="cantidad">
+                                <input type="text" class="form-control" aria-label="0" onchange="cantidadOnChange('${productoSeleccionado[0]}','${id}')" id="cantidad" name="cantidad[]">
                                 <label class="input-group-text" for="valorunt" id="inputGroup-sizing-sm">Valor unitario:</label>
                                 <input type="text" class="form-control" disabled value= "${currencyFormatter(modulo == "pedidos"?productoSeleccionado[6]:productoSeleccionado[7])}" id="valorunt">
                                 <label class="input-group-text" for="totañ" id="inputGroup-sizing-sm">Total:</label>
