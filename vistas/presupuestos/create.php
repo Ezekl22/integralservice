@@ -56,7 +56,7 @@ echo "<script>const productos = $json;</script>";
             </form>
 
 
-            <div class="modal fade" id="grillaProductos" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <!-- <div class="modal fade" id="grillaProductos" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog justify-content-center d-flex" style="max-width:none;">
                     <div class="modal-content mx-3" style="width:80vw;">
                         <div class="modal-header headerPop__background">
@@ -73,7 +73,9 @@ echo "<script>const productos = $json;</script>";
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
+
+            <?php $gestionPantallaCtr->crearPopUp(new PopUpMdl('grillaProductos','Productos',"",BOTONES_POPUP_PRODUCTOS,'')); ?>
         </article>
     </main>
 </body>

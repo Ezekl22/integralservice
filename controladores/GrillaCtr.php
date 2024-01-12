@@ -1,5 +1,5 @@
 <?php
-require_once 'controladores/UsuarioCtr.php';
+
 class GrillaCtr{
     private $controlador;
     private $grillaMdl;
@@ -14,7 +14,12 @@ class GrillaCtr{
         
         switch ($module) {
             case 'usuarios':
+                require_once 'controladores/UsuarioCtr.php';
                 $this->controlador = new UsuarioCtr;
+                break;
+            case 'presupuestos':
+                require_once 'controladores/PresupuestoCtr.php';
+                $this->controlador = new PresupuestoCtr;
                 break;
             
             default:

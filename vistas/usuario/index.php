@@ -27,5 +27,7 @@
             <?php } ?>
         </article>
     </main>
+    <?php $gestionPantallaCtr->crearPopUp(new PopUpMdl('delete','Eliminar Usuario',"",$InicioSesionBotonesP,'index.php?action=login')); ?>
+    <?php echo $action == 'delete' ? '<script> mostrarVentanaModal("delete"); </script>':''?>
 </body>
 </html>
