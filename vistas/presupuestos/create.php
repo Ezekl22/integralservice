@@ -55,7 +55,7 @@ echo "<script>const productos = $json;</script>";
                 </div>
             </form>
 
-
+    
             <div class="modal fade" id="grillaProductos" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog justify-content-center d-flex" style="max-width:none;">
                     <div class="modal-content mx-3" style="width:80vw;">
