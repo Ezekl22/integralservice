@@ -31,40 +31,42 @@ define('DATOS_CARDS',array(
     ));
 
 define('GRILLA_USUARIOS',array("Nombre","Apellido","Tipo","Mail"));
-
-// Datos del popup de inicio de sesion
-$inicioSesionCuerpoP = '<input id="mail" type="text" class="mb-4 mx-5 form-control w-75" name="mail" placeholder="Mail" required>
-                        <input type="text" id="contrasena"  name="contrasena" class="mx-5 form-control w-75" placeholder="Contraseña" required>
-                        <div class="d-flex justify-content-center">
-                            <button type="button" class="btn btn-link btn__recuperarC" data-bs-dismiss="modal" aria-label="Close" data-bs-toggle="modal" data-bs-target="#recuperarCon">
-                                    Recuperar contraseña
-                            </button>
-                        </div>';
+define('GRILLA_PRESUPUESTO_PRODUCTOS',array("Producto","Cantidad","Valor unitario","Total","Selección"));
+define( 'BOTONES_POPUP_PRODUCTOS',array(["texto" => "Cancelar","tipo" => "button","href" => ""],["texto" => "Seleccionar","tipo" => "button","href" => "","onclick"=>"cargarGrillaProducto()"]));
 
 $InicioSesionBotonesP = array(["texto" => "Cancelar","tipo" => "button","href" => ""],["texto" => "Ingresar","tipo" => "submit","href" => ""]);
-
-// Datos del popup de recuperar contraseña
-$recuperarContrasenaCuerpoP = '<form action="index.php?action=login" method="POST" class=" d-flex flex-column align-items-center">
-                                    <div class="d-flex mb-4 mx-5">Ingrese su correo electrónico y recibirá un código de verificación.</div>
-                                    <input type="text" class="mb-4 mx-5 form-control w-75" placeholder="mail" required>
-                                </form>';
-
 $recuperarContrasenaBotonesP = array(["texto" => "cancelar","tipo" => "button","href" => ""],["texto" => "Enviar","tipo" => "submit","href" => ""]);
-
-// Datos del popup de inicio de ingresar codigo
-$ingresarCodigoCuerpoP = '<div class="d-flex mb-4 mx-5">Ingrese el codigo que se envio a su correo.</div>
-                          <input type="text" class="mx-5 mb-4" placeholder="Código" required>';
-
 $ingresarCodigoBotonesP = array(["texto" => "cancelar","tipo" => "button","href" => ""],["texto" => "Verificar","tipo" => "submit","href" => ""]);
-
-// Datos del popup de inicio de ingresar codigo
-$cambiarContrasenaCuerpoP = '<form action="index.php?action=login" method="POST" class=" d-flex flex-column align-items-center">
-                                <div class="d-flex mb-4 mx-5">Ingrese la nueva contraseña.</div>
-                                <input type="text" class="mx-5 mb-4" placeholder="Nueva contraseña" required>
-                                <input type="text" class="mx-5 mb-4" placeholder="Repita la contraseña" required>
-                            </form>';
-
 $cambiarContrasenaBotonesP = array(["texto" => "cancelar","tipo" => "button","href" => ""],["texto" => "Guardar","tipo" => "submit","href" => ""]);
 
+// este codigo es la parte superior del body
+define('POPUP_PRODUCTOS_CUERPO_S',`<div class="d-flex mt-3 justify-content-end" style="width:90%;">
+                                <div class="input-group input-group-sm w-25">
+                                    <input type="text" class="form-control" placeholder="Ingrese su busqueda" aria-label="Recipient's username" aria-describedby="buscar">
+                                    <input class="btn btn-outline-secondary button" type="button" id="buscar" value="Buscar"></button>
+                                </div>
+                                </div>
+                                <div class="border mt-3 mb-5 rounded-4" style="width:90%;">
+                                <table class="grilla__contenedor border-0">
+                                    <tr class="grilla grilla__cabecera">
+                                        <th>Nombre</th>
+                                        <th>Marca</th>
+                                        <th>Detalle</th>
+                                        <th>Stock</th>
+                                        <th>Tipo</th>
+                                        <th>preciocompra</th>
+                                        <th>precioventa</th>
+                                        <th>selección</th>
+                                    </tr>`);
+
+//                                    
+define('POPUP_PRODUCTOS_CUERPO_I',`</table>
+<div class="d-flex justify-content-center">
+    <div class="input-group input-group-sm mb-3 w-25">
+        <label class="input-group-text" for="cantidad" id="inputGroup-sizing-sm">Cantidad:</label>
+        <input type="text" class="form-control" aria-label="0" id="cantidadProducto" value="1">
+    </div>
+</div>
+</div>`)
 ?>
 
