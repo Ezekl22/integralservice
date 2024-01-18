@@ -51,6 +51,9 @@ class PresupuestoCtr {
     }
 
     public function getPantallaCreate(){
+        session_start();
+        $gestionPantallaCtr = $_SESSION['session']->getGestionPantallaCtr();
+        session_write_close();
         require_once 'vistas/presupuestos/create.php';
     }
 

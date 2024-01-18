@@ -25,7 +25,9 @@ class UsuarioCtr {
     }
 
     public function index() {
-        $users = $this->getAllUsers();
+        session_start();
+        $gestionPantallaCtr = $_SESSION['session']->getGestionPantallaCtr();
+        session_write_close();
         $grillaMdl = new GrillaMdl(GRILLA_USUARIOS,$this->getAllUsers(),[0,1]);
         $grillaCtr = new GrillaCtr($grillaMdl);
 

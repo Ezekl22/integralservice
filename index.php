@@ -39,10 +39,10 @@
             
         </section>
         <?php 
-            $GestionPantallaCtr->crearPopUp(new PopUpMdl('inicioSesion','Inicio de sesión',$inicioSesionCuerpoP,$InicioSesionBotonesP,'index.php?action=login'));
-            $GestionPantallaCtr->crearPopUp(new PopUpMdl('recuperarCon','Recuperar contraseña',$recuperarContrasenaCuerpoP,$recuperarContrasenaBotonesP));
-            $GestionPantallaCtr->crearPopUp(new PopUpMdl('ingCodigo','Ingresar código',$ingresarCodigoCuerpoP,$ingresarCodigoBotonesP));
-            $GestionPantallaCtr->crearPopUp(new PopUpMdl('nuevaCont','Cambiar contraseña',$cambiarContrasenaCuerpoP,$cambiarContrasenaBotonesP));
+            $GestionPantallaCtr->crearPopUp(new PopUpMdl('inicioSesion','Inicio de sesión',"",$InicioSesionBotonesP,'index.php?action=login'));
+            $GestionPantallaCtr->crearPopUp(new PopUpMdl('recuperarCon','Recuperar contraseña',"",$recuperarContrasenaBotonesP));
+            $GestionPantallaCtr->crearPopUp(new PopUpMdl('ingCodigo','Ingresar código',"",$ingresarCodigoBotonesP));
+            $GestionPantallaCtr->crearPopUp(new PopUpMdl('nuevaCont','Cambiar contraseña',"",$cambiarContrasenaBotonesP));
         ?>
       
 

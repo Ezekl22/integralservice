@@ -15,10 +15,13 @@ class GestionPantallasControlador {
     }
 
     public function cargarPantalla(){
+        
         $tipoUsuario = "";
         //verifico si hay un parametro get de module, si lo hay, traigo el tipo de usuario
         if ($this->module && !empty($this->module)) {
+            session_start();
             $sesionCtr = $_SESSION['session'];
+            session_write_close();
             $tipoUsuario = $sesionCtr->getUsuarioSesionado()->getTipo();
         }
         switch ( $this->module) {
@@ -106,9 +109,11 @@ class GestionPantallasControlador {
             if ($this->action) {
                 if ($this->action == 'login') {
                     $sesionCtr = new SesionCtr();
-                    $sesionCtr->verificarInicioSesion();
+                    $sesionCtr->verificarInicioSesion($this);
                 }else if($this->action == 'logout'){
+                    session_start();
                     $sesionCtr = $_SESSION['session'];
+                    session_write_close();
                     $sesionCtr->cerrarSesion($this);
                 }
             }
@@ -134,22 +139,4 @@ class GestionPantallasControlador {
     public function getAction(){
         return $this->action;
     }
-
-    // public function getGestionPantallasDAO() {
-    //     // Obtener la lista de usuarios desde el modelo
-    //     return $this->GestionPantallasDAO;
-    // }
-
-    // public function mostrarOcultarPantallaEditar(int $id) {
-    //     $gPantallas = $this->GestionPantallasDAO->getGestionPantallasById($id);
-    //     $inUse = $gPantallas['inuse'] == 1? 0 : 1;
-    //     $gestionPantallas = new GestionPantallasMdl($gPantallas['name'],$gPantallas['action'], $inUse, $id);
-    //     $this->GestionPantallasDAO->updateGestionPantallas($gestionPantallas);
-    // }
-
-    // public function getGestionPantallasById($id) {
-    //     $gPResult = $this->GestionPantallasDAO->getGestionPantallasById($id);
-    //     $gPantallas = new GestionPantallasMdl($gPResult['name'],$gPResult['action'],$gPResult['inuse'],$id);
-    //     return $gPantallas;
-    // }
 }
