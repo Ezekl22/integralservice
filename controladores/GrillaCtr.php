@@ -7,6 +7,7 @@ class GrillaCtr{
     public function __construct(GrillaMdl $grillaMdl) {
         $this->grillaMdl = $grillaMdl;
         $this->cargarDatosGrilla($grillaMdl);
+        
     }
 
     private function cargarDatosGrilla(GrillaMdl $grillaMdl){

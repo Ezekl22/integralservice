@@ -18,9 +18,15 @@
                     <a class="icono__contenedor me-3" href="index.php?module=usuarios&action=edit&id=<?php echo $datoCuerpo[0]; ?>">
                         <img class="icono__imagen" src="./assets/img/iconoEditar.png" alt="icono de editar">
                     </a>
-                    <a class="icono__contenedor" href="index.php?module=usuarios&action=delete&id=<?php echo $datoCuerpo[0]; ?>">
-                        <img class="icono__imagen" src="./assets/img/iconoEliminar.svg" alt="icono de eliminar">
-                    </a>
+                    <?php $module = isset($_GET['module'])?$_GET['module']:''; if( $module === "usuarios" && strtoupper($datoCuerpo[3]) === "ADMINISTRADOR BASE"){ ?>
+                        <label class="icono__contenedor" title="Eliminar" href="index.php?module=presupuestos&action=delete&id=<?php echo $datoCuerpo[0]; ?>">
+                            <img class="icono__imagen svg-disabled-color" src="./assets/img/iconoEliminarDeshabilitado.svg" alt="icono de eliminar">
+                        </label>
+                    <?php } else{ ?>
+                        <a class="icono__contenedor" href="index.php?module=usuarios&action=delete&id=<?php echo $datoCuerpo[0]; ?>">
+                            <img class="icono__imagen " src="./assets/img/iconoEliminar.svg" alt="icono de eliminar">
+                        </a>
+                    <?php } ?>
                 </td>
             </tr>
         <?php } ?>
