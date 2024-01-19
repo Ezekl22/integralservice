@@ -3,7 +3,7 @@
     $id = isset($_GET['id']) ? $_GET['id'] : '';
     $action = isset($_GET['action']) ? $_GET['action'] : '';
     $usuarioCtr = new UsuarioCtr();
-    $user = $usuarioCtr->userDAO->getUserById($id);
+    $user = $usuarioCtr->userDAO->getUsuarioById($id);
 
     if($action == 'edit' && $id != ''){
 ?>
