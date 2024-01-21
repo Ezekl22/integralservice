@@ -81,7 +81,12 @@ class UsuarioCtr {
     }
 
     public function delete($id) {
+        if(strtoupper($this->getUsuarioById($id)[3]) != "ADMINISTRADOR BASE")
         $this->userDAO->deleteUser($id);
+    }
+
+    public function getUsuarioById($id){
+        $this->userDAO->getUsuarioById($id);
     }
 
     public function getUsuarioByMailContra($mail,$contrasena){

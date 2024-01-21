@@ -86,7 +86,7 @@ class UserDAO {
         }
     }
 
-    public function getUserById($id) {
+    public function getUsuarioById($id) {
         $stmt = $this->db->getConnection()->prepare("SELECT * FROM usuarios WHERE idusuario = ".$id);
         $stmt->execute();
         $retorno = $stmt -> fetchAll()[0];
