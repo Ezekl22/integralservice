@@ -21,13 +21,13 @@
                 <?php $grillaCtr->mostrarGrilla(); ?>
             </div>
             <?php 
-            $action = isset($_GET['action'])?$_GET['action']:'';
+            $action = $gestionPantallaCtr->getModule();
             if(($action != 'edit' && $action != 'create') ){ ?>
                 <a class="my-5 btn button" type="button" href="index.php?module=usuarios&action=create">Crear nuevo usuario</a>
             <?php } ?>
         </article>
     </main>
-    <?php $gestionPantallaCtr->crearPopUp(new PopUpMdl('delete','Eliminar Usuario',"",$InicioSesionBotonesP,'index.php?action=login')); ?>
+    <?php //$gestionPantallaCtr->crearPopUp(new PopUpMdl('delete','Eliminar Usuario',"",$InicioSesionBotonesP,'index.php?action=login')); ?>
     <?php echo $action == 'delete' ? '<script> mostrarVentanaModal("delete"); </script>':''?>
 </body>
 </html>

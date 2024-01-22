@@ -75,11 +75,6 @@
                                         <a class="icono__contenedor me-2" title="ver" href="index.php?module=presupuestos&action=see&id=<?php echo $presupuesto['idpresupuesto']; ?>">
                                             <img class="icono__imagen" src="./assets/img/iconoVer.png" alt="icono de ver">
                                         </a>
-                                        <?php if($presupuesto['estado'] != 'Facturado') {?>
-                                            
-                                        <?php } else {?>
-                                            
-                                        <?php }?>
                                         
                                         <?php if($presupuesto['estado'] != 'Facturado') {?>
                                             <a class="icono__contenedor me-2 ms-2" title="Cambiar estado" href="index.php?module=presupuestos&action=cambiarestado&id=<?php echo $presupuesto['idpresupuesto']; ?>">
