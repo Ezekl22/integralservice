@@ -1,6 +1,8 @@
 <?php
 require_once 'models/ProveedorMdl.php';
 require_once 'models/ProveedorDAO.php';
+require_once 'controladores/GrillaCtr.php';
+require_once 'models/GrillaMdl.php';
 
 class ProveedorCtr {
     private $proveedorDAO;
@@ -23,10 +25,12 @@ class ProveedorCtr {
     }
 
     public function index() {
-        // Obtener la lista de proveedores desde el modelo
+        session_start();
+        $gestionPantallaCtr = $_SESSION['session']->getGestionPantallaCtr();
+        session_write_close();
+        $grillaMdl = new GrillaMdl(GRILLA_PROVEEDORES,$this->getAllProveedores(),[0,1]);
+        $grillaCtr = new GrillaCtr($grillaMdl);
         $proveedores = $this->getAllProveedores();
-
-        // Cargar la vista con los datos
         require_once 'vistas/proveedor/index.php';
     }
 
