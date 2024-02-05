@@ -1,6 +1,8 @@
 <?php
 require_once 'models/Client.php';
 require_once 'models/ClientDAO.php';
+require_once 'controladores/GrillaCtr.php';
+require_once 'models/GrillaMdl.php';
 
 class ClienteCtr{
     private $clientDAO;
@@ -26,10 +28,12 @@ class ClienteCtr{
     }
 
     public function index() {
-        // Obtener la lista de clientes desde el modelo
+        session_start();
+        $gestionPantallaCtr = $_SESSION['session']->getGestionPantallaCtr();
+        session_write_close();
+        $grillaMdl = new GrillaMdl(GRILLA_CLIENTES,$this->getAllClientes(),[0,1]);
+        $grillaCtr = new GrillaCtr($grillaMdl);
         $clients = $this->clientDAO->getAllClientes();
-
-        // Cargar la vista con los datos
         require_once 'vistas/cliente/index.php';
     }
 

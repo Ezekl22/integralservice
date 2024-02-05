@@ -19,7 +19,7 @@
 
                     <?php if(in_array($gestionPantallaCtr->getModule(),["presupuestos","pedidos"])){?>
                         <!-- VER -->
-                        <a class="icono__contenedor me-2" title="ver" href="index.php?module=presupuestos&action=see&id=<?php echo $datoCuerpo[0]; ?>">
+                        <a class="icono__contenedor me-2" title="ver" href="index.php?module=<?php echo $gestionPantallaCtr->getModule(); ?>&action=see&id=<?php echo $datoCuerpo[0]; ?>">
                             <img class="icono__imagen" src="./assets/img/iconoVer.png" alt="icono de ver">
                         </a>
                         <?php if(strtoupper($datoCuerpo[4]) == "FACTURADO") {?>
@@ -33,11 +33,11 @@
                             </label>
                         <?php } else{ ?>
                             <!-- CAMBIAR ESTADO - ACTIVO-->
-                            <a class="icono__contenedor me-2 " title="Cambiar estado" href="index.php?module=presupuestos&action=cambiarestado&id=<?php echo $datoCuerpo[0]; ?>">
+                            <a class="icono__contenedor me-2 " title="Cambiar estado" href="index.php?module=<?php echo $gestionPantallaCtr->getModule(); ?>&action=cambiarestado&id=<?php echo $datoCuerpo[0]; ?>">
                                 <img class="icono__imagen" src="./assets/img/iconoCambiarEstado.svg" alt="icono de cambiar estado">
                             </a>
                             <!-- FACTURAR - ACTIVO --> 
-                            <a class="icono__contenedor me-2" title="Facturar" href="index.php?module=presupuestos&action=facturar&id=<?php echo $datoCuerpo[0]; ?>">
+                            <a class="icono__contenedor me-2" title="Facturar" href="index.php?module=<?php echo $gestionPantallaCtr->getModule(); ?>&action=facturar&id=<?php echo $datoCuerpo[0]; ?>">
                                 <img class="icono__imagen" src="./assets/img/iconoFacturar.svg" alt="icono de Facturar">
                             </a>
                         <?php } ?>
@@ -50,7 +50,7 @@
                             </label>
                         <?php } else {?>
                             <!-- EDITAR - ACTIVADO-->
-                            <a class="icono__contenedor me-2" href="index.php?module=usuarios&action=edit&id=<?php echo $datoCuerpo[0]; ?>">
+                            <a class="icono__contenedor me-2" href="index.php?module=<?php echo $gestionPantallaCtr->getModule(); ?>&action=edit&id=<?php echo $datoCuerpo[0]; ?>">
                                 <img class="icono__imagen" src="./assets/img/iconoEditar.png" alt="icono de editar">
                             </a>
                         <?php } ?>
@@ -62,7 +62,7 @@
                             </label>
                         <?php } else{ ?>
                             <!-- ELIMINAR - ACTIVADO -->
-                            <a class="icono__contenedor" href="index.php?module=usuarios&action=delete&id=<?php echo $datoCuerpo[0]; ?>">
+                            <a class="icono__contenedor" href="index.php?module=<?php echo $gestionPantallaCtr->getModule(); ?>&action=delete&id=<?php echo $datoCuerpo[0]; ?>">
                                 <img class="icono__imagen " src="./assets/img/iconoEliminar.svg" alt="icono de eliminar">
                             </a>
                         <?php } ?>
@@ -74,7 +74,7 @@
                             </label>
                         <?php } else { ?>
                             <!-- CANCELAR - ACTIVADO -->
-                            <a class="icono__contenedor me-2" title="Cancelar" href="index.php?module=presupuestos&action=canceled&id=<?php echo $datoCuerpo[0]; ?>">
+                            <a class="icono__contenedor me-2" title="Cancelar" href="index.php?module=<?php echo $gestionPantallaCtr->getModule(); ?>&action=canceled&id=<?php echo $datoCuerpo[0]; ?>">
                                 <img class="icono__imagen" src="./assets/img/iconoCancelar.png" alt="icono de cancelar">
                             </a>
                         <?php } ?>

@@ -30,10 +30,10 @@ class ClientDAO {
 
 		}else{
 
-			print_r(Conexion::conectar()->errorInfo());
+			print_r($stmt->errorInfo());
 
 		}
-        $stmt->close();
+        $stmt->closeCursor();
         $stmt = null;
     }
 
@@ -51,7 +51,7 @@ class ClientDAO {
 		$stmt->bindParam(":nombre", $nombre, PDO::PARAM_STR);
 		$stmt->bindParam(":apellido", $apellido, PDO::PARAM_STR);
         $stmt->bindParam(":email", $email, PDO::PARAM_STR);
-		$stmt->bindParam(":cuit", $cuit, PDO::PARAM_INT);
+		$stmt->bindParam(":cuit", $cuit, PDO::PARAM_STR);
 		$stmt->bindParam(":categoriafiscal", $categoriaFiscal, PDO::PARAM_STR);
 		$stmt->bindParam(":idcliente",$id , PDO::PARAM_INT);
 
@@ -61,10 +61,10 @@ class ClientDAO {
 
 		}else{
 
-			print_r(Conexion::conectar()->errorInfo());
+			print_r($stmt->errorInfo());
 
 		}
-        $stmt->close();
+        $stmt->closeCursor();
         $stmt = null;
     }
 
@@ -86,9 +86,10 @@ class ClientDAO {
         $stmt = $this->db->getConnection()->prepare("SELECT * FROM clientes WHERE idcliente = ".$id);
 
         $stmt->execute();
-        return $stmt -> fetchAll()[0];
-        $stmt->close();
+        $retorno = $stmt -> fetchAll()[0];
+        $stmt->closeCursor();
         $stmt = null;
+        return $retorno;
     }
 
     public function getAllClientes() {
@@ -96,8 +97,9 @@ class ClientDAO {
         $stmt = $this->db->getConnection()->prepare("SELECT * FROM clientes");
 
         $stmt->execute();
-        return $stmt -> fetchAll();
-        $stmt->close();
+        $retorno = $stmt -> fetchAll();
+        $stmt->closeCursor();
         $stmt = null;
+        return $retorno;
     }
 }
