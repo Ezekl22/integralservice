@@ -6,25 +6,20 @@ require_once 'controladores/SesionCtr.php';
 
 class GestionPantallasControlador {
     //private $GestionPantallasDAO;
-    private $action;
-    private $module; 
 
-    public function __construct() {
-        $this->module = isset($_GET['module']) ? $_GET['module'] : ''; 
-        $this->action = isset($_GET['action']) ? $_GET['action'] : '';
-    }
+    public function __construct() {}
 
     public function cargarPantalla(){
         
         $tipoUsuario = "";
         //verifico si hay un parametro get de module, si lo hay, traigo el tipo de usuario
-        if ($this->module && !empty($this->module)) {
+        if ($this->getModule() && !empty($this->getModule())) {
             session_start();
             $sesionCtr = $_SESSION['session'];
             session_write_close();
             $tipoUsuario = $sesionCtr->getUsuarioSesionado()->getTipo();
         }
-        switch ( $this->module) {
+        switch ( $this->getModule()) {
             case 'presupuestos':
                 // verifico que el tipo de usuario no tiene acceso al modulo y si no lo tiene lo redirijo al menu
                 if ( strtoupper($tipoUsuario) != "REPARADOR") {
@@ -90,8 +85,8 @@ class GestionPantallasControlador {
                 break;
         }
 
-        if($this->module){
-            switch ($this->action) {
+        if($this->getModule()){
+            switch ($this->getAction()) {
                 case 'edit':
                         $indexPage ->getPantallaEdit();
                         break;
@@ -106,11 +101,11 @@ class GestionPantallasControlador {
                         break;
             }
         }else{
-            if ($this->action) {
-                if ($this->action == 'login') {
+            if ($this->getAction()) {
+                if ($this->getAction() == 'login') {
                     $sesionCtr = new SesionCtr();
                     $sesionCtr->verificarInicioSesion($this);
-                }else if($this->action == 'logout'){
+                }else if($this->getAction() == 'logout'){
                     session_start();
                     $sesionCtr = $_SESSION['session'];
                     session_write_close();
@@ -133,10 +128,10 @@ class GestionPantallasControlador {
     }
 
     public function getModule(){
-        return $this->module;
+        return isset($_GET['module']) ? $_GET['module'] : '';
     }
 
     public function getAction(){
-        return $this->action;
+        return isset($_GET['action']) ? $_GET['action'] : '';
     }
 }
