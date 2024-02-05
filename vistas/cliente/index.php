@@ -18,35 +18,7 @@
                         <input class="btn btn-outline-secondary button" type="button" id="buscar" value="Buscar"></button>
                     </div>
                 </div>
-                <div class="border w-75 mt-3 mb-5 rounded-4">
-                    <table class="grilla__contenedor border-0">
-                        <tr class="grilla grilla__cabecera">
-                            <th>Nombre</th>
-                            <th>Apellido</th>
-                            <th>Email</th>
-                            <th>Cuit</th>
-                            <th>Categoria fiscal</th>
-                            <th>Acciones</th>
-                        </tr>
-                        <?php foreach ($clients as $client) { ?>
-                            <tr class="grilla__cuerpo">
-                                <td><?php echo $client['nombre']; ?></td>
-                                <td><?php echo $client['apellido']; ?></td>
-                                <td><?php echo $client['email']; ?></td>
-                                <td><?php echo $client['cuit']; ?></td>
-                                <td><?php echo $client['categoriafiscal']; ?></td>
-                                <td>
-                                    <a class="icono__contenedor me-3" href="index.php?module=clientes&action=edit&id=<?php echo $client['idcliente']; ?>">
-                                        <img class="icono__imagen" src="./assets/img/iconoEditar.png" alt="icono de editar">
-                                    </a>
-                                    <a class="icono__contenedor" href="index.php?module=clientes&action=delete&id=<?php echo $client['idcliente']; ?>">
-                                        <img class="icono__imagen" src="./assets/img/iconoEliminar.svg" alt="icono de eliminar">
-                                    </a>
-                                </td>
-                            </tr>
-                        <?php } ?>
-                    </table>
-                </div>
+                <?php $grillaCtr->mostrarGrilla(); ?>
             </div>
             <?php 
             $action = isset($_GET['action'])?$_GET['action']:'';

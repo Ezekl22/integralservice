@@ -26,6 +26,12 @@ class ProductoCtr {
     }
 
     public function index() {
+        session_start();
+        $gestionPantallaCtr = $_SESSION['session']->getGestionPantallaCtr();
+        session_write_close();
+        $grillaMdl = new GrillaMdl(GRILLA_PRODUCTOS,$this->getAllProductos(),[0,1]);
+        $grillaCtr = new GrillaCtr($grillaMdl);
+
         $productos = $this->productoDAO->getAllProductos();
         require_once 'vistas/producto/index.php';
     }
