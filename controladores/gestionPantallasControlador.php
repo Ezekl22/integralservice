@@ -29,10 +29,11 @@ class GestionPantallasControlador {
                     $this->redireccionar('menu');
                 }
                 break;
-            case 'reparacion':
+            case 'reparaciones':
                 // verifico que el tipo de usuario no tiene acceso al modulo y si no lo tiene lo redirijo al menu
                 if ( strtoupper($tipoUsuario)!= "VENDEDOR") {
-                    include_once('controladores/ReparacionControlador.php');
+                    include_once('controladores/ReparacionCtr.php');
+                    $indexPage = new ReparacionCtr();
                 }else{
                     $this->redireccionar('menu');
                 }

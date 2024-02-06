@@ -34,7 +34,7 @@ class PresupuestoCtr {
 
     public function index() {
         // Obtener la lista de usuarios desde el modelo
-        $presupuestos = $this->presupuestoDAO->getAllPresupuestos();
+        $presupuestos = $this->getAllPresupuestos();
         $action = isset($_GET['action']) ? $_GET['action'] : '';
         $presupuestoCtr = $this;
         if ($action == 'see'){
@@ -58,6 +58,10 @@ class PresupuestoCtr {
 
         // Cargar la vista con los datos
         require_once 'vistas/presupuestos/index.php';
+    }
+
+    public function getAllPresupuestos(){
+        return $this->presupuestoDAO->getAllPresupuestos();
     }
 
     public function getPantallaCreate(){
