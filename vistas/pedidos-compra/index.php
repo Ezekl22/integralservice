@@ -70,7 +70,7 @@ $total = 0;
                         <?php foreach ($pedidosCompras as $pedidoCompra) { ?>
                             <tr class="grilla__cuerpo">
                                 <td><?php echo $pedidoCompra['nrocomprobante']; ?></td>
-                                <td><?php echo $pedidoCompraCtr->getProveedorById($pedidoCompra['idproveedor'])['nombre']; ?></td>
+                                <td><?php echo $pedidoCompraCtr->getProveedorById($pedidoCompra['idproveedor'])[1]; ?></td>
                                 <td><?php echo $pedidoCompra['fecha']; ?></td>
                                 <td><?php echo $pedidoCompra['estado']; ?></td>
                                 <td><?php echo '$'.number_format($pedidoCompra['total'], 2); ?></td>
