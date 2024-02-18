@@ -32,7 +32,7 @@ class UsuarioCtr
     public function index()
     {
         $action = isset($_GET['action']) ? $_GET['action'] : '';
-        $termino = isset($_POST) ? $_POST : "";
+        $termino = isset($_POST['termino']) ? $_POST['termino'] : "";
         session_start();
         $gestionPantallaCtr = $_SESSION['session']->getGestionPantallaCtr();
         session_write_close();
