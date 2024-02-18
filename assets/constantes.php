@@ -71,5 +71,4 @@ define('POPUP_PRODUCTOS_CUERPO_I', `</table>
         <input type="text" class="form-control" aria-label="0" id="cantidadProducto" value="1">
     </div>
 </div>
-</div>`)
-    ?>
+</div>`);
