@@ -31,6 +31,9 @@ class GrillaCtr{
 
     public function mostrarGrilla(){
         $grillaMdl = $this->getGrillaMdl();
+        session_start();
+        $gestionPantallaCtr = $_SESSION['session']->getGestionPantallaCtr();
+        session_write_close();
         require_once 'vistas/otros/grilla.php';
     }
 

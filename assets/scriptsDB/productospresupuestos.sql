@@ -16,7 +16,7 @@ INSERT INTO `productospresupuestos` (`idpresupuestoproducto`, `idpresupuesto`, `
 
 ALTER TABLE `productospresupuestos`
   ADD PRIMARY KEY (`idpresupuestoproducto`),
-  ADD KEY `idpresupuesto` (`idpresupuesto`,`idproducto`),
+  ADD KEY `idpresupuesto` (`idpresupuesto`),
   ADD KEY `idproducto` (`idproducto`);
 
 ALTER TABLE `productospresupuestos`
