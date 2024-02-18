@@ -23,7 +23,7 @@
 
       <nav class="navbar navbar-expand-lg nav__background">
             <div class="container-fluid">
-                  <a class="navbar-brand" href="#">
+                  <a class="navbar-brand" href=<?php echo $GestionPantallaCtr->getModule() != '' ? "index.php?module=menu" : "#"; ?>>
                         <img src="./assets/img/logo-IntegralService.png" class="shadow rounded-3 me-2 logo"
                               alt="logo de integral Service">
                         Integral Service

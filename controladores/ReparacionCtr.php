@@ -5,11 +5,13 @@ require_once 'controladores/PresupuestoCtr.php';
 // require_once 'controladores/ClienteCtr.php';
 // require_once 'controladores/ProductoCtr.php';
 
-class ReparacionCtr {
+class ReparacionCtr
+{
     private $presupuestoCtr;
 
-    public function __construct() {
-        $presupuestoCtr = new PresupuestoCtr();
+    public function __construct()
+    {
+        $this->presupuestoCtr = new PresupuestoCtr();
         // $this->presupuestoDAO = new PresupuestoDAO();
         // $this->clienteCtr = new ClienteCtr();
         // $this->productoCtr = new ProductoCtr();
@@ -31,29 +33,29 @@ class ReparacionCtr {
         // }
     }
 
-    public function index() {
-        $presupuestoCtr = $this->presupuestoCtr;
-    //     // Obtener la lista de usuarios desde el modelo
-    //     $presupuestos = $this->presupuestoDAO->getAllPresupuestos();
-    //     $action = isset($_GET['action']) ? $_GET['action'] : '';
-    //     $presupuestoCtr = $this;
-    //     if ($action == 'see'){
-    //         $id = isset($_GET['id']) ? $_GET['id'] : '';
-    //         $presupuesto = $this->getPresupuestoById($id);
-    //         $cliente = $this->getClienteById($presupuesto->getIdCliente());
-    //         $nombreCliente = $cliente['nombre'].' '.$cliente['apellido'];
-    //         $productosPre = $this->getProductosPresupuestoById($presupuesto->getIdPresupuesto());
-    //         $total = 0;
-    //     }
-        
-    //     for ($i=0; $i < count($presupuestos); $i++) { 
-    //         $presupuestos[$i][1] = $this->getNombreClienteById($presupuestos[$i][1]);
-    //     }
+    public function index()
+    {
+        //     // Obtener la lista de usuarios desde el modelo
+        //     $presupuestos = $this->presupuestoDAO->getAllPresupuestos();
+        //     $action = isset($_GET['action']) ? $_GET['action'] : '';
+        //     $presupuestoCtr = $this;
+        //     if ($action == 'see'){
+        //         $id = isset($_GET['id']) ? $_GET['id'] : '';
+        //         $presupuesto = $this->getPresupuestoById($id);
+        //         $cliente = $this->getClienteById($presupuesto->getIdCliente());
+        //         $nombreCliente = $cliente['nombre'].' '.$cliente['apellido'];
+        //         $productosPre = $this->getProductosPresupuestoById($presupuesto->getIdPresupuesto());
+        //         $total = 0;
+        //     }
+
+        //     for ($i=0; $i < count($presupuestos); $i++) { 
+        //         $presupuestos[$i][1] = $this->getNombreClienteById($presupuestos[$i][1]);
+        //     }
 
         session_start();
         $gestionPantallaCtr = $_SESSION['session']->getGestionPantallaCtr();
         session_write_close();
-        $grillaMdl = new GrillaMdl(GRILLA_PRESUPUESTOS,$this->presupuestoCtr->getAllPresupuestos(),[0,1]);
+        $grillaMdl = new GrillaMdl(GRILLA_PRESUPUESTOS, $this->presupuestoCtr->getAllReparaciones(), [0, 1]);
         $grillaCtr = new GrillaCtr($grillaMdl);
 
         require_once 'vistas/reparaciones/index.php';
@@ -80,7 +82,7 @@ class ReparacionCtr {
     //         }
     //         $presupuesto = new PresupuestoMdl($_POST['idcliente'], $productos, $this->getNuevoNroComprobante(), 
     //                                           $_POST['tipo'], $estado, '0001', $precioTotal);
-    
+
     //         $this->presupuestoDAO->create($presupuesto);
     //     }
     // }
