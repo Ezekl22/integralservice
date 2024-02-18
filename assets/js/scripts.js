@@ -202,3 +202,17 @@ const tipoOnChange = (selector) =>{
     const tipo = selector.target.value;
     tipo == 'Reparacion';
 }
+
+const clickBorrarBusqueda = () =>{
+    // Seleccionar el input de búsqueda
+    const input = document.getElementById('termino');
+
+    // Agregar un listener de eventos al input para detectar cambios
+    input.addEventListener('input', function() {
+    // Verificar si el input está vacío
+    if (input.value.trim() === '') {
+        // Si está vacío, enviar el formulario
+        document.getElementById('formBuscador').submit();
+    }
+    });
+}
