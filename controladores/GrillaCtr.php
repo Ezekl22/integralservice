@@ -26,7 +26,6 @@ class GrillaCtr{
                 require_once 'controladores/ClienteCtr.php';
                 $this->controlador = new ClienteCtr;
                 break;
-            
             default:
                 # code...
                 break;
