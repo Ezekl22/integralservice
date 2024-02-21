@@ -45,12 +45,25 @@ class PresupuestoCtr {
             $productosPre = $this->getProductosPresupuestoById($presupuesto->getIdPresupuesto());
             $total = 0;
         }
+        
+        for ($i=0; $i < count($presupuestos); $i++) { 
+            $presupuestos[$i][1] = $this->getNombreClienteById($presupuestos[$i][1]);
+        }
+
+        session_start();
+        $gestionPantallaCtr = $_SESSION['session']->getGestionPantallaCtr();
+        session_write_close();
+        $grillaMdl = new GrillaMdl(GRILLA_PRESUPUESTOS,$presupuestos,[0,1]);
+        $grillaCtr = new GrillaCtr($grillaMdl);
 
         // Cargar la vista con los datos
         require_once 'vistas/presupuestos/index.php';
     }
 
     public function getPantallaCreate(){
+        session_start();
+        $gestionPantallaCtr = $_SESSION['session']->getGestionPantallaCtr();
+        session_write_close();
         require_once 'vistas/presupuestos/create.php';
     }
 

@@ -10,19 +10,19 @@ class UserDAO {
     }
 
     public function createUser(User $user) {
-        $stmt = $this->db->getConnection()->prepare("INSERT INTO users (name, lastname, mail, password, type) VALUES (:name, :lastname, :mail, :password, :type)");
+        $stmt = $this->db->getConnection()->prepare("INSERT INTO usuarios (nombre, apellido, mail, contrasena, tipo) VALUES (:nombre, :apellido, :mail, :contrasena, :tipo)");
         
-        $name = $user->getName();
-        $lastname = $user->getLastname();
+        $nombre = $user->getNombre();
+        $apellido = $user->getApellido();
         $mail = $user->getMail();
-        $password = $user->getPassword();
-        $type = $user->getType();
+        $contrasena = $user->getContrasena();
+        $tipo = $user->getTipo();
         
-		$stmt->bindParam(":name", $name, PDO::PARAM_STR);
-		$stmt->bindParam(":lastname", $lastname, PDO::PARAM_STR);
+		$stmt->bindParam(":nombre", $nombre, PDO::PARAM_STR);
+		$stmt->bindParam(":apellido", $apellido, PDO::PARAM_STR);
         $stmt->bindParam(":mail", $mail, PDO::PARAM_STR);
-		$stmt->bindParam(":password", $password, PDO::PARAM_STR);
-		$stmt->bindParam(":type", $type, PDO::PARAM_STR);
+		$stmt->bindParam(":contrasena", $contrasena, PDO::PARAM_STR);
+		$stmt->bindParam(":tipo", $tipo, PDO::PARAM_STR);
 
 		if($stmt->execute()){
 
@@ -30,33 +30,33 @@ class UserDAO {
 
 		}else{
 
-			print_r(Conexion::conectar()->errorInfo());
+			print_r($stmt->errorInfo());
 
 		}
-        $stmt->close();
+        $stmt->closeCursor();
         $stmt = null;
     }
 
     public function updateUser(User $user) {
-        $name = $user->getName();
-        $lastname = $user->getLastname();
+        $nombre = $user->getNombre();
+        $apellido = $user->getApellido();
         $mail = $user->getMail();
-        $password = $user->getPassword();
-        $type = $user->getType();
-        $id = $user->getId();
+        $contrasena = $user->getContrasena();
+        $tipo = $user->getTipo();
+        $idusuario = $user->getIdUsuario();
 
-        $txtPassword = $password != ''?' password=:password,':'';
-        $query = "UPDATE users SET name=:name, lastname=:lastname, mail=:mail,".$txtPassword." type=:type WHERE id=:id";
+        $txtPassword = $contrasena != ''?' contrasena=:contrasena,':'';
+        $query = "UPDATE usuarios SET nombre=:nombre, apellido=:apellido, mail=:mail,".$txtPassword." tipo=:tipo WHERE idusuario=:idusuario";
         $stmt = $this->db->getConnection()->prepare($query);
         
-		$stmt->bindParam(":name", $name, PDO::PARAM_STR);
-		$stmt->bindParam(":lastname", $lastname, PDO::PARAM_STR);
+		$stmt->bindParam(":nombre", $nombre, PDO::PARAM_STR);
+		$stmt->bindParam(":apellido", $apellido, PDO::PARAM_STR);
         $stmt->bindParam(":mail", $mail, PDO::PARAM_STR);
-        if($password != ''){
-            $stmt->bindParam(":password", $password, PDO::PARAM_STR);
+        if($contrasena != ''){
+            $stmt->bindParam(":contrasena", $contrasena, PDO::PARAM_STR);
         }
-		$stmt->bindParam(":type", $type, PDO::PARAM_STR);
-		$stmt->bindParam(":id",$id , PDO::PARAM_INT);
+		$stmt->bindParam(":tipo", $tipo, PDO::PARAM_STR);
+		$stmt->bindParam(":idusuario",$idusuario , PDO::PARAM_INT);
 
 		if($stmt->execute()){
 
@@ -64,16 +64,17 @@ class UserDAO {
 
 		}else{
 
-			print_r(Conexion::conectar()->errorInfo());
+			print_r($stmt->errorInfo());
 
 		}
-        $stmt->close();
+
+        $stmt->closeCursor();
         $stmt = null;
     }
 
     public function deleteUser($id) {
-        $stmt = $this->db->getConnection()->prepare("DELETE FROM users WHERE id = :id");
-        $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+        $stmt = $this->db->getConnection()->prepare("DELETE FROM usuarios WHERE idusuario = :idusuario");
+        $stmt->bindParam(":idusuario", $id, PDO::PARAM_INT);
     
         if ($stmt->execute()) {
             // La eliminación fue exitosa
@@ -85,22 +86,35 @@ class UserDAO {
         }
     }
 
-    public function getUserById($id) {
-        $stmt = $this->db->getConnection()->prepare("SELECT * FROM users WHERE id = ".$id);
-
+    public function getUsuarioById($id) {
+        $stmt = $this->db->getConnection()->prepare("SELECT * FROM usuarios WHERE idusuario = ".$id);
         $stmt->execute();
-        return $stmt -> fetchAll()[0];
-        $stmt->close();
+        $retorno = $stmt -> fetchAll()[0];
+        $stmt->closeCursor();
         $stmt = null;
+        return $retorno;
     }
 
     public function getAllUsers() {
         // Código para obtener todos los usuarios desde la base de datos
-        $stmt = $this->db->getConnection()->prepare("SELECT * FROM users");
-
+        $stmt = $this->db->getConnection()->prepare("SELECT * FROM usuarios");
         $stmt->execute();
-        return $stmt -> fetchAll();
-        $stmt->close();
+        $retorno = $stmt -> fetchAll();
+        $stmt->closeCursor();
         $stmt = null;
+        return $retorno;
+    }
+
+    public function getUsuarioByMailContra($mail,$contrasena){
+        $query = "SELECT * FROM usuarios WHERE mail = :mail AND contrasena = :contrasena";
+        $stmt = $this->db->getConnection()->prepare($query);
+        
+		$stmt->bindParam(":mail", $mail, PDO::PARAM_STR);
+        $stmt->bindParam(":contrasena", $contrasena, PDO::PARAM_STR);
+        $stmt->execute();
+        $retorno = $stmt -> fetchAll();
+        $stmt->closeCursor();
+        $stmt = null;
+        return empty($retorno)?[]:$retorno[0];
     }
 }
