@@ -54,6 +54,7 @@ const currencyFormatter =(value)=> {
 }
 
 const mostrarGrillaProductos = ()=>{
+    cerrarGrilla('contGrillaProducto');
     let contGrilla = document.getElementById('contGrillaProducto');
     let contenedor = document.createElement("div");
     let cuerpoGrilla = '';
@@ -108,7 +109,9 @@ const mostrarGrillaProductos = ()=>{
 
 
 const cerrarGrilla = (id) =>{
-    document.getElementById(id).childNodes[1].remove();
+    let grilla = document.getElementById(id).childNodes[0];
+    if(grilla)
+        grilla.remove();
 }
 
 const quitarComponenteProducto = (id) =>{
