@@ -164,6 +164,6 @@
     </main>
 </body>
 <?php echo $action == 'see' ? '<script> mostrarVentanaModal("ver"); </script>' : '' ?>
+<?php echo $action == 'annul' ? '<script> mostrarVentanaModal("annul"); </script>':''?>
 <script>clickBorrarBusqueda();</script>
-
 </html>

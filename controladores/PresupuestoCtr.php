@@ -22,8 +22,8 @@ class PresupuestoCtr
             case 'created':
                 $this->create();
                 break;
-            case 'canceled':
-                $this->canceled($id);
+            case 'annulled':
+                $this->annulled($id);
                 break;
             case 'edited':
                 $this->update($id);
@@ -64,7 +64,7 @@ class PresupuestoCtr
         $grillaCtr = new GrillaCtr($grillaMdl);
 
         // Cargar la vista con los datos
-        require_once 'vistas/presupuestos/index.php';
+        require_once 'vistas/presupuesto/presupuesto.php';
     }
 
     public function getPantallaCreate()
@@ -72,7 +72,7 @@ class PresupuestoCtr
         session_start();
         $gestionPantallaCtr = $_SESSION['session']->getGestionPantallaCtr();
         session_write_close();
-        require_once 'vistas/presupuestos/create.php';
+        require_once 'vistas/presupuesto/create.php';
     }
 
     public function create()
@@ -105,7 +105,7 @@ class PresupuestoCtr
     public function getPantallaEdit()
     {
         $this->index();
-        require_once 'vistas/presupuestos/edit.php';
+        require_once 'vistas/presupuesto/edit.php';
     }
 
     public function getNuevoNroComprobante()
@@ -160,18 +160,17 @@ class PresupuestoCtr
         return $presupuesto;
     }
 
-    public function getPantallaDelete()
-    {
-        require_once 'vistas/presupuestos/delete.php';
+    public function getPantallaAnnul(){
+        $gestionPantallaCtr = $_SESSION['session']->getGestionPantallaCtr();
+        $gestionPantallaCtr->crearPopUp(new PopUpMdl('annul','Anular Presupuesto',"",BOTONES_POPUP_ANULAR,'index.php?action=annul'));
         $this->index();
     }
 
-    public function canceled($id)
-    {
+    public function annulled($id){
         $presupuesto = $this->getPresupuestoById($id);
         $estado = $presupuesto->getEstado();
-        if ($estado != 'Pendiente presupuesto' || $estado != 'En reparacion' || $estado != '')
-            $this->presupuestoDAO->cancel($id);
+        if($estado != 'Pendiente presupuesto' || $estado != 'En reparacion' || $estado != '')
+            $this->presupuestoDAO->annul($id);
     }
 
     public function getAllClientes()

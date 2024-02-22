@@ -118,7 +118,7 @@ class PresupuestoDAO
 
     public function getAllPresupuestos()
     {
-        $stmt = $this->db->getConnection()->prepare("SELECT * FROM presupuestos WHERE estado != 'cancelado'");
+        $stmt = $this->db->getConnection()->prepare("SELECT * FROM presupuestos WHERE estado != 'anulado'");
 
         $stmt->execute();
         $resultado = $stmt->fetchAll();
@@ -173,9 +173,9 @@ class PresupuestoDAO
         return $resultado;
     }
 
-    public function cancel($id)
+    public function annul($id)
     {
-        $stmt = $this->db->getConnection()->prepare("UPDATE presupuestos SET estado = 'cancelado' WHERE idPresupuesto = " . $id);
+        $stmt = $this->db->getConnection()->prepare("UPDATE presupuestos SET estado = 'anulado' WHERE idPresupuesto = " . $id);
 
         if ($stmt->execute()) {
 
