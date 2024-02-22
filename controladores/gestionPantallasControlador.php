@@ -4,13 +4,17 @@ require_once 'models/GestionPantallasDAO.php';
 require_once 'models/PopUpMdl.php';
 require_once 'controladores/SesionCtr.php';
 
-class GestionPantallasControlador {
+class GestionPantallasControlador
+{
     //private $GestionPantallasDAO;
 
-    public function __construct() {}
+    public function __construct()
+    {
+    }
 
-    public function cargarPantalla(){
-        
+    public function cargarPantalla()
+    {
+
         $tipoUsuario = "";
         //verifico si hay un parametro get de module, si lo hay, traigo el tipo de usuario
         if ($this->getModule() && !empty($this->getModule())) {
@@ -19,56 +23,56 @@ class GestionPantallasControlador {
             session_write_close();
             $tipoUsuario = $sesionCtr->getUsuarioSesionado()->getTipo();
         }
-        switch ( $this->getModule()) {
+        switch ($this->getModule()) {
             case 'presupuestos':
                 // verifico que el tipo de usuario no tiene acceso al modulo y si no lo tiene lo redirijo al menu
-                if ( strtoupper($tipoUsuario) != "REPARADOR") {
+                if (strtoupper($tipoUsuario) != "REPARADOR") {
                     include_once('./controladores/PresupuestoCtr.php');
                     $indexPage = new PresupuestoCtr();
-                }else{
+                } else {
                     $this->redireccionar('menu');
                 }
                 break;
             case 'reparacion':
                 // verifico que el tipo de usuario no tiene acceso al modulo y si no lo tiene lo redirijo al menu
-                if ( strtoupper($tipoUsuario)!= "VENDEDOR") {
+                if (strtoupper($tipoUsuario) != "VENDEDOR") {
                     include_once('controladores/ReparacionControlador.php');
-                }else{
+                } else {
                     $this->redireccionar('menu');
                 }
                 break;
             case 'clientes':
                 // verifico que el tipo de usuario no tiene acceso al modulo y si no lo tiene lo redirijo al menu
-                if ( strtoupper($tipoUsuario) != "REPARADOR")  {
+                if (strtoupper($tipoUsuario) != "REPARADOR") {
                     include_once('controladores/ClienteControlador.php');
                     $indexPage = new ClienteCtr();
-                }else{
+                } else {
                     $this->redireccionar('menu');
                 }
                 break;
             case 'proveedores':
                 // verifico que el tipo de usuario no tiene acceso al modulo y si no lo tiene lo redirijo al menu
-                if ( strtoupper($tipoUsuario) == "ADMINISTRADOR" || strtoupper($tipoUsuario) == "ADMINISTRADOR BASE")  {
+                if (strtoupper($tipoUsuario) == "ADMINISTRADOR" || strtoupper($tipoUsuario) == "ADMINISTRADOR BASE") {
                     include_once('controladores/ProveedorCtr.php');
                     $indexPage = new ProveedorCtr();
-                }else{
+                } else {
                     $this->redireccionar('menu');
                 }
                 break;
-          case 'pedidos':
+            case 'pedidos':
                 // verifico que el tipo de usuario no tiene acceso al modulo y si no lo tiene lo redirijo al menu
-                if ( strtoupper($tipoUsuario) != "REPARADOR") {
+                if (strtoupper($tipoUsuario) != "REPARADOR") {
                     include_once('controladores/PedidoCompraControlador.php');
-                }else{
+                } else {
                     $this->redireccionar('menu');
                 }
                 break;
             case 'usuarios':
                 // verifico que el tipo de usuario no tiene acceso al modulo y si no lo tiene lo redirijo al menu
-                if ( strtoupper($tipoUsuario) == "ADMINISTRADOR" || strtoupper($tipoUsuario) == "ADMINISTRADOR BASE")  {
+                if (strtoupper($tipoUsuario) == "ADMINISTRADOR" || strtoupper($tipoUsuario) == "ADMINISTRADOR BASE") {
                     include_once './controladores/UsuarioCtr.php';
                     $indexPage = new UsuarioCtr();
-                }else{
+                } else {
                     $this->redireccionar('menu');
                 }
                 break;
@@ -85,53 +89,60 @@ class GestionPantallasControlador {
                 break;
         }
 
-        if($this->getModule()){
+        if ($this->getModule()) {
             switch ($this->getAction()) {
                 case 'edit':
-                        $indexPage ->getPantallaEdit();
-                        break;
+                    $indexPage->getPantallaEdit();
+                    break;
                 case 'delete':
-                        $indexPage ->getPantallaDelete();
-                        break;
+                    $indexPage->getPantallaDelete();
+                    break;
                 case 'create':
                         $indexPage ->getPantallaCreate();
                         break;
-                default:
-                        $indexPage -> index();
+                case 'annul':
+                        $indexPage ->getPantallaAnnul();
                         break;
+                default:
+                    $indexPage->index();
+                    break;
             }
-        }else{
+        } else {
             if ($this->getAction()) {
                 if ($this->getAction() == 'login') {
                     $sesionCtr = new SesionCtr();
                     $sesionCtr->verificarInicioSesion($this);
-                }else if($this->getAction() == 'logout'){
+                } else if ($this->getAction() == 'logout') {
                     session_start();
                     $sesionCtr = $_SESSION['session'];
                     session_write_close();
                     $sesionCtr->cerrarSesion($this);
                 }
             }
-                
+
         }
     }
 
-    public function redireccionar($modulo){
+    public function redireccionar($modulo)
+    {
         ob_start();
-        header("Location: index.php?".($modulo && $modulo != "" ?"module=$modulo":""));
+        header("Location: index.php?" . ($modulo && $modulo != "" ? "module=$modulo" : ""));
         ob_end_flush();
     }
 
-    public function crearPopUp(PopUpMdl $popUpMdl){
+    public function crearPopUp(PopUpMdl $popUpMdl)
+    {
         $popUpM = $popUpMdl;
         include 'vistas/otros/popUp.php';
     }
 
-    public function getModule(){
+    public function getModule()
+    {
         return isset($_GET['module']) ? $_GET['module'] : '';
     }
 
-    public function getAction(){
+    public function getAction()
+    {
         return isset($_GET['action']) ? $_GET['action'] : '';
     }
 }

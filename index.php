@@ -1,52 +1,68 @@
 <!-- index.php -->
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>Casa de Impresoras</title>
-    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
-    <script src="./assets/js/scripts.js"></script>
+      <title>Casa de Impresoras</title>
+      <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+            crossorigin="anonymous"></script>
+      <script src="./assets/js/scripts.js"></script>
 </head>
+
 <body>
-    <!-- Obtener el módulo actual -->
-    <?php 
-    require_once './controladores/GestionPantallasControlador.php';
-    require_once './assets/constantes.php';
-    $GestionPantallaCtr = new GestionPantallasControlador;
-    ?>
+      <!-- Obtener el módulo actual -->
+      <?php
+      require_once './controladores/GestionPantallasControlador.php';
+      require_once './assets/constantes.php';
+      $GestionPantallaCtr = new GestionPantallasControlador;
+      ?>
 
-    <nav class="navbar navbar-expand-lg nav__background">
-        <div class="container-fluid">
-              <a class="navbar-brand" href="#">
-                    <img src="./assets/img/logo-IntegralService.png" class="shadow rounded-3 me-2 logo" alt="logo de integral Service">
-                    Integral Service
-              </a>
-              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-              </button>
-              <div class="collapse navbar-collapse d-flex justify-content-end me-5" id="navbarNavDropdown">
-                    <ul class="navbar-nav">
-                          <a type="button" class="btn button" <?php if($GestionPantallaCtr->getModule()!=''){echo 'href="index.php?action=logout"';}else{echo 'data-bs-target="#inicioSesion" data-bs-toggle="modal"';}?>>
-                                <?php if($GestionPantallaCtr->getModule()!=''){echo "Cerrar sesión";} else{echo "Iniciar sesión";} ?>
-                          </a>
-                    </ul>
-              </div>
-        </div>
-    </nav>
-    <main>
-        <section>
-            
-        </section>
-        <?php 
-            $GestionPantallaCtr->crearPopUp(new PopUpMdl('inicioSesion','Inicio de sesión',"",$InicioSesionBotonesP,'index.php?action=login'));
-            $GestionPantallaCtr->crearPopUp(new PopUpMdl('recuperarCon','Recuperar contraseña',"",$recuperarContrasenaBotonesP));
-            $GestionPantallaCtr->crearPopUp(new PopUpMdl('ingCodigo','Ingresar código',"",$ingresarCodigoBotonesP));
-            $GestionPantallaCtr->crearPopUp(new PopUpMdl('nuevaCont','Cambiar contraseña',"",$cambiarContrasenaBotonesP));
-        ?>
-      
+      <nav class="navbar navbar-expand-lg nav__background">
+            <div class="container-fluid">
+                  <a class="navbar-brand" href="#">
+                        <img src="./assets/img/logo-IntegralService.png" class="shadow rounded-3 me-2 logo"
+                              alt="logo de integral Service">
+                        Integral Service
+                  </a>
+                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
+                        aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <div class="collapse navbar-collapse d-flex justify-content-end me-5" id="navbarNavDropdown">
+                        <ul class="navbar-nav">
+                              <a type="button" class="btn button" <?php if ($GestionPantallaCtr->getModule() != '') {
+                                    echo 'href="index.php?action=logout"';
+                              } else {
+                                    echo 'data-bs-target="#inicioSesion" data-bs-toggle="modal"';
+                              } ?>>
+                                    <?php if ($GestionPantallaCtr->getModule() != '') {
+                                          echo "Cerrar sesión";
+                                    } else {
+                                          echo "Iniciar sesión";
+                                    } ?>
+                              </a>
+                        </ul>
+                  </div>
+            </div>
+      </nav>
+      <main>
+            <section>
 
-        <!-- <div class="modal fade" id="inicioSesion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            </section>
+            <?php
+            $GestionPantallaCtr->crearPopUp(new PopUpMdl('inicioSesion', 'Inicio de sesión', "", INICIO_SESION_BTN_P, 'index.php?action=login'));
+            $GestionPantallaCtr->crearPopUp(new PopUpMdl('recuperarCon', 'Recuperar contraseña', "", $recuperarContrasenaBotonesP));
+            $GestionPantallaCtr->crearPopUp(new PopUpMdl('ingCodigo', 'Ingresar código', "", $ingresarCodigoBotonesP));
+            $GestionPantallaCtr->crearPopUp(new PopUpMdl('nuevaCont', 'Cambiar contraseña', "", $cambiarContrasenaBotonesP));
+            ?>
+
+
+            <!-- <div class="modal fade" id="inicioSesion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div class="modal-dialog">
                     <div class="modal-content">
                           <div class="modal-header headerPop__background">
@@ -134,14 +150,15 @@
                     </div>
               </div>
         </div> -->
-    </main>
+      </main>
       <?php $GestionPantallaCtr->cargarPantalla(); ?>
 
-  <footer class="d-flex justify-content-end main__footer footer__index">
-        <div class="text-end me-5 p-4">
-              Creado por:  Matias Premat y Ezequiel Centurion
-        </div>
-  </footer>
+      <footer class="d-flex justify-content-end main__footer footer__index">
+            <div class="text-end me-5 p-4">
+                  Creado por: Matias Premat y Ezequiel Centurion
+            </div>
+      </footer>
 
 </body>
+
 </html>
