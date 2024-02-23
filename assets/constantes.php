@@ -33,7 +33,6 @@ define(
     )
 );
 
-
 define('GRILLA_USUARIOS', array("Nombre", "Apellido", "Tipo", "Mail"));
 define('GRILLA_PRODUCTOS', array("Nombre", "Marca", "Detalle", "Stock", "Tipo", "Precio compra", "Precio venta"));
 define('GRILLA_PRESUPUESTOS', array("Cliente", "Comprobante", "Tipo", "Estado", "Fecha", "Punto de venta", "Total"));
