@@ -98,8 +98,11 @@ class GestionPantallasControlador
                     $indexPage->getPantallaDelete();
                     break;
                 case 'create':
-                    $indexPage->getPantallaCreate();
-                    break;
+                        $indexPage ->getPantallaCreate();
+                        break;
+                case 'annul':
+                        $indexPage ->getPantallaAnnul();
+                        break;
                 default:
                     $indexPage->index();
                     break;
