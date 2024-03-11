@@ -60,7 +60,7 @@ class GestionPantallasControlador
                 }
                 break;
             case 'pedidos':
-                // verifico que el tipo de usuario no tiene acceso al modulo y si no lo tiene lo redirijo al menu
+                // verifico que el tipo de usuario tiene acceso al modulo y si no lo tiene lo redirijo al menu
                 if (strtoupper($tipoUsuario) != "REPARADOR") {
                     include_once('controladores/PedidoCompraControlador.php');
                 } else {
@@ -68,7 +68,7 @@ class GestionPantallasControlador
                 }
                 break;
             case 'usuarios':
-                // verifico que el tipo de usuario no tiene acceso al modulo y si no lo tiene lo redirijo al menu
+                // verifico que el tipo de usuario tiene acceso al modulo y si no lo tiene lo redirijo al menu
                 if (strtoupper($tipoUsuario) == "ADMINISTRADOR" || strtoupper($tipoUsuario) == "ADMINISTRADOR BASE") {
                     include_once './controladores/UsuarioCtr.php';
                     $indexPage = new UsuarioCtr();
@@ -98,11 +98,11 @@ class GestionPantallasControlador
                     $indexPage->getPantallaDelete();
                     break;
                 case 'create':
-                        $indexPage ->getPantallaCreate();
-                        break;
+                    $indexPage->getPantallaCreate();
+                    break;
                 case 'annul':
-                        $indexPage ->getPantallaAnnul();
-                        break;
+                    $indexPage->getPantallaAnnul();
+                    break;
                 default:
                     $indexPage->index();
                     break;

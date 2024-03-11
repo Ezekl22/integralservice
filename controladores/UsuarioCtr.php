@@ -4,13 +4,15 @@ require_once 'models/UsuarioDAO.php';
 require_once 'controladores/GrillaCtr.php';
 require_once 'models/GrillaMdl.php';
 
-class UsuarioCtr {
+class UsuarioCtr
+{
     private $usuarioDAO;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->usuarioDAO = new UsuarioDAO();
-        $action = isset($_GET['action'])?$_GET['action']:'';
-        $id = isset($_GET['id'])?$_GET['id']:'';
+        $action = isset($_GET['action']) ? $_GET['action'] : '';
+        $id = isset($_GET['id']) ? $_GET['id'] : '';
         switch ($action) {
             case 'created':
                 $this->create();
@@ -42,7 +44,8 @@ class UsuarioCtr {
         require_once 'vistas/usuario/usuario.php';
     }
 
-    public function getAllUsuarios(){
+    public function getAllUsuarios()
+    {
         return $this->usuarioDAO->getAllUsuarios();
     }
 
@@ -66,10 +69,10 @@ class UsuarioCtr {
             $tipo = $_POST['tipo'];
             $mail = $_POST['mail'];
             $contrasena = $_POST['contrasena'];
-    
+
             // Crea un nuevo objeto Usuario con los datos del formulario
             $usuario = new Usuario($nombre, $apellido, $tipo, $mail, $contrasena);
-    
+
             // Llama a la función para crear el usuario en la base de datos
             $this->usuarioDAO->createUsuario($usuario);
         }
@@ -81,33 +84,38 @@ class UsuarioCtr {
         require_once 'vistas/usuario/edit.php';
     }
 
-    public function update($id) {
-        if(isset($_POST["nombre"])){
+    public function update($id)
+    {
+        if (isset($_POST["nombre"])) {
             $usuario = new Usuario($_POST["nombre"], $_POST["apellido"], $_POST["tipo"], $_POST["mail"], $_POST["contrasena"]);
             $usuario->setIdUsuario($id);
             $this->usuarioDAO->updateUsuario($usuario);
         }
     }
 
-   public function getPantallaDelete(){
+    public function getPantallaDelete()
+    {
         $gestionPantallaCtr = $_SESSION['session']->getGestionPantallaCtr();
-        $gestionPantallaCtr->crearPopUp(new PopUpMdl('delete','Eliminar Usuario',"",BOTONES_POPUP_ELIMINAR,'index.php?action=delete'));
+        $gestionPantallaCtr->crearPopUp(new PopUpMdl('delete', 'Eliminar Usuario', "", BOTONES_POPUP_ELIMINAR, 'index.php?action=delete'));
         $this->index();
     }
 
-    public function delete($id) {
-        if(strtoupper($this->getUsuarioById($id)[3]) != "ADMINISTRADOR BASE")
-        $this->usuarioDAO->deleteUsuario($id);
+    public function delete($id)
+    {
+        if (strtoupper(isset($this->getUsuarioById($id)[3])) != "ADMINISTRADOR BASE")
+            $this->usuarioDAO->deleteUsuario($id);
     }
 
-    public function getUsuarioById($id){
+    public function getUsuarioById($id)
+    {
         $this->usuarioDAO->getUsuarioById($id);
     }
 
-    public function getUsuarioByMailContra($mail,$contrasena){
-        $usuarioDB = $this->usuarioDAO->getUsuarioByMailContra($mail,$contrasena);
+    public function getUsuarioByMailContra($mail, $contrasena)
+    {
+        $usuarioDB = $this->usuarioDAO->getUsuarioByMailContra($mail, $contrasena);
 
-        $usuario = count($usuarioDB) > 0? new Usuario($usuarioDB['nombre'], $usuarioDB['apellido'],$usuarioDB['tipo'],$usuarioDB['mail']) : $usuarioDB;
+        $usuario = count($usuarioDB) > 0 ? new Usuario($usuarioDB['nombre'], $usuarioDB['apellido'], $usuarioDB['tipo'], $usuarioDB['mail']) : $usuarioDB;
         return $usuario;
     }
 }
