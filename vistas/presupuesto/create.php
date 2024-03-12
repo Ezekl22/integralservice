@@ -46,7 +46,9 @@ echo "<script>const productos = $json;</script>";
                         <button class="btn btn-outline-secondary button align-self-start ms-5"
                             data-bs-target="#grillaProductos" data-bs-toggle="modal" type="button" id="agregar"
                             onclick="mostrarGrillaProductos()">Agregar producto</button>
-                        <!-- <button class="btn btn-outline-secondary button ms-3 align-self-start" disabled onclick="quitarComponenteProducto('${id}')" type="button" id="quitar">Quitar productos</button> -->
+                        <button class="btn btn-outline-secondary button ms-3 align-self-start" disabled
+                            onclick="quitarComponenteProducto('${id}')" type="button" id="quitar">Quitar
+                            productos</button>
                     </div>
 
                     <div class="my-3 d-flex flex-column w-100" id="contProductos">

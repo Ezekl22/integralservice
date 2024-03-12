@@ -44,7 +44,7 @@ class GestionPantallasControlador
             case 'clientes':
                 // verifico que el tipo de usuario no tiene acceso al modulo y si no lo tiene lo redirijo al menu
                 if (strtoupper($tipoUsuario) != "REPARADOR") {
-                    include_once('controladores/ClienteControlador.php');
+                    include_once('controladores/ClienteCtr.php');
                     $indexPage = new ClienteCtr();
                 } else {
                     $this->redireccionar('menu');
