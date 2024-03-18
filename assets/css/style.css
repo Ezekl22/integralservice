@@ -280,3 +280,8 @@ footer{
 .form-control{
   border-radius: 0 !important;
 }
+
+.grilla__mensaje-error{
+  margin: 60px 0;
+  color: #fff;
+}
