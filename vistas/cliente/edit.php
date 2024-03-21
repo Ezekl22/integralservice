@@ -2,8 +2,8 @@
 <?php 
     $id = isset($_GET['id']) ? $_GET['id'] : '';
     $action = isset($_GET['action']) ? $_GET['action'] : '';
-    $ClientController = new ClienteCtr();
-    $clientt = $ClientController->clientDAO->getClienteById($id);
+    $ClienteCtr = new ClienteCtr();
+    $cliente = $ClienteCtr->clienteDAO->getClienteById($id);
 
     if($action == 'edit' && $id != ''){
 ?>
@@ -21,25 +21,25 @@
                             <div class="my-3 d-flex flex-row">
                                 <div class="input-group input-group-sm mb-3">
                                     <label class="input-group-text" for="nombre" id="inputGroup-sizing-sm">Nombre:</label>
-                                    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="nombre" name="nombre" value="<?php echo $clientt['nombre']; ?>" required>
+                                    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="nombre" name="nombre" value="<?php echo $cliente['nombre']; ?>" required>
                                 </div>
                                 <div class="input-group input-group-sm mb-3 ms-5">
                                     <label class="input-group-text" for="apellido" id="inputGroup-sizing-sm">Apellido:</label>
-                                    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="apellido" name="apellido" value="<?php echo $clientt['apellido']; ?>" required>
+                                    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="apellido" name="apellido" value="<?php echo $cliente['apellido']; ?>" required>
                                 </div>
                                 <div class="input-group input-group-sm mb-3 ms-5">
                                     <label class="input-group-text" for="email" id="inputGroup-sizing-sm">Email:</label>
-                                    <input type="email" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="email" name="email" value="<?php echo $clientt['email']; ?>" required>
+                                    <input type="email" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="email" name="email" value="<?php echo $cliente['email']; ?>" required>
                                 </div>
                             </div>
                             <div class="my-3 d-flex flex-row">
                                 <div class="input-group input-group-sm mb-3 ms-5">
                                     <label class="input-group-text" for="cuit" id="inputGroup-sizing-sm">Cuit:</label>
-                                    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="cuit" name="cuit" value="<?php echo $clientt['cuit']; ?>" required>
+                                    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="cuit" name="cuit" value="<?php echo $cliente['cuit']; ?>" required>
                                 </div>
                                 <div class="input-group input-group-sm mb-3 ms-5">
                                     <label class="input-group-text" for="iva" id="inputGroup-sizing-sm">Categoria fiscal:</label>
-                                    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="categoriafiscal" name="categoriafiscal" value="<?php echo $clientt['categoriafiscal']; ?>" required>
+                                    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" id="categoriafiscal" name="categoriafiscal" value="<?php echo $cliente['categoriafiscal']; ?>" required>
                                 </div>
                             </div>
                             <div class="d-flex justify-content-evenly w-75">
