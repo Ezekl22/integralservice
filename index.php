@@ -16,9 +16,9 @@
 <body>
       <!-- Obtener el módulo actual -->
       <?php
-      require_once './controladores/GestionPantallasControlador.php';
+      require_once './controladores/GestionPantallasCtr.php';
       require_once './assets/constantes.php';
-      $GestionPantallaCtr = new GestionPantallasControlador;
+      $GestionPantallaCtr = new GestionPantallasCtr;
       ?>
 
       <nav class="navbar navbar-expand-lg nav__background">
