@@ -95,7 +95,7 @@ class UsuarioDAO
     {
         $stmt = $this->db->getConnection()->prepare("SELECT * FROM usuarios WHERE idusuario = " . $id);
         $stmt->execute();
-        $retorno = isset($stmt->fetchAll()[0]);
+        $retorno = $stmt->fetchAll()[0];
         $stmt->closeCursor();
         $stmt = null;
         return $retorno;

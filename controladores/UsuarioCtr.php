@@ -102,8 +102,9 @@ class UsuarioCtr
 
     public function delete($id)
     {
-        if (strtoupper(isset($this->getUsuarioById($id)[3])) != "ADMINISTRADOR BASE")
+        if (isset($this->getUsuarioById($id)[3]) && strtoupper($this->getUsuarioById($id)[3]) != "ADMINISTRADOR BASE") {
             $this->usuarioDAO->deleteUsuario($id);
+        }
     }
 
     public function getUsuarioById($id)
