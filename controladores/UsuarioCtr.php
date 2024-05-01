@@ -95,21 +95,25 @@ class UsuarioCtr
 
     public function getPantallaDelete()
     {
+        session_start();
         $gestionPantallaCtr = $_SESSION['session']->getGestionPantallaCtr();
+        session_write_close();
         $gestionPantallaCtr->crearPopUp(new PopUpMdl('delete', 'Eliminar Usuario', "", BOTONES_POPUP_ELIMINAR, 'index.php?action=delete'));
         $this->index();
     }
 
     public function delete($id)
     {
-        if (isset($this->getUsuarioById($id)[3]) && strtoupper($this->getUsuarioById($id)[3]) != "ADMINISTRADOR BASE") {
+
+
+        if (!empty($this->getUsuarioById($id)) && strtoupper($this->getUsuarioById($id)[3]) != "ADMINISTRADOR BASE") {
             $this->usuarioDAO->deleteUsuario($id);
         }
     }
 
     public function getUsuarioById($id)
     {
-        $this->usuarioDAO->getUsuarioById($id);
+        return $this->usuarioDAO->getUsuarioById($id);
     }
 
     public function getUsuarioByMailContra($mail, $contrasena)

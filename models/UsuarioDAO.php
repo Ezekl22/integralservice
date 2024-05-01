@@ -95,10 +95,10 @@ class UsuarioDAO
     {
         $stmt = $this->db->getConnection()->prepare("SELECT * FROM usuarios WHERE idusuario = " . $id);
         $stmt->execute();
-        $retorno = $stmt->fetchAll()[0];
+        $retorno = $stmt->fetchAll();
         $stmt->closeCursor();
         $stmt = null;
-        return $retorno;
+        return empty($retorno) ? [] : $retorno[0];
     }
 
     public function getAllUsuarios()
