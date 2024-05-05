@@ -194,9 +194,12 @@ const getProductosChekeados = () =>{
 }
 
 const tipoOnChange = (selector) =>{
-    console.log(selector.target.value);
+    const contenedor = document.getElementById('contGrillaFormulario');
     const tipo = selector.target.value;
-    tipo == 'Reparacion';
+    contenedor.remove();
+    if (tipo == 'Venta'){
+        
+    }
 }
 
 const clickBorrarBusqueda = () =>{

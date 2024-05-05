@@ -41,27 +41,30 @@ echo "<script>const productos = $json;</script>";
                             </select>
                         </div>
                     </div>
-                    <h4 class="mt-2 text__white">Productos</h4>
-                    <div class="d-flex justify-content-start w-100">
-                        <button class="btn btn-outline-secondary button align-self-start ms-5"
-                            data-bs-target="#grillaProductos" data-bs-toggle="modal" type="button" id="agregar"
-                            onclick="mostrarGrillaProductos()">Agregar producto</button>
-                        <button class="btn btn-outline-secondary button ms-3 align-self-start" disabled
-                            onclick="quitarComponenteProducto('${id}')" type="button" id="btnQuitar">Quitar
-                            productos</button>
-                    </div>
+                    <div class="d-flex flex-column align-items-center contenedor__mayor" id="contGrillaFormulario">
+                        <h4 class="mt-2 text__white">Productos</h4>
+                        <div class="d-flex justify-content-start w-100">
+                            <button class="btn btn-outline-secondary button align-self-start ms-5"
+                                data-bs-target="#grillaProductos" data-bs-toggle="modal" type="button" id="agregar"
+                                onclick="mostrarGrillaProductos()">Agregar producto</button>
+                            <button class="btn btn-outline-secondary button ms-3 align-self-start" disabled
+                                onclick="quitarComponenteProducto('${id}')" type="button" id="btnQuitar">Quitar
+                                productos</button>
+                        </div>
 
-                    <div class="my-3 d-flex flex-column w-100" id="contProductos">
-                        <?php include "vistas/otros/grillaProductosSeleccionados.php" ?>
-                    </div>
-                    <div class="d-flex" id="">
-                        <div class="input-group input-group-sm mb-3">
-                            <label class="input-group-text" for="totalProductos"
-                                id="inputGroup-sizing-sm">Total:</label>
-                            <input type="text" class="form-control" disabled aria-label="0" id="totalproductos"
-                                value="$0,00">
+                        <div class="my-3 d-flex flex-column w-100" id="contProductos">
+                            <?php include "vistas/otros/grillaProductosSeleccionados.php" ?>
+                        </div>
+                        <div class="d-flex" id="">
+                            <div class="input-group input-group-sm mb-3">
+                                <label class="input-group-text" for="totalProductos"
+                                    id="inputGroup-sizing-sm">Total:</label>
+                                <input type="text" class="form-control" disabled aria-label="0" id="totalproductos"
+                                    value="$0,00">
+                            </div>
                         </div>
                     </div>
+
                     <input class="btn button my-2" type="submit" value="Guardar cambios">
                 </div>
             </form>
