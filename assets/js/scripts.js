@@ -113,8 +113,17 @@ const cerrarGrilla = (id) =>{
     if(grilla) grilla.remove();
 }
 
-const quitarComponenteProducto = (id) =>{
-    document.getElementById(id).remove();
+const quitarComponenteProducto = () =>{
+    getProductosChekeados().forEach(productoChekeado =>{
+        productoChekeado.parentElement.parentElement.remove();
+    });
+    recalcularTotal();
+    onChangeChecks();
+   // document.getElementById(id).remove();
+}
+
+const habilitarDeshabilitarBtn = () =>{
+    
 }
 
 const recalcularTotal = () =>{
@@ -123,7 +132,6 @@ const recalcularTotal = () =>{
     let total = parseFloat(0);
     totalesProductos.forEach(totalProducto =>{
         total = total + parseFloat(totalProducto.childNodes[0].data.replace(/[$,]/g, ""));
-        
     });
     importeTotal.value = currencyFormatter(total);
 }
@@ -139,7 +147,6 @@ const cantidadOnChange = (idProducto ,id, esPresupuesto) =>{
 const mostrarVentanaModal = (id) =>{
     var miModal = new bootstrap.Modal(document.getElementById(id));
     miModal.show();
-
 }    
 
 const validarFormulario = () =>{
@@ -163,24 +170,27 @@ const cargarGrillaProducto = (module) =>{
                                  <td> <input type="number" value="${cantidad}" class="form-control" onchange="cantidadOnChange('${productoSeleccionado[0]}','${id}', '${module === "presupuestos"}')" id="cantidad" name="cantidad[]" min="1"</td>
                                  <td id="valorunt"> ${currencyFormatter(productoSeleccionado[7])} </td>
                                  <td id="total"> ${currencyFormatter(parseInt(cantidad) * productoSeleccionado[7])} </td>
-                                 <td><input class="form-check-input checksProductos" onchange="productoSelect()" type="checkbox"></td>
+                                 <td><input class="form-check-input checksProductos" onchange="onChangeChecks" type="checkbox"></td>
                                  <input type="hidden" class="form-control me-7" aria-label="0" value="${productoSeleccionado[0]}" id="idproductos" name="idproductos[]">`;
     contProductos.appendChild(contComponente);
     recalcularTotal();
     cerrarGrilla('contGrillaProducto');
 }
 
-const productoSelect = ()=>{
-    let checksSeleccionados = document.querySelectorAll('.checksProductos');
+const onChangeChecks = ()=>{
     let btnQuitar = document.getElementById('btnQuitar');
-    console.log(btnQuitar);
+    let productosChekeados = getProductosChekeados();
+    btnQuitar.disabled = productosChekeados && productosChekeados.length>0? false : true;
+}
+
+const getProductosChekeados = () =>{
+    let checksSeleccionados = document.querySelectorAll('.checksProductos');
     let checksCheckeados = [];
     for (let i = 0; i < checksSeleccionados.length; i++) {
         if(checksSeleccionados[i].checked)
         checksCheckeados.push(checksSeleccionados[i]) ;
     }
-    console.log(btnQuitar);
-    btnQuitar.disabled = checksCheckeados && checksCheckeados.length>0? false : true;
+    return checksCheckeados;
 }
 
 const tipoOnChange = (selector) =>{
