@@ -29,7 +29,7 @@ const agregarComponenteProducto = () =>{
     contComponente.className = "input-group input-group-sm mb-3";
     contComponente.id = id;
 
-    contComponente.innerHTML = `<button class="btn btn-outline-secondary button ms-7 align-self-start" onclick="quitarComponenteProducto('${id}')" type="button" id="quitar">-</button>
+    contComponente.innerHTML = `<button class="btn btn-outline-secondary button ms-7 align-self-start" onclick="quitarComponenteProducto()" type="button" id="btnQuitar">-</button>
                                 <label class="input-group-text" for="producto" id="inputGroup-sizing-sm">Producto:</label>
                                 <input type="text" class="form-control w-25" disabled id="producto" value = "${productoSeleccionado[1]}">
                                 <label class="input-group-text" for="cantidad" id="inputGroup-sizing-sm">Cantidad:</label>
@@ -170,7 +170,7 @@ const cargarGrillaProducto = (module) =>{
                                  <td> <input type="number" value="${cantidad}" class="form-control" onchange="cantidadOnChange('${productoSeleccionado[0]}','${id}', '${module === "presupuestos"}')" id="cantidad" name="cantidad[]" min="1"</td>
                                  <td id="valorunt"> ${currencyFormatter(productoSeleccionado[7])} </td>
                                  <td id="total"> ${currencyFormatter(parseInt(cantidad) * productoSeleccionado[7])} </td>
-                                 <td><input class="form-check-input checksProductos" onchange="onChangeChecks" type="checkbox"></td>
+                                 <td><input class="form-check-input checksProductos" onchange="onChangeChecks()" type="checkbox"></td>
                                  <input type="hidden" class="form-control me-7" aria-label="0" value="${productoSeleccionado[0]}" id="idproductos" name="idproductos[]">`;
     contProductos.appendChild(contComponente);
     recalcularTotal();
