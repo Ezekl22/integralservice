@@ -110,8 +110,7 @@ const mostrarGrillaProductos = ()=>{
 
 const cerrarGrilla = (id) =>{
     let grilla = document.getElementById(id).childNodes[0];
-    if(grilla)
-        grilla.remove();
+    if(grilla) grilla.remove();
 }
 
 const quitarComponenteProducto = (id) =>{
@@ -123,32 +122,17 @@ const recalcularTotal = () =>{
     const importeTotal = document.getElementById('totalproductos');
     let total = parseFloat(0);
     totalesProductos.forEach(totalProducto =>{
-        total = total + parseFloat(totalProducto.value.replace(/[$,]/g, ""));
-        
-    });
-    importeTotal.value = currencyFormatter(total);
-}
-
-const recalcularTotall = () =>{
-    const totalesProductos = document.querySelectorAll('#total');
-    const importeTotal = document.getElementById('totalproductos');
-    let total = parseFloat(0);
-    totalesProductos.forEach(totalProducto =>{
         total = total + parseFloat(totalProducto.childNodes[0].data.replace(/[$,]/g, ""));
         
     });
     importeTotal.value = currencyFormatter(total);
 }
 
-const cantidadOnChange = (idProducto,id) =>{
-    const inputTotal = document.querySelector('#'+id+' #total');
+const cantidadOnChange = (idProducto ,id, esPresupuesto) =>{
+    const inputTotal = document.querySelector('#'+id+' #total').childNodes[0];
     const cantidad = document.querySelector('#'+id+' #cantidad').value;
-    let i = 0;
-    while (productos[i][0] != parseInt(idProducto)) {
-        i++;
-    }
-    const producto = productos[i];
-    inputTotal.value =currencyFormatter(esVenta? producto[7]:producto[6] * parseInt(cantidad));
+    const producto = productos.filter(producto => producto[0] === parseInt(idProducto) )
+    inputTotal.data =currencyFormatter(esPresupuesto? producto['precioventa']:producto[6] * parseInt(cantidad));
     recalcularTotal();
 }
 
@@ -162,9 +146,9 @@ const validarFormulario = () =>{
     
 } 
 
-const cargarGrillaProducto = () =>{
+const cargarGrillaProducto = (module) =>{
     let contProductos = document.getElementById("grilla");
-    let contComponente = document.createElement("div");
+    let contComponente = document.createElement("tr");
     const cantidad = document.getElementById("cantidadProducto").value;
     let productoSeleccionado;
     productos.forEach(producto=>{
@@ -173,20 +157,30 @@ const cargarGrillaProducto = () =>{
             productoSeleccionado = producto;
     });
     let id = "producto"+(productoSeleccionado[0]);
-    // contComponente.className = "input-group input-group-sm mb-3";
+    contComponente.className = "grilla__cuerpo";
     contComponente.id = id;
-
-    contProductos.innerHTML = contProductos.innerHTML + `<tr class="grilla__cuerpo">
-                                                            <td id="producto"> ${productoSeleccionado[1]} </td>
-                                                            <td> <input type="number" value="${cantidad}" class="form-control" onchange="cantidadOnChange('${productoSeleccionado[0]}','${id}')" id="cantidad" name="cantidad[]" min="1"</td>
-                                                            <td id="valorunt"> ${currencyFormatter(productoSeleccionado[7])} </td>
-                                                            <td id="total"> ${currencyFormatter(parseInt(cantidad) * productoSeleccionado[7])} </td>
-                                                            <td><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"></td>
-                                                            <input type="hidden" class="form-control me-7" aria-label="0" value="${productoSeleccionado[0]}" id="idproductos" name="idproductos[]">
-                                                        </tr>`;
+    contComponente.innerHTML =  `<td id="producto"> ${productoSeleccionado[1]} </td>
+                                 <td> <input type="number" value="${cantidad}" class="form-control" onchange="cantidadOnChange('${productoSeleccionado[0]}','${id}', '${module === "presupuestos"}')" id="cantidad" name="cantidad[]" min="1"</td>
+                                 <td id="valorunt"> ${currencyFormatter(productoSeleccionado[7])} </td>
+                                 <td id="total"> ${currencyFormatter(parseInt(cantidad) * productoSeleccionado[7])} </td>
+                                 <td><input class="form-check-input checksProductos" onchange="productoSelect()" type="checkbox"></td>
+                                 <input type="hidden" class="form-control me-7" aria-label="0" value="${productoSeleccionado[0]}" id="idproductos" name="idproductos[]">`;
     contProductos.appendChild(contComponente);
-    recalcularTotall();
+    recalcularTotal();
     cerrarGrilla('contGrillaProducto');
+}
+
+const productoSelect = ()=>{
+    let checksSeleccionados = document.querySelectorAll('.checksProductos');
+    let btnQuitar = document.getElementById('btnQuitar');
+    console.log(btnQuitar);
+    let checksCheckeados = [];
+    for (let i = 0; i < checksSeleccionados.length; i++) {
+        if(checksSeleccionados[i].checked)
+        checksCheckeados.push(checksSeleccionados[i]) ;
+    }
+    console.log(btnQuitar);
+    btnQuitar.disabled = checksCheckeados && checksCheckeados.length>0? false : true;
 }
 
 const tipoOnChange = (selector) =>{

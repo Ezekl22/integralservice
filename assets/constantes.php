@@ -37,8 +37,8 @@ define('GRILLA_USUARIOS', array("Nombre", "Apellido", "Tipo", "Mail"));
 define('GRILLA_PRESUPUESTOS', array("Cliente", "Comprobante", "Tipo", "Estado", "Fecha", "Punto de venta", "Total"));
 define('GRILLA_PRESUPUESTO_PRODUCTOS', array("Producto", "Cantidad", "Valor unitario", "Total", "Selección"));
 define('GRILLA_CLIENTES', array("Nombre", "Apellido", "Mail", "Cuit", "Categoria fiscal"));
-define('BOTONES_POPUP_PRODUCTOS', array(["texto" => "Cancelar", "tipo" => "button", "href" => ""], ["texto" => "Seleccionar", "tipo" => "button", "href" => "", "onclick" => "cargarGrillaProducto()"]));
 define('BOTONES_POPUP_ELIMINAR', array(["texto" => "Cancelar", "tipo" => "button", "href" => ""], ["texto" => "Eliminar", "tipo" => "a", "href" => "index.php?module=" . (isset($_GET["module"]) ? $_GET["module"] : "") . "&action=deleted&id=" . (isset($_GET["id"]) ? $_GET["id"] : ""), "onclick" => ""]));
+define('BOTONES_POPUP_PRODUCTOS', array(["texto" => "Cancelar", "tipo" => "button", "href" => ""], ["texto" => "Seleccionar", "tipo" => "button", "href" => "", "onclick" => "cargarGrillaProducto('" . (isset($_GET["module"]) ? $_GET["module"] : "") . "')"]));
 define('BOTONES_POPUP_ANULAR', array(["texto" => "Cancelar", "tipo" => "button", "href" => ""], ["texto" => "Anular", "tipo" => "a", "href" => "index.php?module=presupuestos&action=annulled&id=" . (isset($_GET["id"]) ? $_GET["id"] : ""), "onclick" => ""]));
 define('INICIO_SESION_BTN_P', array(["texto" => "Cancelar", "tipo" => "button", "href" => ""], ["texto" => "Ingresar", "tipo" => "submit", "href" => ""]));
 
@@ -63,7 +63,7 @@ define('POPUP_PRODUCTOS_CUERPO_S', `<div class="d-flex mt-3 justify-content-end"
                                         <th>Tipo</th>
                                         <th>preciocompra</th>
                                         <th>precioventa</th>
-                                        <th>selección</th>
+                                        <th>acciones</th>
                                     </tr>`);
 
 //                                    
