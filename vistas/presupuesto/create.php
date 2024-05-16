@@ -48,7 +48,7 @@ echo "<script>const productos = $json;</script>";
                                 data-bs-target="#grillaProductos" data-bs-toggle="modal" type="button" id="agregar"
                                 onclick="mostrarGrillaProductos()">Agregar producto</button>
                             <button class="btn btn-outline-secondary button ms-3 align-self-start" disabled
-                                onclick="quitarComponenteProducto('${id}')" type="button" id="btnQuitar">Quitar
+                                onclick="quitarComponenteProducto()" type="button" id="btnQuitar">Quitar
                                 productos</button>
                         </div>
 
