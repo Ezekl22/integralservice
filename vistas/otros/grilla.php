@@ -48,7 +48,7 @@
                         <?php } ?>
 
                     <?php }
-                if (in_array($gestionPantallaCtr->getModule(), ["presupuestos", "pedidos"]) && strtoupper($datoCuerpo[4]) == "FACTURADO") { ?>
+                if (in_array($gestionPantallaCtr->getModule(), ["presupuestos", "pedidos"]) && strtoupper($datoCuerpo[4]) == "FACTURADO" || $gestionPantallaCtr->getModule() == "usuarios" && strtoupper($datoCuerpo[3]) == "ADMINISTRADOR BASE") { ?>
                         <!-- EDITAR - DESACTIVADO-->
                         <label class="icono__contenedor me-2" title="Editar">
                             <img class="icono__imagen" src="./assets/img/iconoEditarDeshabilitado.png"
