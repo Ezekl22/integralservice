@@ -36,8 +36,8 @@ echo "<script>const productos = $json;</script>";
                         <div class="input-group input-group-sm mx-7">
                             <label class="input-group-text input-group-sm" for="tipo">Tipo:</label>
                             <select class="form-select" id="tipo" name="tipo" onchange="tipoOnChange(event)" required>
-                                <option value="Venta">Venta</option>
-                                <option value="Reparacion">Reparacion</option>
+                                <option value="Venta" <?php echo !isset($_GET["type"]) || $_GET["type"] != "Reparacion" ? "selected" : "" ?>>Venta</option>
+                                <option value="Reparacion" <?php echo isset($_GET["type"]) && $_GET["type"] == "Reparacion" ? "selected" : "" ?>>Reparacion</option>
                             </select>
                         </div>
                     </div>
@@ -63,9 +63,10 @@ echo "<script>const productos = $json;</script>";
                                     value="$0,00">
                             </div>
                         </div>
+                        <input class="btn button my-2" type="submit" value="Guardar cambios">
                     </div>
 
-                    <input class="btn button my-2" type="submit" value="Guardar cambios">
+
                 </div>
             </form>
             <?php $gestionPantallaCtr->crearPopUp(new PopUpMdl('grillaProductos', 'Productos', "", BOTONES_POPUP_PRODUCTOS, '')); ?>

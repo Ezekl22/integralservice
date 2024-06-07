@@ -119,7 +119,6 @@ const quitarComponenteProducto = () =>{
     });
     recalcularTotal();
     onChangeChecks();
-   // document.getElementById(id).remove();
 }
 
 const habilitarDeshabilitarBtn = () =>{
@@ -194,12 +193,42 @@ const getProductosChekeados = () =>{
 }
 
 const tipoOnChange = (selector) =>{
-    const contenedor = document.getElementById('contGrillaFormulario');
+    const contenedorGrilla = document.getElementById('contGrillaFormulario');
+    const contenedor = document.getElementById('contenedor');
+    const subContenedor = document.createElement('div');
+    const btnGuardar = document.createElement('input');
     const tipo = selector.target.value;
-    contenedor.remove();
+    subContenedor.className = "d-flex flex-column align-items-center contenedor__mayor";
+    subContenedor.id = "contGrillaFormulario";
+    btnGuardar.className = "btn button my-2";
+    contenedorGrilla.remove();
     if (tipo == 'Venta'){
         
+        subContenedor.innerHTML=`<h4 class="mt-2 text__white">Productos</h4>
+                                <div class="d-flex justify-content-start w-100">
+                                    <button class="btn btn-outline-secondary button align-self-start ms-5"
+                                        data-bs-target="#grillaProductos" data-bs-toggle="modal" type="button" id="agregar"
+                                        onclick="mostrarGrillaProductos()">Agregar producto</button>
+                                    <button class="btn btn-outline-secondary button ms-3 align-self-start" disabled
+                                        onclick="quitarComponenteProducto()" type="button" id="btnQuitar">Quitar
+                                        productos</button>
+                                </div>
+
+                                <div class="my-3 d-flex flex-column w-100" id="contProductos">
+                                    <?php include "vistas/otros/grillaProductosSeleccionados.php" ?>
+                                </div>
+                                <div class="d-flex" id="">
+                                    <div class="input-group input-group-sm mb-3">
+                                        <label class="input-group-text" for="totalProductos"
+                                            id="inputGroup-sizing-sm">Total:</label>
+                                        <input type="text" class="form-control" disabled aria-label="0" id="totalproductos"
+                                            value="$0,00">
+                                    </div>
+                                </div>`;
     }
+    contenedor.appendChild(subContenedor);
+
+    recargarPagina({type: tipo});
 }
 
 const clickBorrarBusqueda = () =>{
@@ -214,4 +243,16 @@ const clickBorrarBusqueda = () =>{
         document.getElementById('formBuscador').submit();
     }
     });
+}
+
+const recargarPagina = (parametros) =>{
+    var currentUrl = window.location.href;
+    var url = new URL(currentUrl);
+
+    for (var key in parametros) {
+        if (parametros.hasOwnProperty(key)) {
+            url.searchParams.set(key, parametros[key]);
+        }
+    }
+     window.location.href = url.toString();
 }
