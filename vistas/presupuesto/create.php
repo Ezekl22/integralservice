@@ -60,8 +60,8 @@ echo "<script>const productos = $json;</script>";
                                 </div>
                             </div>
                             <div class="input-group w-75">
-                                <span class="input-group-text">Descripción</span>
-                                <textarea class="form-control" aria-label="Descripción"></textarea>
+                                <label class="input-group-text" for="descripcion" id="input-group">Descripción:</label>
+                                <textarea class="form-control" aria-label="Descripción" id="descripcion"></textarea>
                             </div>
                         <?php } else { ?>
                             <div class="d-flex justify-content-start w-100">
