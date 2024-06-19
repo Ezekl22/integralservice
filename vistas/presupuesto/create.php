@@ -47,16 +47,16 @@ echo "<script>const productos = $json;</script>";
                             <div class="my-3 d-flex flex-row w-95">
                                 <div class="input-group input-group-sm">
                                     <label class="input-group-text" for="marca" id="inputGroup-sizing-sm">Marca:</label>
-                                    <input type="text" class="form-control w-25" id="marca">
+                                    <input type="text" class="form-control w-25" id="marca" required>
                                 </div>
                                 <div class="input-group input-group-sm ms-3">
                                     <label class="input-group-text" for="marca" id="inputGroup-sizing-sm">Numero de
                                         serie:</label>
-                                    <input type="text" class="form-control w-25" id="nroserie">
+                                    <input type="text" class="form-control w-25" id="nroserie" required>
                                 </div>
                                 <div class="input-group input-group-sm ms-3">
                                     <label class="input-group-text" for="marca" id="inputGroup-sizing-sm">Modelo:</label>
-                                    <input type="text" class="form-control w-25" id="modelo">
+                                    <input type="text" class="form-control w-25" id="modelo" required>
                                 </div>
                             </div>
                             <div class="input-group w-75">
