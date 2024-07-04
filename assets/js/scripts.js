@@ -59,7 +59,7 @@ const mostrarGrillaProductos = ()=>{
     let contenedor = document.createElement("div");
     let cuerpoGrilla = '';
     contenedor.className = "grilla d-flex flex-column align-items-center rounded-4";
-    contenedor.style.width = "95%";
+    contenedor.style.width = "200%";
     
     productos.forEach(producto => {
        cuerpoGrilla =cuerpoGrilla+ `<tr class="grilla__cuerpo">

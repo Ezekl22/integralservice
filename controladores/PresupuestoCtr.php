@@ -72,6 +72,7 @@ class PresupuestoCtr
         session_start();
         $gestionPantallaCtr = $_SESSION['session']->getGestionPantallaCtr();
         session_write_close();
+        $this->index();
         require_once 'vistas/presupuesto/create.php';
     }
 
@@ -160,16 +161,18 @@ class PresupuestoCtr
         return $presupuesto;
     }
 
-    public function getPantallaAnnul(){
+    public function getPantallaAnnul()
+    {
         $gestionPantallaCtr = $_SESSION['session']->getGestionPantallaCtr();
-        $gestionPantallaCtr->crearPopUp(new PopUpMdl('annul','Anular Presupuesto',"",BOTONES_POPUP_ANULAR,'index.php?action=annul'));
+        $gestionPantallaCtr->crearPopUp(new PopUpMdl('annul', 'Anular Presupuesto', "", BOTONES_POPUP_ANULAR, 'index.php?action=annul'));
         $this->index();
     }
 
-    public function annulled($id){
+    public function annulled($id)
+    {
         $presupuesto = $this->getPresupuestoById($id);
         $estado = $presupuesto->getEstado();
-        if($estado != 'Pendiente presupuesto' || $estado != 'En reparacion' || $estado != '')
+        if ($estado != 'Pendiente presupuesto' || $estado != 'En reparacion' || $estado != '')
             $this->presupuestoDAO->annul($id);
     }
 

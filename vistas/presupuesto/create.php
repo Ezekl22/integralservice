@@ -86,6 +86,7 @@ echo "<script>const productos = $json;</script>";
                             </div>
 
                         <?php } ?>
+                        <!-- aca falta un boton de cancelar -->
                         <input class="btn button my-2" type="submit" value="Guardar cambios">
                     </div>
 

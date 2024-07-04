@@ -53,9 +53,10 @@
                 <?php } ?>
 
             </div>
-
-            <a class="my-5 btn button" type="button" href="index.php?module=presupuestos&action=create">Crear nuevo
-                presupuesto</a>
+            <?php if ($action != 'create') { ?>
+                <a class="my-5 btn button" type="button" href="index.php?module=presupuestos&action=create">Crear nuevo
+                    presupuesto</a>
+            <?php } ?>
         </article>
         <!-------------------------------------------------- Pop up ver presupuesto ---------------------------------------------->
         <div class="modal fade" id="ver" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -164,6 +165,7 @@
     </main>
 </body>
 <?php echo $action == 'see' ? '<script> mostrarVentanaModal("ver"); </script>' : '' ?>
-<?php echo $action == 'annul' ? '<script> mostrarVentanaModal("annul"); </script>':''?>
+<?php echo $action == 'annul' ? '<script> mostrarVentanaModal("annul"); </script>' : '' ?>
 <script>clickBorrarBusqueda();</script>
+
 </html>
