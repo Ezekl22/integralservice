@@ -11,6 +11,8 @@ class PresupuestoCtr
     private $clienteCtr;
     private $productoCtr;
 
+    private static $instance = null;
+
     public function __construct()
     {
         $this->presupuestoDAO = new PresupuestoDAO();
@@ -18,9 +20,15 @@ class PresupuestoCtr
         $this->productoCtr = new ProductoCtr();
         $action = isset($_GET['action']) ? $_GET['action'] : '';
         $id = isset($_GET['id']) ? $_GET['id'] : '';
+
         switch ($action) {
-            case 'created':
-                $this->create();
+            case 'create':
+                if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                    $status = isset($_GET['status']) ? $_GET['status'] : "";
+                    if ($status != "success") {
+                        $this->create();
+                    }
+                }
                 break;
             case 'annulled':
                 $this->annulled($id);
@@ -35,6 +43,14 @@ class PresupuestoCtr
                 $this->search();
                 break;
         }
+    }
+
+    public static function getInstance()
+    {
+        if (self::$instance == null) {
+            self::$instance = new PresupuestoCtr();
+        }
+        return self::$instance;
     }
 
     public function index()
@@ -98,8 +114,12 @@ class PresupuestoCtr
                 '0001',
                 $precioTotal
             );
-
-            $this->presupuestoDAO->create($presupuesto);
+            $status = $this->presupuestoDAO->create($presupuesto);
+            if ($status != "") {
+                header("Location: index.php?module=presupuestos&status=success");
+            } else {
+                header("Location: index.php?module=presupuestos&status=error&description=" . $status);
+            }
         }
     }
 

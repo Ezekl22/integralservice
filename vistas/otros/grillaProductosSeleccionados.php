@@ -10,8 +10,6 @@
             </tr>
         </thead>
         <tbody class="grilla-productos__cuerpo" id="grilla">
-
         </tbody>
-
     </table>
 </div>
