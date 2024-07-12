@@ -73,12 +73,14 @@ footer{
   background-color: #0f7672;
   width: 95%;
 }
-
+.table-responsive{
+  max-height: 660px;
+}
 .grilla__contenedor{
   border: 1px solid grey;
   border-collapse: unset;
   width: 95%;
-  margin: 1% 2.5% 1.5% 2.5%;
+  padding: 1% 2.5% 1.5% 2.5%;
   text-align: center;
 }
 
@@ -89,6 +91,13 @@ footer{
 .grilla__cabecera{
   height: 2.3rem;
   line-height: 2.3rem;
+}
+
+thead{
+  top: -1px;
+  background-color: #fff;
+  z-index: 1;
+  position: sticky;
 }
 
 .grilla__fila{
