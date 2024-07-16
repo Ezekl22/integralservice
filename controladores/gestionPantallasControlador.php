@@ -34,7 +34,7 @@ class GestionPantallasControlador
                     // verifico que el tipo de usuario no tiene acceso al modulo y si no lo tiene lo redirijo al menu
                     if (strtoupper($tipoUsuario) != "REPARADOR") {
                         include_once ('./controladores/PresupuestoCtr.php');
-                        $indexPage = new PresupuestoCtr();
+                        $indexPage = PresupuestoCtr::getInstance();
                     } else {
                         $this->redireccionar('menu');
                     }

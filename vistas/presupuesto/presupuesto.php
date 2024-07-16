@@ -14,7 +14,7 @@
         </article>
         <article class="mt-5 d-flex flex-column align-items-center">
 
-            <div class="grilla contenedor__mayor-grilla d-flex flex-column align-items-center rounded-4">
+            <div class="grilla w-95 d-flex flex-column align-items-center rounded-4">
 
                 <div class="d-flex flex-row contenedor__mayor align-items-start mt-4">
 
@@ -53,9 +53,10 @@
                 <?php } ?>
 
             </div>
-
-            <a class="my-5 btn button" type="button" href="index.php?module=presupuestos&action=create">Crear nuevo
-                presupuesto</a>
+            <?php if ($action != 'create') { ?>
+                <a class="my-5 btn button" type="button" href="index.php?module=presupuestos&action=create">Crear nuevo
+                    presupuesto</a>
+            <?php } ?>
         </article>
         <!-------------------------------------------------- Pop up ver presupuesto ---------------------------------------------->
         <div class="modal fade" id="ver" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -164,6 +165,7 @@
     </main>
 </body>
 <?php echo $action == 'see' ? '<script> mostrarVentanaModal("ver"); </script>' : '' ?>
-<?php echo $action == 'annul' ? '<script> mostrarVentanaModal("annul"); </script>':''?>
+<?php echo $action == 'annul' ? '<script> mostrarVentanaModal("annul"); </script>' : '' ?>
 <script>clickBorrarBusqueda();</script>
+
 </html>

@@ -48,13 +48,14 @@ class PresupuestoDAO
             return "ok";
 
         } else {
-
-            print_r($stmt->errorInfo());
+            $error = $stmt->errorInfo();
 
         }
 
         $stmt->closeCursor();
         $stmt = null;
+
+        return $error;
     }
 
     public function updatePresupuesto(PresupuestoMdl $presupuesto)
