@@ -79,7 +79,6 @@ footer{
 .grilla__contenedor{
   border: 1px solid grey;
   border-collapse: unset;
-  width: 95%;
   padding: 1% 2.5% 1.5% 2.5%;
   text-align: center;
 }
@@ -228,10 +227,6 @@ thead{
 
   .selector__cabecera{
     margin-left: 8%;
-  }
-
-  .contenedor__mayor-grilla{
-    width: 85%;
   }
 
   .w-85{

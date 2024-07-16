@@ -14,7 +14,7 @@
         </article>
         <article class="mt-5 d-flex flex-column align-items-center">
 
-            <div class="grilla contenedor__mayor-grilla d-flex flex-column align-items-center rounded-4">
+            <div class="grilla w-95 d-flex flex-column align-items-center rounded-4">
 
                 <div class="d-flex flex-row contenedor__mayor align-items-start mt-4">
 

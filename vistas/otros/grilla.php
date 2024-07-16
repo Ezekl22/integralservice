@@ -1,6 +1,6 @@
 <div class="border w-95 mt-3 mb-5 rounded-4">
     <div class="table-responsive">
-        <table class="table grilla__contenedor border-0">
+        <table class="table grilla__contenedor w-95 border-0">
             <thead>
                 <tr class="grilla grilla__cabecera">
                     <?php

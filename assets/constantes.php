@@ -54,7 +54,7 @@ define('POPUP_PRODUCTOS_CUERPO_S', `<div class="d-flex mt-3 justify-content-end"
                                 </div>
                                 </div>
                                 <div class="border mt-3 mb-5 rounded-4" style="width:90%;">
-                                <table class="grilla__contenedor border-0">
+                                <table class="grilla__contenedor w-95 border-0">
                                     <tr class="grilla grilla__cabecera">
                                         <th>Nombre</th>
                                         <th>Marca</th>

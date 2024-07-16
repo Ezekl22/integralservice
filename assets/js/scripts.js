@@ -58,8 +58,7 @@ const mostrarGrillaProductos = ()=>{
     let contGrilla = document.getElementById('contGrillaProducto');
     let contenedor = document.createElement("div");
     let cuerpoGrilla = '';
-    contenedor.className = "grilla d-flex flex-column align-items-center rounded-4";
-    contenedor.style.width = "200%";
+    contenedor.className = "grilla d-flex flex-column align-items-center rounded-4 w-100";
     
     productos.forEach(producto => {
        cuerpoGrilla =cuerpoGrilla+ `<tr class="grilla__cuerpo">
@@ -84,7 +83,7 @@ const mostrarGrillaProductos = ()=>{
                                 </div>
                             </div>
                             <div class="border mt-3 mb-5 rounded-4" style="width:90%;">
-                                <table class="grilla__contenedor border-0">
+                                <table class="grilla__contenedor w-95 border-0">
                                     <tr class="grilla grilla__cabecera">
                                         <th>Nombre</th>
                                         <th>Marca</th>
