@@ -7,6 +7,7 @@ require_once 'models/GrillaMdl.php';
 class UsuarioCtr
 {
     private $usuarioDAO;
+    private static $instance = null;
 
     public function __construct()
     {
@@ -15,7 +16,12 @@ class UsuarioCtr
         $id = isset($_GET['id']) ? $_GET['id'] : '';
         switch ($action) {
             case 'created':
-                $this->create();
+                if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                    $status = isset($_GET['status']) ? $_GET['status'] : "";
+                    if ($status != "success") {
+                        $this->create();
+                    }
+                }
                 break;
             case 'deleted':
                 $this->delete($id);
@@ -27,6 +33,14 @@ class UsuarioCtr
                 $this->search();
                 break;
         }
+    }
+
+    public static function getInstance()
+    {
+        if (self::$instance == null) {
+            self::$instance = new UsuarioCtr();
+        }
+        return self::$instance;
     }
 
     public function index()
@@ -74,7 +88,12 @@ class UsuarioCtr
             $usuario = new Usuario($nombre, $apellido, $tipo, $mail, $contrasena);
 
             // Llama a la función para crear el usuario en la base de datos
-            $this->usuarioDAO->createUsuario($usuario);
+            $status = $this->usuarioDAO->createUsuario($usuario);
+            if ($status != "") {
+                header("Location: index.php?module=usuarios&status=success");
+            } else {
+                header("Location: index.php?module=usuarios&status=error&description=" . $status);
+            }
         }
     }
 

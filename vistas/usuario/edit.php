@@ -1,7 +1,7 @@
 <?php
 $id = isset($_GET['id']) ? $_GET['id'] : '';
 $action = isset($_GET['action']) ? $_GET['action'] : '';
-$usuarioCtr = new UsuarioCtr();
+$usuarioCtr = UsuarioCtr::getInstance();
 $usuario = $usuarioCtr->usuarioDAO->getUsuarioById($id);
 
 if ($action == 'edit' && $id != '') {

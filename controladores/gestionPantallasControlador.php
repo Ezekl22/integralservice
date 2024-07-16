@@ -77,7 +77,7 @@ class GestionPantallasControlador
                     // verifico que el tipo de usuario tiene acceso al modulo y si no lo tiene lo redirijo al menu
                     if (strtoupper($tipoUsuario) == "ADMINISTRADOR" || strtoupper($tipoUsuario) == "ADMINISTRADOR BASE") {
                         include_once './controladores/UsuarioCtr.php';
-                        $indexPage = new UsuarioCtr();
+                        $indexPage = UsuarioCtr::getInstance();
                     } else {
                         $this->redireccionar('menu');
                     }

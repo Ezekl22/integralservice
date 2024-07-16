@@ -17,7 +17,7 @@ class SesionCtr
     {
         $mensajeError = "";
         if (isset($_POST['mail']) && isset($_POST['contrasena'])) {
-            $usuarioCtr = new UsuarioCtr();
+            $usuarioCtr = UsuarioCtr::getInstance();
             $usuario = $usuarioCtr->getUsuarioByMailContra($_POST['mail'], $_POST['contrasena']);
             if (!empty($usuario)) {
                 $this->usuarioSesionado = $usuario;
