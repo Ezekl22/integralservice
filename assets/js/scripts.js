@@ -82,8 +82,8 @@ const mostrarGrillaProductos = ()=>{
                                     <input class="btn btn-outline-secondary button" type="button" id="buscar" value="Buscar"></button>
                                 </div>
                             </div>
-                            <div class="border mt-3 mb-5 rounded-4" style="width:90%;">
-                                <table class="grilla__contenedor w-95 border-0">
+                            <div class="border px-3 pt-4 mb-5 mt-3 rounded-4" style="width:90%;">
+                                <table class="grilla__contenedor w-100 border-0">
                                     <tr class="grilla grilla__cabecera">
                                         <th>Nombre</th>
                                         <th>Marca</th>
@@ -97,7 +97,7 @@ const mostrarGrillaProductos = ()=>{
                                     ${cuerpoGrilla}
                                 </table>
                                 <div class="d-flex justify-content-center">
-                                    <div class="input-group input-group-sm mb-3 w-25">
+                                    <div class="input-group input-group-sm my-3 w-25">
                                         <label class="input-group-text" for="cantidad" id="inputGroup-sizing-sm">Cantidad:</label>
                                         <input type="text" class="form-control" aria-label="0" id="cantidadProducto" value="1">
                                     </div>

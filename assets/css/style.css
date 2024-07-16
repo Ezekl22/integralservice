@@ -79,7 +79,6 @@ footer{
 .grilla__contenedor{
   border: 1px solid grey;
   border-collapse: unset;
-  padding: 1% 2.5% 1.5% 2.5%;
   text-align: center;
 }
 
@@ -263,7 +262,9 @@ thead{
     fill: #666;
   }
 
-  
+  .table-responsive{
+    padding: 3px;
+  }
 
   .grilla-productos__cont{
     max-height: 500px; 
