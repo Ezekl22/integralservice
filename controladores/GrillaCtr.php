@@ -27,7 +27,7 @@ class GrillaCtr
                 break;
             case 'clientes':
                 require_once 'controladores/ClienteCtr.php';
-                $this->controlador = new ClienteCtr;
+                $this->controlador = ClienteCtr::getInstance();
                 break;
             default:
                 # code...

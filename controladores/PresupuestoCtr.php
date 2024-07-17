@@ -16,7 +16,7 @@ class PresupuestoCtr
     public function __construct()
     {
         $this->presupuestoDAO = new PresupuestoDAO();
-        $this->clienteCtr = new ClienteCtr();
+        $this->clienteCtr = ClienteCtr::getInstance();
         $this->productoCtr = new ProductoCtr();
         $action = isset($_GET['action']) ? $_GET['action'] : '';
         $id = isset($_GET['id']) ? $_GET['id'] : '';
