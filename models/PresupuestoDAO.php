@@ -11,10 +11,12 @@ class PresupuestoDAO
         $this->db = DBConnection::getInstance();
     }
 
-    public function create(PresupuestoMdl $presupuesto)
+    public function create(PresupuestoMdl $presupuesto, ReparacionMdl $reparacion = new ReparacionMdl("", "", "", "", "", 0))
     {
+
         $productos = $presupuesto->getProductos();
         $productosValues = "";
+
         for ($i = 0; $i < count($productos); $i++) {
             $idProducto = $productos[$i]->getIdProducto();
             $preciounit = $productos[$i]->getPreciounit();
@@ -22,11 +24,16 @@ class PresupuestoDAO
             $separacion = $i != count($productos) - 1 ? ', ' : ';';
             $productosValues = $productosValues . ' (@idpresupuesto, ' . $idProducto . ', ' . $preciounit . ', ' . $cantidad . ')' . $separacion;
         }
+        if ($presupuesto->getTipo() == "Venta") {
+            $query = 'INSERT INTO productospresupuestos (idpresupuesto, idproducto, preciounit, cantidad) VALUES ' . $productosValues;
+        } elseif ($presupuesto->getTipo() == "Reparacion") {
+            $query = 'INSERT INTO reparaciones (idpresupuesto, modelo, marca, numeroserie, descripcion)' .
+                ' VALUES (@idpresupuesto, :modelo, :marca, :numeroserie, :descripcion);';
+        }
         $stmt = $this->db->getConnection()->prepare('INSERT INTO presupuestos (idcliente, nrocomprobante, tipo, estado, fecha, puntoventa, total)' .
-            'VALUES (:idcliente, :nrocomprobante, :tipo, :estado, :fecha, :puntoventa, :total);' .
-            'SET @idpresupuesto = LAST_INSERT_ID();' .
-            'INSERT INTO productospresupuestos (idpresupuesto, idproducto, preciounit, cantidad) VALUES ' . $productosValues);
-
+            'VALUES (:idcliente, :nrocomprobante, :tipo, :estado, :fecha, :puntoventa, :total); ' .
+            'SET @idpresupuesto = LAST_INSERT_ID(); ' . $query);
+        print_r($stmt->queryString);
         $idCliente = $presupuesto->getIdCliente();
         $nroComprobante = $presupuesto->getNroComprobante();
         $tipo = $presupuesto->getTipo();
@@ -34,6 +41,18 @@ class PresupuestoDAO
         $fecha = date("d-m-Y");
         $puntoVenta = $presupuesto->getPuntoVenta();
         $total = $presupuesto->getTotal();
+
+        if ($presupuesto->getTipo() == "Reparacion") {
+            $modelo = $reparacion->getModelo();
+            $marca = $reparacion->getMarca();
+            $nroserie = $reparacion->getNumeroSerie();
+            $descripcion = $reparacion->getDescripcion();
+
+            $stmt->bindParam(":modelo", $modelo, PDO::PARAM_STR);
+            $stmt->bindParam(":marca", $marca, PDO::PARAM_STR);
+            $stmt->bindParam(":numeroserie", $nroserie, PDO::PARAM_STR);
+            $stmt->bindParam(":descripcion", $descripcion, PDO::PARAM_STR);
+        }
 
         $stmt->bindParam(":idcliente", $idCliente, PDO::PARAM_INT);
         $stmt->bindParam(":nrocomprobante", $nroComprobante, PDO::PARAM_STR);
@@ -49,7 +68,6 @@ class PresupuestoDAO
 
         } else {
             $error = $stmt->errorInfo();
-
         }
 
         $stmt->closeCursor();

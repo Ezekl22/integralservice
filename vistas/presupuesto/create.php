@@ -46,21 +46,22 @@ echo "<script>const productos = $json;</script>";
                             <div class="my-3 d-flex flex-row w-95">
                                 <div class="input-group input-group-sm">
                                     <label class="input-group-text" for="marca" id="inputGroup-sizing-sm">Marca:</label>
-                                    <input type="text" class="form-control w-25" id="marca" required>
+                                    <input type="text" class="form-control w-25" id="marca" name="marca" required>
                                 </div>
                                 <div class="input-group input-group-sm ms-3">
-                                    <label class="input-group-text" for="marca" id="inputGroup-sizing-sm">Numero de
+                                    <label class="input-group-text" for="nroserie" id="inputGroup-sizing-sm">Numero de
                                         serie:</label>
-                                    <input type="text" class="form-control w-25" id="nroserie" required>
+                                    <input type="text" class="form-control w-25" id="nroserie" name="nroserie" required>
                                 </div>
                                 <div class="input-group input-group-sm ms-3">
-                                    <label class="input-group-text" for="marca" id="inputGroup-sizing-sm">Modelo:</label>
-                                    <input type="text" class="form-control w-25" id="modelo" required>
+                                    <label class="input-group-text" for="modelo" id="inputGroup-sizing-sm">Modelo:</label>
+                                    <input type="text" class="form-control w-25" id="modelo" name="modelo" required>
                                 </div>
                             </div>
                             <div class="input-group w-75">
                                 <label class="input-group-text" for="descripcion" id="input-group">Descripción:</label>
-                                <textarea class="form-control" aria-label="Descripción" id="descripcion"></textarea>
+                                <textarea class="form-control" aria-label="Descripción" id="descripcion"
+                                    name="descripcion"></textarea>
                             </div>
                         <?php } else { ?>
                             <div class="d-flex justify-content-start w-100">

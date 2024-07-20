@@ -1,5 +1,6 @@
 <?php
 require_once 'models/PresupuestoMdl.php';
+require_once 'models/ReparacionMdl.php';
 require_once 'models/PresupuestoDAO.php';
 require_once 'models/ProductoPresupuestoMdl.php';
 require_once 'controladores/ClienteCtr.php';
@@ -94,27 +95,34 @@ class PresupuestoCtr
 
     public function create()
     {
-        if (isset($_POST['idcliente'])) {
-            $productos = [];
-            $precioTotal = 0;
-            $estado = isset($_POST['tipo']) ? $_POST['tipo'] == 'Venta' ? 'Presupuestado' : 'Pendiente presupuesto' : '';
-            foreach ($_POST['idproductos'] as $index => $idproducto) {
-                $precioUnit = $this->productoCtr->getProductoById($idproducto)['precioventa'];
-                $cantidad = intval($_POST['cantidad'][$index]);
-                $producto = new ProductoPresupuestoMdl($idproducto, $precioUnit, $cantidad);
-                $precioTotal += $precioUnit * $cantidad;
-                array_push($productos, $producto);
+        if (isset($_POST['tipo'])) {
+            if ($_POST['tipo'] == "Venta") {
+                $productos = [];
+                $precioTotal = 0;
+                $estado = isset($_POST['tipo']) ? $_POST['tipo'] == 'Venta' ? 'Presupuestado' : 'Pendiente presupuesto' : '';
+                foreach ($_POST['idproductos'] as $index => $idproducto) {
+                    $precioUnit = $this->productoCtr->getProductoById($idproducto)['precioventa'];
+                    $cantidad = intval($_POST['cantidad'][$index]);
+                    $producto = new ProductoPresupuestoMdl($idproducto, $precioUnit, $cantidad);
+                    $precioTotal += $precioUnit * $cantidad;
+                    array_push($productos, $producto);
+                }
+                $presupuesto = new PresupuestoMdl(
+                    $_POST['idcliente'],
+                    $productos,
+                    $this->getNuevoNroComprobante(),
+                    $_POST['tipo'],
+                    $estado,
+                    '0001',
+                    $precioTotal
+                );
+                $status = $this->presupuestoDAO->create($presupuesto);
+            } else if ($_POST['tipo'] == "Reparacion") {
+                $presupuesto = new PresupuestoMdl($_POST['idcliente'], [], $this->getNuevoNroComprobante(), $_POST['tipo'], 'pendiente presupuesto', '0001', 0);
+                $reparacion = new ReparacionMdl($_POST['modelo'], $_POST['marca'], $_POST['tipo'], $_POST['nroserie'], $_POST['descripcion'], 0);
+                $status = $this->presupuestoDAO->create($presupuesto, $reparacion);
             }
-            $presupuesto = new PresupuestoMdl(
-                $_POST['idcliente'],
-                $productos,
-                $this->getNuevoNroComprobante(),
-                $_POST['tipo'],
-                $estado,
-                '0001',
-                $precioTotal
-            );
-            $status = $this->presupuestoDAO->create($presupuesto);
+
             if ($status != "") {
                 header("Location: index.php?module=presupuestos&status=success");
             } else {

@@ -5,8 +5,7 @@ CREATE TABLE `reparaciones` (
   `modelo` text NOT NULL,
   `marca` text NOT NULL,
   `numeroserie` text NOT NULL,
-  `descripcion` text NOT NULL,
-  `total` double NOT NULL
+  `descripcion` text NOT NULL
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
