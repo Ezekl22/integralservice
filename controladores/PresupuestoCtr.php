@@ -61,13 +61,17 @@ class PresupuestoCtr
 
         $presupuestos = $action == "searched" ? $this->search() : $this->presupuestoDAO->getAllPresupuestos();
 
-        $presupuestoCtr = $this;
+        $presupuestoCtr = $this->getInstance();
         if ($action == 'see') {
             $id = isset($_GET['id']) ? $_GET['id'] : '';
             $presupuesto = $this->getPresupuestoById($id);
             $cliente = $this->getClienteById($presupuesto->getIdCliente());
             $nombreCliente = $cliente['nombre'] . ' ' . $cliente['apellido'];
-            $productosPre = $this->getProductosPresupuestoById($presupuesto->getIdPresupuesto());
+            if ($presupuesto->getTipo() == "Venta") {
+                $productosPre = $this->getProductosPresupuestoById($presupuesto->getIdPresupuesto());
+            } else {
+                $reparacionPre = $this->getReparacionPresupuestoById($id);
+            }
             $total = 0;
         }
 
@@ -82,6 +86,11 @@ class PresupuestoCtr
 
         // Cargar la vista con los datos
         require_once 'vistas/presupuesto/presupuesto.php';
+    }
+
+    public function getReparacionPresupuestoById($id)
+    {
+        return $this->presupuestoDAO->getReparacionPresupuestoById($id);
     }
 
     public function getPantallaCreate()

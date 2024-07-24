@@ -23,10 +23,16 @@
 
                         <?php if (in_array($gestionPantallaCtr->getModule(), ["presupuestos", "pedidos"])) { ?>
                         <!-- VER -->
-                                <a class="icono__contenedor me-2" title="ver"
-                                    href="index.php?module=<?php echo $gestionPantallaCtr->getModule(); ?>&action=see&id=<?php echo $datoCuerpo[0]; ?>">
-                                    <img class="icono__imagen" src="./assets/img/iconoVer.png" alt="icono de ver">
-                                </a>
+                                <?php if ($datoCuerpo[4] != "pendiente presupuesto") { ?>
+                                    <a class="icono__contenedor me-2" title="ver"
+                                        href="index.php?module=<?php echo $gestionPantallaCtr->getModule(); ?>&action=see&id=<?php echo $datoCuerpo[0]; ?>">
+                                        <img class="icono__imagen" src="./assets/img/iconoVer.png" alt="icono de ver">
+                                    </a>
+                                <?php } else { ?>
+                                    <label class="icono__contenedor me-2" title="ver">
+                                        <img class="icono__imagen" src="./assets/img/iconoVerDeshabilitado.png" alt="icono de ver">
+                                    </label>
+                                <?php } ?>
                                 <?php if (strtoupper($datoCuerpo[4]) == "FACTURADO") { ?>
                                     <!-- CAMBIAR ESTADO - DESACTIVADO -->
                                     <label class="icono__contenedor me-2 " title="Cambiar estado">

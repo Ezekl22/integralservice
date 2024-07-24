@@ -6,8 +6,6 @@ $presupuesto = $PresupuestoCtr->presupuestoDAO->getPresupuestoById($id);
 
 $clientes = $PresupuestoCtr->getAllClientes();
 $GestionPantallasCtr = new GestionPantallasControlador();
-//$GestionPantallasCtr->mostrarOcultarPantallaEditar(4);
-//$inUse = $GestionPantallasCtr->getGestionPantallasById(4)->getInUse();
 $productos = $PresupuestoCtr->getProductosPresupuestoById($id);
 $json = json_encode($PresupuestoCtr->getAllProductos());
 echo "<script>const productos = $json;</script>";

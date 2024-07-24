@@ -179,6 +179,19 @@ class PresupuestoDAO
         return $resultado;
     }
 
+    public function getReparacionPresupuestoById($id)
+    {
+        $stmt = $this->db->getConnection()->prepare("SELECT modelo, marca, numeroserie, descripcion
+                                                     FROM reparaciones
+                                                     WHERE reparaciones.idpresupuesto = " . $id);
+
+        $stmt->execute();
+        $resultado = $stmt->fetchAll();
+        $stmt->closeCursor();
+        $stmt = null;
+        return $resultado;
+    }
+
     public function annul($id)
     {
         $stmt = $this->db->getConnection()->prepare("UPDATE presupuestos SET estado = 'anulado' WHERE idPresupuesto = " . $id);
