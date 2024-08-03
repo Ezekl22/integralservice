@@ -12,7 +12,7 @@ class ReparacionMdl
     public function __construct($modelo, $marca, $tipo, $numeroSerie, $descripcion, $total)
     {
         $this->modelo = $modelo;
-        $this->modelo = $marca;
+        $this->marca = $marca;
         $this->tipo = $tipo;
         $this->numeroSerie = $numeroSerie;
         $this->descripcion = $descripcion;

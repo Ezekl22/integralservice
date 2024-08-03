@@ -17,6 +17,8 @@ class PresupuestoDAO
         $productos = $presupuesto->getProductos();
         $productosValues = "";
 
+
+
         for ($i = 0; $i < count($productos); $i++) {
             $idProducto = $productos[$i]->getIdProducto();
             $preciounit = $productos[$i]->getPreciounit();
@@ -27,8 +29,8 @@ class PresupuestoDAO
         if ($presupuesto->getTipo() == "Venta") {
             $query = 'INSERT INTO productospresupuestos (idpresupuesto, idproducto, preciounit, cantidad) VALUES ' . $productosValues;
         } elseif ($presupuesto->getTipo() == "Reparacion") {
-            $query = 'INSERT INTO reparaciones (idpresupuesto, modelo, marca, numeroserie, descripcion)' .
-                ' VALUES (@idpresupuesto,' . $reparacion->getModelo() . ', ' . $reparacion->getMarca() . ', ' . $reparacion->getNumeroSerie() . ', ' . $reparacion->getDescripcion() . ');';
+            $query = 'INSERT INTO reparaciones (idpresupuesto, modelo, marca, numeroserie, descripcion) VALUES ' .
+                '(@idpresupuesto, "' . $reparacion->getModelo() . '", "' . $reparacion->getMarca() . '", "' . $reparacion->getNumeroSerie() . '", "' . $reparacion->getDescripcion() . '");';
         }
         $stmt = $this->db->getConnection()->prepare('INSERT INTO presupuestos (idcliente, nrocomprobante, tipo, estado, fecha, puntoventa, total)' .
             'VALUES (:idcliente, :nrocomprobante, :tipo, :estado, :fecha, :puntoventa, :total); ' .
@@ -40,7 +42,6 @@ class PresupuestoDAO
         $fecha = date("d-m-Y");
         $puntoVenta = $presupuesto->getPuntoVenta();
         $total = $presupuesto->getTotal();
-
         $stmt->bindParam(":idcliente", $idCliente, PDO::PARAM_INT);
         $stmt->bindParam(":nrocomprobante", $nroComprobante, PDO::PARAM_STR);
         $stmt->bindParam(":tipo", $tipo, PDO::PARAM_STR);

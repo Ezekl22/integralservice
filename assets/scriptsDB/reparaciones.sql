@@ -12,3 +12,6 @@ CREATE TABLE `reparaciones` (
 ALTER TABLE `reparaciones`
   ADD PRIMARY KEY (`idreparacion`),
   ADD KEY `idpresupuesto` (`idpresupuesto`);
+
+ALTER TABLE `productos`
+  MODIFY `idreparacion` int(11) NOT NULL AUTO_INCREMENT;
