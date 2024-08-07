@@ -142,6 +142,9 @@ class PresupuestoCtr
 
     public function getPantallaEdit()
     {
+        session_start();
+        $gestionPantallaCtr = $_SESSION['session']->getGestionPantallaCtr();
+        session_write_close();
         $this->index();
         require_once 'vistas/presupuesto/edit.php';
     }

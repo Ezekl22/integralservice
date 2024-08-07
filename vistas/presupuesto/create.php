@@ -41,7 +41,9 @@ echo "<script>const productos = $json;</script>";
                         </div>
                     </div>
                     <div class="d-flex flex-column align-items-center contenedor__mayor" id="contGrillaFormulario">
-                        <h4 class="mt-2 text__white">Productos</h4>
+                        <h4 class="mt-2 text__white">
+                            <?php echo !isset($_GET["type"]) || $_GET["type"] != "Reparacion" ? "Productos" : "Equipo a reparar" ?>
+                        </h4>
                         <?php if (isset($_GET['type']) && $_GET['type'] == "Reparacion") { ?>
                             <div class="my-3 d-flex flex-row w-95">
                                 <div class="input-group input-group-sm">
