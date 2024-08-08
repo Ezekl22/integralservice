@@ -7,6 +7,7 @@ $presupuesto = $PresupuestoCtr->presupuestoDAO->getPresupuestoById($id);
 $clientes = $PresupuestoCtr->getAllClientes();
 $GestionPantallasCtr = new GestionPantallasControlador();
 $productos = $PresupuestoCtr->getProductosPresupuestoById($id);
+$jsonProductosPre = json_encode($productos);
 $json = json_encode($PresupuestoCtr->getAllProductos());
 echo "<script>const productos = $json;</script>";
 ?>
@@ -33,7 +34,7 @@ if ($action == 'edit' && $id != '') {
                         <div class="my-3 d-flex flex-row w-100">
                             <div class="input-group input-group-sm ms-7">
                                 <label class="input-group-text" for="cliente">Cliente:</label>
-                                <select class="form-select" id="cliente" name="tipo" required>
+                                <select class="form-select" id="cliente" name="cliente" required>
                                     <?php foreach ($clientes as $cliente) { ?>
                                         <option value="<?php echo $cliente['idcliente'] ?>" <?php echo ($presupuesto['idcliente'] == $cliente['idcliente']) ? 'selected' : ''; ?>>
                                             <?php echo $cliente['nombre'] . ' ' . $cliente['apellido'] ?>
@@ -51,7 +52,7 @@ if ($action == 'edit' && $id != '') {
                             </div>
                             <div class="input-group input-group-sm me-7">
                                 <label class="input-group-text input-group-sm" for="tipo">Tipo:</label>
-                                <select class="form-select" id="tipo" name="tipo" required>
+                                <select class="form-select" id="tipo" name="tipo" required disabled>
                                     <option value="Administrador" <?php echo ($presupuesto['tipo'] == 'venta') ? 'selected' : ''; ?>>Venta</option>
                                     <option value="Vendedor" <?php echo ($presupuesto['tipo'] == 'reparacion') ? 'selected' : ''; ?>>Reparacion</option>
                                 </select>
@@ -137,6 +138,9 @@ if ($action == 'edit' && $id != '') {
             </article>
         </main>
     </body>
+    <?php
+    echo "<script>cargarGrillaProducto('presupuesto', " . $jsonProductosPre . ")</script>"
+        ?>
 
     </html>
     <!-- <!DOCTYPE html>
