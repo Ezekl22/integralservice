@@ -34,8 +34,13 @@ class PresupuestoCtr
             case 'annulled':
                 $this->annulled($id);
                 break;
-            case 'edited':
-                $this->update($id);
+            case 'edit':
+                if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                    $status = isset($_GET['status']) ? $_GET['status'] : "";
+                    if ($status != "success") {
+                        $this->update($id);
+                    }
+                }
                 break;
             case 'facturar':
                 $this->facturar($id);
@@ -106,24 +111,16 @@ class PresupuestoCtr
     {
         if (isset($_POST['tipo'])) {
             if ($_POST['tipo'] == "Venta") {
-                $productos = [];
-                $precioTotal = 0;
+                $productos_total = $this->getProductos_Total();
                 $estado = isset($_POST['tipo']) ? $_POST['tipo'] == 'Venta' ? 'Presupuestado' : 'Pendiente presupuesto' : '';
-                foreach ($_POST['idproductos'] as $index => $idproducto) {
-                    $precioUnit = $this->productoCtr->getProductoById($idproducto)['precioventa'];
-                    $cantidad = intval($_POST['cantidad'][$index]);
-                    $producto = new ProductoPresupuestoMdl($idproducto, $precioUnit, $cantidad);
-                    $precioTotal += $precioUnit * $cantidad;
-                    array_push($productos, $producto);
-                }
                 $presupuesto = new PresupuestoMdl(
                     $_POST['idcliente'],
-                    $productos,
+                    $productos_total->productos,
                     $this->getNuevoNroComprobante(),
                     $_POST['tipo'],
                     $estado,
                     '0001',
-                    $precioTotal
+                    $productos_total->total
                 );
                 $status = $this->presupuestoDAO->create($presupuesto);
             } else if ($_POST['tipo'] == "Reparacion") {
@@ -138,6 +135,24 @@ class PresupuestoCtr
                 header("Location: index.php?module=presupuestos&status=error&description=" . $status);
             }
         }
+    }
+
+    private function getProductos_Total()
+    {
+        $productos = [];
+        $precioTotal = 0;
+        foreach ($_POST['idproductos'] as $index => $idproducto) {
+            $precioUnit = $this->productoCtr->getProductoById($idproducto)['precioventa'];
+            $cantidad = intval($_POST['cantidad'][$index]);
+            $producto = new ProductoPresupuestoMdl($idproducto, $precioUnit, $cantidad);
+            $precioTotal += $precioUnit * $cantidad;
+            array_push($productos, $producto);
+        }
+        $productos_Total = new stdClass();
+        $productos_Total->productos = $productos;
+        $productos_Total->total = $precioTotal;
+
+        return $productos_Total;
     }
 
     public function getPantallaEdit()
@@ -184,10 +199,24 @@ class PresupuestoCtr
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (isset($_POST["idcliente"])) {
-                $presupuesto = new PresupuestoMdl($_POST["idcliente"], $_POST["nrocomprobante"], $_POST['tipo'], $_POST["estado"], $_POST["fecha"], $_POST["puntoventa"], $_POST["total"]);
+                $productos_total = $this->getProductos_Total();
+                $presupuesto = new PresupuestoMdl(
+                    $_POST["idcliente"],
+                    $productos_total->productos,
+                    $_POST["nrocomprobante"],
+                    $_POST['tipo'],
+                    $_POST["estado"],
+                    $_POST["puntoventa"],
+                    $productos_total->total
+                );
                 $presupuesto->setIdPresupuesto($id);
-                $this->presupuestoDAO->updatePresupuesto($presupuesto);
+                $status = $this->presupuestoDAO->updatePresupuesto($presupuesto);
             }
+        }
+        if ($status != "") {
+            header("Location: index.php?module=presupuestos&status=success");
+        } else {
+            //header("Location: index.php?module=presupuestos&status=error&description=" . $status);
         }
     }
 

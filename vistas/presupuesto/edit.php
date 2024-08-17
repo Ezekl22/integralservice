@@ -34,7 +34,7 @@ if ($action == 'edit' && $id != '') {
                         <div class="my-3 d-flex flex-row w-100">
                             <div class="input-group input-group-sm ms-7">
                                 <label class="input-group-text" for="cliente">Cliente:</label>
-                                <select class="form-select" id="cliente" name="cliente" required>
+                                <select class="form-select" id="idcliente" name="idcliente" required>
                                     <?php foreach ($clientes as $cliente) { ?>
                                         <option value="<?php echo $cliente['idcliente'] ?>" <?php echo ($presupuesto['idcliente'] == $cliente['idcliente']) ? 'selected' : ''; ?>>
                                             <?php echo $cliente['nombre'] . ' ' . $cliente['apellido'] ?>
@@ -128,7 +128,8 @@ if ($action == 'edit' && $id != '') {
 
                             <?php } ?>
                             <!-- aca falta un boton de cancelar -->
-                            <input class="btn button my-2" type="submit" value="Guardar cambios">
+                            <input class="btn button my-2" type="submit" onclick="guardarEdicion('editPresupuesto')"
+                                value="Guardar cambios">
                         </div>
 
 
