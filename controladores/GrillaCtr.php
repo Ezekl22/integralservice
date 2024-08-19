@@ -19,11 +19,11 @@ class GrillaCtr
         switch ($module) {
             case 'usuarios':
                 require_once 'controladores/UsuarioCtr.php';
-                $this->controlador = new UsuarioCtr;
+                $this->controlador = UsuarioCtr::getInstance();
                 break;
             case 'presupuestos':
                 require_once 'controladores/PresupuestoCtr.php';
-                $this->controlador = new PresupuestoCtr;
+                $this->controlador = PresupuestoCtr::getInstance();
                 break;
             case 'productos':
                 require_once 'controladores/ProductoCtr.php';
@@ -31,7 +31,7 @@ class GrillaCtr
                 break;
             case 'clientes':
                 require_once 'controladores/ClienteCtr.php';
-                $this->controlador = new ClienteCtr;
+                $this->controlador = ClienteCtr::getInstance();
                 break;
             default:
                 # code...
