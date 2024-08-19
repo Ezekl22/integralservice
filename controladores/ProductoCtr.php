@@ -67,9 +67,16 @@ class ProductoCtr
 
             $producto = new ProductoMdl($nombre, $marca, $detalle, $stock, $tipo, $preciocompra, $precioventa);
 
-
+            // Llama a la función para crear el producto en la base de datos
+            $status = $this->productoDAO->create($producto);
+            if ($status != "") {
+                header("Location: index.php?module=productos&status=success");
+                exit();
+            } else {
+                header("Location: index.php?module=productos&status=error&description=" . $status);
+                exit();
+            }
         }
-        $this->productoDAO->create($producto);
     }
 
     public function getPantallaEdit()
