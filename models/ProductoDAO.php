@@ -38,7 +38,7 @@ class ProductoDAO
             return "ok";
 
         }
-        $stmt->close();
+        $stmt->closeCursor();
         $stmt = null;
     }
 
@@ -79,9 +79,13 @@ class ProductoDAO
     {
         $stmt = $this->db->getConnection()->prepare("SELECT * FROM productos WHERE idproducto = " . $id);
 
-        $stmt->execute();
-        return $stmt->fetchAll()[0];
-        $stmt->close();
+        if ($stmt->execute()) {
+            return $stmt->fetchAll()[0];
+        } else {
+            print_r($stmt->errorInfo());
+        }
+
+        $stmt->closeCursor();
         $stmt = null;
     }
 
@@ -89,9 +93,13 @@ class ProductoDAO
     {
         $stmt = $this->db->getConnection()->prepare("SELECT * FROM productos WHERE idproducto in (" . implode(", ", $ids) . ")");
 
-        $stmt->execute();
-        return $stmt->fetchAll();
-        $stmt->close();
+        if ($stmt->execute()) {
+            return $stmt->fetchAll();
+        } else {
+            print_r($stmt->errorInfo());
+        }
+
+        $stmt->closeCursor();
         $stmt = null;
     }
 
@@ -100,9 +108,13 @@ class ProductoDAO
         // Código para obtener todos los usuarios desde la base de datos
         $stmt = $this->db->getConnection()->prepare("SELECT * FROM productos");
 
-        $stmt->execute();
-        return $stmt->fetchAll();
-        $stmt->close();
+        if ($stmt->execute()) {
+            return $stmt->fetchAll();
+        } else {
+            print_r($stmt->errorInfo());
+        }
+
+        $stmt->closeCursor();
         $stmt = null;
     }
 
@@ -119,5 +131,20 @@ class ProductoDAO
             print_r($this->db->getConnection()->errorInfo());
             return "error";
         }
+    }
+
+    public function search()
+    {
+        $termino = isset($_POST['termino']) ? '%' . $_POST['termino'] . '%' : "";
+        if ($termino != "") {
+            $query = "SELECT * FROM productos WHERE nombre LIKE '$termino' OR marca LIKE '$termino' OR detalle LIKE '$termino' OR stock LIKE '$termino' OR tipo LIKE '$termino' OR preciocompra LIKE '$termino' OR precioventa LIKE '$termino' ";
+            $stmt = $this->db->getConnection()->prepare($query);
+            $stmt->execute();
+            $retorno = $stmt->fetchAll();
+            $stmt->closeCursor();
+            $stmt = null;
+            return $retorno;
+        }
+
     }
 }

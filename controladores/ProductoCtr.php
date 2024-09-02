@@ -29,10 +29,12 @@ class ProductoCtr
 
     public function index()
     {
+        $action = isset($_GET['action']) ? $_GET['action'] : '';
+        $termino = isset($_POST['termino']) ? $_POST['termino'] : "";
         session_start();
         $gestionPantallaCtr = $_SESSION['session']->getGestionPantallaCtr();
         session_write_close();
-        $grillaMdl = new GrillaMdl(GRILLA_PRODUCTOS, $this->getAllProductos(), [0, 1]);
+        $grillaMdl = new GrillaMdl(GRILLA_PRODUCTOS, $action == 'searched' && $termino != "" ? $this->search() : $this->getAllProductos(), [0, 1]);
         $grillaCtr = new GrillaCtr($grillaMdl);
 
         $productos = $this->productoDAO->getAllProductos();
@@ -109,5 +111,10 @@ class ProductoCtr
     public function delete($id)
     {
         $this->productoDAO->delete($id);
+    }
+
+    public function search()
+    {
+        return $this->productoDAO->search();
     }
 }
