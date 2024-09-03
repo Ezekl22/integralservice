@@ -76,6 +76,7 @@ class PresupuestoDAO
         $stmt->bindParam(":idcliente", $idCliente, PDO::PARAM_INT);
         $stmt->bindParam(":total", $total, PDO::PARAM_STR_CHAR);
         $stmt->bindParam(":idpresupuesto", $idPresupuesto, PDO::PARAM_INT);
+        $this->updateProductosPresupuesto($idPresupuesto, $presupuesto);
 
         if ($stmt->execute()) {
 
@@ -86,31 +87,40 @@ class PresupuestoDAO
         }
         $stmt->closeCursor();
         $stmt = null;
+
         return $error;
     }
 
-    public function updateProductosPresupuesto($idPresupuesto)
+    public function updateProductosPresupuesto(int $idPresupuesto, PresupuestoMdl $presupuesto)
     {
-        $stmt = $this->db->getConnection()->prepare("UPDATE productospresupuestos SET idcliente=:idcliente,
-         total=:total WHERE idpresupuesto= :idpresupuesto");
+        $casesPreciounit = [];
+        $casesCantidad = [];
+        $ids = [];
 
-        $idCliente = $presupuesto->getIdCliente();
-        $total = $presupuesto->getTotal();
-        $idPresupuesto = $presupuesto->getIdPresupuesto();
+        foreach ($presupuesto->getProductos() as $producto) {
+            $casesPreciounit[] = "WHEN idproducto = " . $producto->getIdProducto() . " THEN " . $producto->getPreciounit();
+            $casesCantidad[] = "WHEN idproducto = " . $producto->getIdProducto() . " THEN " . $producto->getCantidad();
+            $ids[] = $producto->getIdProducto();
+        }
 
-        $stmt->bindParam(":idcliente", $idCliente, PDO::PARAM_INT);
-        $stmt->bindParam(":total", $total, PDO::PARAM_STR_CHAR);
+        $ids = implode(',', $ids);
+        $casesPreciounit = implode(' ', $casesPreciounit);
+        $casesCantidad = implode(' ', $casesCantidad);
+
+        $sql = "UPDATE productospresupuestos
+        SET preciounit = CASE $casesPreciounit END,
+            cantidad = CASE $casesCantidad END
+        WHERE idpresupuesto = :idpresupuesto AND idproducto IN ($ids)";
+
+        $stmt = $this->db->getConnection()->prepare($sql);
         $stmt->bindParam(":idpresupuesto", $idPresupuesto, PDO::PARAM_INT);
 
         if ($stmt->execute()) {
-
             return "ok";
-
         } else {
             $error = $stmt->errorInfo();
         }
-        $stmt->closeCursor();
-        $stmt = null;
+
         return $error;
     }
 

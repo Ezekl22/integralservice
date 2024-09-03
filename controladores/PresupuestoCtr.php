@@ -199,24 +199,18 @@ class PresupuestoCtr
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (isset($_POST["idcliente"])) {
+                $presupuesto = $this->getPresupuestoById($id);
+                $presupuesto->setIdCliente($_POST['idcliente']);
                 $productos_total = $this->getProductos_Total();
-                $presupuesto = new PresupuestoMdl(
-                    $_POST["idcliente"],
-                    $productos_total->productos,
-                    $_POST["nrocomprobante"],
-                    $_POST['tipo'],
-                    $_POST["estado"],
-                    $_POST["puntoventa"],
-                    $productos_total->total
-                );
-                $presupuesto->setIdPresupuesto($id);
+                $presupuesto->setProductos($productos_total->productos);
+                $presupuesto->setTotal($productos_total->total);
                 $status = $this->presupuestoDAO->updatePresupuesto($presupuesto);
             }
         }
         if ($status != "") {
             header("Location: index.php?module=presupuestos&status=success");
         } else {
-            //header("Location: index.php?module=presupuestos&status=error&description=" . $status);
+            header("Location: index.php?module=presupuestos&status=error&description=" . $status);
         }
     }
 

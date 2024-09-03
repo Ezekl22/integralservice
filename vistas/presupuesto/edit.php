@@ -47,23 +47,22 @@ if ($action == 'edit' && $id != '') {
                                     id="inputGroup-sizing-sm">Comprobante
                                     Nro:</label>
                                 <input type="text" disabled class="form-control" aria-label="Sizing example input"
-                                    aria-describedby="inputGroup-sizing-sm" id="nroComprobante" name="nroComprobante"
+                                    aria-describedby="inputGroup-sizing-sm" id="nrocomprobante" name="nrocomprobante"
                                     value="<?php echo $presupuesto['nrocomprobante'] ?>" required>
                             </div>
                             <div class="input-group input-group-sm me-7">
-                                <label class="input-group-text input-group-sm" for="tipo">Tipo:</label>
-                                <select class="form-select" id="tipo" name="tipo" required disabled>
-                                    <option value="Administrador" <?php echo ($presupuesto['tipo'] == 'venta') ? 'selected' : ''; ?>>Venta</option>
-                                    <option value="Vendedor" <?php echo ($presupuesto['tipo'] == 'reparacion') ? 'selected' : ''; ?>>Reparacion</option>
-                                </select>
+                                <label class="input-group-text" for="tipo" id="inputGroup-sizing-sm">Tipo:</label>
+                                <input type="text" class="form-control" aria-label="Sizing example input"
+                                    aria-describedby="inputGroup-sizing-sm" disabled id="tipo" name="tipo"
+                                    value="<?php echo $presupuesto['tipo'] ?>" required>
                             </div>
                         </div>
                         <div class="my-3 d-flex flex-row w-100">
                             <div class="input-group input-group-sm ms-7">
                                 <label class="input-group-text" for="estado" id="inputGroup-sizing-sm">Estado:</label>
-                                <input type="text" disabled class="form-control" aria-label="Sizing example input"
+                                <input type="text" class="form-control" aria-label="Sizing example input"
                                     aria-describedby="inputGroup-sizing-sm" id="estado" name="estado"
-                                    value="<?php echo $presupuesto['estado'] ?>" required>
+                                    value="<?php echo $presupuesto['estado'] ?>" disabled required>
                             </div>
                             <div class="input-group input-group-sm mx-7">
                                 <label class="input-group-text" for="fecha" id="inputGroup-sizing-sm">Fecha:</label>
