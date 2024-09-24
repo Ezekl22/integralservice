@@ -93,35 +93,47 @@ class PresupuestoDAO
 
     public function updateProductosPresupuesto(int $idPresupuesto, PresupuestoMdl $presupuesto)
     {
-        $casesPreciounit = [];
-        $casesCantidad = [];
-        $ids = [];
+        $productosPresupuesto = $this->getProductosPresupuestoById($idPresupuesto);
+        $productosExistentes = array_map(function ($producto) {
+            return $producto['idproducto'];
+        }, $productosPresupuesto);
 
-        foreach ($presupuesto->getProductos() as $producto) {
-            $casesPreciounit[] = "WHEN idproducto = " . $producto->getIdProducto() . " THEN " . $producto->getPreciounit();
-            $casesCantidad[] = "WHEN idproducto = " . $producto->getIdProducto() . " THEN " . $producto->getCantidad();
-            $ids[] = $producto->getIdProducto();
+
+        // Obtener los IDs de productos enviados para actualización
+        $nuevosProductos = array_map(function ($producto) {
+            return $producto->getIdProducto();
+        }, $presupuesto->getProductos());
+
+        // Identificar los productos que deben ser eliminados
+        $productsToDelete = array_diff($productosExistentes, $nuevosProductos);
+        print_r($productsToDelete);
+        // Eliminar los productos que ya no están asociados
+        if (!empty($productsToDelete)) {
+            $placeholders = implode(',', array_fill(0, count($productsToDelete), '?'));
+            $stmt = $this->db->getConnection()->prepare("DELETE FROM productospresupuestos WHERE idpresupuesto = ? AND idproducto IN ($placeholders)");
+            $stmt->execute(array_merge([$idPresupuesto], $productsToDelete));
         }
 
-        $ids = implode(',', $ids);
-        $casesPreciounit = implode(' ', $casesPreciounit);
-        $casesCantidad = implode(' ', $casesCantidad);
+        // Actualizar o insertar los productos que permanecen
+        $queryProductos = "";
+        $productos = $presupuesto->getProductos();
+        for ($i = 0; $i < count($productos); $i++) {
+            $separacion = $i == count($productos) - 1 ? ";" : ",";
+            $queryProductos = $queryProductos . " (" . $idPresupuesto . ", " . $productos[$i]->getIdProducto() . ", " .
+                $productos[$i]->getPreciounit() . ", " . $productos[$i]->getCantidad() . ")" . $separacion;
+        }
+        echo $queryProductos;
+        $stmt = $this->db->getConnection()->prepare("REPLACE INTO productospresupuestos (idpresupuesto, idproducto, preciounit, cantidad) 
+                                                            VALUES " . $queryProductos);
 
-        $sql = "UPDATE productospresupuestos
-        SET preciounit = CASE $casesPreciounit END,
-            cantidad = CASE $casesCantidad END
-        WHERE idpresupuesto = :idpresupuesto AND idproducto IN ($ids)";
-
-        $stmt = $this->db->getConnection()->prepare($sql);
-        $stmt->bindParam(":idpresupuesto", $idPresupuesto, PDO::PARAM_INT);
-
+        $stmt->execute();
         if ($stmt->execute()) {
             return "ok";
         } else {
             $error = $stmt->errorInfo();
         }
 
-        return $error;
+        return "ok";
     }
 
     public function getNuevoNroComprobante()
