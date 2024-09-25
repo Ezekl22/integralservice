@@ -106,34 +106,19 @@ class PresupuestoDAO
 
         // Identificar los productos que deben ser eliminados
         $productsToDelete = array_diff($productosExistentes, $nuevosProductos);
-        print_r($productsToDelete);
         // Eliminar los productos que ya no están asociados
         if (!empty($productsToDelete)) {
-            $placeholders = implode(',', array_fill(0, count($productsToDelete), '?'));
-            $stmt = $this->db->getConnection()->prepare("DELETE FROM productospresupuestos WHERE idpresupuesto = ? AND idproducto IN ($placeholders)");
-            $stmt->execute(array_merge([$idPresupuesto], $productsToDelete));
-        }
-
-        // Actualizar o insertar los productos que permanecen
-        $queryProductos = "";
-        $productos = $presupuesto->getProductos();
-        for ($i = 0; $i < count($productos); $i++) {
-            $separacion = $i == count($productos) - 1 ? ";" : ",";
-            $queryProductos = $queryProductos . " (" . $idPresupuesto . ", " . $productos[$i]->getIdProducto() . ", " .
-                $productos[$i]->getPreciounit() . ", " . $productos[$i]->getCantidad() . ")" . $separacion;
-        }
-        echo $queryProductos;
-        $stmt = $this->db->getConnection()->prepare("REPLACE INTO productospresupuestos (idpresupuesto, idproducto, preciounit, cantidad) 
-                                                            VALUES " . $queryProductos);
-
-        $stmt->execute();
-        if ($stmt->execute()) {
-            return "ok";
-        } else {
-            $error = $stmt->errorInfo();
+            $this->deleteProductosPresupuesto($idPresupuesto, $productsToDelete);
         }
 
         return "ok";
+    }
+
+    private function deleteProductosPresupuesto(int $idPresupuesto, array $productos)
+    {
+        $placeholders = implode(',', array_fill(0, count($productos), '?'));
+        $stmt = $this->db->getConnection()->prepare("DELETE FROM productospresupuestos WHERE idpresupuesto = ? AND idproducto IN ($placeholders) ");
+        $stmt->execute(array_merge([$idPresupuesto], $productos));
     }
 
     public function getNuevoNroComprobante()
