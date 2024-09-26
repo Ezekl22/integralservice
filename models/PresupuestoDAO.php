@@ -67,7 +67,6 @@ class PresupuestoDAO
 
     private function createProductosPresupuesto(array $productos)
     {
-        echo "hola";
         $queryProductos = "";
         for ($i = 0; $i < count($productos); $i++) {
 
