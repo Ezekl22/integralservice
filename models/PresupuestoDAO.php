@@ -27,7 +27,8 @@ class PresupuestoDAO
             $productosValues = $productosValues . ' (@idpresupuesto, ' . $idProducto . ', ' . $preciounit . ', ' . $cantidad . ')' . $separacion;
         }
         if ($presupuesto->getTipo() == "Venta") {
-            $query = 'INSERT INTO productospresupuestos (idpresupuesto, idproducto, preciounit, cantidad) VALUES ' . $productosValues;
+            //$query = 'INSERT INTO productospresupuestos (idpresupuesto, idproducto, preciounit, cantidad) VALUES ' . $productosValues;
+            $this->createProductosPresupuesto($productos);
         } elseif ($presupuesto->getTipo() == "Reparacion") {
             $query = 'INSERT INTO reparaciones (idpresupuesto, modelo, marca, numeroserie, descripcion) VALUES ' .
                 '(@idpresupuesto, "' . $reparacion->getModelo() . '", "' . $reparacion->getMarca() . '", "' . $reparacion->getNumeroSerie() . '", "' . $reparacion->getDescripcion() . '");';
@@ -64,6 +65,30 @@ class PresupuestoDAO
         return $error;
     }
 
+    private function createProductosPresupuesto(array $productos)
+    {
+        echo "hola";
+        $queryProductos = "";
+        for ($i = 0; $i < count($productos); $i++) {
+
+            $separacion = $i == count($productos) - 1 ? ";" : ",";
+            $queryProductos = $queryProductos . " (" . $productos[$i]->getIdPresupuesto() . ", "
+                . $productos[$i]->getIdProducto() . ", "
+                . $productos[$i]->getPreciounit() . ", "
+                . $productos[$i]->getCantidad() . ")"
+                . $separacion;
+        }
+        echo $queryProductos;
+        $stmt = $this->db->getConnection()->prepare("INSERT INTO productospresupuestos (idpresupuesto, idproducto, preciounit, cantidad) 
+                                                        VALUES " . $queryProductos);
+
+        if ($stmt->execute()) {
+            return "ok";
+        } else {
+            return $stmt->errorInfo();
+        }
+    }
+
     public function updatePresupuesto(PresupuestoMdl $presupuesto)
     {
         $stmt = $this->db->getConnection()->prepare("UPDATE presupuestos SET idcliente=:idcliente,
@@ -93,9 +118,17 @@ class PresupuestoDAO
 
     public function updateProductosPresupuesto(int $idPresupuesto, PresupuestoMdl $presupuesto)
     {
-        $productosPresupuesto = $this->getProductosPresupuestoById($idPresupuesto);
-        $productosExistentes = array_map(function ($producto) {
-            return $producto['idproducto'];
+        $productosPresupuestoDB = $this->getProductosPresupuestoById($idPresupuesto);
+        $productosPresupuesto = array_map(function ($producto) {
+            return new ProductoPresupuestoMdl(
+                $producto['idproducto'],
+                $producto['precioventa'],
+                $producto['cantidad']
+            );
+        }, $productosPresupuestoDB);
+
+        $productosExistentes = array_map(function (ProductoPresupuestoMdl $producto) {
+            return $producto->getIdProducto();
         }, $productosPresupuesto);
 
 
@@ -106,10 +139,31 @@ class PresupuestoDAO
 
         // Identificar los productos que deben ser eliminados
         $productsToDelete = array_diff($productosExistentes, $nuevosProductos);
+        $idProdutosAInsertar = array_diff($nuevosProductos, $productosExistentes);
         // Eliminar los productos que ya no están asociados
         if (!empty($productsToDelete)) {
             $this->deleteProductosPresupuesto($idPresupuesto, $productsToDelete);
         }
+        $produtosAInsertar = [];
+
+        foreach ($idProdutosAInsertar as $idProducto) {
+            $productoAInsertar = "";
+            foreach ($presupuesto->getProductos() as $producto) {
+                if ($producto->getIdProducto() == $idProducto) {
+                    $productoAInsertar = $producto;
+                    $productoAInsertar->setIdPresupuesto($idPresupuesto);
+                }
+            }
+
+            if ($productoAInsertar != "") {
+                array_push($produtosAInsertar, $productoAInsertar);
+            }
+        }
+
+        if (count($produtosAInsertar) > 0) {
+            $this->createProductosPresupuesto($produtosAInsertar);
+        }
+
 
         return "ok";
     }
@@ -118,7 +172,13 @@ class PresupuestoDAO
     {
         $placeholders = implode(',', array_fill(0, count($productos), '?'));
         $stmt = $this->db->getConnection()->prepare("DELETE FROM productospresupuestos WHERE idpresupuesto = ? AND idproducto IN ($placeholders) ");
-        $stmt->execute(array_merge([$idPresupuesto], $productos));
+
+        if ($stmt->execute(array_merge([$idPresupuesto], $productos))) {
+            return "ok";
+        } else {
+            return $stmt->errorInfo();
+        }
+
     }
 
     public function getNuevoNroComprobante()
@@ -130,7 +190,6 @@ class PresupuestoDAO
         $stmt->closeCursor();
         $stmt = null;
         return $resultado;
-
     }
 
     public function getPresupuestoById($id)
