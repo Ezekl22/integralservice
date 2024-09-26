@@ -138,33 +138,54 @@ class PresupuestoDAO
 
         // Identificar los productos que deben ser eliminados
         $productsToDelete = array_diff($productosExistentes, $nuevosProductos);
-        $idProdutosAInsertar = array_diff($nuevosProductos, $productosExistentes);
         // Eliminar los productos que ya no están asociados
         if (!empty($productsToDelete)) {
             $this->deleteProductosPresupuesto($idPresupuesto, $productsToDelete);
         }
-        $produtosAInsertar = [];
+        $productosAInsertar = [];
+        $productosAActualizar = [];
+        $contadorPAntiguo = 1;
 
-        foreach ($idProdutosAInsertar as $idProducto) {
-            $productoAInsertar = "";
-            foreach ($presupuesto->getProductos() as $producto) {
-                if ($producto->getIdProducto() == $idProducto) {
-                    $productoAInsertar = $producto;
-                    $productoAInsertar->setIdPresupuesto($idPresupuesto);
+        foreach ($presupuesto->getProductos() as $nuevoProducto) {
+            $contadorPNuevo = 1;
+            $repetido = false;
+            $nuevoProducto->setIdPresupuesto($idPresupuesto);
+            foreach ($productosPresupuesto as $antiguoProducto) {
+                if ($nuevoProducto->getIdProducto() == $antiguoProducto->getIdProducto()) {
+                    $repetido = true;
+                    //si el campo de cantidad o de precio unitario es diferente, entonces lo guardo en $productosAActualizar
+                    if ($nuevoProducto->getCantidad() != $antiguoProducto->getCantidad() || $nuevoProducto->getPreciounit() != $antiguoProducto->getPreciounit()) {
+                        array_push($productosAActualizar, $nuevoProducto);
+                    }
+                } else {
+                    //si recorri todos los productos viejos y no esta en ese array entonces lo agrego a productosAInsertar
+                    if ($contadorPNuevo == count($productosPresupuesto) && !$repetido) {
+                        array_push($productosAInsertar, $nuevoProducto);
+                    }
                 }
+                if ($contadorPAntiguo == count($productosPresupuesto)) {
+                    $nuevoProducto->setIdPresupuesto($idPresupuesto);
+                }
+                $contadorPNuevo++;
             }
-
-            if ($productoAInsertar != "") {
-                array_push($produtosAInsertar, $productoAInsertar);
-            }
+            $contadorPAntiguo++;
         }
 
-        if (count($produtosAInsertar) > 0) {
-            $this->createProductosPresupuesto($produtosAInsertar);
+
+
+        print_r($productosAActualizar);
+
+        if (count($productosAInsertar) > 0) {
+            $this->createProductosPresupuesto($productosAInsertar);
         }
 
 
         return "ok";
+    }
+
+    private function actualizarProductosPresupuesto()
+    {
+
     }
 
     private function deleteProductosPresupuesto(int $idPresupuesto, array $productos)
