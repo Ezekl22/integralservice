@@ -169,7 +169,7 @@ const cargarGrillaProducto = (module, productosPrecargados = []) =>{
         let id = "producto"+(productoSeleccionado[0]);
         contComponente.className = "grilla__cuerpo";
         contComponente.id = id;
-        contComponente.innerHTML =  `<td id="producto"> ${productoSeleccionado[1]} </td>
+        contComponente.innerHTML =  `<td id="producto"> ${productoSeleccionado.nombre} </td>
                                     <td> <input type="number" value="${cantidad}" class="form-control" onchange="cantidadOnChange('${productoSeleccionado[0]}','${id}', '${module === "presupuestos"}')" id="cantidad" name="cantidad[]" min="1"</td>
                                     <td id="valorunt"> ${currencyFormatter(productoSeleccionado[7])} </td>
                                     <td id="total"> ${currencyFormatter(parseInt(cantidad) * productoSeleccionado[7])} </td>
@@ -183,7 +183,7 @@ const cargarGrillaProducto = (module, productosPrecargados = []) =>{
             let contComponente = document.createElement("tr");
             contComponente.className = "grilla__cuerpo";
             contComponente.id = id;
-            contComponente.innerHTML =  `<td id="producto"> ${productoPrecargado[1]} </td>
+            contComponente.innerHTML =  `<td id="producto"> ${productoPrecargado.nombre} </td>
                                  <td> <input type="number" value="${productoPrecargado.cantidad}" class="form-control" onchange="cantidadOnChange('${productoPrecargado.idproducto}','${id}', '${module === "presupuestos"}')" id="cantidad" name="cantidad[]" min="1"</td>
                                  <td id="valorunt"> ${currencyFormatter(productoPrecargado.precioventa)} </td>
                                  <td id="total"> ${currencyFormatter(parseInt(productoPrecargado.cantidad) * productoPrecargado.precioventa)} </td>
