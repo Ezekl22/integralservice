@@ -2,7 +2,7 @@
 $id = isset($_GET['id']) ? $_GET['id'] : '';
 $PresupuestoCtr = new PresupuestoCtr();
 $action = isset($_GET['action']) ? $_GET['action'] : '';
-$presupuesto = $PresupuestoCtr->presupuestoDAO->getPresupuestoById($id);
+$presupuesto = $PresupuestoCtr->getPresupuestoDAO()->getPresupuestoById($id);
 
 $clientes = $PresupuestoCtr->getAllClientes();
 $GestionPantallasCtr = new GestionPantallasControlador();

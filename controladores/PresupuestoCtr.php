@@ -208,7 +208,7 @@ class PresupuestoCtr
             }
         }
         if ($status != "") {
-            //header("Location: index.php?module=presupuestos&status=success");
+            header("Location: index.php?module=presupuestos&status=success");
         } else {
             header("Location: index.php?module=presupuestos&status=error&description=" . $status);
         }
@@ -263,5 +263,10 @@ class PresupuestoCtr
     public function search()
     {
         return $this->presupuestoDAO->search();
+    }
+
+    public function getPresupuestoDAO()
+    {
+        return $this->presupuestoDAO;
     }
 }

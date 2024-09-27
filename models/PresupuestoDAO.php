@@ -139,9 +139,7 @@ class PresupuestoDAO
         // Identificar los productos que deben ser eliminados
         $productsToDelete = array_diff($productosExistentes, $nuevosProductos);
         // Eliminar los productos que ya no están asociados
-        if (!empty($productsToDelete)) {
-            $this->deleteProductosPresupuesto($idPresupuesto, $productsToDelete);
-        }
+
         $productosAInsertar = [];
         $productosAActualizar = [];
         $contadorPAntiguo = 1;
@@ -170,21 +168,49 @@ class PresupuestoDAO
             }
             $contadorPAntiguo++;
         }
-
-
-
-        print_r($productosAActualizar);
-
+        //elimino los productos en la DB que ya no estan en el nuevo presupuesto
+        if (!empty($productsToDelete)) {
+            $this->deleteProductosPresupuesto($idPresupuesto, $productsToDelete);
+        }
+        //inserto los productos en la DB que estan en el nuevo presupuesto pero no en el viejo
         if (count($productosAInsertar) > 0) {
             $this->createProductosPresupuesto($productosAInsertar);
         }
-
-
+        //actualizo los productos que estan en los dos presupuestos y que la columna preciounit o cantidad son diferentes
+        if (count($productosAActualizar)) {
+            $this->actualizarProductosPresupuesto($productosAActualizar);
+        }
         return "ok";
     }
 
-    private function actualizarProductosPresupuesto()
+    private function actualizarProductosPresupuesto(array $productos)
     {
+        $queryCasesCantidad = "";
+        $queryCasesPrecio = "";
+        $queryCasesWhere = "";
+        $contador = 0;
+        foreach ($productos as $producto) {
+            $separador = $contador > count($productos) ? ", " : "";
+            $queryCasesCantidad = $queryCasesCantidad . " WHEN idProducto = " . $producto->getIdProducto() . " THEN " . $producto->getCantidad();
+            $queryCasesPrecio = $queryCasesPrecio . " WHEN idProducto = " . $producto->getIdProducto() . " THEN " . $producto->getPreciounit();
+            $queryCasesWhere = $queryCasesWhere . $producto->getIdProducto() . $separador;
+            $contador++;
+        }
+
+        $stmt = $this->db->getConnection()->prepare("UPDATE productospresupuestos 
+                                                        SET preciounit = CASE" . $queryCasesPrecio .
+            " END, cantidad = CASE" . $queryCasesCantidad .
+            " END WHERE idPresupuesto = " . $productos[0]->getIdPresupuesto() .
+            " AND idProducto IN (" . $queryCasesWhere . ");");
+        $result = $stmt->execute();
+        $error = $stmt->errorInfo();
+        $stmt->closeCursor();
+        $stmt = null;
+        if ($result) {
+            return "ok";
+        } else {
+            print_r($error);
+        }
 
     }
 
@@ -192,11 +218,14 @@ class PresupuestoDAO
     {
         $placeholders = implode(',', array_fill(0, count($productos), '?'));
         $stmt = $this->db->getConnection()->prepare("DELETE FROM productospresupuestos WHERE idpresupuesto = ? AND idproducto IN ($placeholders) ");
-
-        if ($stmt->execute(array_merge([$idPresupuesto], $productos))) {
+        $result = $stmt->execute(array_merge([$idPresupuesto], $productos));
+        $error = $stmt->errorInfo();
+        $stmt->closeCursor();
+        $stmt = null;
+        if ($result) {
             return "ok";
         } else {
-            return $stmt->errorInfo();
+            print_r($error);
         }
 
     }
