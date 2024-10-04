@@ -132,7 +132,6 @@ const recalcularTotal = () =>{
     totalesProductos.forEach(totalProducto =>{
         total = total + parseFloat(totalProducto.childNodes[0].data.replace(/[$,]/g, ""));
     });
-    //importeTotal.value = currencyFormatter(total);
     importeTotal.setAttribute('value', currencyFormatter(total));
 }
 
@@ -140,8 +139,6 @@ const cantidadOnChange = (idProducto ,id, esPresupuesto) =>{
     const inputTotal = document.querySelector('#'+id+' #total').childNodes[0];
     const cantidad = document.querySelector('#'+id+' #cantidad').value;
     const producto = productos.find(producto =>producto.idproducto === parseInt(idProducto) )
-    //inputTotal.data =currencyFormatter(esPresupuesto? producto.precioventa:producto[6] * parseInt(cantidad));
-    console.log(inputTotal);
     inputTotal.data = currencyFormatter(producto.precioventa * parseInt(cantidad));
     recalcularTotal();
 }
@@ -158,6 +155,7 @@ const validarFormulario = () =>{
 const cargarGrillaProducto = (module, productosPrecargados = []) =>{
     let contProductos = document.getElementById("grilla");
     if (productosPrecargados.length == 0) {
+        let seAgregaProducto = true;
         let contComponente = document.createElement("tr");
         const cantidad = document.getElementById("cantidadProducto").value;
         let productoSeleccionado;
@@ -165,17 +163,29 @@ const cargarGrillaProducto = (module, productosPrecargados = []) =>{
             const checkSeleccion = document.getElementById("seleccion"+producto[0]);
             if (checkSeleccion.checked)
                 productoSeleccionado = producto;
-            });
+        });
         let id = "producto"+(productoSeleccionado[0]);
-        contComponente.className = "grilla__cuerpo";
-        contComponente.id = id;
-        contComponente.innerHTML =  `<td id="producto"> ${productoSeleccionado.nombre} </td>
-                                    <td> <input type="number" value="${cantidad}" class="form-control" onchange="cantidadOnChange('${productoSeleccionado[0]}','${id}', '${module === "presupuestos"}')" id="cantidad" name="cantidad[]" min="1"</td>
-                                    <td id="valorunt"> ${currencyFormatter(productoSeleccionado[7])} </td>
-                                    <td id="total"> ${currencyFormatter(parseInt(cantidad) * productoSeleccionado[7])} </td>
-                                    <td><input class="form-check-input checksProductos" onchange="onChangeChecks()" type="checkbox"></td>
-                                    <input type="hidden" class="form-control me-7" aria-label="0" value="${productoSeleccionado[0]}" id="idproductos" name="idproductos[]">`;
-        contProductos.appendChild(contComponente);
+        if (contProductos.childElementCount > 0) {
+            Array.from(contProductos.children).forEach(productoGrilla =>{
+                if (productoGrilla.id == id){
+                    const cantidadProducto = document.querySelector('#grilla #'+id+' #cantidad');
+                    cantidadProducto.setAttribute('value', Number(cantidadProducto.value) +  Number(cantidad));
+                    seAgregaProducto=false;
+                }
+            })
+        }
+        if (seAgregaProducto) {
+            
+            contComponente.className = "grilla__cuerpo";
+            contComponente.id = id;
+            contComponente.innerHTML =  `<td id="producto"> ${productoSeleccionado.nombre} </td>
+                                        <td> <input type="number" value="${cantidad}" class="form-control" onchange="cantidadOnChange('${productoSeleccionado[0]}','${id}', '${module === "presupuestos"}')" id="cantidad" name="cantidad[]" min="1"</td>
+                                        <td id="valorunt"> ${currencyFormatter(productoSeleccionado[7])} </td>
+                                        <td id="total"> ${currencyFormatter(parseInt(cantidad) * productoSeleccionado[7])} </td>
+                                        <td><input class="form-check-input checksProductos" onchange="onChangeChecks()" type="checkbox"></td>
+                                        <input type="hidden" class="form-control me-7" aria-label="0" value="${productoSeleccionado[0]}" id="idproductos" name="idproductos[]">`;
+            contProductos.appendChild(contComponente);
+        }
         cerrarGrilla('contGrillaProducto');
     }else{
         productosPrecargados.forEach((productoPrecargado)=>{
