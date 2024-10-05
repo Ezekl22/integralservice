@@ -170,6 +170,7 @@ const cargarGrillaProducto = (module, productosPrecargados = []) =>{
                 if (productoGrilla.id == id){
                     const cantidadProducto = document.querySelector('#grilla #'+id+' #cantidad');
                     cantidadProducto.setAttribute('value', Number(cantidadProducto.value) +  Number(cantidad));
+                    cantidadOnChange(productoSeleccionado[0], productoGrilla.id, presupuestos);
                     seAgregaProducto=false;
                 }
             })
