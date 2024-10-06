@@ -209,7 +209,7 @@ class PresupuestoCtr
             }
         }
         if ($status != "") {
-            //header("Location: index.php?module=presupuestos&status=success");
+            header("Location: index.php?module=presupuestos&status=success");
         } else {
             header("Location: index.php?module=presupuestos&status=error&description=" . $status);
         }
