@@ -11,7 +11,7 @@ class PresupuestoDAO
         $this->db = DBConnection::getInstance();
     }
 
-    public function create(PresupuestoMdl $presupuesto, ReparacionMdl $reparacion = new ReparacionMdl("", "", "", "", "", 0))
+    public function create(PresupuestoMdl $presupuesto, ReparacionMdl $reparacion = new ReparacionMdl("", "", "", "", ""))
     {
 
         $productos = $presupuesto->getProductos();
@@ -100,7 +100,11 @@ class PresupuestoDAO
         $stmt->bindParam(":idcliente", $idCliente, PDO::PARAM_INT);
         $stmt->bindParam(":total", $total, PDO::PARAM_STR_CHAR);
         $stmt->bindParam(":idpresupuesto", $idPresupuesto, PDO::PARAM_INT);
-        $this->updateProductosPresupuesto($idPresupuesto, $presupuesto);
+        if ($presupuesto->getTipo() == "Reparacion") {
+            $this->updateReparacionPresupuesto($idPresupuesto);
+        } else {
+            $this->updateProductosPresupuesto($idPresupuesto, $presupuesto);
+        }
 
         if ($stmt->execute()) {
 
@@ -113,6 +117,13 @@ class PresupuestoDAO
         $stmt = null;
 
         return $error;
+    }
+
+    public function updateReparacionPresupuesto(int $idPresupuesto)
+    {
+        $reparacionDB = $this->getReparacionPresupuestoById($idPresupuesto);
+        $reparacion = new ReparacionMdl($_POST['modelo'], $_POST['marca'], $_POST['tipo'], $_POST['nroserie'], $_POST['descripcion']);
+        return "ok";
     }
 
     public function updateProductosPresupuesto(int $idPresupuesto, PresupuestoMdl $presupuesto)
@@ -317,7 +328,7 @@ class PresupuestoDAO
                                                      WHERE reparaciones.idpresupuesto = " . $id);
 
         $stmt->execute();
-        $resultado = $stmt->fetchAll();
+        $resultado = $stmt->fetchAll()[0];
         $stmt->closeCursor();
         $stmt = null;
         return $resultado;

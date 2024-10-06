@@ -125,7 +125,7 @@ class PresupuestoCtr
                 $status = $this->presupuestoDAO->create($presupuesto);
             } else if ($_POST['tipo'] == "Reparacion") {
                 $presupuesto = new PresupuestoMdl($_POST['idcliente'], [], $this->getNuevoNroComprobante(), $_POST['tipo'], 'pendiente presupuesto', '0001', 0);
-                $reparacion = new ReparacionMdl($_POST['modelo'], $_POST['marca'], $_POST['tipo'], $_POST['nroserie'], $_POST['descripcion'], 0);
+                $reparacion = new ReparacionMdl($_POST['modelo'], $_POST['marca'], $_POST['tipo'], $_POST['nroserie'], $_POST['descripcion']);
                 $status = $this->presupuestoDAO->create($presupuesto, $reparacion);
             }
 
@@ -196,19 +196,20 @@ class PresupuestoCtr
 
     public function update($id)
     {
-
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (isset($_POST["idcliente"])) {
                 $presupuesto = $this->getPresupuestoById($id);
                 $presupuesto->setIdCliente($_POST['idcliente']);
-                $productos_total = $this->getProductos_Total();
-                $presupuesto->setProductos($productos_total->productos);
-                $presupuesto->setTotal($productos_total->total);
+                if ($presupuesto->getTipo() == "Venta") {
+                    $productos_total = $this->getProductos_Total();
+                    $presupuesto->setProductos($productos_total->productos);
+                    $presupuesto->setTotal($productos_total->total);
+                }
                 $status = $this->presupuestoDAO->updatePresupuesto($presupuesto);
             }
         }
         if ($status != "") {
-            header("Location: index.php?module=presupuestos&status=success");
+            //header("Location: index.php?module=presupuestos&status=success");
         } else {
             header("Location: index.php?module=presupuestos&status=error&description=" . $status);
         }

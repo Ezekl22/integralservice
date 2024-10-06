@@ -7,6 +7,7 @@ $presupuesto = $PresupuestoCtr->getPresupuestoDAO()->getPresupuestoById($id);
 $clientes = $PresupuestoCtr->getAllClientes();
 $GestionPantallasCtr = new GestionPantallasControlador();
 $productos = $PresupuestoCtr->getProductosPresupuestoById($id);
+$reparacion = $PresupuestoCtr->getReparacionPresupuestoById($id);
 $jsonProductosPre = json_encode($productos);
 $json = json_encode($PresupuestoCtr->getAllProductos());
 echo "<script>const productos = $json;</script>";
@@ -86,22 +87,25 @@ if ($action == 'edit' && $id != '') {
                                 <div class="my-3 d-flex flex-row w-95">
                                     <div class="input-group input-group-sm">
                                         <label class="input-group-text" for="marca" id="inputGroup-sizing-sm">Marca:</label>
-                                        <input type="text" class="form-control w-25" id="marca" name="marca" required>
+                                        <input type="text" class="form-control w-25" value="<?php echo $reparacion['marca']; ?>"
+                                            id="marca" name="marca" required>
                                     </div>
                                     <div class="input-group input-group-sm ms-3">
                                         <label class="input-group-text" for="nroserie" id="inputGroup-sizing-sm">Numero de
                                             serie:</label>
-                                        <input type="text" class="form-control w-25" id="nroserie" name="nroserie" required>
+                                        <input type="text" class="form-control w-25" id="nroserie" name="nroserie"
+                                            value="<?php echo $reparacion['numeroserie']; ?>" required>
                                     </div>
                                     <div class="input-group input-group-sm ms-3">
                                         <label class="input-group-text" for="modelo" id="inputGroup-sizing-sm">Modelo:</label>
-                                        <input type="text" class="form-control w-25" id="modelo" name="modelo" required>
+                                        <input type="text" class="form-control w-25" id="modelo" name="modelo"
+                                            value="<?php echo $reparacion['modelo']; ?>" required>
                                     </div>
                                 </div>
                                 <div class="input-group w-75">
                                     <label class="input-group-text" for="descripcion" id="input-group">Descripción:</label>
                                     <textarea class="form-control" aria-label="Descripción" id="descripcion"
-                                        name="descripcion"></textarea>
+                                        name="descripcion"><?php echo $reparacion['descripcion']; ?></textarea>
                                 </div>
                             <?php } else { ?>
                                 <div class="d-flex justify-content-start w-100">
@@ -127,8 +131,7 @@ if ($action == 'edit' && $id != '') {
 
                             <?php } ?>
                             <!-- aca falta un boton de cancelar -->
-                            <input class="btn button my-2" type="submit" onclick="guardarEdicion('editPresupuesto')"
-                                value="Guardar cambios">
+                            <input class="btn button my-2" type="submit" value="Guardar cambios">
                         </div>
 
 
@@ -143,87 +146,4 @@ if ($action == 'edit' && $id != '') {
         ?>
 
     </html>
-    <!-- <!DOCTYPE html>
-    <html>
-
-    <head>
-        <title>Editar Presupuesto</title>
-    </head>
-
-    <body>
-        <main class="d-flex flex-column align-items-center mt-2 mb-5" id="editPresupuesto">
-            <article class="editar__contenedor rounded-4">
-                <form action="index.php?module=presupuestos" method="POST"
-                    class="d-flex flex-column align-items-center border-1 border m-4 rounded-4">
-                    <div class="d-flex flex-column align-items-center contenedor__mayor" id="contenedor">
-                        <h2 class="mt-2 text__white">Editar Presupuesto</h2>
-
-                        <h4 class="mt-2 text__white">Productos</h4>
-                        <div class="mt-3 d-flex flex-column w-100" id="contProductos">
-                            <?php foreach ($productos as $producto) { ?>
-                                <div class="input-group input-group-sm mb-3">
-                                    <button class="btn btn-outline-secondary button ms-7 align-self-start"
-                                        onclick="quitarComponenteProducto('<?php echo $id ?>')" type="button"
-                                        id="quitar">-</button>
-                                    <label class="input-group-text" for="producto" id="inputGroup-sizing-sm">Producto:</label>
-                                    <input type="text" class="form-control w-25" disabled id="producto"
-                                        value="<?php echo $producto['nombre'] ?>">
-                                    <label class="input-group-text" for="cantidad" id="inputGroup-sizing-sm">Cantidad:</label>
-                                    <input type="text" class="form-control" aria-label="0"
-                                        onchange="cantidadOnChange('<?php echo $producto['idproducto'] ?>','<?php echo $id ?>')"
-                                        value="<?php echo $producto['cantidad'] ?>" id="cantidad">
-                                    <label class="input-group-text" for="valorunt" id="inputGroup-sizing-sm">Valor
-                                        unitario:</label>
-                                    <input type="text" class="form-control" disabled
-                                        value="<?php echo "$ " . number_format($producto['precioventa'], 2, ',', '.'); ?>"
-                                        id="valorunt">
-                                    <label class="input-group-text" for="totañ" id="inputGroup-sizing-sm">Total:</label>
-                                    <input type="text" class="form-control me-7" disabled aria-label="0"
-                                        value="<?php echo "$ " . number_format($producto['cantidad'] * $producto['precioventa'], 2, ',', '.'); ?>"
-                                        id="total">
-                                </div>
-                            <?php } ?>
-                        </div>
-                        <button class="btn btn-outline-secondary button ms-7 align-self-start"
-                            data-bs-target="#grillaProductos" data-bs-toggle="modal" type="button" id="agregar"
-                            onclick="mostrarGrillaProductos()">+</button>
-                        <div class="text__white d-flex" id="">
-                            <div class="input-group input-group-sm mb-3">
-                                <label class="input-group-text" for="totalProductos"
-                                    id="inputGroup-sizing-sm">Total:</label>
-                                <input type="text" class="form-control" disabled aria-label="0" id="totalProductos"
-                                    value="$0,00">
-                            </div>
-                        </div>-->
-    <!-- aca falta un boton de cancelar -->
-    <!--<input class="btn button my-2" type="submit" value="Guardar cambios" onclick="guardarEdicion('editPresupuesto')">
-    </div>
-    </form>
-    </article>
-    <div class="modal fade" id="grillaProductos" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog justify-content-center d-flex" style="max-width:none;">
-            <div class="modal-content mx-3" style="width:80vw;">
-                <div class="modal-header headerPop__background">
-                    <img src="./assets/img/logo-IntegralService.png" class="shadow rounded-3 me-2 logo"
-                        alt="logo de integral Service">
-                    <h2 class="modal-title fs-5" id="exampleModalLabel">Productos</h2>
-                    <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body d-flex flex-column align-items-center" id="contGrillaProducto">
-
-                </div>
-                <div class="modal-footer d-flex justify-content-center headerPop__background">
-                    <button type="button" class="btn button me-5" onclick="cerrarGrilla('contGrillaProducto')"
-                        data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" onclick="agregarComponenteProducto()" data-bs-dismiss="modal" aria-label="Close"
-                        class="btn button ">Seleccionar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    </main>
-    </body>
-    
-
-    </html> -->
 <?php } ?>

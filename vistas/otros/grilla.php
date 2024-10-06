@@ -67,8 +67,8 @@
                                 </label>
                             <?php } else { ?>
                                 <!-- EDITAR - ACTIVADO-->
-                                <a class="icono__contenedor me-2"
-                                    href="index.php?module=<?php echo $gestionPantallaCtr->getModule(); ?>&action=edit&id=<?php echo $datoCuerpo[0]; ?>">
+                                <a class="icono__contenedor me-2" href="index.php?module=<?php echo $gestionPantallaCtr->getModule(); ?>&action=edit&id=<?php echo $datoCuerpo[0];
+                                   echo "&type=" . $datoCuerpo[3]; ?>">
                                     <img class="icono__imagen" src="./assets/img/iconoEditar.png" alt="icono de editar">
                                 </a>
                             <?php } ?>
