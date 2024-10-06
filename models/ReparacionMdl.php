@@ -4,15 +4,13 @@ class ReparacionMdl
 {
     private $modelo;
     private $marca;
-    private $tipo;
     private $numeroSerie;
     private $descripcion;
 
-    public function __construct($modelo, $marca, $tipo, $numeroSerie, $descripcion)
+    public function __construct($modelo, $marca, $numeroSerie, $descripcion)
     {
         $this->modelo = $modelo;
         $this->marca = $marca;
-        $this->tipo = $tipo;
         $this->numeroSerie = $numeroSerie;
         $this->descripcion = $descripcion;
     }
@@ -37,16 +35,6 @@ class ReparacionMdl
     public function setMarca($marca)
     {
         $this->marca = $marca;
-    }
-
-    public function getTipo()
-    {
-        return $this->tipo;
-    }
-
-    public function setTipo($tipo)
-    {
-        $this->modelo = $tipo;
     }
 
     public function getNumeroSerie()

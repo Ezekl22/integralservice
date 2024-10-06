@@ -11,7 +11,7 @@ class PresupuestoDAO
         $this->db = DBConnection::getInstance();
     }
 
-    public function create(PresupuestoMdl $presupuesto, ReparacionMdl $reparacion = new ReparacionMdl("", "", "", "", ""))
+    public function create(PresupuestoMdl $presupuesto, ReparacionMdl $reparacion = new ReparacionMdl("", "", "", ""))
     {
 
         $productos = $presupuesto->getProductos();
@@ -27,8 +27,8 @@ class PresupuestoDAO
             $productosValues = $productosValues . ' (@idpresupuesto, ' . $idProducto . ', ' . $preciounit . ', ' . $cantidad . ')' . $separacion;
         }
         if ($presupuesto->getTipo() == "Venta") {
-            //$query = 'INSERT INTO productospresupuestos (idpresupuesto, idproducto, preciounit, cantidad) VALUES ' . $productosValues;
-            $this->createProductosPresupuesto($productos);
+            $query = "INSERT INTO productospresupuestos (idpresupuesto, idproducto, preciounit, cantidad) 
+            VALUES " . $productosValues;
         } elseif ($presupuesto->getTipo() == "Reparacion") {
             $query = 'INSERT INTO reparaciones (idpresupuesto, modelo, marca, numeroserie, descripcion) VALUES ' .
                 '(@idpresupuesto, "' . $reparacion->getModelo() . '", "' . $reparacion->getMarca() . '", "' . $reparacion->getNumeroSerie() . '", "' . $reparacion->getDescripcion() . '");';
@@ -77,7 +77,6 @@ class PresupuestoDAO
                 . $productos[$i]->getCantidad() . ")"
                 . $separacion;
         }
-        echo $queryProductos;
         $stmt = $this->db->getConnection()->prepare("INSERT INTO productospresupuestos (idpresupuesto, idproducto, preciounit, cantidad) 
                                                         VALUES " . $queryProductos);
 
@@ -122,8 +121,30 @@ class PresupuestoDAO
     public function updateReparacionPresupuesto(int $idPresupuesto)
     {
         $reparacionDB = $this->getReparacionPresupuestoById($idPresupuesto);
-        $reparacion = new ReparacionMdl($_POST['modelo'], $_POST['marca'], $_POST['tipo'], $_POST['nroserie'], $_POST['descripcion']);
-        return "ok";
+        $reparacion = new ReparacionMdl($_POST['modelo'], $_POST['marca'], $_POST['nroserie'], $_POST['descripcion']);
+        $stmt = $this->db->getConnection()->prepare("UPDATE reparaciones SET modelo=:modelo, marca=:marca,
+         numeroserie=:numeroserie, descripcion=:descripcion WHERE idpresupuesto= :idpresupuesto");
+        $modelo = $reparacion->getModelo();
+        $marca = $reparacion->getMarca();
+        $numeroserie = $reparacion->getNumeroSerie();
+        $descripcion = $reparacion->getDescripcion();
+
+        $stmt->bindParam(":modelo", $modelo, PDO::PARAM_STR_CHAR);
+        $stmt->bindParam(":marca", $marca, PDO::PARAM_STR_CHAR);
+        $stmt->bindParam(":numeroserie", $numeroserie, PDO::PARAM_STR_CHAR);
+        $stmt->bindParam(":descripcion", $descripcion, PDO::PARAM_STR_CHAR);
+        $stmt->bindParam(":idpresupuesto", $idPresupuesto, PDO::PARAM_INT);
+
+        $valExecute = $stmt->execute();
+        $error = $stmt->errorInfo();
+        $stmt->closeCursor();
+        $stmt = null;
+        if ($valExecute) {
+
+            return "ok";
+
+        }
+        return $error;
     }
 
     public function updateProductosPresupuesto(int $idPresupuesto, PresupuestoMdl $presupuesto)

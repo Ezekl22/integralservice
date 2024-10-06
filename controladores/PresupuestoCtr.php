@@ -125,7 +125,7 @@ class PresupuestoCtr
                 $status = $this->presupuestoDAO->create($presupuesto);
             } else if ($_POST['tipo'] == "Reparacion") {
                 $presupuesto = new PresupuestoMdl($_POST['idcliente'], [], $this->getNuevoNroComprobante(), $_POST['tipo'], 'pendiente presupuesto', '0001', 0);
-                $reparacion = new ReparacionMdl($_POST['modelo'], $_POST['marca'], $_POST['tipo'], $_POST['nroserie'], $_POST['descripcion']);
+                $reparacion = new ReparacionMdl($_POST['modelo'], $_POST['marca'], $_POST['nroserie'], $_POST['descripcion']);
                 $status = $this->presupuestoDAO->create($presupuesto, $reparacion);
             }
 
