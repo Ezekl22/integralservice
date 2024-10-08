@@ -90,19 +90,23 @@ class PresupuestoDAO
     public function updatePresupuesto(PresupuestoMdl $presupuesto)
     {
         $stmt = $this->db->getConnection()->prepare("UPDATE presupuestos SET idcliente=:idcliente,
-         total=:total WHERE idpresupuesto= :idpresupuesto");
+         total=:total, estado=:estado WHERE idpresupuesto= :idpresupuesto");
 
         $idCliente = $presupuesto->getIdCliente();
         $total = $presupuesto->getTotal();
         $idPresupuesto = $presupuesto->getIdPresupuesto();
+        $estado = $presupuesto->getEstado();
 
         $stmt->bindParam(":idcliente", $idCliente, PDO::PARAM_INT);
         $stmt->bindParam(":total", $total, PDO::PARAM_STR_CHAR);
+        $stmt->bindParam(":estado", $estado, PDO::PARAM_STR_CHAR);
         $stmt->bindParam(":idpresupuesto", $idPresupuesto, PDO::PARAM_INT);
-        if ($presupuesto->getTipo() == "Reparacion") {
-            $this->updateReparacionPresupuesto($idPresupuesto);
-        } else {
-            $this->updateProductosPresupuesto($idPresupuesto, $presupuesto);
+        if (isset($_POST['action']) && $_POST['action'] != "facturar") {
+            if ($presupuesto->getTipo() == "Reparacion") {
+                $this->updateReparacionPresupuesto($idPresupuesto);
+            } else {
+                $this->updateProductosPresupuesto($idPresupuesto, $presupuesto);
+            }
         }
 
         if ($stmt->execute()) {
@@ -120,7 +124,6 @@ class PresupuestoDAO
 
     public function updateReparacionPresupuesto(int $idPresupuesto)
     {
-        $reparacionDB = $this->getReparacionPresupuestoById($idPresupuesto);
         $reparacion = new ReparacionMdl($_POST['modelo'], $_POST['marca'], $_POST['nroserie'], $_POST['descripcion']);
         $stmt = $this->db->getConnection()->prepare("UPDATE reparaciones SET modelo=:modelo, marca=:marca,
          numeroserie=:numeroserie, descripcion=:descripcion WHERE idpresupuesto= :idpresupuesto");
@@ -162,11 +165,11 @@ class PresupuestoDAO
             return $producto->getIdProducto();
         }, $productosPresupuesto);
 
-
         // Obtener los IDs de productos enviados para actualización
         $nuevosProductos = array_map(function ($producto) {
             return $producto->getIdProducto();
         }, $presupuesto->getProductos());
+
 
         // Identificar los productos que deben ser eliminados
         $productsToDelete = array_diff($productosExistentes, $nuevosProductos);

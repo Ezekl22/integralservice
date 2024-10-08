@@ -7,7 +7,6 @@ $presupuesto = $PresupuestoCtr->getPresupuestoDAO()->getPresupuestoById($id);
 $clientes = $PresupuestoCtr->getAllClientes();
 $GestionPantallasCtr = new GestionPantallasControlador();
 $productos = $PresupuestoCtr->getProductosPresupuestoById($id);
-$reparacion = $PresupuestoCtr->getReparacionPresupuestoById($id);
 $jsonProductosPre = json_encode($productos);
 $json = json_encode($PresupuestoCtr->getAllProductos());
 echo "<script>const productos = $json;</script>";
@@ -83,7 +82,8 @@ if ($action == 'edit' && $id != '') {
                             <h4 class="mt-2 text__white">
                                 <?php echo !isset($_GET["type"]) || $_GET["type"] != "Reparacion" ? "Productos" : "Equipo a reparar" ?>
                             </h4>
-                            <?php if (isset($_GET['type']) && $_GET['type'] == "Reparacion") { ?>
+                            <?php if (isset($_GET['type']) && $_GET['type'] == "Reparacion") {
+                                $reparacion = $PresupuestoCtr->getReparacionPresupuestoById($id); ?>
                                 <div class="my-3 d-flex flex-row w-95">
                                     <div class="input-group input-group-sm">
                                         <label class="input-group-text" for="marca" id="inputGroup-sizing-sm">Marca:</label>
