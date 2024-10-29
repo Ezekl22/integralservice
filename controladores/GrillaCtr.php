@@ -14,24 +14,20 @@ class GrillaCtr
 
     private function cargarDatosGrilla(GrillaMdl $grillaMdl)
     {
-        $module = isset ($_GET['module']) ? $_GET['module'] : '';
+        $module = isset($_GET['module']) ? $_GET['module'] : '';
 
         switch ($module) {
             case 'usuarios':
                 require_once 'controladores/UsuarioCtr.php';
-                $this->controlador = new UsuarioCtr;
+                $this->controlador = UsuarioCtr::getInstance();
                 break;
             case 'presupuestos':
                 require_once 'controladores/PresupuestoCtr.php';
-                $this->controlador = new PresupuestoCtr;
+                $this->controlador = PresupuestoCtr::getInstance();
                 break;
             case 'clientes':
                 require_once 'controladores/ClienteCtr.php';
                 $this->controlador = new ClienteCtr;
-                break;
-            case 'proveedores':
-                require_once 'controladores/ProveedorCtr.php';
-                $this->controlador = new ProveedorCtr;
                 break;
             default:
                 # code...

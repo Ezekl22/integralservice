@@ -2,67 +2,61 @@
 <html>
 
 <head>
-    <title>Productos</title>
+    <title>Proveedores</title>
 </head>
 
 <body>
     <main class="main__flex">
         <article class="mt-4">
             <h2 class="main__title">
-                Productos
+                Proveedores
             </h2>
         </article>
         <article class="mt-5 d-flex flex-column align-items-center">
-            <div class="grilla w-95 d-flex flex-column align-items-center rounded-4">
-                <div class="d-flex w-95 justify-content-end mt-3">
-                    <div class="input-group input-group-sm w-25">
-                        <input type="text" class="form-control" placeholder="Ingrese su busqueda"
-                            aria-label="Recipient's username" aria-describedby="buscar">
-                        <input class="btn btn-outline-secondary button" type="button" id="buscar"
-                            value="Buscar"></button>
-                    </div>
-                </div>
-                <div class="border w-95 mt-3 mb-5 rounded-4">
+            <div class="grilla w-75 d-flex flex-column align-items-center rounded-4">
+                <div class="border w-75 mt-5 mb-5 rounded-4">
                     <table class="grilla__contenedor w-95 border-0">
                         <tr class="grilla grilla__cabecera">
                             <th>Nombre</th>
-                            <th>Marca</th>
-                            <th>Detalle</th>
-                            <th>Stock</th>
-                            <th>Tipo</th>
-                            <th>Precio de compra</th>
-                            <th>Precio de venta</th>
+                            <th>Categoria Fiscal</th>
+                            <th>Direccion</th>
+                            <th>Telefono</th>
+                            <th>Correo</th>
+                            <th>Saldo</th>
+                            <th>Fecha</th>
+                            <th>Acciones</th>
                         </tr>
-                        <?php foreach ($productos as $producto) { ?>
+                        <?php foreach ($proveedores as $proveedor) {
+                            $fecha = new DateTime($proveedor['fechaCreacion']) ?>
                             <tr class="grilla__cuerpo">
                                 <td>
-                                    <?php echo $producto['nombre']; ?>
+                                    <?php echo $proveedor['nombre']; ?>
                                 </td>
                                 <td>
-                                    <?php echo $producto['marca']; ?>
+                                    <?php echo $proveedor['categoria_fiscal']; ?>
                                 </td>
                                 <td>
-                                    <?php echo $producto['detalle']; ?>
+                                    <?php echo $proveedor['direccion']; ?>
                                 </td>
                                 <td>
-                                    <?php echo $producto['stock']; ?>
+                                    <?php echo $proveedor['telefono']; ?>
                                 </td>
                                 <td>
-                                    <?php echo $producto['tipo']; ?>
+                                    <?php echo $proveedor['correo']; ?>
                                 </td>
                                 <td>
-                                    <?php echo $producto['preciocompra']; ?>
+                                    <?php echo $proveedor['saldo']; ?>
                                 </td>
                                 <td>
-                                    <?php echo $producto['precioventa']; ?>
+                                    <?php echo $fecha->format('Y-m-d'); ?>
                                 </td>
                                 <td>
                                     <a class="icono__contenedor me-3"
-                                        href="index.php?module=productos&action=edit&id=<?php echo $producto['idproducto']; ?>">
+                                        href="index.php?module=proveedores&action=edit&id=<?php echo $proveedor['idproveedor']; ?>">
                                         <img class="icono__imagen" src="./assets/img/iconoEditar.png" alt="icono de editar">
                                     </a>
                                     <a class="icono__contenedor"
-                                        href="index.php?module=productos&action=delete&id=<?php echo $producto['idproducto']; ?>">
+                                        href="index.php?module=proveedores&action=delete&id=<?php echo $proveedor['idproveedor']; ?>">
                                         <img class="icono__imagen" src="./assets/img/iconoEliminar.svg"
                                             alt="icono de eliminar">
                                     </a>
@@ -75,8 +69,8 @@
             <?php
             $action = isset($_GET['action']) ? $_GET['action'] : '';
             if (($action != 'edit' && $action != 'create')) { ?>
-                <a class="my-5 btn button" type="button" href="index.php?module=productos&action=create">Crear nuevo
-                    producto</a>
+                <a class="my-5 btn button" type="button" href="index.php?module=proveedores&action=create">Crear nuevo
+                    proveedor</a>
             <?php } ?>
         </article>
     </main>
