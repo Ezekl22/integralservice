@@ -90,7 +90,7 @@
                                 <?php } else { ?>
                                     <!-- ANULAR - ACTIVADO -->
                                     <a class="icono__contenedor me-2" title="Anular"
-                                        href="index.php?module=presupuestos&action=annul&id=<?php echo $datoCuerpo[0]; ?>">
+                                        href="index.php?module=<?php echo $gestionPantallaCtr->getModule(); ?>&action=annul&id=<?php echo $datoCuerpo[0]; ?>">
                                         <img class="icono__imagen" src="./assets/img/iconoAnular.png" alt="icono de anular">
                                     </a>
                                 <?php } ?>
@@ -101,4 +101,3 @@
             </tbody>
         </table>
     </div>
-</div>

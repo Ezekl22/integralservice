@@ -103,8 +103,4 @@ class ProveedorCtr
     {
         $this->proveedorDAO->delete($id);
     }
-
-    public function getProveedorById($id){
-        $this->proveedorDAO->getProveedorById($id);
-    }
 }

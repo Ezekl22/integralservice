@@ -1,6 +1,7 @@
 <?php
 
-class PedidoCompraMdl {
+class PedidoCompraMdl
+{
     private $idpedidocompra;
     private $idproveedor;
     private $fecha;
@@ -8,62 +9,74 @@ class PedidoCompraMdl {
     private $total;
     private $nrocomprobante;
 
-    public function __construct($idpedidocompra, $idproveedor, $fecha, $estado, $total, $nrocomprobante) {
-        $this->idpedidocompra = $idpedidocompra;
+    public function __construct($nrocomprobante, $idproveedor, $estado, $total, $fecha)
+    {
+        $this->nrocomprobante = $nrocomprobante;
         $this->idproveedor = $idproveedor;
-        $this->fecha = $fecha;
         $this->estado = $estado;
         $this->total = $total;
-        $this->nrocomprobante = $nrocomprobante;
+        $this->fecha = $fecha;
     }
 
     // Getters y setters
 
-    public function getIdPedidoCompra() {
+    public function getIdPedidoCompra()
+    {
         return $this->idpedidocompra;
     }
 
-    public function setIdPedidoCompra($idpedidocompra) {
+    public function setIdPedidoCompra($idpedidocompra)
+    {
         $this->idpedidocompra = $idpedidocompra;
     }
 
-    public function getIdProveedor() {
+    public function getIdProveedor()
+    {
         return $this->idproveedor;
     }
 
-    public function setIdProveedor($idproveedor) {
+    public function setIdProveedor($idproveedor)
+    {
         $this->idproveedor = $idproveedor;
     }
 
-    public function getFecha() {
+    public function getFecha()
+    {
         return $this->fecha;
     }
 
-    public function setFecha($fecha) {
+    public function setFecha($fecha)
+    {
         $this->fecha = $fecha;
     }
 
-    public function getEstado() {
+    public function getEstado()
+    {
         return $this->estado;
     }
 
-    public function setEstado($estado) {
+    public function setEstado($estado)
+    {
         $this->estado = $estado;
     }
 
-    public function getTotal() {
+    public function getTotal()
+    {
         return $this->total;
     }
 
-    public function setTotal($total) {
+    public function setTotal($total)
+    {
         $this->total = $total;
     }
 
-    public function getNroComprobante() {
+    public function getNroComprobante()
+    {
         return $this->nrocomprobante;
     }
 
-    public function setNroComprobante($nrocomprobante) {
+    public function setNroComprobante($nrocomprobante)
+    {
         $this->nrocomprobante = $nrocomprobante;
     }
 }

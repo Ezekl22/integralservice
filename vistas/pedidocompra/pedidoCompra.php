@@ -18,6 +18,7 @@ if ($action == 'see') {
 <!DOCTYPE html>
 <html>
 
+
 <head>
     <title>Pedidos de compra</title>
 </head>
@@ -32,89 +33,51 @@ if ($action == 'see') {
         <article class="mt-5 d-flex flex-column align-items-center">
             <div class="grilla w-95 d-flex flex-column align-items-center rounded-4">
                 <div class="d-flex flex-row contenedor__mayor align-items-start mt-4">
+
                     <div class="d-flex w-100 alig-items-end">
-                        <div class="form-check ms-4 text__white">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                        <div class="form-check ms-3 text__white">
+                            <input class="form-check-input" type="checkbox" value="pedido" id="flexCheckDefault">
                             <label class="form-check-label" for="flexCheckDefault">
                                 Pedidos
                             </label>
                         </div>
                         <div class="form-check ms-4 text__white">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                            <input class="form-check-input" type="checkbox" value="anulado" id="flexCheckDefault">
                             <label class="form-check-label" for="flexCheckDefault">
-                                Cancelados
+                                Anulados
                             </label>
                         </div>
                         <div class="form-check ms-4 text__white">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                            <input class="form-check-input" type="checkbox" value="entregado" id="flexCheckDefault">
                             <label class="form-check-label" for="flexCheckDefault">
-                                Recibidos
+                                Entregados
                             </label>
                         </div>
                     </div>
                     <div class="d-flex w-75 justify-content-end">
-                        <div class="input-group input-group-sm w-50">
-                            <input type="text" class="form-control" placeholder="Ingrese su busqueda"
+                        <form action="index.php?module=pedidos&action=searched" method="POST"
+                            class="input-group input-group-sm w-75" id="formBuscador">
+                            <input type="search" id="termino" name="termino" class="form-control"
+                                placeholder="Ingrese su busqueda"
+                                value="<?php echo isset($_POST['termino']) ? $_POST['termino'] : ""; ?>"
                                 aria-label="Recipient's username" aria-describedby="buscar">
-                            <input class="btn btn-outline-secondary button" type="button" id="buscar"
+                            <input class="btn btn-outline-secondary button" type="submit" id="buscar"
                                 value="Buscar"></button>
-                        </div>
+                        </form>
                     </div>
                 </div>
-                <div class="border contenedor__mayor mt-3 mb-5 rounded-4">
-                    <table class="grilla__contenedor w-95 border-0">
-                        <tr class="grilla grilla__cabecera">
-                            <th>Numero de comprobante</th>
-                            <th>Proveedor</th>
-                            <th>Fecha</th>
-                            <th>Estado</th>
-                            <th>Total</th>
-                            <th>Acciones</th>
-                        </tr>
-                        <?php foreach ($pedidosCompras as $pedidoCompra) { ?>
-                            <tr class="grilla__cuerpo">
-                                <td>
-                                    <?php echo $pedidoCompra['nrocomprobante']; ?>
-                                </td>
-                                <td>
-                                    <?php echo $pedidoCompraCtr->getProveedorById($pedidoCompra['idproveedor'])['nombre']; ?>
-                                </td>
-                                <td>
-                                    <?php echo $pedidoCompra['fecha']; ?>
-                                </td>
-                                <td>
-                                    <?php echo $pedidoCompra['estado']; ?>
-                                </td>
-                                <td>
-                                    <?php echo '$' . number_format($pedidoCompra['total'], 2); ?>
-                                </td>
-                                <td>
-                                    <a class="icono__contenedor me-2 ms-2" title="Cambiar estado"
-                                        href="index.php?module=pedidos&action=cambiarestado&id=<?php echo $pedidoCompra['idpedidocompra']; ?>">
-                                        <img class="icono__imagen" src="./assets/img/iconoCambiarEstado.svg"
-                                            alt="icono de cambiar estado">
-                                    </a>
-                                    <a class="icono__contenedor me-2" title="ver"
-                                        href="index.php?module=pedidos&action=see&id=<?php echo $pedidoCompra['idpedidocompra']; ?>">
-                                        <img class="icono__imagen" src="./assets/img/iconoVer.png" alt="icono de ver">
-                                    </a>
-                                    <a class="icono__contenedor me-2" title="Editar"
-                                        href="index.php?module=pedidos&action=edit&id=<?php echo $pedidoCompra['idpedidocompra']; ?>">
-                                        <img class="icono__imagen" src="./assets/img/iconoEditar.png" alt="icono de editar">
-                                    </a>
-                                    <a class="icono__contenedor me-2" title="Cancelar"
-                                        href="index.php?module=pedidos&action=delete&id=<?php echo $pedidoCompra['idpedidocompra']; ?>">
-                                        <img class="icono__imagen" src="./assets/img/iconoCancelar.png"
-                                            alt="icono de cancelar">
-                                    </a>
-                                </td>
-                            </tr>
-                        <?php } ?>
-                    </table>
-                </div>
+                <?php if ($pedidosCompras && count($pedidosCompras) > 0) { ?>
+                    <?php $grillaCtr->mostrarGrilla(); ?>
+                <?php } else { ?>
+                    <h3 class="grilla__mensaje-error">
+                        <?php echo $action == 'searched' ? "No se han encontrado registros para esa busqueda" : "No hay pedidos activos, cree uno nuevo" ?>
+                    </h3>
+                <?php } ?>
+
             </div>
-            <a class="my-5 btn button" type="button" href="index.php?module=pedidos&action=create">Crear nuevo pedido de
-                compra</a>
+
+            <a class="my-5 btn button" type="button" href="index.php?module=pedidos&action=create">Crear nuevo
+                pedido</a>
         </article>
         <!-------------------------------------------------- Pop up ver presupuesto ---------------------------------------------->
         <div class="modal fade" id="ver" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -222,6 +185,8 @@ if ($action == 'see') {
         </div>
     </main>
 </body>
-<?php echo $action == 'see' ? '<script> mostrarVentanaModal(); </script>' : '' ?>
+<?php echo $action == 'see' ? '<script> mostrarVentanaModal("ver"); </script>' : '' ?>
+<?php echo $action == 'annul' ? '<script> mostrarVentanaModal("annul"); </script>' : '' ?>
+<script>clickBorrarBusqueda();</script>
 
 </html>

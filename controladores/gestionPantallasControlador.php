@@ -68,7 +68,8 @@ class GestionPantallasControlador
                 case 'pedidos':
                     // verifico que el tipo de usuario tiene acceso al modulo y si no lo tiene lo redirijo al menu
                     if (strtoupper($tipoUsuario) != "REPARADOR") {
-                        include_once('controladores/PedidoCompraControlador.php');
+                        include_once('controladores/PedidoCompraCtr.php');
+                        $indexPage = PedidoCompraCtr::getInstance();
                     } else {
                         $this->redireccionar('menu');
                     }
