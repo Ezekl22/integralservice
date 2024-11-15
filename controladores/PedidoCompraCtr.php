@@ -4,7 +4,8 @@ require_once 'models/PedidoCompraDAO.php';
 require_once 'controladores/ProveedorCtr.php';
 require_once 'controladores/ProductoCtr.php';
 
-class PedidoCompraCtr {
+class PedidoCompraCtr
+{
     private $pedidoCompraDAO;
     private $proveedorCtr;
     private $productoCtr;
@@ -13,7 +14,8 @@ class PedidoCompraCtr {
     private $module;
     public $pedidoSeleccionado;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->pedidoCompraDAO = new PedidoCompraDAO();
         $this->proveedorCtr = new ProveedorCtr();
         $this->productoCtr = new ProductoCtr();
@@ -21,10 +23,11 @@ class PedidoCompraCtr {
         $this->action = isset($_GET['action']) ? $_GET['action'] : '';
         $this->module = isset($_GET['module']) ? $_GET['module'] : '';
         // hago este codigo para que solo se utilice en pedidos de compra para la pantalla de editar
-        $this->pedidoSeleccionado = ($this->idPedidoSeleccionado && $this->module == "pedidos")? $this->pedidoCompraDAO->getPedidoCompraById($this->idPedidoSeleccionado) : "";
+        $this->pedidoSeleccionado = ($this->idPedidoSeleccionado && $this->module == "pedidos") ? $this->pedidoCompraDAO->getPedidoCompraById($this->idPedidoSeleccionado) : "";
     }
 
-    public function index() {
+    public function index()
+    {
         // Obtener la lista de usuarios desde el modelo
         $pedidosCompras = $this->getAllPedidosCompras();
 
@@ -32,17 +35,19 @@ class PedidoCompraCtr {
         require_once 'vistas/pedidos-compra/index.php';
     }
 
-    public function getPantallaCreate(){
+    public function getPantallaCreate()
+    {
         require_once 'vistas/pedidos-compra/create.php';
     }
 
-    public function getAllPedidosCompras(){
+    public function getAllPedidosCompras()
+    {
         return $this->pedidoCompraDAO->getAllPedidosCompras();
     }
 
     // public function create() {
     //     // Mostrar el formulario de creación de usuario
-    //     require_once 'views/user/create.php';
+    //     require_once 'views/usuario/create.php';
     // }
 
     // public function store($data) {
@@ -50,32 +55,37 @@ class PedidoCompraCtr {
     //     // ...
 
     //     // Crear un nuevo usuario en la base de datos
-    //     $user = new User($data['name'], $data['lastname'], $data['type'], $data['username'], $data['password']);
-    //     $this->pedidoCompraDAO->createUser($user);
+    //     $usuario = new Usuario($data['name'], $data['lastname'], $data['type'], $data['username'], $data['password']);
+    //     $this->pedidoCompraDAO->createUsuario($usuario);
 
     //     // Redireccionar a la página principal de usuarios
     //     header('Location: index.php?action=index');
     // }
-    public function getProveedorById($id) {
+    public function getProveedorById($id)
+    {
         return $this->proveedorCtr->getProveedorById($id);
     }
 
-    public function getPantallaEdit() {
+    public function getPantallaEdit()
+    {
         //$pedidoCompra = $this->getPedidoCompraById($id);
 
         require_once 'vistas/pedidos-compra/edit.php';
         $this->index();
     }
 
-    public function getAllProveedores(){
+    public function getAllProveedores()
+    {
         return $this->proveedorCtr->getAllProveedores();
     }
 
-    public function getAllProductos(){
+    public function getAllProductos()
+    {
         return $this->productoCtr->getAllProductos();
     }
 
-    public function getProductosPedidoCompraById($id) {
+    public function getProductosPedidoCompraById($id)
+    {
         return $this->pedidoCompraDAO->getProductosPedidoCompraById($id);
     }
 
@@ -89,7 +99,8 @@ class PedidoCompraCtr {
     //     $this->pedidoCompraDAO->updateUser($user);
     // }
 
-    public function getPedidoCompraById($id){
+    public function getPedidoCompraById($id)
+    {
         return $this->pedidoCompraDAO->getPedidoCompraById($id);
     }
 

@@ -11,19 +11,29 @@ class PresupuestoCtr
     private $clienteCtr;
     private $productoCtr;
 
+    private static $instance = null;
+
     public function __construct()
     {
         $this->presupuestoDAO = new PresupuestoDAO();
-        $this->clienteCtr = new ClienteCtr();
+        $this->clienteCtr = ClienteCtr::getInstance();
         $this->productoCtr = new ProductoCtr();
         $action = isset($_GET['action']) ? $_GET['action'] : '';
         $id = isset($_GET['id']) ? $_GET['id'] : '';
+        $action = isset($_GET['action']) ? $_GET['action'] : '';
+        $id = isset($_GET['id']) ? $_GET['id'] : '';
+
         switch ($action) {
-            case 'created':
-                $this->create();
+            case 'create':
+                if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                    $status = isset($_GET['status']) ? $_GET['status'] : "";
+                    if ($status != "success") {
+                        $this->create();
+                    }
+                }
                 break;
-            case 'canceled':
-                $this->canceled($id);
+            case 'annulled':
+                $this->annulled($id);
                 break;
             case 'edited':
                 $this->update($id);
@@ -31,14 +41,27 @@ class PresupuestoCtr
             case 'facturar':
                 $this->facturar($id);
                 break;
+            case 'searched':
+                $this->search();
+                break;
         }
+    }
+
+    public static function getInstance()
+    {
+        if (self::$instance == null) {
+            self::$instance = new PresupuestoCtr();
+        }
+        return self::$instance;
     }
 
     public function index()
     {
-        // Obtener la lista de usuarios desde el modelo
-        $presupuestos = $this->getAllPresupuestos();
-        $action = isset($_GET['action']) ? $_GET['action'] : '';
+        $gestionPantallaCtr = $_SESSION['session']->getGestionPantallaCtr();
+        $action = $gestionPantallaCtr->getAction();
+
+        $presupuestos = $action == "searched" ? $this->search() : $this->presupuestoDAO->getAllPresupuestos();
+
         $presupuestoCtr = $this;
         if ($action == 'see') {
             $id = isset($_GET['id']) ? $_GET['id'] : '';
@@ -54,18 +77,12 @@ class PresupuestoCtr
         }
 
         session_start();
-        $gestionPantallaCtr = $_SESSION['session']->getGestionPantallaCtr();
         session_write_close();
         $grillaMdl = new GrillaMdl(GRILLA_PRESUPUESTOS, $presupuestos, [0, 1]);
         $grillaCtr = new GrillaCtr($grillaMdl);
 
         // Cargar la vista con los datos
-        require_once 'vistas/presupuestos/index.php';
-    }
-
-    public function getAllPresupuestos()
-    {
-        return $this->presupuestoDAO->getAllPresupuestos();
+        require_once 'vistas/presupuesto/presupuesto.php';
     }
 
     public function getPantallaCreate()
@@ -73,7 +90,8 @@ class PresupuestoCtr
         session_start();
         $gestionPantallaCtr = $_SESSION['session']->getGestionPantallaCtr();
         session_write_close();
-        require_once 'vistas/presupuestos/create.php';
+        $this->index();
+        require_once 'vistas/presupuesto/create.php';
     }
 
     public function create()
@@ -98,15 +116,19 @@ class PresupuestoCtr
                 '0001',
                 $precioTotal
             );
-
-            $this->presupuestoDAO->create($presupuesto);
+            $status = $this->presupuestoDAO->create($presupuesto);
+            if ($status != "") {
+                header("Location: index.php?module=presupuestos&status=success");
+            } else {
+                header("Location: index.php?module=presupuestos&status=error&description=" . $status);
+            }
         }
     }
 
     public function getPantallaEdit()
     {
         $this->index();
-        require_once 'vistas/presupuestos/edit.php';
+        require_once 'vistas/presupuesto/edit.php';
     }
 
     public function getNuevoNroComprobante()
@@ -161,18 +183,19 @@ class PresupuestoCtr
         return $presupuesto;
     }
 
-    public function getPantallaDelete()
+    public function getPantallaAnnul()
     {
-        require_once 'vistas/presupuestos/delete.php';
+        $gestionPantallaCtr = $_SESSION['session']->getGestionPantallaCtr();
+        $gestionPantallaCtr->crearPopUp(new PopUpMdl('annul', 'Anular Presupuesto', "", BOTONES_POPUP_ANULAR, 'index.php?action=annul'));
         $this->index();
     }
 
-    public function canceled($id)
+    public function annulled($id)
     {
         $presupuesto = $this->getPresupuestoById($id);
         $estado = $presupuesto->getEstado();
         if ($estado != 'Pendiente presupuesto' || $estado != 'En reparacion' || $estado != '')
-            $this->presupuestoDAO->cancel($id);
+            $this->presupuestoDAO->annul($id);
     }
 
     public function getAllClientes()
@@ -196,9 +219,8 @@ class PresupuestoCtr
         }
     }
 
-    public function getAllReparaciones()
+    public function search()
     {
-        $this->presupuestoDAO->getAllReparaciones();
+        return $this->presupuestoDAO->search();
     }
 }
-

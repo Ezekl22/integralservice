@@ -48,13 +48,14 @@ class PresupuestoDAO
             return "ok";
 
         } else {
-
-            print_r($stmt->errorInfo());
+            $error = $stmt->errorInfo();
 
         }
 
         $stmt->closeCursor();
         $stmt = null;
+
+        return $error;
     }
 
     public function updatePresupuesto(PresupuestoMdl $presupuesto)
@@ -118,7 +119,7 @@ class PresupuestoDAO
 
     public function getAllPresupuestos()
     {
-        $stmt = $this->db->getConnection()->prepare("SELECT * FROM presupuestos WHERE estado != 'cancelado'");
+        $stmt = $this->db->getConnection()->prepare("SELECT * FROM presupuestos WHERE estado != 'anulado'");
 
         $stmt->execute();
         $resultado = $stmt->fetchAll();
@@ -128,16 +129,33 @@ class PresupuestoDAO
 
     }
 
-    public function getAllReparaciones()
+    public function search()
     {
-        $stmt = $this->db->getConnection()->prepare("SELECT * FROM presupuestos WHERE estado != 'cancelado' AND tipo = 'reparacion' ");
-
-        $stmt->execute();
-        $resultado = $stmt->fetchAll();
-        $stmt->closeCursor();
-        $stmt = null;
-        return $resultado;
-
+        $termino = isset($_POST['termino']) ? '%' . $_POST['termino'] . '%' : "";
+        if ($termino != "") {
+            $query = "SELECT presupuestos.idpresupuesto, 
+                      presupuestos.idcliente, presupuestos.nrocomprobante, 
+                      presupuestos.tipo, presupuestos.estado,
+                      presupuestos.fecha,
+                      presupuestos.puntoventa,
+                      presupuestos.total
+                      FROM presupuestos 
+                      INNER JOIN clientes ON presupuestos.idcliente = clientes.idcliente
+                      WHERE presupuestos.estado != 'cancelado'
+                      AND presupuestos.nrocomprobante LIKE '$termino'
+                      OR presupuestos.tipo LIKE '$termino'
+                      OR presupuestos.estado LIKE '$termino'
+                      OR presupuestos.fecha LIKE '$termino'
+                      OR presupuestos.puntoventa LIKE '$termino'
+                      OR CAST(presupuestos.total AS CHAR) LIKE '$termino'
+                      OR CONCAT(clientes.nombre, ' ', clientes.apellido) LIKE '$termino'";
+            $stmt = $this->db->getConnection()->prepare($query);
+            $stmt->execute();
+            $retorno = $stmt->fetchAll();
+            $stmt->closeCursor();
+            $stmt = null;
+            return $retorno;
+        }
     }
 
     public function getProductosPresupuestoById($id)
@@ -156,9 +174,9 @@ class PresupuestoDAO
         return $resultado;
     }
 
-    public function cancel($id)
+    public function annul($id)
     {
-        $stmt = $this->db->getConnection()->prepare("UPDATE presupuestos SET estado = 'cancelado' WHERE idPresupuesto = " . $id);
+        $stmt = $this->db->getConnection()->prepare("UPDATE presupuestos SET estado = 'anulado' WHERE idPresupuesto = " . $id);
 
         if ($stmt->execute()) {
 

@@ -29,7 +29,7 @@ const agregarComponenteProducto = () =>{
     contComponente.className = "input-group input-group-sm mb-3";
     contComponente.id = id;
 
-    contComponente.innerHTML = `<button class="btn btn-outline-secondary button ms-7 align-self-start" onclick="quitarComponenteProducto('${id}')" type="button" id="quitar">-</button>
+    contComponente.innerHTML = `<button class="btn btn-outline-secondary button ms-7 align-self-start" onclick="quitarComponenteProducto()" type="button" id="btnQuitar">-</button>
                                 <label class="input-group-text" for="producto" id="inputGroup-sizing-sm">Producto:</label>
                                 <input type="text" class="form-control w-25" disabled id="producto" value = "${productoSeleccionado[1]}">
                                 <label class="input-group-text" for="cantidad" id="inputGroup-sizing-sm">Cantidad:</label>
@@ -54,11 +54,11 @@ const currencyFormatter =(value)=> {
 }
 
 const mostrarGrillaProductos = ()=>{
+    cerrarGrilla('contGrillaProducto');
     let contGrilla = document.getElementById('contGrillaProducto');
     let contenedor = document.createElement("div");
     let cuerpoGrilla = '';
-    contenedor.className = "grilla d-flex flex-column align-items-center rounded-4";
-    contenedor.style.width = "95%";
+    contenedor.className = "grilla d-flex flex-column align-items-center rounded-4 w-100";
     
     productos.forEach(producto => {
        cuerpoGrilla =cuerpoGrilla+ `<tr class="grilla__cuerpo">
@@ -82,8 +82,8 @@ const mostrarGrillaProductos = ()=>{
                                     <input class="btn btn-outline-secondary button" type="button" id="buscar" value="Buscar"></button>
                                 </div>
                             </div>
-                            <div class="border mt-3 mb-5 rounded-4" style="width:90%;">
-                                <table class="grilla__contenedor border-0">
+                            <div class="border px-3 pt-4 mb-5 mt-3 rounded-4" style="width:90%;">
+                                <table class="grilla__contenedor w-100 border-0">
                                     <tr class="grilla grilla__cabecera">
                                         <th>Nombre</th>
                                         <th>Marca</th>
@@ -97,7 +97,7 @@ const mostrarGrillaProductos = ()=>{
                                     ${cuerpoGrilla}
                                 </table>
                                 <div class="d-flex justify-content-center">
-                                    <div class="input-group input-group-sm mb-3 w-25">
+                                    <div class="input-group input-group-sm my-3 w-25">
                                         <label class="input-group-text" for="cantidad" id="inputGroup-sizing-sm">Cantidad:</label>
                                         <input type="text" class="form-control" aria-label="0" id="cantidadProducto" value="1">
                                     </div>
@@ -108,11 +108,20 @@ const mostrarGrillaProductos = ()=>{
 
 
 const cerrarGrilla = (id) =>{
-    document.getElementById(id).childNodes[1].remove();
+    let grilla = document.getElementById(id).childNodes[0];
+    if(grilla) grilla.remove();
 }
 
-const quitarComponenteProducto = (id) =>{
-    document.getElementById(id).remove();
+const quitarComponenteProducto = () =>{
+    getProductosChekeados().forEach(productoChekeado =>{
+        productoChekeado.parentElement.parentElement.remove();
+    });
+    recalcularTotal();
+    onChangeChecks();
+}
+
+const habilitarDeshabilitarBtn = () =>{
+    
 }
 
 const recalcularTotal = () =>{
@@ -120,48 +129,31 @@ const recalcularTotal = () =>{
     const importeTotal = document.getElementById('totalproductos');
     let total = parseFloat(0);
     totalesProductos.forEach(totalProducto =>{
-        total = total + parseFloat(totalProducto.value.replace(/[$,]/g, ""));
-        
-    });
-    importeTotal.value = currencyFormatter(total);
-}
-
-const recalcularTotall = () =>{
-    const totalesProductos = document.querySelectorAll('#total');
-    const importeTotal = document.getElementById('totalproductos');
-    let total = parseFloat(0);
-    totalesProductos.forEach(totalProducto =>{
         total = total + parseFloat(totalProducto.childNodes[0].data.replace(/[$,]/g, ""));
-        
     });
     importeTotal.value = currencyFormatter(total);
 }
 
-const cantidadOnChange = (idProducto,id) =>{
-    const inputTotal = document.querySelector('#'+id+' #total');
+const cantidadOnChange = (idProducto ,id, esPresupuesto) =>{
+    const inputTotal = document.querySelector('#'+id+' #total').childNodes[0];
     const cantidad = document.querySelector('#'+id+' #cantidad').value;
-    let i = 0;
-    while (productos[i][0] != parseInt(idProducto)) {
-        i++;
-    }
-    const producto = productos[i];
-    inputTotal.value =currencyFormatter(esVenta? producto[7]:producto[6] * parseInt(cantidad));
+    const producto = productos.filter(producto => producto[0] === parseInt(idProducto) )
+    inputTotal.data =currencyFormatter(esPresupuesto? producto['precioventa']:producto[6] * parseInt(cantidad));
     recalcularTotal();
 }
 
 const mostrarVentanaModal = (id) =>{
     var miModal = new bootstrap.Modal(document.getElementById(id));
     miModal.show();
-
 }    
 
 const validarFormulario = () =>{
     
 } 
 
-const cargarGrillaProducto = () =>{
+const cargarGrillaProducto = (module) =>{
     let contProductos = document.getElementById("grilla");
-    let contComponente = document.createElement("div");
+    let contComponente = document.createElement("tr");
     const cantidad = document.getElementById("cantidadProducto").value;
     let productoSeleccionado;
     productos.forEach(producto=>{
@@ -170,37 +162,38 @@ const cargarGrillaProducto = () =>{
             productoSeleccionado = producto;
     });
     let id = "producto"+(productoSeleccionado[0]);
-    // contComponente.className = "input-group input-group-sm mb-3";
-    // contComponente.id = id;
-
-    contProductos.innerHTML = contProductos.innerHTML + `<tr class="grilla__cuerpo">
-                                                            <td id="producto"> ${productoSeleccionado[1]} </td>
-                                                            <td> <input type="number" value="${cantidad}" class="form-control" onchange="cantidadOnChange('${productoSeleccionado[0]}','${id}')" id="cantidad" name="cantidad[]" min="1"</td>
-                                                            <td id="valorunt"> ${currencyFormatter(productoSeleccionado[7])} </td>
-                                                            <td id="total"> ${currencyFormatter(parseInt(cantidad) * productoSeleccionado[7])} </td>
-                                                            <td><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"></td>
-                                                            <input type="hidden" class="form-control me-7" aria-label="0" value="${productoSeleccionado[0]}" id="idproductos" name="idproductos[]">
-                                                        </tr>`;
-
-    // `<button class="btn btn-outline-secondary button ms-7 align-self-start" onclick="quitarComponenteProducto('${id}')" type="button" id="quitar">-</button>
-    //                             <label class="input-group-text" for="producto" id="inputGroup-sizing-sm">Producto:</label>
-    //                             <input type="text" class="form-control w-25" disabled id="producto" value = "${productoSeleccionado[1]}">
-    //                             <label class="input-group-text" for="cantidad" id="inputGroup-sizing-sm">Cantidad:</label>
-    //                             <input type="text" class="form-control" aria-label="0" onchange="cantidadOnChange('${productoSeleccionado[0]}','${id}')" id="cantidad" name="cantidad[]">
-    //                             <label class="input-group-text" for="valorunt" id="inputGroup-sizing-sm">Valor unitario:</label>
-    //                             <input type="text" class="form-control" disabled value= "${currencyFormatter(productoSeleccionado[7])}" id="valorunt">
-    //                             <label class="input-group-text" for="totañ" id="inputGroup-sizing-sm">Total:</label>
-    //                             <input type="text" class="form-control me-7" disabled aria-label="0" id="total">
-    //                             
+    contComponente.className = "grilla__cuerpo";
+    contComponente.id = id;
+    contComponente.innerHTML =  `<td id="producto"> ${productoSeleccionado[1]} </td>
+                                 <td> <input type="number" value="${cantidad}" class="form-control" onchange="cantidadOnChange('${productoSeleccionado[0]}','${id}', '${module === "presupuestos"}')" id="cantidad" name="cantidad[]" min="1"</td>
+                                 <td id="valorunt"> ${currencyFormatter(productoSeleccionado[7])} </td>
+                                 <td id="total"> ${currencyFormatter(parseInt(cantidad) * productoSeleccionado[7])} </td>
+                                 <td><input class="form-check-input checksProductos" onchange="onChangeChecks()" type="checkbox"></td>
+                                 <input type="hidden" class="form-control me-7" aria-label="0" value="${productoSeleccionado[0]}" id="idproductos" name="idproductos[]">`;
     contProductos.appendChild(contComponente);
-    recalcularTotall();
+    recalcularTotal();
     cerrarGrilla('contGrillaProducto');
 }
 
+const onChangeChecks = ()=>{
+    let btnQuitar = document.getElementById('btnQuitar');
+    let productosChekeados = getProductosChekeados();
+    btnQuitar.disabled = productosChekeados && productosChekeados.length>0? false : true;
+}
+
+const getProductosChekeados = () =>{
+    let checksSeleccionados = document.querySelectorAll('.checksProductos');
+    let checksCheckeados = [];
+    for (let i = 0; i < checksSeleccionados.length; i++) {
+        if(checksSeleccionados[i].checked)
+        checksCheckeados.push(checksSeleccionados[i]) ;
+    }
+    return checksCheckeados;
+}
+
 const tipoOnChange = (selector) =>{
-    console.log(selector.target.value);
     const tipo = selector.target.value;
-    tipo == 'Reparacion';
+    recargarPagina({type: tipo});
 }
 
 const clickBorrarBusqueda = () =>{
@@ -215,4 +208,16 @@ const clickBorrarBusqueda = () =>{
         document.getElementById('formBuscador').submit();
     }
     });
+}
+
+const recargarPagina = (parametros) =>{
+    var currentUrl = window.location.href;
+    var url = new URL(currentUrl);
+
+    for (var key in parametros) {
+        if (parametros.hasOwnProperty(key)) {
+            url.searchParams.set(key, parametros[key]);
+        }
+    }
+     window.location.href = url.toString();
 }

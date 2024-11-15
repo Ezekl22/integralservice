@@ -19,11 +19,14 @@
       require_once './controladores/GestionPantallasControlador.php';
       require_once './assets/constantes.php';
       $GestionPantallaCtr = new GestionPantallasControlador;
+      session_start();
+      $sesionCtr = isset($_SESSION['session']) ? $_SESSION['session'] : "";
+      session_write_close();
       ?>
 
       <nav class="navbar navbar-expand-lg nav__background">
             <div class="container-fluid">
-                  <a class="navbar-brand" href=<?php echo $GestionPantallaCtr->getModule() != '' ? "index.php?module=menu" : "#"; ?>>
+                  <a class="navbar-brand" href=<?php echo $GestionPantallaCtr->getModule() && $sesionCtr != '' ? "index.php?module=menu" : "#" ?>>
                         <img src="./assets/img/logo-IntegralService.png" class="shadow rounded-3 me-2 logo"
                               alt="logo de integral Service">
                         Integral Service
