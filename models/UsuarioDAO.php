@@ -13,7 +13,6 @@ class UsuarioDAO
 
     public function createUsuario(Usuario $usuario)
     {
-        $error = "";
         $stmt = $this->db->getConnection()->prepare("INSERT INTO usuarios (nombre, apellido, mail, contrasena, tipo) VALUES (:nombre, :apellido, :mail, :contrasena, :tipo)");
 
         $nombre = $usuario->getNombre();
@@ -28,14 +27,7 @@ class UsuarioDAO
         $stmt->bindParam(":contrasena", $contrasena, PDO::PARAM_STR);
         $stmt->bindParam(":tipo", $tipo, PDO::PARAM_STR);
 
-        if (!$stmt->execute()) {
-            $error = $stmt->errorInfo();
-        }
-
-        $stmt->closeCursor();
-        $stmt = null;
-
-        return $error;
+        return $this->checkExecute($stmt);
     }
 
     public function updateUsuario(Usuario $usuario)
@@ -60,18 +52,7 @@ class UsuarioDAO
         $stmt->bindParam(":tipo", $tipo, PDO::PARAM_STR);
         $stmt->bindParam(":idusuario", $idusuario, PDO::PARAM_INT);
 
-        if ($stmt->execute()) {
-
-            return "ok";
-
-        } else {
-
-            print_r($stmt->errorInfo());
-
-        }
-
-        $stmt->closeCursor();
-        $stmt = null;
+        return $this->checkExecute($stmt);
     }
 
     public function deleteUsuario($id)
@@ -79,14 +60,7 @@ class UsuarioDAO
         $stmt = $this->db->getConnection()->prepare("DELETE FROM usuarios WHERE idusuario = :id");
         $stmt->bindParam(":id", $id, PDO::PARAM_INT);
 
-        if ($stmt->execute()) {
-            // La eliminación fue exitosa
-            return "ok";
-        } else {
-            // Manejar errores si es necesario
-            print_r($this->db->getConnection()->errorInfo());
-            return "error";
-        }
+        return $this->checkExecute($stmt);
     }
 
     public function getUsuarioById($id)
@@ -136,6 +110,17 @@ class UsuarioDAO
             $stmt = null;
             return $retorno;
         }
+    }
 
+    private function checkExecute(PDOStatement $stmt)
+    {
+        $error = "";
+        if (!$stmt->execute()) {
+            $error = $stmt->errorInfo();
+        }
+
+        $stmt->closeCursor();
+        $stmt = null;
+        return $error;
     }
 }
