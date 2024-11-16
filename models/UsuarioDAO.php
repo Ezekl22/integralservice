@@ -13,6 +13,7 @@ class UsuarioDAO
 
     public function createUsuario(Usuario $usuario)
     {
+        $error = "";
         $stmt = $this->db->getConnection()->prepare("INSERT INTO usuarios (nombre, apellido, mail, contrasena, tipo) VALUES (:nombre, :apellido, :mail, :contrasena, :tipo)");
 
         $nombre = $usuario->getNombre();
@@ -27,13 +28,8 @@ class UsuarioDAO
         $stmt->bindParam(":contrasena", $contrasena, PDO::PARAM_STR);
         $stmt->bindParam(":tipo", $tipo, PDO::PARAM_STR);
 
-        if ($stmt->execute()) {
-
-            return "ok";
-
-        } else {
+        if (!$stmt->execute()) {
             $error = $stmt->errorInfo();
-
         }
 
         $stmt->closeCursor();

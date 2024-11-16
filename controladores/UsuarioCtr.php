@@ -27,7 +27,13 @@ class UsuarioCtr
                 $this->delete($id);
                 break;
             case 'edited':
-                $this->update($id);
+                if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                    $status = isset($_GET['status']) ? $_GET['status'] : "";
+                    if ($status != "success") {
+                        $this->update($id);
+                    }
+                }
+
                 break;
             case 'searched':
                 $this->search();
@@ -89,7 +95,7 @@ class UsuarioCtr
 
             // Llama a la función para crear el usuario en la base de datos
             $status = $this->usuarioDAO->createUsuario($usuario);
-            if ($status != "") {
+            if ($status == "") {
                 header("Location: index.php?module=usuarios&status=success");
             } else {
                 header("Location: index.php?module=usuarios&status=error&description=" . $status);
