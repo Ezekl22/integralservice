@@ -82,6 +82,15 @@ class GestionPantallasControlador
                         $this->redireccionar('menu');
                     }
                     break;
+                case 'reparaciones':
+                    // verifico que el tipo de usuario no tiene acceso al modulo y si no lo tiene lo redirijo al menu
+                    if (strtoupper($tipoUsuario) != "VENDEDOR") {
+                        include_once('controladores/ReparacionCtr.php');
+                        $indexPage = ReparacionCtr::getInstance();
+                    } else {
+                        $this->redireccionar('menu');
+                    }
+                    break;
                 case 'productos':
                     include_once './controladores/ProductoCtr.php';
                     $indexPage = new ProductoCtr();

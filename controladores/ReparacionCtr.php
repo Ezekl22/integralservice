@@ -1,16 +1,19 @@
 <?php
 require_once 'controladores/PresupuestoCtr.php';
-// require_once 'models/PresupuestoDAO.php';
+require_once 'models/ReparacionDAO.php';
 // require_once 'models/ProductoPresupuestoMdl.php';
 // require_once 'controladores/ClienteCtr.php';
 // require_once 'controladores/ProductoCtr.php';
 
 class ReparacionCtr
 {
+    private $reparacionDAO;
     private $presupuestoCtr;
+    private static $instance = null;
 
     public function __construct()
     {
+        $this->reparacionDAO = new ReparacionDAO();
         $this->presupuestoCtr = new PresupuestoCtr();
         // $this->presupuestoDAO = new PresupuestoDAO();
         // $this->clienteCtr = new ClienteCtr();
@@ -33,6 +36,14 @@ class ReparacionCtr
         // }
     }
 
+    public static function getInstance()
+    {
+        if (self::$instance == null) {
+            self::$instance = new ReparacionCtr();
+        }
+        return self::$instance;
+    }
+
     public function index()
     {
         //     // Obtener la lista de usuarios desde el modelo
@@ -47,26 +58,24 @@ class ReparacionCtr
         //         $productosPre = $this->getProductosPresupuestoById($presupuesto->getIdPresupuesto());
         //         $total = 0;
         //     }
-
-        //     for ($i=0; $i < count($presupuestos); $i++) { 
-        //         $presupuestos[$i][1] = $this->getNombreClienteById($presupuestos[$i][1]);
-        //     }
+        $reparaciones = $this->getAllReparaciones();
+        for ($i = 0; $i < count($reparaciones); $i++) {
+            $reparaciones[$i][1] = $this->presupuestoCtr->getNombreClienteById($reparaciones[$i][1]);
+        }
 
         session_start();
         $gestionPantallaCtr = $_SESSION['session']->getGestionPantallaCtr();
         session_write_close();
-        $grillaMdl = new GrillaMdl(GRILLA_PRESUPUESTOS, $this->presupuestoCtr->getAllReparaciones(), [0, 1]);
+        $grillaMdl = new GrillaMdl(GRILLA_PRESUPUESTOS, $reparaciones, [0, 1]);
         $grillaCtr = new GrillaCtr($grillaMdl);
 
         require_once 'vistas/reparaciones/index.php';
     }
 
-    // public function getPantallaCreate(){
-    //     session_start();
-    //     $gestionPantallaCtr = $_SESSION['session']->getGestionPantallaCtr();
-    //     session_write_close();
-    //     require_once 'vistas/presupuestos/create.php';
-    // }
+    public function getAllReparaciones()
+    {
+        return $this->reparacionDAO->getAllReparaciones();
+    }
 
     // public function create() {
     //     if (isset($_POST['idcliente'])) {

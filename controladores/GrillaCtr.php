@@ -29,6 +29,10 @@ class GrillaCtr
                 require_once 'controladores/ClienteCtr.php';
                 $this->controlador = ClienteCtr::getInstance();
                 break;
+            case 'reparaciones':
+                require_once 'controladores/ReparacionCtr.php';
+                $this->controlador = ReparacionCtr::getInstance();
+                break;
             default:
                 # code...
                 break;
