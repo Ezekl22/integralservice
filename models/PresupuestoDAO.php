@@ -1,6 +1,7 @@
 <?php
 
 require_once 'includes/DBConnection.php';
+require_once 'models/UtilidadesDAO.php';
 
 class PresupuestoDAO
 {
@@ -96,12 +97,11 @@ class PresupuestoDAO
         $total = $presupuesto->getTotal();
         $idPresupuesto = $presupuesto->getIdPresupuesto();
         $estado = $presupuesto->getEstado();
-
         $stmt->bindParam(":idcliente", $idCliente, PDO::PARAM_INT);
         $stmt->bindParam(":total", $total, PDO::PARAM_STR_CHAR);
         $stmt->bindParam(":estado", $estado, PDO::PARAM_STR_CHAR);
         $stmt->bindParam(":idpresupuesto", $idPresupuesto, PDO::PARAM_INT);
-        if (isset($_POST['action']) && $_POST['action'] != "facturar") {
+        if (isset($_GET['action']) && $_GET['action'] != "facturar") {
             if ($presupuesto->getTipo() == "Reparacion") {
                 $this->updateReparacionPresupuesto($idPresupuesto);
             } else {
@@ -109,17 +109,7 @@ class PresupuestoDAO
             }
         }
 
-        if ($stmt->execute()) {
-
-            return "ok";
-
-        } else {
-            $error = $stmt->errorInfo();
-        }
-        $stmt->closeCursor();
-        $stmt = null;
-
-        return $error;
+        return UtilidadesDAO::getInstance()->checkExecute($stmt);
     }
 
     public function updateReparacionPresupuesto(int $idPresupuesto)
@@ -138,16 +128,7 @@ class PresupuestoDAO
         $stmt->bindParam(":descripcion", $descripcion, PDO::PARAM_STR_CHAR);
         $stmt->bindParam(":idpresupuesto", $idPresupuesto, PDO::PARAM_INT);
 
-        $valExecute = $stmt->execute();
-        $error = $stmt->errorInfo();
-        $stmt->closeCursor();
-        $stmt = null;
-        if ($valExecute) {
-
-            return "ok";
-
-        }
-        return $error;
+        return UtilidadesDAO::getInstance()->checkExecute($stmt);
     }
 
     public function updateProductosPresupuesto(int $idPresupuesto, PresupuestoMdl $presupuesto)
@@ -237,32 +218,24 @@ class PresupuestoDAO
             " END, cantidad = CASE" . $queryCasesCantidad .
             " END WHERE idPresupuesto = " . $productos[0]->getIdPresupuesto() .
             " AND idProducto IN (" . $queryCasesWhere . ");");
-        $result = $stmt->execute();
-        $error = $stmt->errorInfo();
-        $stmt->closeCursor();
-        $stmt = null;
-        if ($result) {
-            return "ok";
-        } else {
-            print_r($error);
-        }
+
+        return UtilidadesDAO::getInstance()->checkExecute($stmt);
 
     }
 
     private function deleteProductosPresupuesto(int $idPresupuesto, array $productos)
     {
+        $error = "";
         $placeholders = implode(',', array_fill(0, count($productos), '?'));
         $stmt = $this->db->getConnection()->prepare("DELETE FROM productospresupuestos WHERE idpresupuesto = ? AND idproducto IN ($placeholders) ");
         $result = $stmt->execute(array_merge([$idPresupuesto], $productos));
-        $error = $stmt->errorInfo();
+        if (!$result) {
+            $error = $stmt->errorInfo();
+        }
         $stmt->closeCursor();
         $stmt = null;
-        if ($result) {
-            return "ok";
-        } else {
-            print_r($error);
-        }
 
+        return $error;
     }
 
     public function getNuevoNroComprobante()
@@ -361,17 +334,6 @@ class PresupuestoDAO
     public function annul($id)
     {
         $stmt = $this->db->getConnection()->prepare("UPDATE presupuestos SET estado = 'anulado' WHERE idPresupuesto = " . $id);
-
-        if ($stmt->execute()) {
-
-            return "ok";
-
-        } else {
-
-            print_r($stmt->errorInfo());
-
-        }
-        $stmt->closeCursor();
-        $stmt = null;
+        return UtilidadesDAO::getInstance()->checkExecute($stmt);
     }
 }
