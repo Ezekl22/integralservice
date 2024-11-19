@@ -18,10 +18,10 @@ class UtilidadesDAO
         return self::$instance;
     }
 
-    public function checkExecute(PDOStatement $stmt)
+    public function checkExecute(PDOStatement $stmt, $params = null)
     {
         $error = "";
-        if (!$stmt->execute()) {
+        if (!$stmt->execute($params)) {
             $error = $stmt->errorInfo();
         }
 
@@ -36,7 +36,6 @@ class UtilidadesDAO
         foreach ($params as $key => $value) {
             $stmt->bindValue($key, $value);
         }
-        $stmt->execute();
         return $stmt;
     }
 }

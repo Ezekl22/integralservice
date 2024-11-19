@@ -17,9 +17,7 @@ class PresupuestoDAO
 
         $productos = $presupuesto->getProductos();
         $productosValues = "";
-
-
-
+        $query = "";
         for ($i = 0; $i < count($productos); $i++) {
             $idProducto = $productos[$i]->getIdProducto();
             $preciounit = $productos[$i]->getPreciounit();
@@ -28,42 +26,42 @@ class PresupuestoDAO
             $productosValues = $productosValues . ' (@idpresupuesto, ' . $idProducto . ', ' . $preciounit . ', ' . $cantidad . ')' . $separacion;
         }
         if ($presupuesto->getTipo() == "Venta") {
-            $query = "INSERT INTO productospresupuestos (idpresupuesto, idproducto, preciounit, cantidad) 
+            $queryInsert = "INSERT INTO productospresupuestos (idpresupuesto, idproducto, preciounit, cantidad) 
             VALUES " . $productosValues;
         } elseif ($presupuesto->getTipo() == "Reparacion") {
-            $query = 'INSERT INTO reparaciones (idpresupuesto, modelo, marca, numeroserie, descripcion) VALUES ' .
+            $queryInsert = 'INSERT INTO reparaciones (idpresupuesto, modelo, marca, numeroserie, descripcion) VALUES ' .
                 '(@idpresupuesto, "' . $reparacion->getModelo() . '", "' . $reparacion->getMarca() . '", "' . $reparacion->getNumeroSerie() . '", "' . $reparacion->getDescripcion() . '");';
         }
-        $stmt = $this->db->getConnection()->prepare('INSERT INTO presupuestos (idcliente, nrocomprobante, tipo, estado, fecha, puntoventa, total)' .
+        $query = 'INSERT INTO presupuestos (idcliente, nrocomprobante, tipo, estado, fecha, puntoventa, total)' .
             'VALUES (:idcliente, :nrocomprobante, :tipo, :estado, :fecha, :puntoventa, :total); ' .
-            'SET @idpresupuesto = LAST_INSERT_ID(); ' . $query);
-        $idCliente = $presupuesto->getIdCliente();
-        $nroComprobante = $presupuesto->getNroComprobante();
-        $tipo = $presupuesto->getTipo();
-        $estado = $presupuesto->getEstado();
-        $fecha = date("d-m-Y");
-        $puntoVenta = $presupuesto->getPuntoVenta();
-        $total = $presupuesto->getTotal();
-        $stmt->bindParam(":idcliente", $idCliente, PDO::PARAM_INT);
-        $stmt->bindParam(":nrocomprobante", $nroComprobante, PDO::PARAM_STR);
-        $stmt->bindParam(":tipo", $tipo, PDO::PARAM_STR);
-        $stmt->bindParam(":estado", $estado, PDO::PARAM_STR);
-        $stmt->bindParam(":fecha", $fecha, PDO::PARAM_STR);
-        $stmt->bindParam(":puntoventa", $puntoVenta, PDO::PARAM_STR);
-        $stmt->bindParam(":total", $total, PDO::PARAM_STR_CHAR);
+            'SET @idpresupuesto = LAST_INSERT_ID(); ' . $queryInsert;
+        UtilidadesDAO::getInstance()->executeQuery($query, );
+        $params = [
+            ':idcliente' => $presupuesto->getIdCliente(),
+            ':nrocomprobante' => $presupuesto->getNroComprobante(),
+            ':tipo' => $presupuesto->getTipo(),
+            ':estado' => $presupuesto->getEstado(),
+            ':fecha' => date("d-m-Y"),
+            ':puntoventa' => $presupuesto->getPuntoVenta(),
+            ':total' => $presupuesto->getTotal()
+        ];
+        $stmt = UtilidadesDAO::getInstance()->executeQuery($query, $params);
+        // $idCliente = $presupuesto->getIdCliente();
+        // $nroComprobante = $presupuesto->getNroComprobante();
+        // $tipo = $presupuesto->getTipo();
+        // $estado = $presupuesto->getEstado();
+        // $fecha = date("d-m-Y");
+        // $puntoVenta = $presupuesto->getPuntoVenta();
+        // $total = $presupuesto->getTotal();
+        // $stmt->bindParam(":idcliente", $idCliente, PDO::PARAM_INT);
+        // $stmt->bindParam(":nrocomprobante", $nroComprobante, PDO::PARAM_STR);
+        // $stmt->bindParam(":tipo", $tipo, PDO::PARAM_STR);
+        // $stmt->bindParam(":estado", $estado, PDO::PARAM_STR);
+        // $stmt->bindParam(":fecha", $fecha, PDO::PARAM_STR);
+        // $stmt->bindParam(":puntoventa", $puntoVenta, PDO::PARAM_STR);
+        // $stmt->bindParam(":total", $total, PDO::PARAM_STR_CHAR);
 
-        if ($stmt->execute()) {
-
-            return "ok";
-
-        } else {
-            $error = $stmt->errorInfo();
-        }
-
-        $stmt->closeCursor();
-        $stmt = null;
-
-        return $error;
+        return UtilidadesDAO::getInstance()->checkExecute($stmt);
     }
 
     private function createProductosPresupuesto(array $productos)
@@ -80,12 +78,7 @@ class PresupuestoDAO
         }
         $stmt = $this->db->getConnection()->prepare("INSERT INTO productospresupuestos (idpresupuesto, idproducto, preciounit, cantidad) 
                                                         VALUES " . $queryProductos);
-
-        if ($stmt->execute()) {
-            return "ok";
-        } else {
-            return $stmt->errorInfo();
-        }
+        return UtilidadesDAO::getInstance()->checkExecute($stmt);
     }
 
     public function updatePresupuesto(PresupuestoMdl $presupuesto)
@@ -225,17 +218,10 @@ class PresupuestoDAO
 
     private function deleteProductosPresupuesto(int $idPresupuesto, array $productos)
     {
-        $error = "";
         $placeholders = implode(',', array_fill(0, count($productos), '?'));
         $stmt = $this->db->getConnection()->prepare("DELETE FROM productospresupuestos WHERE idpresupuesto = ? AND idproducto IN ($placeholders) ");
-        $result = $stmt->execute(array_merge([$idPresupuesto], $productos));
-        if (!$result) {
-            $error = $stmt->errorInfo();
-        }
-        $stmt->closeCursor();
-        $stmt = null;
 
-        return $error;
+        return UtilidadesDAO::getInstance()->checkExecute($stmt, array_merge([$idPresupuesto], $productos));
     }
 
     public function getNuevoNroComprobante()
