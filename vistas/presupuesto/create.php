@@ -87,8 +87,11 @@ echo "<script>const productos = $json;</script>";
                             </div>
 
                         <?php } ?>
-                        <!-- aca falta un boton de cancelar -->
-                        <input class="btn button my-2" type="submit" value="Guardar cambios">
+                        <div class="d-flex justify-content-evenly w-75">
+                            <input class="my-5 btn button w-25" type="submit" value="Guardar">
+                            <a class="my-5 btn button w-25" type="button"
+                                href="index.php?module=presupuestos">Cancelar</a>
+                        </div>
                     </div>
 
 

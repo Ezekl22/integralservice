@@ -45,6 +45,8 @@ class PresupuestoCtr
             case 'facturar':
                 $this->facturar($id);
                 break;
+            case 'cambiarestado':
+                $this->cambiarEstado($id);
             case 'searched':
                 $this->search();
                 break;
@@ -67,16 +69,13 @@ class PresupuestoCtr
         $presupuestos = $action == "searched" ? $this->search() : $this->presupuestoDAO->getAllPresupuestos();
 
         $presupuestoCtr = $this->getInstance();
+        $productosPre = [];
         if ($action == 'see') {
             $id = isset($_GET['id']) ? $_GET['id'] : '';
             $presupuesto = $this->getPresupuestoById($id);
             $cliente = $this->getClienteById($presupuesto->getIdCliente());
             $nombreCliente = $cliente['nombre'] . ' ' . $cliente['apellido'];
-            if ($presupuesto->getTipo() == "Venta") {
-                $productosPre = $this->getProductosPresupuestoById($presupuesto->getIdPresupuesto());
-            } else {
-                $reparacionPre = $this->getReparacionPresupuestoById($id);
-            }
+            $productosPre = $this->getProductosPresupuestoById($presupuesto->getIdPresupuesto());
             $total = 0;
         }
 
@@ -258,6 +257,30 @@ class PresupuestoCtr
             $presupuesto->setEstado('Facturado');
             $presupuesto->setNroComprobante('C-' . $presupuesto->getNroComprobante() . '-0001');
             $this->presupuestoDAO->updatePresupuesto($presupuesto);
+        }
+    }
+
+    public function cambiarEstado($id)
+    {
+        $presupuesto = $this->getPresupuestoById($id);
+        $tipo = $presupuesto->getTipo();
+        $estado = $presupuesto->getEstado();
+        if ($tipo == "Venta") {
+            if ($estado == "Presupuestado") {
+                $presupuesto->setEstado('Facturado');
+                $presupuesto->setNroComprobante('C-' . $presupuesto->getNroComprobante() . '-0001');
+                $this->presupuestoDAO->updatePresupuesto($presupuesto);
+            }
+        } else {
+            if ($estado == "Presupuestado") {
+                $presupuesto->setEstado('En reparacion');
+                $this->presupuestoDAO->updatePresupuesto($presupuesto);
+            }
+            if ($estado == "Reparado") {
+                $presupuesto->setEstado('Facturado');
+                $presupuesto->setNroComprobante('C-' . $presupuesto->getNroComprobante() . '-0001');
+                $this->presupuestoDAO->updatePresupuesto($presupuesto);
+            }
         }
     }
 

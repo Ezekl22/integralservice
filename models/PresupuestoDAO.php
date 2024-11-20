@@ -249,7 +249,7 @@ class PresupuestoDAO
 
     public function getAllPresupuestos()
     {
-        $stmt = $this->db->getConnection()->prepare("SELECT * FROM presupuestos WHERE estado != 'anulado'");
+        $stmt = $this->db->getConnection()->prepare("SELECT * FROM presupuestos");
 
         $stmt->execute();
         $resultado = $stmt->fetchAll();

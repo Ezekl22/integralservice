@@ -17,24 +17,9 @@
             <div class="grilla w-95 d-flex flex-column align-items-center rounded-4">
 
                 <div class="d-flex flex-row contenedor__mayor align-items-start mt-4">
-
-                    <div class="d-flex w-100 alig-items-end">
-                        <div class="form-check ms-3 text__white">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                            <label class="form-check-label" for="flexCheckDefault">
-                                Facturado
-                            </label>
-                        </div>
-                        <div class="form-check ms-4 text__white">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                            <label class="form-check-label" for="flexCheckDefault">
-                                No Facturado
-                            </label>
-                        </div>
-                    </div>
-                    <div class="d-flex w-75 justify-content-end">
+                    <div class="d-flex w-100 justify-content-end">
                         <form action="index.php?module=presupuestos&action=searched" method="POST"
-                            class="input-group input-group-sm w-75" id="formBuscador">
+                            class="input-group input-group-sm w-25" id="formBuscador">
                             <input type="search" id="termino" name="termino" class="form-control"
                                 placeholder="Ingrese su busqueda"
                                 value="<?php echo isset($_POST['termino']) ? $_POST['termino'] : ""; ?>"
