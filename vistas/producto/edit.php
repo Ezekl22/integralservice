@@ -50,7 +50,7 @@ if ($action == 'edit' && $id != '') {
                             <div class="w-85 d-flex mt-3">
                                 <div class="input-group input-group-sm mb-3">
                                     <span class="input-group-text" id="inputGroup-sizing-sm">Stock</span>
-                                    <input type="text" class="form-control" aria-label="Sizing example input"
+                                    <input type="number" class="form-control" aria-label="Sizing example input"
                                         aria-describedby="inputGroup-sizing-sm" id="stock" name="stock"
                                         value="<?php echo $producto['stock']; ?>" required>
                                 </div>
@@ -65,15 +65,15 @@ if ($action == 'edit' && $id != '') {
                             <div class="w-85 d-flex mt-3">
                                 <div class="input-group input-group-sm mb-3">
                                     <span class="input-group-text" id="inputGroup-sizing-sm">Precio de compra</span>
-                                    <input type="text" class="form-control" aria-label="Sizing example input"
+                                    <input type="number" class="form-control" aria-label="Sizing example input"
                                         aria-describedby="inputGroup-sizing-sm" id="preciocompra" name="preciocompra"
-                                        value="<?php echo $producto['preciocompra']; ?>" required>
+                                        step="any" value="<?php echo $producto['preciocompra']; ?>" required>
                                 </div>
                                 <div class="input-group input-group-sm mb-3 ms-4">
                                     <span class="input-group-text" id="inputGroup-sizing-sm">Precio de venta</span>
-                                    <input type="text" class="form-control" aria-label="Sizing example input"
+                                    <input type="number" class="form-control" aria-label="Sizing example input"
                                         aria-describedby="inputGroup-sizing-sm" id="precioventa" name="precioventa"
-                                        value="<?php echo $producto['precioventa']; ?>" required>
+                                        step="any" value="<?php echo $producto['precioventa']; ?>" required>
                                 </div>
                             </div>
                         </div>
