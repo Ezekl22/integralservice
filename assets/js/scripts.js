@@ -33,11 +33,11 @@ const agregarComponenteProducto = () =>{
                                 <label class="input-group-text" for="producto" id="inputGroup-sizing-sm">Producto:</label>
                                 <input type="text" class="form-control w-25" disabled id="producto" value = "${productoSeleccionado[1]}">
                                 <label class="input-group-text" for="cantidad" id="inputGroup-sizing-sm">Cantidad:</label>
-                                <input type="text" class="form-control" aria-label="0" onchange="cantidadOnChange('${productoSeleccionado[0]}','${id}')" id="cantidad" name="cantidad[]">
+                                <input type="number" class="form-control" aria-label="0" onchange="cantidadOnChange('${productoSeleccionado[0]}','${id}')" id="cantidad" name="cantidad[]">
                                 <label class="input-group-text" for="valorunt" id="inputGroup-sizing-sm">Valor unitario:</label>
                                 <input type="text" class="form-control" disabled value= "${currencyFormatter(modulo == "pedidos"?productoSeleccionado[6]:productoSeleccionado[7])}" id="valorunt">
                                 <label class="input-group-text" for="totañ" id="inputGroup-sizing-sm">Total:</label>
-                                <input type="text" class="form-control me-7" disabled aria-label="0" id="total">
+                                <input type="number" class="form-control me-7" disabled aria-label="0" id="total" step="any">
                                 <input type="hidden" class="form-control me-7" aria-label="0" value="${productoSeleccionado[0]}" id="idproductos" name="idproductos[]">`;
     contProductos.appendChild(contComponente);
     cerrarGrilla('contGrillaProducto');
@@ -99,7 +99,7 @@ const mostrarGrillaProductos = ()=>{
                                 <div class="d-flex justify-content-center">
                                     <div class="input-group input-group-sm my-3 w-25">
                                         <label class="input-group-text" for="cantidad" id="inputGroup-sizing-sm">Cantidad:</label>
-                                        <input type="text" class="form-control" aria-label="0" id="cantidadProducto" value="1">
+                                        <input type="number" class="form-control" aria-label="0" id="cantidadProducto" value="1">
                                     </div>
                                 </div>
                             </div>`;

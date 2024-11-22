@@ -73,7 +73,7 @@ if ($action == 'edit' && $id != '') {
                             <div class="input-group input-group-sm me-7">
                                 <label class="input-group-text" for="puntoVenta" id="inputGroup-sizing-sm">Punto de
                                     venta:</label>
-                                <input type="text" class="form-control" aria-label="Sizing example input"
+                                <input type="number" class="form-control" aria-label="Sizing example input"
                                     aria-describedby="inputGroup-sizing-sm" id="puntoVenta" name="puntoVenta"
                                     value="<?php echo $presupuesto['puntoventa'] ?>" disabled required>
                             </div>
@@ -124,8 +124,8 @@ if ($action == 'edit' && $id != '') {
                                     <div class="input-group input-group-sm mb-3">
                                         <label class="input-group-text" for="totalProductos"
                                             id="inputGroup-sizing-sm">Total:</label>
-                                        <input type="text" class="form-control" disabled aria-label="0" id="totalproductos"
-                                            value="$0,00">
+                                        <input type="number" class="form-control" disabled aria-label="0" id="totalproductos"
+                                            value="$0,00" step="any">
                                     </div>
                                 </div>
 
