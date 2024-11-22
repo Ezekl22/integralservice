@@ -68,7 +68,7 @@ class ClienteCtr
 
     public function create()
     {
-        $cliente = new Cliente($_POST['nombre'], $_POST['apellido'], $_POST['email'], $_POST['cuit'], $_POST['iva']);
+        $cliente = new Cliente($_POST['nombre'], $_POST['apellido'], $_POST['email'], $_POST['cuit'], $_POST['categoriafiscal']);
         $status = $this->clienteDAO->createCliente($cliente);
         if ($status != "") {
             header("Location: index.php?module=clientes&status=success");
