@@ -16,15 +16,20 @@ class UsuarioCtr
         $id = isset($_GET['id']) ? $_GET['id'] : '';
         switch ($action) {
             case 'created':
+                //Verifico que el ultimo metodo que se realizo en el server es el post
                 if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $status = isset($_GET['status']) ? $_GET['status'] : "";
+                    //verifico que no se haya guardado previamente un usuario para evitar duplicados
                     if ($status != "success") {
                         $this->create();
                     }
                 }
                 break;
             case 'deleted':
-                $this->delete($id);
+                $status = isset($_GET['status']) ? $_GET['status'] : "";
+                if ($status != "success") {
+                    $this->delete($id);
+                }
                 break;
             case 'edited':
                 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -95,11 +100,7 @@ class UsuarioCtr
 
             // Llama a la función para crear el usuario en la base de datos
             $status = $this->usuarioDAO->createUsuario($usuario);
-            if ($status == "") {
-                header("Location: index.php?module=usuarios&status=success");
-            } else {
-                header("Location: index.php?module=usuarios&status=error&description=" . $status);
-            }
+            $this->showStatus($status);
         }
     }
 
@@ -114,7 +115,8 @@ class UsuarioCtr
         if (isset($_POST["nombre"])) {
             $usuario = new Usuario($_POST["nombre"], $_POST["apellido"], $_POST["tipo"], $_POST["mail"], $_POST["contrasena"]);
             $usuario->setIdUsuario($id);
-            $this->usuarioDAO->updateUsuario($usuario);
+            $status = $this->usuarioDAO->updateUsuario($usuario);
+            $this->showStatus($status);
         }
     }
 
@@ -132,7 +134,17 @@ class UsuarioCtr
 
 
         if (!empty($this->getUsuarioById($id)) && strtoupper($this->getUsuarioById($id)[3]) != "ADMINISTRADOR BASE") {
-            $this->usuarioDAO->deleteUsuario($id);
+            $status = $this->usuarioDAO->deleteUsuario($id);
+            $this->showStatus($status);
+        }
+    }
+
+    private function showStatus(string $status)
+    {
+        if ($status == "") {
+            header("Location: index.php?module=usuarios&status=success");
+        } else {
+            header("Location: index.php?module=usuarios&status=error&description=" . $status);
         }
     }
 
