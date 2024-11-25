@@ -1,8 +1,8 @@
 <?php
-$id = isset ($_GET['id']) ? $_GET['id'] : '';
+$id = isset($_GET['id']) ? $_GET['id'] : '';
 $ProveedorCtr = new ProveedorCtr();
-$action = isset ($_GET['action']) ? $_GET['action'] : '';
-$proveedorr = $ProveedorCtr->proveedorDAO->getProveedorById($id);
+$action = isset($_GET['action']) ? $_GET['action'] : '';
+$proveedorr = $ProveedorCtr->getProveedorById($id);
 $ProveedorCtr->update($id);
 $fecha = new DateTime($proveedorr['fechaCreacion']);
 
@@ -68,7 +68,7 @@ if ($action == 'edit' && $id != '') {
                             </div>
                             <div class="input-group input-group-sm mb-3 ms-5">
                                 <label class="input-group-text" for="saldo" id="inputGroup-sizing-sm">Fecha:</label>
-                                <input type="text" class="form-control" disabled aria-label="Sizing example input"
+                                <input type="date" class="form-control" disabled aria-label="Sizing example input"
                                     aria-describedby="inputGroup-sizing-sm" id="saldo" name="saldo"
                                     value="<?php echo $fecha->format('Y-m-d'); ?>" required>
                             </div>
