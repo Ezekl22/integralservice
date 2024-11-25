@@ -16,77 +16,86 @@ class GestionPantallasControlador
     {
 
         $tipoUsuario = "";
+        $sesionCtr = "";
         //verifico si hay un parametro get de module, si lo hay, traigo el tipo de usuario
-        if ($this->getModule() && !empty ($this->getModule())) {
+        if ($this->getModule() && !empty($this->getModule())) {
             session_start();
-            $sesionCtr = $_SESSION['session'];
+            $sesionCtr = isset($_SESSION['session']) ? $_SESSION['session'] : "";
             session_write_close();
-            $tipoUsuario = $sesionCtr->getUsuarioSesionado()->getTipo();
+            if (empty($sesionCtr)) {
+                $this->redireccionar("");
+            } else {
+                $tipoUsuario = $sesionCtr->getUsuarioSesionado()->getTipo();
+            }
         }
-        switch ($this->getModule()) {
-            case 'presupuestos':
-                // verifico que el tipo de usuario tiene acceso al modulo y si no lo tiene lo redirijo al menu
-                if (strtoupper($tipoUsuario) != "REPARADOR") {
-                    include_once ('./controladores/PresupuestoCtr.php');
-                    $indexPage = new PresupuestoCtr();
-                } else {
-                    $this->redireccionar('menu');
-                }
-                break;
-            case 'reparacion':
-                // verifico que el tipo de usuario tiene acceso al modulo y si no lo tiene lo redirijo al menu
-                if (strtoupper($tipoUsuario) != "VENDEDOR") {
-                    include_once ('controladores/ReparacionControlador.php');
-                } else {
-                    $this->redireccionar('menu');
-                }
-                break;
-            case 'clientes':
-                // verifico que el tipo de usuario tiene acceso al modulo y si no lo tiene lo redirijo al menu
-                if (strtoupper($tipoUsuario) != "REPARADOR") {
-                    include_once ('controladores/ClienteCtr.php');
-                    $indexPage = new ClienteCtr();
-                } else {
-                    $this->redireccionar('menu');
-                }
-                break;
-            case 'proveedores':
-                // verifico que el tipo de usuario tiene acceso al modulo y si no lo tiene lo redirijo al menu
-                if (strtoupper($tipoUsuario) == "ADMINISTRADOR" || strtoupper($tipoUsuario) == "ADMINISTRADOR BASE") {
-                    include_once ('controladores/ProveedorCtr.php');
-                    $indexPage = new ProveedorCtr();
-                } else {
-                    $this->redireccionar('menu');
-                }
-                break;
-            case 'pedidos':
-                // verifico que el tipo de usuario tiene acceso al modulo y si no lo tiene lo redirijo al menu
-                if (strtoupper($tipoUsuario) != "REPARADOR") {
-                    include_once ('controladores/PedidoCompraControlador.php');
-                } else {
-                    $this->redireccionar('menu');
-                }
-                break;
-            case 'usuarios':
-                // verifico que el tipo de usuario tiene acceso al modulo y si no lo tiene lo redirijo al menu
-                if (strtoupper($tipoUsuario) == "ADMINISTRADOR" || strtoupper($tipoUsuario) == "ADMINISTRADOR BASE") {
-                    include_once './controladores/UsuarioCtr.php';
-                    $indexPage = new UsuarioCtr();
-                } else {
-                    $this->redireccionar('menu');
-                }
-                break;
-            case 'productos':
-                include_once './controladores/ProductoCtr.php';
-                $indexPage = new ProductoCtr();
-                break;
-            case 'menu':
-                include_once './controladores/MenuControlador.php';
-                $indexPage = new MenuController();
-                break;
-            default:
-                include_once './vistas/inicio/index.php';
-                break;
+        if ($sesionCtr != "") {
+            switch ($this->getModule()) {
+                case 'presupuestos':
+                    // verifico que el tipo de usuario no tiene acceso al modulo y si no lo tiene lo redirijo al menu
+                    if (strtoupper($tipoUsuario) != "REPARADOR") {
+                        include_once('./controladores/PresupuestoCtr.php');
+                        $indexPage = PresupuestoCtr::getInstance();
+                    } else {
+                        $this->redireccionar('menu');
+                    }
+                    break;
+                case 'reparacion':
+                    // verifico que el tipo de usuario no tiene acceso al modulo y si no lo tiene lo redirijo al menu
+                    if (strtoupper($tipoUsuario) != "VENDEDOR") {
+                        include_once('controladores/ReparacionControlador.php');
+                    } else {
+                        $this->redireccionar('menu');
+                    }
+                    break;
+                case 'clientes':
+                    // verifico que el tipo de usuario no tiene acceso al modulo y si no lo tiene lo redirijo al menu
+                    if (strtoupper($tipoUsuario) != "REPARADOR") {
+                        include_once('controladores/ClienteCtr.php');
+                        $indexPage = ClienteCtr::getInstance();
+                    } else {
+                        $this->redireccionar('menu');
+                    }
+                    break;
+                case 'proveedores':
+                    // verifico que el tipo de usuario no tiene acceso al modulo y si no lo tiene lo redirijo al menu
+                    if (strtoupper($tipoUsuario) == "ADMINISTRADOR" || strtoupper($tipoUsuario) == "ADMINISTRADOR BASE") {
+                        include_once('controladores/ProveedorCtr.php');
+                        $indexPage = new ProveedorCtr();
+                    } else {
+                        $this->redireccionar('menu');
+                    }
+                    break;
+                case 'pedidos':
+                    // verifico que el tipo de usuario tiene acceso al modulo y si no lo tiene lo redirijo al menu
+                    if (strtoupper($tipoUsuario) != "REPARADOR") {
+                        include_once('controladores/PedidoCompraControlador.php');
+                    } else {
+                        $this->redireccionar('menu');
+                    }
+                    break;
+                case 'usuarios':
+                    // verifico que el tipo de usuario tiene acceso al modulo y si no lo tiene lo redirijo al menu
+                    if (strtoupper($tipoUsuario) == "ADMINISTRADOR" || strtoupper($tipoUsuario) == "ADMINISTRADOR BASE") {
+                        include_once './controladores/UsuarioCtr.php';
+                        $indexPage = UsuarioCtr::getInstance();
+                    } else {
+                        $this->redireccionar('menu');
+                    }
+                    break;
+                case 'productos':
+                    include_once './controladores/ProductoCtr.php';
+                    $indexPage = new ProductoCtr();
+                    break;
+                case 'menu':
+                    include_once './controladores/MenuControlador.php';
+                    $indexPage = new MenuController();
+                    break;
+                default:
+                    include_once './vistas/inicio/index.php';
+                    break;
+            }
+        } else {
+            include_once './vistas/inicio/index.php';
         }
 
         if ($this->getModule()) {
@@ -121,6 +130,7 @@ class GestionPantallasControlador
             }
 
         }
+
     }
 
     public function redireccionar($modulo)
@@ -138,11 +148,11 @@ class GestionPantallasControlador
 
     public function getModule()
     {
-        return isset ($_GET['module']) ? $_GET['module'] : '';
+        return isset($_GET['module']) ? $_GET['module'] : '';
     }
 
     public function getAction()
     {
-        return isset ($_GET['action']) ? $_GET['action'] : '';
+        return isset($_GET['action']) ? $_GET['action'] : '';
     }
 }

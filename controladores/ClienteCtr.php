@@ -4,18 +4,26 @@ require_once 'models/ClienteDAO.php';
 require_once 'controladores/GrillaCtr.php';
 require_once 'models/GrillaMdl.php';
 
-class ClienteCtr{
+class ClienteCtr
+{
     private $clienteDAO;
+    private static $instance = null;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->clienteDAO = new ClienteDAO();
-        $action = isset($_GET['action'])?$_GET['action']:'';
-        $module = isset($_GET['module'])?$_GET['module']:'';
-        $id = isset($_GET['id'])?$_GET['id']:'';
-        if($module == 'clientes'){
+        $action = isset($_GET['action']) ? $_GET['action'] : '';
+        $module = isset($_GET['module']) ? $_GET['module'] : '';
+        $id = isset($_GET['id']) ? $_GET['id'] : '';
+        if ($module == 'clientes') {
             switch ($action) {
                 case 'created':
-                    $this->create();
+                    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                        $status = isset($_GET['status']) ? $_GET['status'] : "";
+                        if ($status != "success") {
+                            $this->create();
+                        }
+                    }
                     break;
                 case 'deleted':
                     $this->delete($id);
@@ -28,6 +36,14 @@ class ClienteCtr{
                     break;
             }
         }
+    }
+
+    public static function getInstance()
+    {
+        if (self::$instance == null) {
+            self::$instance = new ClienteCtr();
+        }
+        return self::$instance;
     }
 
     public function index()
@@ -50,9 +66,15 @@ class ClienteCtr{
         require_once 'vistas/cliente/create.php';
     }
 
-    public function create() {
+    public function create()
+    {
         $cliente = new Cliente($_POST['nombre'], $_POST['apellido'], $_POST['email'], $_POST['cuit'], $_POST['iva']);
-        $this->clienteDAO->createCliente($cliente);
+        $status = $this->clienteDAO->createCliente($cliente);
+        if ($status != "") {
+            header("Location: index.php?module=clientes&status=success");
+        } else {
+            header("Location: index.php?module=clientes&status=error&description=" . $status);
+        }
     }
 
     public function getPantallaEdit()
@@ -61,29 +83,34 @@ class ClienteCtr{
         require_once 'vistas/cliente/edit.php';
     }
 
-    public function update($id) {
-        if(isset($_POST["nombre"])){
+    public function update($id)
+    {
+        if (isset($_POST["nombre"])) {
             $cliente = new Cliente($_POST["nombre"], $_POST["apellido"], $_POST["email"], $_POST["cuit"], $_POST["categoriafiscal"]);
             $cliente->setId($id);
             $this->clienteDAO->update($cliente);
         }
     }
-    
-    public function delete($id) {
+
+    public function delete($id)
+    {
         $this->clienteDAO->delete($id);
     }
 
-    public function getAllClientes(){
+    public function getAllClientes()
+    {
         return $this->clienteDAO->getAllClientes();
     }
 
-    public function getPantallaDelete(){
+    public function getPantallaDelete()
+    {
         $gestionPantallaCtr = $_SESSION['session']->getGestionPantallaCtr();
-        $gestionPantallaCtr->crearPopUp(new PopUpMdl('delete','Eliminar Cliente',"",BOTONES_POPUP_ELIMINAR,'index.php?action=delete'));
+        $gestionPantallaCtr->crearPopUp(new PopUpMdl('delete', 'Eliminar Cliente', "", BOTONES_POPUP_ELIMINAR, 'index.php?action=delete'));
         $this->index();
     }
-    
-    public function getClienteById($id){
+
+    public function getClienteById($id)
+    {
         return $this->clienteDAO->getClienteById($id);
     }
 
