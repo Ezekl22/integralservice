@@ -33,27 +33,6 @@ if ($action == 'see') {
         <article class="mt-5 d-flex flex-column align-items-center">
             <div class="grilla w-95 d-flex flex-column align-items-center rounded-4">
                 <div class="d-flex flex-row contenedor__mayor align-items-start mt-4">
-
-                    <div class="d-flex w-100 alig-items-end">
-                        <div class="form-check ms-3 text__white">
-                            <input class="form-check-input" type="checkbox" value="pedido" id="flexCheckDefault">
-                            <label class="form-check-label" for="flexCheckDefault">
-                                Pedidos
-                            </label>
-                        </div>
-                        <div class="form-check ms-4 text__white">
-                            <input class="form-check-input" type="checkbox" value="anulado" id="flexCheckDefault">
-                            <label class="form-check-label" for="flexCheckDefault">
-                                Anulados
-                            </label>
-                        </div>
-                        <div class="form-check ms-4 text__white">
-                            <input class="form-check-input" type="checkbox" value="entregado" id="flexCheckDefault">
-                            <label class="form-check-label" for="flexCheckDefault">
-                                Entregados
-                            </label>
-                        </div>
-                    </div>
                     <div class="d-flex w-75 justify-content-end">
                         <form action="index.php?module=pedidos&action=searched" method="POST"
                             class="input-group input-group-sm w-75" id="formBuscador">
