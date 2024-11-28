@@ -16,112 +16,127 @@ class PresupuestoDAO
     {
 
         $productos = $presupuesto->getProductos();
-        $productosValues = "";
-        $query = "";
-        for ($i = 0; $i < count($productos); $i++) {
-            $idProducto = $productos[$i]->getIdProducto();
-            $preciounit = $productos[$i]->getPreciounit();
-            $cantidad = $productos[$i]->getCantidad();
-            $separacion = $i != count($productos) - 1 ? ', ' : ';';
-            $productosValues = $productosValues . ' (@idpresupuesto, ' . $idProducto . ', ' . $preciounit . ', ' . $cantidad . ')' . $separacion;
-        }
+        $params = [];
         if ($presupuesto->getTipo() == "Venta") {
-            $queryInsert = "INSERT INTO productospresupuestos (idpresupuesto, idproducto, preciounit, cantidad) 
-            VALUES " . $productosValues;
-        } elseif ($presupuesto->getTipo() == "Reparacion") {
-            $queryInsert = 'INSERT INTO reparaciones (idpresupuesto, modelo, marca, numeroserie, descripcion) VALUES ' .
-                '(@idpresupuesto, "' . $reparacion->getModelo() . '", "' . $reparacion->getMarca() . '", "' . $reparacion->getNumeroSerie() . '", "' . $reparacion->getDescripcion() . '");';
-        }
-        $query = 'INSERT INTO presupuestos (idcliente, nrocomprobante, tipo, estado, fecha, puntoventa, total)' .
-            'VALUES (:idcliente, :nrocomprobante, :tipo, :estado, :fecha, :puntoventa, :total); ' .
-            'SET @idpresupuesto = LAST_INSERT_ID(); ' . $queryInsert;
-        UtilidadesDAO::getInstance()->executeQuery($query, );
-        $params = [
-            ':idcliente' => $presupuesto->getIdCliente(),
-            ':nrocomprobante' => $presupuesto->getNroComprobante(),
-            ':tipo' => $presupuesto->getTipo(),
-            ':estado' => $presupuesto->getEstado(),
-            ':fecha' => date("d-m-Y"),
-            ':puntoventa' => $presupuesto->getPuntoVenta(),
-            ':total' => $presupuesto->getTotal()
-        ];
-        $stmt = UtilidadesDAO::getInstance()->executeQuery($query, $params);
-        // $idCliente = $presupuesto->getIdCliente();
-        // $nroComprobante = $presupuesto->getNroComprobante();
-        // $tipo = $presupuesto->getTipo();
-        // $estado = $presupuesto->getEstado();
-        // $fecha = date("d-m-Y");
-        // $puntoVenta = $presupuesto->getPuntoVenta();
-        // $total = $presupuesto->getTotal();
-        // $stmt->bindParam(":idcliente", $idCliente, PDO::PARAM_INT);
-        // $stmt->bindParam(":nrocomprobante", $nroComprobante, PDO::PARAM_STR);
-        // $stmt->bindParam(":tipo", $tipo, PDO::PARAM_STR);
-        // $stmt->bindParam(":estado", $estado, PDO::PARAM_STR);
-        // $stmt->bindParam(":fecha", $fecha, PDO::PARAM_STR);
-        // $stmt->bindParam(":puntoventa", $puntoVenta, PDO::PARAM_STR);
-        // $stmt->bindParam(":total", $total, PDO::PARAM_STR_CHAR);
+            for ($i = 0; $i < count($productos); $i++) {
+                $param = [
+                    '@idpresupuesto',
+                    $productos[$i]->getIdProducto(),
+                    $productos[$i]->getPreciounit(),
+                    $productos[$i]->getCantidad(),
+                ];
+                array_push($params, $param);
+            }
 
-        return UtilidadesDAO::getInstance()->checkExecute($stmt);
+            $queryInsert = "INSERT INTO productospresupuestos (idpresupuesto, idproducto, preciounit, cantidad) 
+            VALUES ";
+        } elseif ($presupuesto->getTipo() == "Reparacion") {
+            $queryInsert = 'INSERT INTO reparaciones (idpresupuesto, modelo, marca, numeroserie, descripcion) VALUES ';
+            $param = [
+                "'@idpresupuesto'",
+                "'" . $reparacion->getModelo() . "'",
+                "'" . $reparacion->getMarca() . "'",
+                "'" . $reparacion->getNumeroSerie() . "'",
+                "'" . $reparacion->getDescripcion() . "'",
+            ];
+            array_push($params, $param);
+        }
+
+        $queries = [
+            [
+                'query' => 'INSERT INTO presupuestos (idcliente, nrocomprobante, tipo, estado, fecha, puntoventa, total) VALUES ',
+                'type' => 'INSERT',
+                'params' => [
+                    [
+                        $presupuesto->getIdCliente(),
+                        "'" . $presupuesto->getNroComprobante() . "'",
+                        "'" . $presupuesto->getTipo() . "'",
+                        "'" . $presupuesto->getEstado() . "'",
+                        "'" . date("d-m-Y") . "'",
+                        "'" . $presupuesto->getPuntoVenta() . "'",
+                        $presupuesto->getTotal(),
+                    ]
+                ]
+            ],
+            [
+                'query' => 'SET @idpresupuesto = LAST_INSERT_ID(); ',
+                'type' => 'SET',
+                'params' => [],
+            ],
+            [
+                'query' => $queryInsert,
+                'type' => 'INSERT',
+                'params' => $params,
+            ]
+
+        ];
+
+        UtilidadesDAO::getInstance()->executeQuery($queries);
+        return "";
     }
 
     private function createProductosPresupuesto(array $productos)
     {
-        $queryProductos = "";
+        $params = "";
         for ($i = 0; $i < count($productos); $i++) {
-
-            $separacion = $i == count($productos) - 1 ? ";" : ",";
-            $queryProductos = $queryProductos . " (" . $productos[$i]->getIdPresupuesto() . ", "
-                . $productos[$i]->getIdProducto() . ", "
-                . $productos[$i]->getPreciounit() . ", "
-                . $productos[$i]->getCantidad() . ")"
-                . $separacion;
+            $param = [
+                $productos[$i]->getIdPresupuesto(),
+                $productos[$i]->getIdProducto(),
+                $productos[$i]->getPreciounit(),
+                $productos[$i]->getCantidad(),
+            ];
+            array_push($params, $param);
         }
-        $stmt = $this->db->getConnection()->prepare("INSERT INTO productospresupuestos (idpresupuesto, idproducto, preciounit, cantidad) 
-                                                        VALUES " . $queryProductos);
-        return UtilidadesDAO::getInstance()->checkExecute($stmt);
+        $queries = [
+            [
+                'query' => "INSERT INTO productospresupuestos (idpresupuesto, idproducto, preciounit, cantidad) VALUES ",
+                'type' => 'INSERT',
+                'params' => $params,
+            ]
+        ];
+        return UtilidadesDAO::getInstance()->executeQuery($queries);
     }
 
     public function updatePresupuesto(PresupuestoMdl $presupuesto)
     {
-        $stmt = $this->db->getConnection()->prepare("UPDATE presupuestos SET idcliente=:idcliente,
-         total=:total, estado=:estado WHERE idpresupuesto= :idpresupuesto");
-
-        $idCliente = $presupuesto->getIdCliente();
-        $total = $presupuesto->getTotal();
-        $idPresupuesto = $presupuesto->getIdPresupuesto();
-        $estado = $presupuesto->getEstado();
-        $stmt->bindParam(":idcliente", $idCliente, PDO::PARAM_INT);
-        $stmt->bindParam(":total", $total, PDO::PARAM_STR_CHAR);
-        $stmt->bindParam(":estado", $estado, PDO::PARAM_STR_CHAR);
-        $stmt->bindParam(":idpresupuesto", $idPresupuesto, PDO::PARAM_INT);
+        $queries = [
+            [
+                'query' => "UPDATE presupuestos SET 
+                            idcliente = " . $presupuesto->getIdCliente() . ", 
+                            total=" . $presupuesto->getTotal() . ", 
+                            estado= '" . $presupuesto->getEstado() . "' 
+                            WHERE idpresupuesto= " . $presupuesto->getIdPresupuesto(),
+                'type' => 'UPDATE',
+                'params' => [],
+            ]
+        ];
         if (isset($_GET['action']) && $_GET['action'] != "facturar") {
             if ($presupuesto->getTipo() == "Reparacion") {
-                $this->updateReparacionPresupuesto($idPresupuesto);
+                $this->updateReparacionPresupuesto($presupuesto->getIdPresupuesto());
             } else {
-                $this->updateProductosPresupuesto($idPresupuesto, $presupuesto);
+                $this->updateProductosPresupuesto($presupuesto->getIdPresupuesto(), $presupuesto);
             }
         }
 
-        return UtilidadesDAO::getInstance()->checkExecute($stmt);
+        return UtilidadesDAO::getInstance()->executeQuery($queries);
     }
 
     public function updateReparacionPresupuesto(int $idPresupuesto)
     {
         $reparacion = new ReparacionMdl($_POST['modelo'], $_POST['marca'], $_POST['nroserie'], $_POST['descripcion']);
-        $stmt = $this->db->getConnection()->prepare("UPDATE reparaciones SET modelo=:modelo, marca=:marca,
-         numeroserie=:numeroserie, descripcion=:descripcion WHERE idpresupuesto= :idpresupuesto");
-        $modelo = $reparacion->getModelo();
-        $marca = $reparacion->getMarca();
-        $numeroserie = $reparacion->getNumeroSerie();
-        $descripcion = $reparacion->getDescripcion();
-
-        $stmt->bindParam(":modelo", $modelo, PDO::PARAM_STR_CHAR);
-        $stmt->bindParam(":marca", $marca, PDO::PARAM_STR_CHAR);
-        $stmt->bindParam(":numeroserie", $numeroserie, PDO::PARAM_STR_CHAR);
-        $stmt->bindParam(":descripcion", $descripcion, PDO::PARAM_STR_CHAR);
-        $stmt->bindParam(":idpresupuesto", $idPresupuesto, PDO::PARAM_INT);
-
-        return UtilidadesDAO::getInstance()->checkExecute($stmt);
+        $queries = [
+            [
+                'query' => "UPDATE reparaciones SET 
+                            modelo = " . $reparacion->getModelo() . ", 
+                            marca=" . $reparacion->getMarca() . ", 
+                            numeroserie=" . $reparacion->getNumeroSerie() . "
+                            descripcion=" . $reparacion->getDescripcion() . "
+                            WHERE idpresupuesto= " . $idPresupuesto,
+                'type' => 'UPDATE',
+                'params' => [],
+            ]
+        ];
+        return UtilidadesDAO::getInstance()->executeQuery($queries);
     }
 
     public function updateProductosPresupuesto(int $idPresupuesto, PresupuestoMdl $presupuesto)
@@ -205,121 +220,138 @@ class PresupuestoDAO
             $queryCasesWhere = $queryCasesWhere . $producto->getIdProducto() . $separador;
             $contador++;
         }
-
-        $stmt = $this->db->getConnection()->prepare("UPDATE productospresupuestos 
-                                                        SET preciounit = CASE" . $queryCasesPrecio .
-            " END, cantidad = CASE" . $queryCasesCantidad .
-            " END WHERE idPresupuesto = " . $productos[0]->getIdPresupuesto() .
-            " AND idProducto IN (" . $queryCasesWhere . ");");
-
-        return UtilidadesDAO::getInstance()->checkExecute($stmt);
-
+        $queries = [
+            [
+                'query' => "UPDATE productospresupuestos SET preciounit = CASE" . $queryCasesPrecio .
+                    " END, cantidad = CASE" . $queryCasesCantidad .
+                    " END WHERE idPresupuesto = " . $productos[0]->getIdPresupuesto() .
+                    " AND idProducto IN (" . $queryCasesWhere . ");",
+                'type' => 'UPDATE',
+                'params' => [],
+            ]
+        ];
+        return UtilidadesDAO::getInstance()->executeQuery($queries);
     }
 
     private function deleteProductosPresupuesto(int $idPresupuesto, array $productos)
     {
         $placeholders = implode(',', array_fill(0, count($productos), '?'));
-        $stmt = $this->db->getConnection()->prepare("DELETE FROM productospresupuestos WHERE idpresupuesto = ? AND idproducto IN ($placeholders) ");
-
-        return UtilidadesDAO::getInstance()->checkExecute($stmt, array_merge([$idPresupuesto], $productos));
+        $queries = [
+            [
+                'query' => "DELETE FROM productospresupuestos WHERE idpresupuesto = ? AND idproducto IN ($placeholders) ",
+                'type' => 'DELETE',
+                'params' => [],
+            ]
+        ];
+        return UtilidadesDAO::getInstance()->executeQuery($queries);
     }
 
     public function getNuevoNroComprobante()
     {
-        $stmt = $this->db->getConnection()->prepare("SELECT MAX(idpresupuesto) FROM presupuestos");
-
-        $stmt->execute();
-        $resultado = $stmt->fetchAll()[0][0];
-        $stmt->closeCursor();
-        $stmt = null;
-        return $resultado;
+        $queries = [
+            [
+                'query' => "SELECT MAX(idpresupuesto) FROM presupuestos",
+                'type' => 'SELECT',
+                'params' => [],
+            ]
+        ];
+        return UtilidadesDAO::getInstance()->executeQuery($queries)[0][0];
     }
 
     public function getPresupuestoById($id)
     {
-        $stmt = $this->db->getConnection()->prepare("SELECT * FROM presupuestos WHERE idPresupuesto = " . $id);
-
-        $stmt->execute();
-        $resultado = $stmt->fetchAll()[0];
-        $stmt->closeCursor();
-        $stmt = null;
-        return $resultado;
-
+        $queries = [
+            [
+                'query' => "SELECT * FROM presupuestos WHERE idPresupuesto = " . $id,
+                'type' => 'SELECT',
+                'params' => [],
+            ]
+        ];
+        return UtilidadesDAO::getInstance()->executeQuery($queries)[0];
     }
 
     public function getAllPresupuestos()
     {
-        $stmt = $this->db->getConnection()->prepare("SELECT * FROM presupuestos");
-
-        $stmt->execute();
-        $resultado = $stmt->fetchAll();
-        $stmt->closeCursor();
-        $stmt = null;
-        return $resultado;
-
+        $queries = [
+            [
+                'query' => "SELECT * FROM presupuestos",
+                'type' => 'SELECT',
+                'params' => [],
+            ]
+        ];
+        return UtilidadesDAO::getInstance()->executeQuery($queries);
     }
 
     public function search()
     {
         $termino = isset($_POST['termino']) ? '%' . $_POST['termino'] . '%' : "";
         if ($termino != "") {
-            $query = "SELECT presupuestos.idpresupuesto, 
-                      presupuestos.idcliente, presupuestos.nrocomprobante, 
-                      presupuestos.tipo, presupuestos.estado,
-                      presupuestos.fecha,
-                      presupuestos.puntoventa,
-                      presupuestos.total
-                      FROM presupuestos 
-                      INNER JOIN clientes ON presupuestos.idcliente = clientes.idcliente
-                      WHERE presupuestos.estado != 'cancelado'
-                      AND presupuestos.nrocomprobante LIKE '$termino'
-                      OR presupuestos.tipo LIKE '$termino'
-                      OR presupuestos.estado LIKE '$termino'
-                      OR presupuestos.fecha LIKE '$termino'
-                      OR presupuestos.puntoventa LIKE '$termino'
-                      OR CAST(presupuestos.total AS CHAR) LIKE '$termino'
-                      OR CONCAT(clientes.nombre, ' ', clientes.apellido) LIKE '$termino'";
-            $stmt = $this->db->getConnection()->prepare($query);
-            $stmt->execute();
-            $retorno = $stmt->fetchAll();
-            $stmt->closeCursor();
-            $stmt = null;
-            return $retorno;
+            $queries = [
+                [
+                    'query' => "SELECT presupuestos.idpresupuesto, 
+                          presupuestos.idcliente, presupuestos.nrocomprobante, 
+                          presupuestos.tipo, presupuestos.estado,
+                          presupuestos.fecha,
+                          presupuestos.puntoventa,
+                          presupuestos.total
+                          FROM presupuestos 
+                          INNER JOIN clientes ON presupuestos.idcliente = clientes.idcliente
+                          WHERE presupuestos.estado != 'cancelado'
+                          AND presupuestos.nrocomprobante LIKE '$termino'
+                          OR presupuestos.tipo LIKE '$termino'
+                          OR presupuestos.estado LIKE '$termino'
+                          OR presupuestos.fecha LIKE '$termino'
+                          OR presupuestos.puntoventa LIKE '$termino'
+                          OR CAST(presupuestos.total AS CHAR) LIKE '$termino'
+                          OR CONCAT(clientes.nombre, ' ', clientes.apellido) LIKE '$termino'",
+                    'type' => 'SELECT',
+                    'params' => [],
+                ]
+            ];
+            return UtilidadesDAO::getInstance()->executeQuery($queries);
         }
     }
 
     public function getProductosPresupuestoById($id)
     {
-        $stmt = $this->db->getConnection()->prepare("SELECT productos.idproducto, productos.nombre, productos.marca, productos.detalle, 
-                                                     productospresupuestos.cantidad, productos.precioventa, 
-                                                     productospresupuestos.cantidad * productos.precioventa AS total
-                                                     FROM productospresupuestos
-                                                     INNER JOIN productos ON productospresupuestos.idproducto = productos.idproducto
-                                                     WHERE productospresupuestos.idpresupuesto = " . $id);
-
-        $stmt->execute();
-        $resultado = $stmt->fetchAll();
-        $stmt->closeCursor();
-        $stmt = null;
-        return $resultado;
+        $queries = [
+            [
+                'query' => "SELECT productos.idproducto, productos.nombre, productos.marca, productos.detalle, 
+                            productospresupuestos.cantidad, productos.precioventa, 
+                            productospresupuestos.cantidad * productos.precioventa AS total
+                            FROM productospresupuestos
+                            INNER JOIN productos ON productospresupuestos.idproducto = productos.idproducto
+                            WHERE productospresupuestos.idpresupuesto = " . $id,
+                'type' => 'SELECT',
+                'params' => [],
+            ]
+        ];
+        return UtilidadesDAO::getInstance()->executeQuery($queries);
     }
 
     public function getReparacionPresupuestoById($id)
     {
-        $stmt = $this->db->getConnection()->prepare("SELECT modelo, marca, numeroserie, descripcion
-                                                     FROM reparaciones
-                                                     WHERE reparaciones.idpresupuesto = " . $id);
-
-        $stmt->execute();
-        $resultado = $stmt->fetchAll()[0];
-        $stmt->closeCursor();
-        $stmt = null;
-        return $resultado;
+        $queries = [
+            [
+                'query' => "SELECT modelo, marca, numeroserie, descripcion
+                            FROM reparaciones
+                            WHERE reparaciones.idpresupuesto = " . $id,
+                'type' => 'SELECT',
+                'params' => [],
+            ]
+        ];
+        return UtilidadesDAO::getInstance()->executeQuery($queries)[0];
     }
 
     public function annul($id)
     {
-        $stmt = $this->db->getConnection()->prepare("UPDATE presupuestos SET estado = 'anulado' WHERE idPresupuesto = " . $id);
-        return UtilidadesDAO::getInstance()->checkExecute($stmt);
+        $queries = [
+            [
+                'query' => "UPDATE presupuestos SET estado = 'anulado' WHERE idPresupuesto = " . $id,
+                'type' => 'UPDATE',
+                'params' => [],
+            ]
+        ];
+        return UtilidadesDAO::getInstance()->executeQuery($queries);
     }
 }

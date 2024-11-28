@@ -5,6 +5,7 @@ require_once 'models/PresupuestoDAO.php';
 require_once 'models/ProductoPresupuestoMdl.php';
 require_once 'controladores/ClienteCtr.php';
 require_once 'controladores/ProductoCtr.php';
+require_once 'controladores/ToastCtr.php';
 
 class PresupuestoCtr
 {
@@ -21,22 +22,28 @@ class PresupuestoCtr
         $this->productoCtr = new ProductoCtr();
         $action = isset($_GET['action']) ? $_GET['action'] : '';
         $id = isset($_GET['id']) ? $_GET['id'] : '';
-
+        $status = isset($_GET['status']) ? $_GET['status'] : "";
         switch ($action) {
             case 'create':
                 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                    $status = isset($_GET['status']) ? $_GET['status'] : "";
                     if ($status != "success") {
                         $this->create();
+                    } else {
+
                     }
                 }
                 break;
             case 'annulled':
-                $this->annulled($id);
+                if ($status != "success") {
+                    $this->annulled($id);
+
+                } else {
+                    $toast = new ToastCtr();
+                    $toast->mostrarToast("exito", "Presupuesto anulado");
+                }
                 break;
             case 'edit':
                 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                    $status = isset($_GET['status']) ? $_GET['status'] : "";
                     if ($status != "success") {
                         $this->update($id);
                     }
@@ -128,7 +135,7 @@ class PresupuestoCtr
                 $status = $this->presupuestoDAO->create($presupuesto, $reparacion);
             }
 
-            if ($status != "") {
+            if ($status == "") {
                 header("Location: index.php?module=presupuestos&status=success");
             } else {
                 header("Location: index.php?module=presupuestos&status=error&description=" . $status);
@@ -207,10 +214,10 @@ class PresupuestoCtr
                 $status = $this->presupuestoDAO->updatePresupuesto($presupuesto);
             }
         }
-        if ($status != "") {
+        if ($status == "") {
             header("Location: index.php?module=presupuestos&status=success");
         } else {
-            header("Location: index.php?module=presupuestos&status=error&description=" . $status);
+            header("Location: index.php?module=presupuestos&status=error");
         }
     }
 
@@ -235,8 +242,14 @@ class PresupuestoCtr
     {
         $presupuesto = $this->getPresupuestoById($id);
         $estado = $presupuesto->getEstado();
+
         if ($estado != 'Pendiente presupuesto' || $estado != 'En reparacion' || $estado != '')
-            $this->presupuestoDAO->annul($id);
+            $status = $this->presupuestoDAO->annul($id);
+        if ($status == "") {
+            header("Location: index.php?module=presupuestos&action=annulled&status=success");
+        } else {
+            header("Location: index.php?module=presupuestos&action=annulled&status=error");
+        }
     }
 
     public function getAllClientes()
