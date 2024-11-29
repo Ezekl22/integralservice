@@ -23,13 +23,18 @@ class PresupuestoCtr
         $action = isset($_GET['action']) ? $_GET['action'] : '';
         $id = isset($_GET['id']) ? $_GET['id'] : '';
         $status = isset($_GET['status']) ? $_GET['status'] : "";
+        $toast = new ToastCtr();
+        if ($status == "error") {
+            $description = isset($_GET['description']) ? $_GET['description'] : "";
+            $toast->mostrarToast($status, $description);
+        }
         switch ($action) {
             case 'create':
                 if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     if ($status != "success") {
                         $this->create();
                     } else {
-
+                        $toast->mostrarToast("exito", "Presupuesto creado");
                     }
                 }
                 break;
@@ -38,7 +43,7 @@ class PresupuestoCtr
                     $this->annulled($id);
 
                 } else {
-                    $toast = new ToastCtr();
+
                     $toast->mostrarToast("exito", "Presupuesto anulado");
                 }
                 break;
@@ -46,6 +51,8 @@ class PresupuestoCtr
                 if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     if ($status != "success") {
                         $this->update($id);
+                    } else {
+                        $toast->mostrarToast("exito", "Presupuesto modificado");
                     }
                 }
                 break;

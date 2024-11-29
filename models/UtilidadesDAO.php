@@ -22,9 +22,9 @@ class UtilidadesDAO
     {
         $error = "";
         $stmt->execute($params);
-
+        $resultado = [];
         if ($stmt->errorCode() !== '00000') { // 00000 indica "sin error"
-            $error = $stmt->errorInfo();
+            return $stmt->errorInfo();
         }
 
         if ($typeQuery == "SELECT") {

@@ -71,8 +71,9 @@ class PresupuestoDAO
 
         ];
 
-        UtilidadesDAO::getInstance()->executeQuery($queries);
-        return "";
+        $error = UtilidadesDAO::getInstance()->executeQuery($queries);
+
+        return $error != "" ? "Error en la creacion del presupuesto: " . $error : $error;
     }
 
     private function createProductosPresupuesto(array $productos)
