@@ -1,6 +1,7 @@
 <?php
 
 require_once 'includes/DBConnection.php';
+require_once 'models/UtilidadesDAO.php';
 
 class UsuarioDAO
 {
@@ -13,114 +14,110 @@ class UsuarioDAO
 
     public function createUsuario(Usuario $usuario)
     {
-        $stmt = $this->db->getConnection()->prepare("INSERT INTO usuarios (nombre, apellido, mail, contrasena, tipo) VALUES (:nombre, :apellido, :mail, :contrasena, :tipo)");
-
-        $nombre = $usuario->getNombre();
-        $apellido = $usuario->getApellido();
-        $mail = $usuario->getMail();
-        $contrasena = $usuario->getContrasena();
-        $tipo = $usuario->getTipo();
-
-        $stmt->bindParam(":nombre", $nombre, PDO::PARAM_STR);
-        $stmt->bindParam(":apellido", $apellido, PDO::PARAM_STR);
-        $stmt->bindParam(":mail", $mail, PDO::PARAM_STR);
-        $stmt->bindParam(":contrasena", $contrasena, PDO::PARAM_STR);
-        $stmt->bindParam(":tipo", $tipo, PDO::PARAM_STR);
-
-        return $this->checkExecute($stmt);
+        $queries = [
+            [
+                'query' => "INSERT INTO usuarios (nombre, apellido, mail, contrasena, tipo)
+                            VALUES ",
+                'type' => 'INSERT',
+                'params' => [
+                    [
+                        "'" . $usuario->getNombre() . "'",
+                        "'" . $usuario->getApellido() . "'",
+                        "'" . $usuario->getMail() . "'",
+                        "'" . $usuario->getContrasena() . "'",
+                        "'" . $usuario->getTipo() . "'",
+                    ]
+                ],
+            ]
+        ];
+        return UtilidadesDAO::getInstance()->executeQuery($queries);
     }
 
     public function updateUsuario(Usuario $usuario)
     {
-        $nombre = $usuario->getNombre();
-        $apellido = $usuario->getApellido();
-        $mail = $usuario->getMail();
         $contrasena = $usuario->getContrasena();
-        $tipo = $usuario->getTipo();
-        $idusuario = $usuario->getIdUsuario();
-
-        $txtPassword = $contrasena != '' ? ' contrasena=:contrasena,' : '';
-        $query = "UPDATE usuarios SET nombre=:nombre, apellido=:apellido, mail=:mail," . $txtPassword . " tipo=:tipo WHERE idusuario=:idusuario";
-        $stmt = $this->db->getConnection()->prepare($query);
-
-        $stmt->bindParam(":nombre", $nombre, PDO::PARAM_STR);
-        $stmt->bindParam(":apellido", $apellido, PDO::PARAM_STR);
-        $stmt->bindParam(":mail", $mail, PDO::PARAM_STR);
-        if ($contrasena != '') {
-            $stmt->bindParam(":contrasena", $contrasena, PDO::PARAM_STR);
-        }
-        $stmt->bindParam(":tipo", $tipo, PDO::PARAM_STR);
-        $stmt->bindParam(":idusuario", $idusuario, PDO::PARAM_INT);
-
-        return $this->checkExecute($stmt);
+        $txtPassword = $contrasena != '' ? ' contrasena="' . $contrasena . '",' : '';
+        $queries = [
+            [
+                'query' => "UPDATE usuarios SET nombre='" . $usuario->getNombre() . "', 
+                            apellido='" . $usuario->getApellido() . "',
+                            mail='" . $usuario->getMail() . "'," . $txtPassword . " 
+                            tipo='" . $usuario->getTipo() . "' WHERE idusuario=" . $usuario->getIdUsuario(),
+                'type' => 'UPDATE',
+                'params' => [],
+            ]
+        ];
+        return UtilidadesDAO::getInstance()->executeQuery($queries);
     }
 
     public function deleteUsuario($id)
     {
-        $stmt = $this->db->getConnection()->prepare("DELETE FROM usuarios WHERE idusuario = :id");
-        $stmt->bindParam(":id", $id, PDO::PARAM_INT);
-
-        return $this->checkExecute($stmt);
+        $queries = [
+            [
+                'query' => "DELETE FROM usuarios WHERE idusuario = $id",
+                'type' => 'DELETE',
+                'params' => [],
+            ]
+        ];
+        return UtilidadesDAO::getInstance()->executeQuery($queries);
     }
 
     public function getUsuarioById($id)
     {
-        $stmt = $this->db->getConnection()->prepare("SELECT * FROM usuarios WHERE idusuario = " . $id);
-        $stmt->execute();
-        $retorno = $stmt->fetchAll();
-        $stmt->closeCursor();
-        $stmt = null;
-        return empty($retorno) ? [] : $retorno[0];
+        $queries = [
+            [
+                'query' => "SELECT * FROM usuarios WHERE idusuario = " . $id,
+                'type' => 'SELECT',
+                'params' => [],
+            ]
+        ];
+        $usuario = UtilidadesDAO::getInstance()->executeQuery($queries);
+        if (is_array($usuario)) {
+            $usuario = empty($usuario) ? [] : $usuario[0];
+        }
+        return $usuario;
     }
 
     public function getAllUsuarios()
     {
-        // Código para obtener todos los usuarios desde la base de datos
-        $stmt = $this->db->getConnection()->prepare("SELECT * FROM usuarios");
-        $stmt->execute();
-        $retorno = $stmt->fetchAll();
-        $stmt->closeCursor();
-        $stmt = null;
-        return $retorno;
+        $queries = [
+            [
+                'query' => "SELECT * FROM usuarios",
+                'type' => 'SELECT',
+                'params' => [],
+            ]
+        ];
+        return UtilidadesDAO::getInstance()->executeQuery($queries);
     }
 
     public function getUsuarioByMailContra($mail, $contrasena)
     {
-        $query = "SELECT * FROM usuarios WHERE mail = :mail AND contrasena = :contrasena";
-        $stmt = $this->db->getConnection()->prepare($query);
-
-        $stmt->bindParam(":mail", $mail, PDO::PARAM_STR);
-        $stmt->bindParam(":contrasena", $contrasena, PDO::PARAM_STR);
-        $stmt->execute();
-        $retorno = $stmt->fetchAll();
-        $stmt->closeCursor();
-        $stmt = null;
-        return empty($retorno) ? [] : $retorno[0];
+        $queries = [
+            [
+                'query' => "SELECT * FROM usuarios WHERE mail = '$mail' AND contrasena = '$contrasena'",
+                'type' => 'SELECT',
+                'params' => [],
+            ]
+        ];
+        $usuario = UtilidadesDAO::getInstance()->executeQuery($queries);
+        if (is_array($usuario)) {
+            $usuario = empty($usuario) ? [] : $usuario[0];
+        }
+        return $usuario;
     }
 
     public function search()
     {
         $termino = isset($_POST['termino']) ? '%' . $_POST['termino'] . '%' : "";
         if ($termino != "") {
-            $query = "SELECT * FROM usuarios WHERE nombre LIKE '$termino' OR apellido LIKE '$termino' OR tipo LIKE '$termino' OR mail LIKE '$termino' ";
-            $stmt = $this->db->getConnection()->prepare($query);
-            $stmt->execute();
-            $retorno = $stmt->fetchAll();
-            $stmt->closeCursor();
-            $stmt = null;
-            return $retorno;
+            $queries = [
+                [
+                    'query' => "SELECT * FROM usuarios WHERE nombre LIKE '$termino' OR apellido LIKE '$termino' OR tipo LIKE '$termino' OR mail LIKE '$termino' ",
+                    'type' => 'SELECT',
+                    'params' => [],
+                ]
+            ];
+            return UtilidadesDAO::getInstance()->executeQuery($queries);
         }
-    }
-
-    private function checkExecute(PDOStatement $stmt)
-    {
-        $error = "";
-        if (!$stmt->execute()) {
-            $error = $stmt->errorInfo();
-        }
-
-        $stmt->closeCursor();
-        $stmt = null;
-        return $error;
     }
 }
