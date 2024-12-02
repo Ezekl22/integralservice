@@ -165,7 +165,8 @@ class UsuarioCtr
     {
         $usuario = $this->usuarioDAO->getUsuarioById($id);
         if (is_string($usuario)) {
-            ErrorCtr::getInstance()->showError($usuario, "error al traer el usuario");
+            $toast = new ToastCtr();
+            $toast->mostrarToast("error", "error al traer el usuario", $usuario);
         }
         return $usuario;
 

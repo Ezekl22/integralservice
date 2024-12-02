@@ -6,7 +6,6 @@ require_once 'models/ProductoPresupuestoMdl.php';
 require_once 'controladores/ClienteCtr.php';
 require_once 'controladores/ProductoCtr.php';
 require_once 'controladores/ToastCtr.php';
-require_once 'controladores/ErrorCtr.php';
 
 class PresupuestoCtr
 {
@@ -27,7 +26,7 @@ class PresupuestoCtr
         $toast = new ToastCtr();
         if ($status == "error") {
             $description = isset($_GET['description']) ? $_GET['description'] : "";
-            ErrorCtr::getInstance()->showError($description, "");
+            $toast->mostrarToast($status, $description);
         }
         switch ($action) {
             case 'create':
@@ -91,7 +90,8 @@ class PresupuestoCtr
 
         $presupuestos = $action == "searched" ? $this->search() : $this->presupuestoDAO->getAllPresupuestos();
         if (is_string($presupuestos)) {
-            ErrorCtr::getInstance()->showError($presupuestos, "error al traer todos los presupuestos");
+            $toast = new ToastCtr();
+            $toast->mostrarToast("error", "error al traer todos los presupuestos", $presupuestos);
         }
 
         $presupuestoCtr = $this->getInstance();
@@ -123,7 +123,8 @@ class PresupuestoCtr
         $reparacion = $this->presupuestoDAO->getReparacionPresupuestoById($id);
 
         if (is_string($reparacion)) {
-            ErrorCtr::getInstance()->showError($reparacion, "error al traer la reparacion");
+            $toast = new ToastCtr();
+            $toast->mostrarToast("error", "error al traer la reparacion", $reparacion);
         }
         return $reparacion;
 
@@ -197,10 +198,12 @@ class PresupuestoCtr
 
     public function getNuevoNroComprobante()
     {
-        $auxNroComprobante = strval($this->presupuestoDAO->getNuevoNroComprobante() + 1);
-        if (is_string($auxNroComprobante)) {
-            ErrorCtr::getInstance()->showError($auxNroComprobante, "error al traer el numero del comprobante");
+        $nroComprobanteDB = $this->presupuestoDAO->getNuevoNroComprobante();
+        if (is_string($nroComprobanteDB)) {
+            $toast = new ToastCtr();
+            $toast->mostrarToast("error", "error al traer el numero del comprobante", $nroComprobanteDB);
         }
+        $auxNroComprobante = strval($nroComprobanteDB + 1);
         $nroComprobante = str_pad($auxNroComprobante, 10, 0, STR_PAD_LEFT);
         return $nroComprobante;
     }
@@ -227,7 +230,8 @@ class PresupuestoCtr
     {
         $productoPresupuesto = $this->presupuestoDAO->getProductosPresupuestoById($id);
         if (is_string($productoPresupuesto)) {
-            ErrorCtr::getInstance()->showError($productoPresupuesto, "error al traer los productos del presupuesto");
+            $toast = new ToastCtr();
+            $toast->mostrarToast("error", "error al traer los productos del presupuesto", $productoPresupuesto);
         }
         return $productoPresupuesto;
     }
@@ -257,7 +261,8 @@ class PresupuestoCtr
     {
         $presupuestoBD = $this->presupuestoDAO->getPresupuestoById($id);
         if (is_string($presupuestoBD)) {
-            ErrorCtr::getInstance()->showError($presupuestoBD, "error al traer el presupuesto");
+            $toast = new ToastCtr();
+            $toast->mostrarToast("error", "error al traer el presupuesto", $presupuestoBD);
         }
         $productosPresupuestoBD = $this->getProductosPresupuestoById($id);
 
@@ -359,7 +364,8 @@ class PresupuestoCtr
     {
         $result = $this->presupuestoDAO->search();
         if (is_string($result)) {
-            ErrorCtr::getInstance()->showError($result, "error al buscar presupuestos");
+            $toast = new ToastCtr();
+            $toast->mostrarToast("error", "error al buscar presupuestos", $result);
         }
         return $result;
     }
