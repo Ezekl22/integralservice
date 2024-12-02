@@ -18,9 +18,9 @@ class UsuarioCtr
         $id = isset($_GET['id']) ? $_GET['id'] : '';
         $toast = new ToastCtr();
         $status = isset($_GET['status']) ? $_GET['status'] : "";
+        $description = isset($_GET['description']) ? $_GET['description'] : '';
         if ($status == "error") {
-            $description = isset($_GET['description']) ? $_GET['description'] : "";
-            ErrorCtr::getInstance()->showError($description, "");
+            $toast->mostrarToast("error", "Error al crear ususario", $description);
         }
         switch ($action) {
             case 'created':
@@ -156,7 +156,8 @@ class UsuarioCtr
             header("Location: index.php?module=usuarios"
                 . ($action != "" ? "&action=" . $action : $action) . "&status=success");
         } else {
-            header("Location: index.php?module=usuarios&status=error&description=" . $status);
+            header("Location: index.php?module=usuarios"
+                . ($action != "" ? "&action=" . $action : $action) . "&status=error&description=" . $status);
         }
     }
 
@@ -174,7 +175,8 @@ class UsuarioCtr
     {
         $usuarioDB = $this->usuarioDAO->getUsuarioByMailContra($mail, $contrasena);
         if (is_string($usuarioDB)) {
-            ErrorCtr::getInstance()->showError($usuarioDB, "error al traer el usuario");
+            $toast = new ToastCtr();
+            $toast->mostrarToast("error", "error al traer el usuario", $usuarioDB);
             $usuario = $usuarioDB;
         } else {
             $usuario = count($usuarioDB) > 0 ? new Usuario(
