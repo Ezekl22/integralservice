@@ -78,7 +78,8 @@ class PresupuestoDAO
 
     private function createProductosPresupuesto(array $productos)
     {
-        $params = "";
+
+        $params = [];
         for ($i = 0; $i < count($productos); $i++) {
             $param = [
                 $productos[$i]->getIdPresupuesto(),
@@ -118,7 +119,6 @@ class PresupuestoDAO
                 $this->updateProductosPresupuesto($presupuesto->getIdPresupuesto(), $presupuesto);
             }
         }
-
         return UtilidadesDAO::getInstance()->executeQuery($queries);
     }
 

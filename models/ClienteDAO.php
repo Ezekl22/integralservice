@@ -13,65 +13,41 @@ class ClienteDAO
 
     public function createCliente(Cliente $cliente)
     {
-        $stmt = $this->db->getConnection()->prepare("INSERT INTO clientes (nombre, apellido, email, cuit, categoriafiscal) VALUES (:nombre, :apellido, :email, :cuit, :categoriaFiscal)");
-
-        $nombre = $cliente->getNombre();
-        $apellido = $cliente->getApellido();
-        $email = $cliente->getEmail();
-        $cuit = $cliente->getCuit();
-        $categoriaFiscal = $cliente->getCategoriaFiscal();
-
-        $stmt->bindParam(":nombre", $nombre, PDO::PARAM_STR);
-        $stmt->bindParam(":apellido", $apellido, PDO::PARAM_STR);
-        $stmt->bindParam(":email", $email, PDO::PARAM_STR);
-        $stmt->bindParam(":cuit", $cuit, PDO::PARAM_STR);
-        $stmt->bindParam(":categoriaFiscal", $categoriaFiscal, PDO::PARAM_STR);
-
-        if ($stmt->execute()) {
-
-            return "ok";
-
-        } else {
-            $error = $stmt->errorInfo();
-
-        }
-
-        $stmt->closeCursor();
-        $stmt = null;
-
-        return $error;
+        $queries = [
+            [
+                'query' => "INSERT INTO clientes (nombre, apellido, email, cuit, categoriafiscal) VALUES ",
+                'type' => 'INSERT',
+                'params' => [
+                    [
+                        "'" . $cliente->getNombre() . "'",
+                        "'" . $cliente->getApellido() . "'",
+                        "'" . $cliente->getEmail() . "'",
+                        "'" . $cliente->getNombre() . "'",
+                        "'" . $cliente->getNombre() . "'"
+                    ]
+                ],
+            ]
+        ];
+        return UtilidadesDAO::getInstance()->executeQuery($queries);
     }
 
     public function update(Cliente $cliente)
     {
         // Código para actualizar un cliente existente en la base de datos
-        $stmt = $this->db->getConnection()->prepare("UPDATE clientes SET nombre=:nombre, apellido=:apellido, email=:email, cuit=:cuit, categoriafiscal=:categoriafiscal WHERE idcliente= :idcliente");
-
-        $nombre = $cliente->getNombre();
-        $apellido = $cliente->getApellido();
-        $email = $cliente->getEmail();
-        $cuit = $cliente->getCuit();
-        $categoriaFiscal = $cliente->getCategoriaFiscal();
-        $id = $cliente->getId();
-
-        $stmt->bindParam(":nombre", $nombre, PDO::PARAM_STR);
-        $stmt->bindParam(":apellido", $apellido, PDO::PARAM_STR);
-        $stmt->bindParam(":email", $email, PDO::PARAM_STR);
-        $stmt->bindParam(":cuit", $cuit, PDO::PARAM_STR);
-        $stmt->bindParam(":categoriafiscal", $categoriaFiscal, PDO::PARAM_STR);
-        $stmt->bindParam(":idcliente", $id, PDO::PARAM_INT);
-
-        if ($stmt->execute()) {
-
-            return "ok";
-
-        } else {
-
-            print_r($stmt->errorInfo());
-
-        }
-        $stmt->closeCursor();
-        $stmt = null;
+        $queries = [
+            [
+                'query' => "UPDATE clientes SET 
+                            nombre='" . $cliente->getNombre() . "', 
+                            apellido='" . $cliente->getApellido() . "', 
+                            email='" . $cliente->getEmail() . "', 
+                            cuit='" . $cliente->getCuit() . "', 
+                            categoriafiscal='" . $cliente->getCategoriaFiscal() . "' 
+                            WHERE idcliente=" . $cliente->getId(),
+                'type' => 'UPDATE',
+                'params' => [],
+            ]
+        ];
+        return UtilidadesDAO::getInstance()->executeQuery($queries);
     }
 
     public function delete($id)

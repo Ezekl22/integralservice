@@ -70,11 +70,7 @@ class ClienteCtr
     {
         $cliente = new Cliente($_POST['nombre'], $_POST['apellido'], $_POST['email'], $_POST['cuit'], $_POST['categoriafiscal']);
         $status = $this->clienteDAO->createCliente($cliente);
-        if ($status != "") {
-            header("Location: index.php?module=clientes&status=success");
-        } else {
-            header("Location: index.php?module=clientes&status=error&description=" . $status);
-        }
+        UtilidadesDAO::getInstance()->showStatus("clientes", $status, "created");
     }
 
     public function getPantallaEdit()
@@ -88,13 +84,15 @@ class ClienteCtr
         if (isset($_POST["nombre"])) {
             $cliente = new Cliente($_POST["nombre"], $_POST["apellido"], $_POST["email"], $_POST["cuit"], $_POST["categoriafiscal"]);
             $cliente->setId($id);
-            $this->clienteDAO->update($cliente);
+            $status = $this->clienteDAO->update($cliente);
+            UtilidadesDAO::getInstance()->showStatus("clientes", $status, "edited");
         }
     }
 
     public function delete($id)
     {
-        $this->clienteDAO->delete($id);
+        $status = $this->clienteDAO->delete($id);
+        UtilidadesDAO::getInstance()->showStatus("clientes", $status, "deleted");
     }
 
     public function getAllClientes()

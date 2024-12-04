@@ -29,15 +29,16 @@ class PresupuestoCtr
             $toast->mostrarToast($status, $description);
         }
         switch ($action) {
-            case 'create':
+            case 'created':
                 if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     if ($status != "success") {
                         $this->create();
                     }
+                } else {
+                    if ($status == "success") {
+                        $toast->mostrarToast("exito", "Presupuesto creado");
+                    }
                 }
-                break;
-            case 'created':
-                $toast->mostrarToast("exito", "Presupuesto creado");
                 break;
             case 'annulled':
                 if ($status != "success") {
@@ -46,15 +47,14 @@ class PresupuestoCtr
                     $toast->mostrarToast("exito", "Presupuesto anulado");
                 }
                 break;
-            case 'edit':
+            case 'edited':
                 if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     if ($status != "success") {
                         $this->update($id);
                     }
+                } else if ($status == "success") {
+                    $toast->mostrarToast("exito", "Presupuesto modificado");
                 }
-                break;
-            case 'updated':
-                $toast->mostrarToast("exito", "Presupuesto modificado");
                 break;
             case 'facturar':
                 if ($status != "success") {
@@ -160,12 +160,7 @@ class PresupuestoCtr
                 $reparacion = new ReparacionMdl($_POST['modelo'], $_POST['marca'], $_POST['nroserie'], $_POST['descripcion']);
                 $status = $this->presupuestoDAO->create($presupuesto, $reparacion);
             }
-
-            if ($status == "") {
-                header("Location: index.php?module=presupuestos&action=created&status=success");
-            } else {
-                header("Location: index.php?module=presupuestos&status=error&description=" . $status);
-            }
+            UtilidadesDAO::getInstance()->showStatus("presupuestos", $status, "created");
         }
     }
 
@@ -250,26 +245,24 @@ class PresupuestoCtr
                 $status = $this->presupuestoDAO->updatePresupuesto($presupuesto);
             }
         }
-        if ($status == "") {
-            header("Location: index.php?module=presupuestos&action=updated&status=success");
-        } else {
-            header("Location: index.php?module=presupuestos&status=error&description=" . $status);
-        }
+        UtilidadesDAO::getInstance()->showStatus("presupuestos", $status, "edited");
     }
 
     public function getPresupuestoById($id)
     {
         $presupuestoBD = $this->presupuestoDAO->getPresupuestoById($id);
         if (is_string($presupuestoBD)) {
+            echo $presupuestoBD;
             $toast = new ToastCtr();
             $toast->mostrarToast("error", "error al traer el presupuesto", $presupuestoBD);
+            exit;
         }
         $productosPresupuestoBD = $this->getProductosPresupuestoById($id);
 
         if (is_string($productosPresupuestoBD)) {
             $toast = new ToastCtr();
             $toast->mostrarToast("error", "error al buscar presupuesto: " . $presupuestoBD);
-            return "";
+            exit;
         }
         $presupuesto = new PresupuestoMdl($presupuestoBD['idcliente'], $productosPresupuestoBD, $presupuestoBD['nrocomprobante'], $presupuestoBD['tipo'], $presupuestoBD['estado'], $presupuestoBD['puntoventa'], $presupuestoBD['total']);
         $presupuesto->setIdPresupuesto($id);

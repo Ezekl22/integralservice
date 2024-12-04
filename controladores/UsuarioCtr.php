@@ -113,7 +113,7 @@ class UsuarioCtr
 
             // Llama a la función para crear el usuario en la base de datos
             $status = $this->usuarioDAO->createUsuario($usuario);
-            $this->showStatus($status, "created");
+            UtilidadesDAO::getInstance()->showStatus("usuarios", $status, "created");
         }
     }
 
@@ -129,7 +129,7 @@ class UsuarioCtr
             $usuario = new Usuario($_POST["nombre"], $_POST["apellido"], $_POST["tipo"], $_POST["mail"], $_POST["contrasena"]);
             $usuario->setIdUsuario($id);
             $status = $this->usuarioDAO->updateUsuario($usuario);
-            $this->showStatus($status, "edited");
+            UtilidadesDAO::getInstance()->showStatus("usuarios", $status, "edited");
         }
     }
 
@@ -144,20 +144,10 @@ class UsuarioCtr
 
     public function delete($id)
     {
-        if (!empty($this->getUsuarioById($id)) && strtoupper($this->getUsuarioById($id)[3]) != "ADMINISTRADOR BASE") {
+        $usuario = $this->getUsuarioById($id);
+        if (!empty($usuario) && strtoupper($usuario[3]) != "ADMINISTRADOR BASE") {
             $status = $this->usuarioDAO->deleteUsuario($id);
-            $this->showStatus($status, "deleted");
-        }
-    }
-
-    private function showStatus(string $status, string $action = "")
-    {
-        if ($status == "") {
-            header("Location: index.php?module=usuarios"
-                . ($action != "" ? "&action=" . $action : $action) . "&status=success");
-        } else {
-            header("Location: index.php?module=usuarios"
-                . ($action != "" ? "&action=" . $action : $action) . "&status=error&description=" . $status);
+            UtilidadesDAO::getInstance()->showStatus("usuarios", $status, "deleted");
         }
     }
 
