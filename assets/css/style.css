@@ -290,3 +290,20 @@ thead{
   margin: 60px 0;
   color: #fff;
 }
+
+.NroComprobanteTxt{
+  font-size: 11px !important;
+}
+
+/* toast */
+.colored-toast{
+  margin-top: 80px;
+}
+
+.btn-position{
+  align-self: flex-start !important;
+}
+
+.swal2-actions{
+  justify-content: center !important;
+}

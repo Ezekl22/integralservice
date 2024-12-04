@@ -15,6 +15,12 @@ class ClienteCtr
         $action = isset($_GET['action']) ? $_GET['action'] : '';
         $module = isset($_GET['module']) ? $_GET['module'] : '';
         $id = isset($_GET['id']) ? $_GET['id'] : '';
+        $status = isset($_GET['status']) ? $_GET['status'] : "";
+        $toast = new ToastCtr();
+        if ($status == "error") {
+            $description = isset($_GET['description']) ? $_GET['description'] : "";
+            $toast->mostrarToast($status, $description);
+        }
         if ($module == 'clientes') {
             switch ($action) {
                 case 'created':
@@ -23,13 +29,30 @@ class ClienteCtr
                         if ($status != "success") {
                             $this->create();
                         }
+                    } else {
+                        if ($status == "success") {
+                            $toast->mostrarToast("exito", "Cliente creado");
+                        }
                     }
                     break;
                 case 'deleted':
-                    $this->delete($id);
+                    if ($status != "success") {
+                        $this->delete($id);
+                    } else if ($status == "success") {
+                        $toast->mostrarToast("exito", "Cliente eliminado");
+                    }
                     break;
                 case 'edited':
-                    $this->update($id);
+                    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                        $status = isset($_GET['status']) ? $_GET['status'] : "";
+                        if ($status != "success") {
+                            $this->update($id);
+                        }
+                    } else {
+                        if ($status == "success") {
+                            $toast->mostrarToast("exito", "Cliente editado");
+                        }
+                    }
                     break;
                 case 'searched':
                     $this->search();
@@ -68,13 +91,9 @@ class ClienteCtr
 
     public function create()
     {
-        $cliente = new Cliente($_POST['nombre'], $_POST['apellido'], $_POST['email'], $_POST['cuit'], $_POST['iva']);
+        $cliente = new Cliente($_POST['nombre'], $_POST['apellido'], $_POST['email'], $_POST['cuit'], $_POST['categoriafiscal']);
         $status = $this->clienteDAO->createCliente($cliente);
-        if ($status != "") {
-            header("Location: index.php?module=clientes&status=success");
-        } else {
-            header("Location: index.php?module=clientes&status=error&description=" . $status);
-        }
+        UtilidadesDAO::getInstance()->showStatus("clientes", $status, "created");
     }
 
     public function getPantallaEdit()
@@ -88,18 +107,25 @@ class ClienteCtr
         if (isset($_POST["nombre"])) {
             $cliente = new Cliente($_POST["nombre"], $_POST["apellido"], $_POST["email"], $_POST["cuit"], $_POST["categoriafiscal"]);
             $cliente->setId($id);
-            $this->clienteDAO->update($cliente);
+            $status = $this->clienteDAO->update($cliente);
+            UtilidadesDAO::getInstance()->showStatus("clientes", $status, "edited");
         }
     }
 
     public function delete($id)
     {
-        $this->clienteDAO->delete($id);
+        $status = $this->clienteDAO->delete($id);
+        UtilidadesDAO::getInstance()->showStatus("clientes", $status, "deleted");
     }
 
     public function getAllClientes()
     {
-        return $this->clienteDAO->getAllClientes();
+        $clientes = $this->clienteDAO->getAllClientes();
+        if (is_string($clientes)) {
+            $toast = new ToastCtr();
+            $toast->mostrarToast("error", "error al traer los clientes", $clientes);
+        }
+        return $clientes;
     }
 
     public function getPantallaDelete()
@@ -111,11 +137,21 @@ class ClienteCtr
 
     public function getClienteById($id)
     {
-        return $this->clienteDAO->getClienteById($id);
+        $cliente = $this->clienteDAO->getClienteById($id);
+        if (is_string($cliente)) {
+            $toast = new ToastCtr();
+            $toast->mostrarToast("error", "error al traer el cliente", $cliente);
+        }
+        return $cliente;
     }
 
     public function search()
     {
-        return $this->clienteDAO->search();
+        $result = $this->clienteDAO->search();
+        if (is_string($result)) {
+            $toast = new ToastCtr();
+            $toast->mostrarToast("error", "error al hacer la busqueda", $result);
+        }
+        return $result;
     }
 }
