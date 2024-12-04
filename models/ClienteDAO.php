@@ -22,8 +22,8 @@ class ClienteDAO
                         "'" . $cliente->getNombre() . "'",
                         "'" . $cliente->getApellido() . "'",
                         "'" . $cliente->getEmail() . "'",
-                        "'" . $cliente->getNombre() . "'",
-                        "'" . $cliente->getNombre() . "'"
+                        "'" . $cliente->getCuit() . "'",
+                        "'" . $cliente->getCategoriaFiscal() . "'"
                     ]
                 ],
             ]
@@ -52,28 +52,27 @@ class ClienteDAO
 
     public function delete($id)
     {
-        $stmt = $this->db->getConnection()->prepare("DELETE FROM clientes WHERE idcliente = :id");
-        $stmt->bindParam(":id", $id, PDO::PARAM_INT);
-
-        if ($stmt->execute()) {
-            // La eliminación fue exitosa
-            return "ok";
-        } else {
-            // Manejar errores si es necesario
-            print_r($this->db->getConnection()->errorInfo());
-            return "error";
-        }
+        $queries = [
+            [
+                'query' => "DELETE FROM clientes WHERE idcliente = " . $id,
+                'type' => 'DELETE',
+                'params' => [],
+            ]
+        ];
+        return UtilidadesDAO::getInstance()->executeQuery($queries);
     }
 
     public function getClienteById($id)
     {
-        $stmt = $this->db->getConnection()->prepare("SELECT * FROM clientes WHERE idcliente = " . $id);
-
-        $stmt->execute();
-        $retorno = $stmt->fetchAll()[0];
-        $stmt->closeCursor();
-        $stmt = null;
-        return $retorno;
+        $queries = [
+            [
+                'query' => "SELECT * FROM clientes WHERE idcliente = " . $id,
+                'type' => 'SELECT',
+                'params' => [],
+            ]
+        ];
+        $cliente = UtilidadesDAO::getInstance()->executeQuery($queries);
+        return is_array($cliente) ? $cliente[0] : $cliente;
     }
 
     public function getAllClientes()
