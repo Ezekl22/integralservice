@@ -282,12 +282,9 @@ class PresupuestoCtr
         $presupuesto = $this->getPresupuestoById($id);
         $estado = $presupuesto->getEstado();
 
-        if ($estado != 'Pendiente presupuesto' || $estado != 'En reparacion' || $estado != '')
+        if ($estado != 'Pendiente presupuesto' || $estado != 'En reparacion' || $estado != '') {
             $status = $this->presupuestoDAO->annul($id);
-        if ($status == "") {
-            header("Location: index.php?module=presupuestos&action=annulled&status=success");
-        } else {
-            header("Location: index.php?module=presupuestos&action=annulled&status=error&description=" . $status);
+            UtilidadesDAO::getInstance()->showStatus("presupuestos", $status, "annulled");
         }
     }
 
@@ -309,11 +306,7 @@ class PresupuestoCtr
             $presupuesto->setEstado('Facturado');
             $presupuesto->setNroComprobante('C-' . $presupuesto->getNroComprobante() . '-0001');
             $status = $this->updatePresupuesto($presupuesto);
-            if ($status == "") {
-                header("Location: index.php?module=presupuestos&action=facturar&status=success");
-            } else {
-                header("Location: index.php?module=presupuestos&status=error&description=" . $status);
-            }
+            UtilidadesDAO::getInstance()->showStatus("presupuestos", $status, "facturar");
         }
     }
 
@@ -345,12 +338,7 @@ class PresupuestoCtr
                 $status = $this->updatePresupuesto($presupuesto);
             }
         }
-        if ($status == "") {
-            header("Location: index.php?module=presupuestos&action=cambiarestado&status=success");
-        } else {
-            header("Location: index.php?module=presupuestos&status=error&description=" . $status);
-        }
-
+        UtilidadesDAO::getInstance()->showStatus("presupuestos", $status, "cambiarEstado");
     }
 
     public function search()

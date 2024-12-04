@@ -147,6 +147,11 @@ class ClienteCtr
 
     public function search()
     {
-        return $this->clienteDAO->search();
+        $result = $this->clienteDAO->search();
+        if (is_string($result)) {
+            $toast = new ToastCtr();
+            $toast->mostrarToast("error", "error al hacer la busqueda", $result);
+        }
+        return $result;
     }
 }

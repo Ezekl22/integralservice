@@ -33,7 +33,6 @@ class ClienteDAO
 
     public function update(Cliente $cliente)
     {
-        // Código para actualizar un cliente existente en la base de datos
         $queries = [
             [
                 'query' => "UPDATE clientes SET 
@@ -77,28 +76,33 @@ class ClienteDAO
 
     public function getAllClientes()
     {
-        // Código para obtener todos los usuarios desde la base de datos
-        $stmt = $this->db->getConnection()->prepare("SELECT * FROM clientes");
-
-        $stmt->execute();
-        $retorno = $stmt->fetchAll();
-        $stmt->closeCursor();
-        $stmt = null;
-        return $retorno;
+        $queries = [
+            [
+                'query' => "SELECT * FROM clientes",
+                'type' => 'SELECT',
+                'params' => [],
+            ]
+        ];
+        return UtilidadesDAO::getInstance()->executeQuery($queries);
     }
 
     public function search()
     {
         $termino = isset($_POST['termino']) ? '%' . $_POST['termino'] . '%' : "";
         if ($termino != "") {
-            $query = "SELECT * FROM clientes WHERE nombre LIKE '$termino' OR apellido LIKE '$termino' OR email LIKE '$termino' OR cuit LIKE '$termino' OR categoriafiscal LIKE '$termino' ";
-            $stmt = $this->db->getConnection()->prepare($query);
-            $stmt->execute();
-            $retorno = $stmt->fetchAll();
-            $stmt->closeCursor();
-            $stmt = null;
-            return $retorno;
+            $queries = [
+                [
+                    'query' => "SELECT * FROM clientes WHERE 
+                                nombre LIKE '$termino' OR 
+                                apellido LIKE '$termino' OR 
+                                email LIKE '$termino' OR 
+                                cuit LIKE '$termino' OR 
+                                categoriafiscal LIKE '$termino' ",
+                    'type' => 'SELECT',
+                    'params' => [],
+                ]
+            ];
+            return UtilidadesDAO::getInstance()->executeQuery($queries);
         }
-
     }
 }
