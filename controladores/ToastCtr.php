@@ -7,10 +7,10 @@ class ToastCtr
 
     }
 
-    public function mostrarToast(string $tipo, string $texto)
+    public function mostrarToast(string $tipo, string $texto, string $descripcionError = "")
     {
         if ($tipo != "") {
-            echo "<script>mostrarToast('$tipo','$texto') </script>";
+            echo '<script>mostrarToast("' . $tipo . '","' . $texto . '","' . $descripcionError . '") </script>';
         }
     }
 }

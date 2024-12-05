@@ -20,20 +20,22 @@ class UtilidadesDAO
 
     public function checkExecute(PDOStatement $stmt, string $typeQuery, $params = null)
     {
-        $error = "";
-        $stmt->execute($params);
-        $resultado = [];
-        if ($stmt->errorCode() !== '00000') { // 00000 indica "sin error"
-            return $stmt->errorInfo();
+        try {
+            $stmt->execute($params);
+            $resultado = [];
+            if ($stmt->errorCode() !== '00000') { // 00000 indica "sin error"
+                throw new Exception("Error en la consulta: " . implode(", ", $stmt->errorInfo()));
+            }
+            if ($typeQuery == "SELECT") {
+                $resultado = $stmt->fetchAll();
+            }
+            return $typeQuery == "SELECT" ? $resultado : "";
+        } catch (Exception $e) {
+            return $e->getMessage();
+        } finally {
+            $stmt->closeCursor();
+            $stmt = null;
         }
-
-        if ($typeQuery == "SELECT") {
-            $resultado = $stmt->fetchAll();
-        }
-
-        $stmt->closeCursor();
-        $stmt = null;
-        return $typeQuery == "SELECT" ? $resultado : $error;
     }
 
     public function executeQuery($queries)
@@ -54,6 +56,18 @@ class UtilidadesDAO
         $stmt = $this->db->getConnection()->prepare($query);
         return $this->checkExecute($stmt, $typeQuery);
     }
+    public function showStatus(string $module, string $status, string $action = "")
+    {
+        if ($status == "") {
+            header("Location: index.php?module=$module"
+                . ($action != "" ? "&action=" . $action : $action) . "&status=success");
+        } else {
+            header("Location: index.php?module=usuarios"
+                . ($action != "" ? "&action=" . $action : $action) . "&status=error&description=" . $status);
+        }
+    }
 }
+
+
 
 ?>

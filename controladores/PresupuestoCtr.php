@@ -6,7 +6,6 @@ require_once 'models/ProductoPresupuestoMdl.php';
 require_once 'controladores/ClienteCtr.php';
 require_once 'controladores/ProductoCtr.php';
 require_once 'controladores/ToastCtr.php';
-require_once 'controladores/ErrorCtr.php';
 
 class PresupuestoCtr
 {
@@ -27,18 +26,19 @@ class PresupuestoCtr
         $toast = new ToastCtr();
         if ($status == "error") {
             $description = isset($_GET['description']) ? $_GET['description'] : "";
-            ErrorCtr::getInstance()->showError($description, "");
+            $toast->mostrarToast($status, $description);
         }
         switch ($action) {
-            case 'create':
+            case 'created':
                 if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     if ($status != "success") {
                         $this->create();
                     }
+                } else {
+                    if ($status == "success") {
+                        $toast->mostrarToast("exito", "Presupuesto creado");
+                    }
                 }
-                break;
-            case 'created':
-                $toast->mostrarToast("exito", "Presupuesto creado");
                 break;
             case 'annulled':
                 if ($status != "success") {
@@ -47,15 +47,14 @@ class PresupuestoCtr
                     $toast->mostrarToast("exito", "Presupuesto anulado");
                 }
                 break;
-            case 'edit':
+            case 'edited':
                 if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     if ($status != "success") {
                         $this->update($id);
                     }
+                } else if ($status == "success") {
+                    $toast->mostrarToast("exito", "Presupuesto modificado");
                 }
-                break;
-            case 'updated':
-                $toast->mostrarToast("exito", "Presupuesto modificado");
                 break;
             case 'facturar':
                 if ($status != "success") {
@@ -91,7 +90,8 @@ class PresupuestoCtr
 
         $presupuestos = $action == "searched" ? $this->search() : $this->presupuestoDAO->getAllPresupuestos();
         if (is_string($presupuestos)) {
-            ErrorCtr::getInstance()->showError($presupuestos, "error al traer todos los presupuestos");
+            $toast = new ToastCtr();
+            $toast->mostrarToast("error", "error al traer todos los presupuestos", $presupuestos);
         }
 
         $presupuestoCtr = $this->getInstance();
@@ -123,7 +123,8 @@ class PresupuestoCtr
         $reparacion = $this->presupuestoDAO->getReparacionPresupuestoById($id);
 
         if (is_string($reparacion)) {
-            ErrorCtr::getInstance()->showError($reparacion, "error al traer la reparacion");
+            $toast = new ToastCtr();
+            $toast->mostrarToast("error", "error al traer la reparacion", $reparacion);
         }
         return $reparacion;
 
@@ -159,12 +160,7 @@ class PresupuestoCtr
                 $reparacion = new ReparacionMdl($_POST['modelo'], $_POST['marca'], $_POST['nroserie'], $_POST['descripcion']);
                 $status = $this->presupuestoDAO->create($presupuesto, $reparacion);
             }
-
-            if ($status == "") {
-                header("Location: index.php?module=presupuestos&action=created&status=success");
-            } else {
-                header("Location: index.php?module=presupuestos&status=error&description=" . $status);
-            }
+            UtilidadesDAO::getInstance()->showStatus("presupuestos", $status, "created");
         }
     }
 
@@ -197,10 +193,12 @@ class PresupuestoCtr
 
     public function getNuevoNroComprobante()
     {
-        $auxNroComprobante = strval($this->presupuestoDAO->getNuevoNroComprobante() + 1);
-        if (is_string($auxNroComprobante)) {
-            ErrorCtr::getInstance()->showError($auxNroComprobante, "error al traer el numero del comprobante");
+        $nroComprobanteDB = $this->presupuestoDAO->getNuevoNroComprobante();
+        if (is_string($nroComprobanteDB)) {
+            $toast = new ToastCtr();
+            $toast->mostrarToast("error", "error al traer el numero del comprobante", $nroComprobanteDB);
         }
+        $auxNroComprobante = strval($nroComprobanteDB + 1);
         $nroComprobante = str_pad($auxNroComprobante, 10, 0, STR_PAD_LEFT);
         return $nroComprobante;
     }
@@ -227,7 +225,8 @@ class PresupuestoCtr
     {
         $productoPresupuesto = $this->presupuestoDAO->getProductosPresupuestoById($id);
         if (is_string($productoPresupuesto)) {
-            ErrorCtr::getInstance()->showError($productoPresupuesto, "error al traer los productos del presupuesto");
+            $toast = new ToastCtr();
+            $toast->mostrarToast("error", "error al traer los productos del presupuesto", $productoPresupuesto);
         }
         return $productoPresupuesto;
     }
@@ -246,25 +245,24 @@ class PresupuestoCtr
                 $status = $this->presupuestoDAO->updatePresupuesto($presupuesto);
             }
         }
-        if ($status == "") {
-            header("Location: index.php?module=presupuestos&action=updated&status=success");
-        } else {
-            header("Location: index.php?module=presupuestos&status=error&description=" . $status);
-        }
+        UtilidadesDAO::getInstance()->showStatus("presupuestos", $status, "edited");
     }
 
     public function getPresupuestoById($id)
     {
         $presupuestoBD = $this->presupuestoDAO->getPresupuestoById($id);
         if (is_string($presupuestoBD)) {
-            ErrorCtr::getInstance()->showError($presupuestoBD, "error al traer el presupuesto");
+            echo $presupuestoBD;
+            $toast = new ToastCtr();
+            $toast->mostrarToast("error", "error al traer el presupuesto", $presupuestoBD);
+            exit;
         }
         $productosPresupuestoBD = $this->getProductosPresupuestoById($id);
 
         if (is_string($productosPresupuestoBD)) {
             $toast = new ToastCtr();
             $toast->mostrarToast("error", "error al buscar presupuesto: " . $presupuestoBD);
-            return "";
+            exit;
         }
         $presupuesto = new PresupuestoMdl($presupuestoBD['idcliente'], $productosPresupuestoBD, $presupuestoBD['nrocomprobante'], $presupuestoBD['tipo'], $presupuestoBD['estado'], $presupuestoBD['puntoventa'], $presupuestoBD['total']);
         $presupuesto->setIdPresupuesto($id);
@@ -284,12 +282,9 @@ class PresupuestoCtr
         $presupuesto = $this->getPresupuestoById($id);
         $estado = $presupuesto->getEstado();
 
-        if ($estado != 'Pendiente presupuesto' || $estado != 'En reparacion' || $estado != '')
+        if ($estado != 'Pendiente presupuesto' || $estado != 'En reparacion' || $estado != '') {
             $status = $this->presupuestoDAO->annul($id);
-        if ($status == "") {
-            header("Location: index.php?module=presupuestos&action=annulled&status=success");
-        } else {
-            header("Location: index.php?module=presupuestos&action=annulled&status=error&description=" . $status);
+            UtilidadesDAO::getInstance()->showStatus("presupuestos", $status, "annulled");
         }
     }
 
@@ -311,11 +306,7 @@ class PresupuestoCtr
             $presupuesto->setEstado('Facturado');
             $presupuesto->setNroComprobante('C-' . $presupuesto->getNroComprobante() . '-0001');
             $status = $this->updatePresupuesto($presupuesto);
-            if ($status == "") {
-                header("Location: index.php?module=presupuestos&action=facturar&status=success");
-            } else {
-                header("Location: index.php?module=presupuestos&status=error&description=" . $status);
-            }
+            UtilidadesDAO::getInstance()->showStatus("presupuestos", $status, "facturar");
         }
     }
 
@@ -347,19 +338,15 @@ class PresupuestoCtr
                 $status = $this->updatePresupuesto($presupuesto);
             }
         }
-        if ($status == "") {
-            header("Location: index.php?module=presupuestos&action=cambiarestado&status=success");
-        } else {
-            header("Location: index.php?module=presupuestos&status=error&description=" . $status);
-        }
-
+        UtilidadesDAO::getInstance()->showStatus("presupuestos", $status, "cambiarEstado");
     }
 
     public function search()
     {
         $result = $this->presupuestoDAO->search();
         if (is_string($result)) {
-            ErrorCtr::getInstance()->showError($result, "error al buscar presupuestos");
+            $toast = new ToastCtr();
+            $toast->mostrarToast("error", "error al buscar presupuestos", $result);
         }
         return $result;
     }
