@@ -3,6 +3,8 @@ require_once 'models/UsuarioMdl.php';
 require_once 'models/UsuarioDAO.php';
 require_once 'controladores/GrillaCtr.php';
 require_once 'models/GrillaMdl.php';
+require_once 'controladores/ToastCtr.php';
+
 
 class UsuarioCtr
 {
@@ -14,29 +16,39 @@ class UsuarioCtr
         $this->usuarioDAO = new UsuarioDAO();
         $action = isset($_GET['action']) ? $_GET['action'] : '';
         $id = isset($_GET['id']) ? $_GET['id'] : '';
+        $toast = new ToastCtr();
+        $status = isset($_GET['status']) ? $_GET['status'] : "";
+        $description = isset($_GET['description']) ? $_GET['description'] : '';
+        if ($status == "error") {
+            $toast->mostrarToast("error", "Error al crear ususario", $description);
+        }
         switch ($action) {
             case 'created':
                 //Verifico que el ultimo metodo que se realizo en el server es el post
                 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                    $status = isset($_GET['status']) ? $_GET['status'] : "";
                     //verifico que no se haya guardado previamente un usuario para evitar duplicados
                     if ($status != "success") {
                         $this->create();
                     }
+                } else if ($status == "success") {
+                    $toast->mostrarToast("exito", "Usuario creado");
                 }
                 break;
             case 'deleted':
                 $status = isset($_GET['status']) ? $_GET['status'] : "";
                 if ($status != "success") {
                     $this->delete($id);
+                } else {
+                    $toast->mostrarToast("exito", "Usuario eliminado");
                 }
                 break;
             case 'edited':
                 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                    $status = isset($_GET['status']) ? $_GET['status'] : "";
                     if ($status != "success") {
                         $this->update($id);
                     }
+                } else if ($status == "success") {
+                    $toast->mostrarToast("exito", "Usuario editado");
                 }
 
                 break;
@@ -100,7 +112,7 @@ class UsuarioCtr
 
             // Llama a la función para crear el usuario en la base de datos
             $status = $this->usuarioDAO->createUsuario($usuario);
-            $this->showStatus($status);
+            UtilidadesDAO::getInstance()->showStatus("usuarios", $status, "created");
         }
     }
 
@@ -116,7 +128,7 @@ class UsuarioCtr
             $usuario = new Usuario($_POST["nombre"], $_POST["apellido"], $_POST["tipo"], $_POST["mail"], $_POST["contrasena"]);
             $usuario->setIdUsuario($id);
             $status = $this->usuarioDAO->updateUsuario($usuario);
-            $this->showStatus($status);
+            UtilidadesDAO::getInstance()->showStatus("usuarios", $status, "edited");
         }
     }
 
@@ -131,33 +143,39 @@ class UsuarioCtr
 
     public function delete($id)
     {
-
-
-        if (!empty($this->getUsuarioById($id)) && strtoupper($this->getUsuarioById($id)[3]) != "ADMINISTRADOR BASE") {
+        $usuario = $this->getUsuarioById($id);
+        if (!empty($usuario) && strtoupper($usuario[3]) != "ADMINISTRADOR BASE") {
             $status = $this->usuarioDAO->deleteUsuario($id);
-            $this->showStatus($status);
-        }
-    }
-
-    private function showStatus(string $status)
-    {
-        if ($status == "") {
-            header("Location: index.php?module=usuarios&status=success");
-        } else {
-            header("Location: index.php?module=usuarios&status=error&description=" . $status);
+            UtilidadesDAO::getInstance()->showStatus("usuarios", $status, "deleted");
         }
     }
 
     public function getUsuarioById($id)
     {
-        return $this->usuarioDAO->getUsuarioById($id);
+        $usuario = $this->usuarioDAO->getUsuarioById($id);
+        if (is_string($usuario)) {
+            $toast = new ToastCtr();
+            $toast->mostrarToast("error", "error al traer el usuario", $usuario);
+        }
+        return $usuario;
+
     }
 
     public function getUsuarioByMailContra($mail, $contrasena)
     {
         $usuarioDB = $this->usuarioDAO->getUsuarioByMailContra($mail, $contrasena);
-
-        $usuario = count($usuarioDB) > 0 ? new Usuario($usuarioDB['nombre'], $usuarioDB['apellido'], $usuarioDB['tipo'], $usuarioDB['mail']) : $usuarioDB;
+        if (is_string($usuarioDB)) {
+            $toast = new ToastCtr();
+            $toast->mostrarToast("error", "error al traer el usuario", $usuarioDB);
+            $usuario = $usuarioDB;
+        } else {
+            $usuario = count($usuarioDB) > 0 ? new Usuario(
+                $usuarioDB['nombre'],
+                $usuarioDB['apellido'],
+                $usuarioDB['tipo'],
+                $usuarioDB['mail']
+            ) : $usuarioDB;
+        }
         return $usuario;
     }
 }

@@ -1,6 +1,7 @@
 <?php
 require_once 'models/UsuarioMdl.php';
 require_once 'controladores/UsuarioCtr.php';
+require_once 'controladores/ToastCtr.php';
 
 ob_start();
 
@@ -19,12 +20,13 @@ class SesionCtr
         if (isset($_POST['mail']) && isset($_POST['contrasena'])) {
             $usuarioCtr = UsuarioCtr::getInstance();
             $usuario = $usuarioCtr->getUsuarioByMailContra($_POST['mail'], $_POST['contrasena']);
-            if (!empty($usuario)) {
+            if (!empty($usuario) && !is_string($usuario)) {
                 $this->usuarioSesionado = $usuario;
                 $this->gestionPantallaCtr = $gestionPantallaCtr;
                 $this->iniciarSesion();
             } else {
-                $mensajeError = "El mail o contraseña es incorrecto, intentelo nuevamente";
+                $toast = new ToastCtr();
+                $toast->mostrarToast("error", "El usuario o contraseña es incorrecto");
             }
         }
         ob_end_flush();

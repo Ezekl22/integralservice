@@ -2,7 +2,7 @@
 $id = isset($_GET['id']) ? $_GET['id'] : '';
 $action = isset($_GET['action']) ? $_GET['action'] : '';
 $ClienteCtr = ClienteCtr::getInstance();
-$cliente = $ClienteCtr->clienteDAO->getClienteById($id);
+$cliente = $ClienteCtr->getClienteById($id);
 
 if ($action == 'edit' && $id != '') {
     ?>
