@@ -17,7 +17,7 @@ class ProductoCtr
         $toast = new ToastCtr();
         if ($status == "error") {
             $description = isset($_GET['description']) ? $_GET['description'] : "";
-            $toast->mostrarToast($status, $description);
+            $toast->mostrarToast($status, "", $description);
         }
         if ($module == 'productos') {
             switch ($action) {
@@ -51,6 +51,9 @@ class ProductoCtr
                             $toast->mostrarToast("exito", "Producto editado");
                         }
                     }
+                    break;
+                case 'searched':
+                    $this->search();
                     break;
             }
         }
@@ -98,25 +101,17 @@ class ProductoCtr
     public function create()
     {
         if (isset($_POST['nombre'])) {
-            $nombre = $_POST['nombre'];
-            $marca = $_POST['marca'];
-            $detalle = $_POST['detalle'];
-            $stock = $_POST['stock'];
-            $tipo = $_POST['tipo'];
-            $preciocompra = $_POST['preciocompra'];
-            $precioventa = $_POST['precioventa'];
-
-            $producto = new ProductoMdl($nombre, $marca, $detalle, $stock, $tipo, $preciocompra, $precioventa);
-
-            // Llama a la función para crear el producto en la base de datos
+            $producto = new ProductoMdl(
+                $_POST['nombre'],
+                $_POST['marca'],
+                $_POST['detalle'],
+                $_POST['stock'],
+                $_POST['tipo'],
+                $_POST['preciocompra'],
+                $_POST['precioventa']
+            );
             $status = $this->productoDAO->create($producto);
-            if ($status != "") {
-                header("Location: index.php?module=productos&status=success");
-                exit();
-            } else {
-                header("Location: index.php?module=productos&status=error&description=" . $status);
-                exit();
-            }
+            UtilidadesDAO::getInstance()->showStatus("productos", $status, "created");
         }
     }
 
@@ -131,13 +126,20 @@ class ProductoCtr
         if (isset($_POST["nombre"])) {
             $producto = new ProductoMdl($_POST["nombre"], $_POST["marca"], $_POST["detalle"], $_POST["stock"], $_POST["tipo"], $_POST["preciocompra"], $_POST["precioventa"]);
             $producto->setIdProducto($id);
-            $this->productoDAO->update($producto);
+            $status = $this->productoDAO->update($producto);
+            UtilidadesDAO::getInstance()->showStatus("productos", $status, "edited");
         }
     }
 
     public function getProductosById($ids)
     {
-        return $this->productoDAO->getProductosById($ids);
+        $productos = $this->productoDAO->getProductosById($ids);
+        if (is_string($productos)) {
+            $toast = new ToastCtr();
+            $toast->mostrarToast("error", "error al traer los productos", $productos);
+            exit;
+        }
+        return $productos;
     }
 
     public function getPantallaDelete()
@@ -149,11 +151,17 @@ class ProductoCtr
 
     public function delete($id)
     {
-        $this->productoDAO->delete($id);
+        $status = $this->productoDAO->delete($id);
+        UtilidadesDAO::getInstance()->showStatus("productos", $status, "deleted");
     }
 
     public function search()
     {
-        return $this->productoDAO->search();
+        $resultado = $this->productoDAO->search();
+        if (is_string($resultado)) {
+            $toast = new ToastCtr();
+            $toast->mostrarToast("error", "error al realizar la busqueda", $resultado);
+        }
+        return $resultado;
     }
 }

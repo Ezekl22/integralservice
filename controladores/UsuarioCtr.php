@@ -36,7 +36,6 @@ class UsuarioCtr
                 break;
             case 'deleted':
                 $status = isset($_GET['status']) ? $_GET['status'] : "";
-                echo "hola";
                 if ($status != "success") {
                     $this->delete($id);
                 } else {

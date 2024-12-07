@@ -18,10 +18,10 @@ class ProductoDAO
                             nombre='" . $producto->getNombre() . "', 
                             marca='" . $producto->getMarca() . "', 
                             detalle='" . $producto->getDetalle() . "', 
-                            stock='" . $producto->getStock() . "', 
+                            stock=" . $producto->getStock() . ", 
                             tipo='" . $producto->getTipo() . "', 
-                            preciocompra='" . $producto->getPrecioCompra() . "',
-                            precioventa='" . $producto->getPrecioVenta() . "',  
+                            preciocompra=" . $producto->getPrecioCompra() . ",
+                            precioventa=" . $producto->getPrecioVenta() . "  
                             WHERE idproducto=" . $producto->getIdProducto(),
                 'type' => 'UPDATE',
                 'params' => [],
@@ -49,6 +49,8 @@ class ProductoDAO
                 ],
             ]
         ];
+
+        print_r($producto);
         return UtilidadesDAO::getInstance()->executeQuery($queries);
     }
 
@@ -61,7 +63,8 @@ class ProductoDAO
                 'params' => [],
             ]
         ];
-        return UtilidadesDAO::getInstance()->executeQuery($queries);
+        $producto = UtilidadesDAO::getInstance()->executeQuery($queries);
+        return is_array($producto) ? $producto[0] : $producto;
     }
 
     public function getProductosById($ids)

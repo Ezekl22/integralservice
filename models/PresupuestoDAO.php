@@ -297,8 +297,7 @@ class PresupuestoDAO
                           presupuestos.total
                           FROM presupuestos 
                           INNER JOIN clientes ON presupuestos.idcliente = clientes.idcliente
-                          WHERE presupuestos.estado != 'cancelado'
-                          AND presupuestos.nrocomprobante LIKE '$termino'
+                          WHERE presupuestos.nrocomprobante LIKE '$termino'
                           OR presupuestos.tipo LIKE '$termino'
                           OR presupuestos.estado LIKE '$termino'
                           OR presupuestos.fecha LIKE '$termino'

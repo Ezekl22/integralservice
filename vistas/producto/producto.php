@@ -37,5 +37,6 @@
     </main>
     <?php echo $action == 'delete' ? '<script> mostrarVentanaModal("delete"); </script>' : '' ?>
 </body>
+<script>clickBorrarBusqueda();</script>
 
 </html>
