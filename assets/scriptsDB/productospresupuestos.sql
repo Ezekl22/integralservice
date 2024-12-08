@@ -4,7 +4,7 @@ CREATE TABLE `productospresupuestos` (
   `idpresupuestoproducto` int(11) NOT NULL,
   `idpresupuesto` int(11) NOT NULL,
   `idproducto` int(11) NOT NULL,
-  `preciounit` double NOT NULL,
+  `preciounit` DECIMAL(20, 2) NOT NULL,
   `cantidad` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -21,7 +21,3 @@ ALTER TABLE `productospresupuestos`
 
 ALTER TABLE `productospresupuestos`
   MODIFY `idpresupuestoproducto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
-ALTER TABLE `productospresupuestos`
-  ADD CONSTRAINT `productospresupuestos_ibfk_1` FOREIGN KEY (`idpresupuesto`) REFERENCES `presupuestos` (`idpresupuesto`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `productospresupuestos_ibfk_2` FOREIGN KEY (`idproducto`) REFERENCES `productos` (`idproducto`) ON DELETE CASCADE ON UPDATE CASCADE;

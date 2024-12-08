@@ -8,8 +8,8 @@ CREATE TABLE `productos` (
   `detalle` text NOT NULL,
   `stock` int(11) NOT NULL,
   `tipo` text NOT NULL,
-  `preciocompra` double NOT NULL,
-  `precioventa` double NOT NULL
+  `preciocompra` DECIMAL(20, 2) NOT NULL,
+  `precioventa` DECIMAL(20, 2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 INSERT INTO `productos` (`idproducto`, `nombre`, `marca`, `detalle`, `stock`, `tipo`, `preciocompra`, `precioventa`) VALUES

@@ -1,12 +1,10 @@
 <?php
 require_once 'models/GestionPantallasMdl.php';
-require_once 'models/GestionPantallasDAO.php';
 require_once 'models/PopUpMdl.php';
 require_once 'controladores/SesionCtr.php';
 
 class GestionPantallasControlador
 {
-    //private $GestionPantallasDAO;
 
     public function __construct()
     {
@@ -17,13 +15,21 @@ class GestionPantallasControlador
 
         $tipoUsuario = "";
         $sesionCtr = "";
+        $status = isset($_GET['status']) ? $_GET['status'] : "";
+        $description = isset($_GET['description']) ? $_GET['description'] : "";
+
+        if (!empty($status)) {
+            $toast = new ToastCtr();
+            $toast->mostrarToast($status, $description);
+        }
+
         //verifico si hay un parametro get de module, si lo hay, traigo el tipo de usuario
         if ($this->getModule() && !empty($this->getModule())) {
             session_start();
             $sesionCtr = isset($_SESSION['session']) ? $_SESSION['session'] : "";
             session_write_close();
             if (empty($sesionCtr)) {
-                $this->redireccionar("");
+                $this->redireccionar("", "error", "Debe iniciar session para ingresar al modulo");
             } else {
                 $tipoUsuario = $sesionCtr->getUsuarioSesionado()->getTipo();
             }
@@ -36,7 +42,7 @@ class GestionPantallasControlador
                         include_once('./controladores/PresupuestoCtr.php');
                         $indexPage = PresupuestoCtr::getInstance();
                     } else {
-                        $this->redireccionar('menu');
+                        $this->redireccionar('menu', "error", "Este tipo de cuenta no tiene acceso al modulo");
                     }
                     break;
                 case 'reparacion':
@@ -44,7 +50,7 @@ class GestionPantallasControlador
                     if (strtoupper($tipoUsuario) != "VENDEDOR") {
                         include_once('controladores/ReparacionControlador.php');
                     } else {
-                        $this->redireccionar('menu');
+                        $this->redireccionar('menu', "error", "Este tipo de cuenta no tiene acceso al modulo");
                     }
                     break;
                 case 'clientes':
@@ -53,7 +59,7 @@ class GestionPantallasControlador
                         include_once('controladores/ClienteCtr.php');
                         $indexPage = ClienteCtr::getInstance();
                     } else {
-                        $this->redireccionar('menu');
+                        $this->redireccionar('menu', "error", "Este tipo de cuenta no tiene acceso al modulo");
                     }
                     break;
                 case 'proveedores':
@@ -62,7 +68,7 @@ class GestionPantallasControlador
                         include_once('controladores/ProveedorCtr.php');
                         $indexPage = new ProveedorCtr();
                     } else {
-                        $this->redireccionar('menu');
+                        $this->redireccionar('menu', "error", "Este tipo de cuenta no tiene acceso al modulo");
                     }
                     break;
                 case 'pedidos':
@@ -70,7 +76,7 @@ class GestionPantallasControlador
                     if (strtoupper($tipoUsuario) != "REPARADOR") {
                         include_once('controladores/PedidoCompraControlador.php');
                     } else {
-                        $this->redireccionar('menu');
+                        $this->redireccionar('menu', "error", "Este tipo de cuenta no tiene acceso al modulo");
                     }
                     break;
                 case 'usuarios':
@@ -79,7 +85,7 @@ class GestionPantallasControlador
                         include_once './controladores/UsuarioCtr.php';
                         $indexPage = UsuarioCtr::getInstance();
                     } else {
-                        $this->redireccionar('menu');
+                        $this->redireccionar('menu', "error", "Este tipo de cuenta no tiene acceso al modulo");
                     }
                     break;
                 case 'reparaciones':
@@ -142,10 +148,13 @@ class GestionPantallasControlador
 
     }
 
-    public function redireccionar($modulo)
+    public function redireccionar(string $modulo, string $status = "", string $description = "")
     {
         ob_start();
-        header("Location: index.php?" . ($modulo && $modulo != "" ? "module=$modulo" : ""));
+        header("Location: index.php?" .
+            ($modulo && $modulo != "" ? "module=$modulo" : "") .
+            ($status && $status != "" ? "&status=$status" : "") .
+            ($description && $description != "" ? "&description=$description" : ""));
         ob_end_flush();
     }
 

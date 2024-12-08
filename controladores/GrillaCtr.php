@@ -25,9 +25,17 @@ class GrillaCtr
                 require_once 'controladores/PresupuestoCtr.php';
                 $this->controlador = PresupuestoCtr::getInstance();
                 break;
+            case 'productos':
+                require_once 'controladores/ProductoCtr.php';
+                $this->controlador = new ProductoCtr;
+                break;
             case 'clientes':
                 require_once 'controladores/ClienteCtr.php';
-                $this->controlador = ClienteCtr::getInstance();
+                $this->controlador = new ClienteCtr;
+                break;
+            case 'proveedores':
+                require_once 'controladores/ProveedorCtr.php';
+                $this->controlador = new ProveedorCtr;
                 break;
             case 'reparaciones':
                 require_once 'controladores/ReparacionCtr.php';
@@ -53,4 +61,3 @@ class GrillaCtr
         return $this->grillaMdl;
     }
 }
-?>

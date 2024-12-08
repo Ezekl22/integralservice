@@ -19,7 +19,8 @@ echo "<script>const productos = $json;</script>";
             </h2>
         </article>
         <article class="editar__contenedor rounded-4">
-            <form action="" method="POST" class="d-flex flex-column align-items-center border-1 border m-4 rounded-4">
+            <form action="index.php?module=presupuestos&action=created" method="POST"
+                class="d-flex flex-column align-items-center border-1 border m-4 rounded-4">
                 <div class="d-flex flex-column align-items-center contenedor__mayor" id="contenedor">
                     <div class="my-5 d-flex flex-row w-100">
                         <div class="input-group input-group-sm mx-7">
@@ -41,26 +42,28 @@ echo "<script>const productos = $json;</script>";
                         </div>
                     </div>
                     <div class="d-flex flex-column align-items-center contenedor__mayor" id="contGrillaFormulario">
-                        <h4 class="mt-2 text__white">Productos</h4>
+                        <h4 class="mt-2 text__white">
+                            <?php echo !isset($_GET["type"]) || $_GET["type"] != "Reparacion" ? "Productos" : "Equipo a reparar" ?>
+                        </h4>
                         <?php if (isset($_GET['type']) && $_GET['type'] == "Reparacion") { ?>
                             <div class="my-3 d-flex flex-row w-95">
                                 <div class="input-group input-group-sm">
                                     <label class="input-group-text" for="marca" id="inputGroup-sizing-sm">Marca:</label>
-                                    <input type="text" class="form-control w-25" id="marca" required>
+                                    <input type="text" class="form-control w-25" id="marca" name="marca" required>
                                 </div>
                                 <div class="input-group input-group-sm ms-3">
-                                    <label class="input-group-text" for="marca" id="inputGroup-sizing-sm">Numero de
+                                    <label class="input-group-text" for="nroserie" id="inputGroup-sizing-sm">Numero de
                                         serie:</label>
-                                    <input type="text" class="form-control w-25" id="nroserie" required>
+                                    <input type="text" class="form-control w-25" id="nroserie" name="nroserie" required>
                                 </div>
                                 <div class="input-group input-group-sm ms-3">
-                                    <label class="input-group-text" for="marca" id="inputGroup-sizing-sm">Modelo:</label>
-                                    <input type="text" class="form-control w-25" id="modelo" required>
+                                    <label class="input-group-text" for="modelo" id="inputGroup-sizing-sm">Modelo:</label>
+                                    <input type="text" class="form-control w-25" id="modelo" name="modelo" required>
                                 </div>
                             </div>
                             <div class="input-group w-75">
                                 <label class="input-group-text" for="descripcion" id="input-group">Descripción:</label>
-                                <textarea class="form-control" aria-label="Descripción" id="descripcion"></textarea>
+                                <textarea class="form-control" aria-label="" id="descripcion" name="descripcion"></textarea>
                             </div>
                         <?php } else { ?>
                             <div class="d-flex justify-content-start w-100">
@@ -80,13 +83,16 @@ echo "<script>const productos = $json;</script>";
                                     <label class="input-group-text" for="totalProductos"
                                         id="inputGroup-sizing-sm">Total:</label>
                                     <input type="text" class="form-control" disabled aria-label="0" id="totalproductos"
-                                        value="$0,00">
+                                        value="$0,00" step="any">
                                 </div>
                             </div>
 
                         <?php } ?>
-                        <!-- aca falta un boton de cancelar -->
-                        <input class="btn button my-2" type="submit" value="Guardar cambios">
+                        <div class="d-flex justify-content-evenly w-75">
+                            <input class="my-5 btn button w-25" type="submit" value="Guardar">
+                            <a class="my-5 btn button w-25" type="button"
+                                href="index.php?module=presupuestos">Cancelar</a>
+                        </div>
                     </div>
 
 
