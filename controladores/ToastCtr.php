@@ -22,7 +22,7 @@ class ToastCtr
         $texto = "";
 
         if ($accion != "" && $modulo != "") {
-            $letrasEliminadas = $modulo == "reparaciones" ? "es" : "s";
+            $letrasEliminadas = $modulo == "reparaciones" || $modulo == "proveedores" ? "es" : "s";
             $articulo = $modulo == "reparaciones" ? "la " : "el ";
             $moduloSingular = $articulo . rtrim($modulo, $letrasEliminadas);
             switch ($accion) {

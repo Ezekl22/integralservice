@@ -5,7 +5,7 @@ CREATE TABLE `pedidoscompras` (
   `idproveedor` int(11) NOT NULL,
   `fecha` text NOT NULL,
   `estado` text NOT NULL,
-  `total` float NOT NULL,
+  `total` DECIMAL(20, 2) NOT NULL,
   `nrocomprobante` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 

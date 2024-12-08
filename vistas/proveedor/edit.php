@@ -31,8 +31,8 @@ if ($action == 'edit' && $id != '') {
                                     value="<?php echo $proveedorr['nombre']; ?>" required>
                             </div>
                             <div class="input-group input-group-sm mb-2 ms-5">
-                                <label class="input-group-text" for="tipo">Categoria Fiscal:</label>
-                                <select class="form-select" id="tipo" name="tipo" required>
+                                <label class="input-group-text" for="categoria_fiscal">Categoria Fiscal:</label>
+                                <select class="form-select" id="categoria_fiscal" name="categoria_fiscal" required>
                                     <option value="Monotributista" <?php echo ($proveedorr['categoria_fiscal'] == 'Monotributista') ? 'selected' : ''; ?>>
                                         Monotributista</option>
                                     <option value="Responsable Inscripto" <?php echo ($proveedorr['categoria_fiscal'] == 'Responsable inscripto') ? 'selected' : ''; ?>>
@@ -66,11 +66,11 @@ if ($action == 'edit' && $id != '') {
                                     aria-describedby="inputGroup-sizing-sm" id="saldo" name="saldo"
                                     value="<?php echo $proveedorr['saldo']; ?>" required>
                             </div>
-                            <div class="input-group input-group-sm mb-3 ms-5">
-                                <label class="input-group-text" for="saldo" id="inputGroup-sizing-sm">Fecha:</label>
-                                <input type="date" class="form-control" disabled aria-label="Sizing example input"
-                                    aria-describedby="inputGroup-sizing-sm" id="saldo" name="saldo"
-                                    value="<?php echo $fecha->format('Y-m-d'); ?>" required>
+                            <div class="input-group input-group-sm mb-3 mx-5">
+                                <label class="input-group-text" for="cuit" id="inputGroup-sizing-sm">Cuit:</label>
+                                <input type="number" class="form-control" aria-label="Sizing example input"
+                                    aria-describedby="inputGroup-sizing-sm" id="cuit" name="cuit"
+                                    value="<?php echo $proveedorr['cuit']; ?>" required>
                             </div>
                         </div>
                         <div class="d-flex justify-content-evenly w-75">

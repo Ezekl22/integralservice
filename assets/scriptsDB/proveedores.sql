@@ -8,7 +8,7 @@ CREATE TABLE `proveedores` (
   `telefono` int DEFAULT NULL,
   `correo` text DEFAULT NULL,
   `cuit` int(11) NOT NULL,
-  `saldo` float DEFAULT NULL,
+  `saldo` DECIMAL(20, 2) DEFAULT NULL,
   `fechaCreacion` timestamp NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
