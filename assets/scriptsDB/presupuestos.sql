@@ -9,7 +9,7 @@ CREATE TABLE `presupuestos` (
   `estado` text NOT NULL,
   `fecha` text NOT NULL,
   `puntoventa` text NOT NULL,
-  `total` double NOT NULL
+  `total` DECIMAL(20, 2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 INSERT INTO `presupuestos` (`idpresupuesto`, `idcliente`,`nrocomprobante`, `tipo`, `estado`, `fecha`,`puntoventa`,`total`) VALUES

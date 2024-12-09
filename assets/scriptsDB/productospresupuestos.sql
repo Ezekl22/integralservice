@@ -4,7 +4,7 @@ CREATE TABLE `productospresupuestos` (
   `idpresupuestoproducto` int(11) NOT NULL,
   `idpresupuesto` int(11) NOT NULL,
   `idproducto` int(11) NOT NULL,
-  `preciounit` double NOT NULL,
+  `preciounit` DECIMAL(20, 2) NOT NULL,
   `cantidad` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 

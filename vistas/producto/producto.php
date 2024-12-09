@@ -2,20 +2,20 @@
 <html>
 
 <head>
-    <title>Proveedores</title>
+    <title>Productos</title>
 </head>
 
 <body>
     <main class="main__flex">
         <article class="mt-4">
             <h2 class="main__title">
-                Proveedores
+                Productos
             </h2>
         </article>
         <article class="mt-5 d-flex flex-column align-items-center">
-            <div class="grilla w-95 d-flex flex-column align-items-center rounded-4">
-                <div class="d-flex w-95 justify-content-end mt-3">
-                    <form action="index.php?module=proveedores&action=searched" method="POST"
+            <div class="grilla w-75 d-flex flex-column align-items-center rounded-4">
+                <div class="d-flex w-75 justify-content-end mt-3">
+                    <form action="index.php?module=productos&action=searched" method="POST"
                         class="input-group input-group-sm w-30" id="formBuscador">
                         <input type="search" id="termino" name="termino" class="form-control"
                             placeholder="Ingrese su busqueda"
@@ -30,8 +30,8 @@
             <?php
             $action = isset($_GET['action']) ? $_GET['action'] : '';
             if (($action != 'edit' && $action != 'create')) { ?>
-                <a class="my-5 btn button" type="button" href="index.php?module=proveedores&action=create">Crear nuevo
-                    proveedor</a>
+                <a class="my-5 btn button" type="button" href="index.php?module=productos&action=create">Crear nuevo
+                    producto</a>
             <?php } ?>
         </article>
     </main>

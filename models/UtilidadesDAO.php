@@ -56,18 +56,16 @@ class UtilidadesDAO
         $stmt = $this->db->getConnection()->prepare($query);
         return $this->checkExecute($stmt, $typeQuery);
     }
+
     public function showStatus(string $module, string $status, string $action = "")
     {
         if ($status == "") {
             header("Location: index.php?module=$module"
                 . ($action != "" ? "&action=" . $action : $action) . "&status=success");
         } else {
-            header("Location: index.php?module=usuarios"
+            header("Location: index.php?module=$module"
                 . ($action != "" ? "&action=" . $action : $action) . "&status=error&description=" . $status);
         }
     }
 }
-
-
-
 ?>

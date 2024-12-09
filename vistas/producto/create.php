@@ -37,7 +37,7 @@
                         <div class="w-75 d-flex mt-3">
                             <div class="input-group input-group-sm mb-3">
                                 <span class="input-group-text" id="inputGroup-sizing-sm">Stock</span>
-                                <input type="text" class="form-control" aria-label="Sizing example input"
+                                <input type="number" class="form-control" aria-label="Sizing example input"
                                     aria-describedby="inputGroup-sizing-sm" id="stock" name="stock" required>
                             </div>
                             <div class="input-group input-group-sm mb-3 ms-4">
@@ -51,15 +51,15 @@
                         <div class="w-75 d-flex mt-3">
                             <div class="input-group input-group-sm mb-3">
                                 <span class="input-group-text" id="inputGroup-sizing-sm">Precio de compra</span>
-                                <input type="text" class="form-control" aria-label="Sizing example input"
+                                <input type="number" class="form-control" aria-label="Sizing example input"
                                     aria-describedby="inputGroup-sizing-sm" id="preciocompra" name="preciocompra"
-                                    required>
+                                    step="any" required>
                             </div>
                             <div class="input-group input-group-sm mb-3 ms-4">
                                 <span class="input-group-text" id="inputGroup-sizing-sm">Precio de venta</span>
-                                <input type="text" class="form-control" aria-label="Sizing example input"
+                                <input type="number" class="form-control" aria-label="Sizing example input"
                                     aria-describedby="inputGroup-sizing-sm" id="precioventa" name="precioventa"
-                                    required>
+                                    step="any" required>
                             </div>
                         </div>
                     </div>

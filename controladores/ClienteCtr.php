@@ -1,8 +1,9 @@
 <?php
 require_once 'models/ClienteMdl.php';
 require_once 'models/ClienteDAO.php';
-require_once 'controladores/GrillaCtr.php';
 require_once 'models/GrillaMdl.php';
+require_once 'controladores/GrillaCtr.php';
+require_once 'controladores/ToastCtr.php';
 
 class ClienteCtr
 {
