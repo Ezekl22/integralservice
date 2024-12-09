@@ -111,6 +111,7 @@ class PedidoCompraCtr
             $pedidocompra = new PedidoCompraMdl($nrocomprobante, $idproveedor, $estado, $total, fecha: $fecha);
 
             $this->pedidocompraDAO->create($pedidocompra);
+            echo "hola";
         }
     }
 
