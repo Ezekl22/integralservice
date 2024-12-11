@@ -25,6 +25,10 @@ class GrillaCtr
                 require_once 'controladores/PresupuestoCtr.php';
                 $this->controlador = PresupuestoCtr::getInstance();
                 break;
+            case 'pedidos':
+                require_once 'controladores/PedidoCompraCtr.php';
+                $this->controlador = PedidoCompraCtr::getInstance();
+                break;
             case 'productos':
                 require_once 'controladores/ProductoCtr.php';
                 $this->controlador = new ProductoCtr;
@@ -35,11 +39,7 @@ class GrillaCtr
                 break;
             case 'proveedores':
                 require_once 'controladores/ProveedorCtr.php';
-                $this->controlador = new ProveedorCtr;
-                break;
-            case 'pedidos':
-                require_once 'controladores/PedidoCompraCtr.php';
-                $this->controlador = new PedidoCompraCtr;
+                $this->controlador = ProveedorCtr::getInstance();
                 break;
             default:
                 # code...

@@ -119,6 +119,12 @@ class GestionPantallasControlador
                 case 'annul':
                     $indexPage->getPantallaAnnul();
                     break;
+                case 'facturar':
+                    if ($this->getModule() == "pedidos") {
+
+                        $indexPage->getPantallaCreate();
+                    }
+                    break;
                 default:
                     $indexPage->index();
                     break;

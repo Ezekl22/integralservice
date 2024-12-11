@@ -196,8 +196,8 @@ const cargarGrillaProducto = (module, productosPrecargados = []) =>{
             contComponente.id = id;
             contComponente.innerHTML =  `<td id="producto"> ${productoPrecargado.nombre} </td>
                                  <td> <input type="number" value="${productoPrecargado.cantidad}" class="form-control" onchange="cantidadOnChange('${productoPrecargado.idproducto}','${id}', '${module === "presupuestos"}')" id="cantidad" name="cantidad[]" min="1"</td>
-                                 <td id="valorunt"> ${currencyFormatter(productoPrecargado.precioventa)} </td>
-                                 <td id="total"> ${currencyFormatter(parseInt(productoPrecargado.cantidad) * productoPrecargado.precioventa)} </td>
+                                 <td id="valorunt"> ${currencyFormatter(productoPrecargado[5])} </td>
+                                 <td id="total"> ${currencyFormatter(parseInt(productoPrecargado.cantidad) * productoPrecargado[5])} </td>
                                  <td><input class="form-check-input checksProductos" onchange="onChangeChecks()" type="checkbox"></td>
                                  <input type="hidden" class="form-control me-7" aria-label="0" value="${productoPrecargado.idproducto}" id="idproductos" name="idproductos[]">`;
             contProductos.appendChild(contComponente);

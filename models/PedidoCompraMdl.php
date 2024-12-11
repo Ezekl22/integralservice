@@ -8,14 +8,15 @@ class PedidoCompraMdl
     private $estado;
     private $total;
     private $nrocomprobante;
+    private array $productos;
 
-    public function __construct($nrocomprobante, $idproveedor, $estado, $total, $fecha)
+    public function __construct($nrocomprobante, int $idproveedor, $estado, $total, array $productos)
     {
         $this->nrocomprobante = $nrocomprobante;
         $this->idproveedor = $idproveedor;
         $this->estado = $estado;
         $this->total = $total;
-        $this->fecha = $fecha;
+        $this->productos = $productos;
     }
 
     // Getters y setters
@@ -78,5 +79,15 @@ class PedidoCompraMdl
     public function setNroComprobante($nrocomprobante)
     {
         $this->nrocomprobante = $nrocomprobante;
+    }
+
+    public function getProductos()
+    {
+        return $this->productos;
+    }
+
+    public function setProductos($productos)
+    {
+        $this->productos = $productos;
     }
 }

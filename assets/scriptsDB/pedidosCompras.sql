@@ -2,11 +2,11 @@ DROP TABLE IF EXISTS pedidoscompras;
 
 CREATE TABLE `pedidoscompras` (
   `idpedidocompra` int(11) NOT NULL,
-  `nrocomprobante` text NOT NULL
+  `nrocomprobante` text NOT NULL,
   `idproveedor` int(11) NOT NULL,
   `estado` text NOT NULL,
-  `total` float NOT NULL,
-  `fecha` text NOT NULL,
+  `total` DECIMAL(20, 2) NOT NULL,
+  `fecha` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 INSERT INTO `pedidoscompras` (`idpedidocompra`, `nrocomprobante`, `idproveedor`,`estado`, `total`,`fecha`) VALUES

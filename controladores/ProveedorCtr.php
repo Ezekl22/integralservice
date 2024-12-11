@@ -7,6 +7,7 @@ require_once 'models/GrillaMdl.php';
 class ProveedorCtr
 {
     private $proveedorDAO;
+    private static $instance = null;
 
     public function __construct()
     {
@@ -58,6 +59,14 @@ class ProveedorCtr
                     break;
             }
         }
+    }
+
+    public static function getInstance()
+    {
+        if (self::$instance == null) {
+            self::$instance = new ProveedorCtr();
+        }
+        return self::$instance;
     }
 
     public function index()
