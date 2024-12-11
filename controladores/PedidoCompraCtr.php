@@ -62,12 +62,6 @@ class PedidoCompraCtr
             //         $toast->mostrarToast("exito", "Pedido facturado");
             //     }
             //     break;
-            case 'cambiarestado':
-                if ($status != "success") {
-                    $this->cambiarEstado($id);
-                } else {
-                    $toast->mostrarToast("exito", "Se cambio el estado del pedido");
-                }
             case 'searched':
                 $this->search();
                 break;
