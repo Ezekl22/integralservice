@@ -27,7 +27,7 @@ class PedidoCompraDAO
             array_push($params, $param);
         }
 
-        $queryInsert = "INSERT INTO productospedidoscompras (idpedidocompra, idproducto, cantidad) 
+        $queryInsert = "INSERT INTO productospedidoscompras (idpedidocompra, idproducto, preciounit, cantidad) 
             VALUES ";
 
         $queries = [
@@ -69,13 +69,14 @@ class PedidoCompraDAO
             $param = [
                 $productos[$i]->getIdPedidoCompra(),
                 $productos[$i]->getIdProducto(),
+                $productos[$i]->getPreciounit(),
                 $productos[$i]->getCantidad(),
             ];
             array_push($params, $param);
         }
         $queries = [
             [
-                'query' => "INSERT INTO productospedidocompra (idpedidocompra, idproducto, cantidad) VALUES ",
+                'query' => "INSERT INTO productospedidocompra (idpedidocompra, idproducto, preciounit, cantidad) VALUES ",
                 'type' => 'INSERT',
                 'params' => $params,
             ]
@@ -141,7 +142,7 @@ class PedidoCompraDAO
                 if ($nuevoProducto->getIdProducto() == $antiguoProducto->getIdProducto()) {
                     $repetido = true;
                     //si el campo de cantidad es diferente, entonces lo guardo en $productosAActualizar
-                    if ($nuevoProducto->getCantidad() != $antiguoProducto->getCantidad()) {
+                    if ($nuevoProducto->getCantidad() != $antiguoProducto->getCantidad() || $nuevoProducto->getPreciounit() != $antiguoProducto->getPreciounit()) {
                         array_push($productosAActualizar, $nuevoProducto);
                     }
                 } else {
@@ -180,13 +181,15 @@ class PedidoCompraDAO
         foreach ($productos as $producto) {
             $separador = $contador > count($productos) ? ", " : "";
             $queryCasesCantidad = $queryCasesCantidad . " WHEN idProducto = " . $producto->getIdProducto() . " THEN " . $producto->getCantidad();
+            $queryCasesPrecio = $queryCasesPrecio . " WHEN idProducto = " . $producto->getIdProducto() . " THEN " . $producto->getPreciounit();
             $queryCasesWhere = $queryCasesWhere . $producto->getIdProducto() . $separador;
             $contador++;
         }
         $queries = [
             [
-                'query' => "UPDATE productospedidoscompras SET cantidad = CASE" . $queryCasesCantidad .
-                    " END WHERE idPedidoCompra = " . $productos[0]->getIdPedidoCompra() .
+                'query' => "UPDATE productospedidoscompras SET preciounit = CASE" . $queryCasesPrecio .
+                    " END, cantidad = CASE" . $queryCasesCantidad .
+                    " END WHERE idpedidocompra = " . $productos[0]->getIdPedidoCompra() .
                     " AND idProducto IN (" . $queryCasesWhere . ");",
                 'type' => 'UPDATE',
                 'params' => [],

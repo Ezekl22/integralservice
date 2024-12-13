@@ -16,7 +16,7 @@ INSERT INTO `pedidoscompras` (`idpedidocompra`, `nrocomprobante`, `idproveedor`,
 
 ALTER TABLE `pedidoscompras`
   ADD PRIMARY KEY (`idpedidocompra`),
-  ADD UNIQUE KEY `idproveedor` (`idproveedor`);
+  ADD KEY `idproveedor` (`idproveedor`);
 
 ALTER TABLE `pedidoscompras`
   MODIFY `idpedidocompra` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;

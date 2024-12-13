@@ -50,7 +50,7 @@
                                         </a>
                                     <?php }
                                 } ?>
-                                <?php if (strtoupper($datoCuerpo[4]) == "FACTURADO" || strtoupper($datoCuerpo[4]) == "PENDIENTE PRESUPUESTO" || strtoupper($datoCuerpo[4]) == "ANULADO") { ?>
+                                <?php if (strtoupper($datoCuerpo['estado']) == "FACTURADO" || strtoupper($datoCuerpo['estado']) == "PENDIENTE PRESUPUESTO" || strtoupper($datoCuerpo['estado']) == "ANULADO") { ?>
                                     <!-- FACTURAR - DESACTIVADO -->
                                     <label class="icono__contenedor me-2"
                                         title="<?php echo $gestionPantallaCtr->getModule() == 'presupuestos' ? 'Facturar' : 'Cargar factura' ?>">
@@ -67,7 +67,7 @@
                                 <?php } ?>
 
                             <?php }
-                        if (in_array($gestionPantallaCtr->getModule(), ["presupuestos", "pedidos"]) && strtoupper($datoCuerpo[4]) == "FACTURADO" || strtoupper($datoCuerpo[4]) == "ANULADO") { ?>
+                        if (in_array($gestionPantallaCtr->getModule(), ["presupuestos", "pedidos"]) && strtoupper($datoCuerpo['estado']) == "FACTURADO" || strtoupper($datoCuerpo['estado']) == "ANULADO") { ?>
                                 <!-- EDITAR - DESACTIVADO-->
                                 <label class="icono__contenedor me-2" title="Editar">
                                     <img class="icono__imagen" src="./assets/img/iconoEditarDeshabilitado.png"
