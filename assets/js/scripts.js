@@ -138,8 +138,13 @@ const recalcularTotal = () =>{
 const cantidadOnChange = (idProducto ,id, esPresupuesto) =>{
     const inputTotal = document.querySelector('#'+id+' #total').childNodes[0];
     const cantidad = document.querySelector('#'+id+' #cantidad').value;
+    const queryString = window.location.search;
+    const params = new URLSearchParams(queryString);
+    const modulo = params.get('module');
+    console.log(modulo);
     const producto = productos.find(producto =>producto.idproducto === parseInt(idProducto) )
-    inputTotal.data = currencyFormatter(producto.precioventa * parseInt(cantidad));
+    const precioUnit = modulo === "pedidos" ? producto.preciocompra : producto.precioventa;
+    inputTotal.data = currencyFormatter(precioUnit * parseInt(cantidad));
     recalcularTotal();
 }
 
@@ -153,6 +158,9 @@ const validarFormulario = () =>{
 }
 
 const cargarGrillaProducto = (module, productosPrecargados = []) =>{
+    const queryString = window.location.search;
+    const params = new URLSearchParams(queryString);
+    const modulo = params.get('module');
     let contProductos = document.getElementById("grilla");
     if (productosPrecargados.length == 0) {
         let seAgregaProducto = true;
@@ -176,13 +184,13 @@ const cargarGrillaProducto = (module, productosPrecargados = []) =>{
             })
         }
         if (seAgregaProducto) {
-            
+            let precioUnit = modulo === "pedidos" ? productoSeleccionado[6] : productoSeleccionado[7];
             contComponente.className = "grilla__cuerpo";
             contComponente.id = id;
             contComponente.innerHTML =  `<td id="producto"> ${productoSeleccionado.nombre} </td>
                                         <td> <input type="number" value="${cantidad}" class="form-control" onchange="cantidadOnChange('${productoSeleccionado[0]}','${id}', '${module === "presupuestos"}')" id="cantidad" name="cantidad[]" min="1"</td>
-                                        <td id="valorunt"> ${currencyFormatter(productoSeleccionado[7])} </td>
-                                        <td id="total"> ${currencyFormatter(parseInt(cantidad) * productoSeleccionado[7])} </td>
+                                        <td id="valorunt"> ${currencyFormatter(precioUnit)} </td>
+                                        <td id="total"> ${currencyFormatter(parseInt(cantidad) * precioUnit)} </td>
                                         <td><input class="form-check-input checksProductos" onchange="onChangeChecks()" type="checkbox"></td>
                                         <input type="hidden" class="form-control me-7" aria-label="0" value="${productoSeleccionado[0]}" id="idproductos" name="idproductos[]">`;
             contProductos.appendChild(contComponente);

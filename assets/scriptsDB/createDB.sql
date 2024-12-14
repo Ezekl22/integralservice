@@ -105,7 +105,7 @@ INSERT INTO `presupuestos` (`idpresupuesto`, `idclient`,`nrocomprobante`, `estad
 
 ALTER TABLE `presupuestos`
   ADD PRIMARY KEY (`idpresupuesto`),
-  ADD UNIQUE KEY `idcliente` (`idclient`);
+  ADD KEY `idcliente` (`idclient`);
 
 
 ALTER TABLE `presupuestos`
