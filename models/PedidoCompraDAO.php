@@ -96,7 +96,7 @@ class PedidoCompraDAO
                 'params' => [],
             ]
         ];
-        if (isset($_GET['action']) && $_GET['action'] != "facturar") {
+        if (isset($_GET['action'])) {
             $this->updateProductosPedido($pedidoCompra->getIdPedidoCompra(), $pedidoCompra);
         }
 

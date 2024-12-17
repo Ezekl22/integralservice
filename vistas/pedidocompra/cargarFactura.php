@@ -2,7 +2,7 @@
 $id = isset($_GET['id']) ? $_GET['id'] : '';
 $PedidoCompraCtr = new PedidoCompraCtr();
 $action = isset($_GET['action']) ? $_GET['action'] : '';
-$pedidoCompra = $PedidoCompraCtr->getPedidoCompraById($id);
+$pedidoCompra = $PedidoCompraCtr->pedidoCompraDAO->getPedidoCompraById($id);
 
 
 $proveedores = $PedidoCompraCtr->getAllProveedores();
@@ -13,20 +13,20 @@ $json = json_encode($PedidoCompraCtr->getAllProductos());
 echo "<script>const productos = $json;</script>";
 ?>
 <?php
-if ($action == 'edit' && $id != '') {
+if ($action == 'facturar' && $id != '') {
 
     ?>
     <html>
 
     <head>
-        <title>Editar Pedido de Compra</title>
+        <title>Cargar Factura de Compra</title>
     </head>
 
     <body>
         <main class="d-flex flex-column align-items-center mt-2 mb-4 main__flex" id="editPedido">
             <article class="mt-4">
                 <h2 class="main__title mb-5">
-                    Editar Pedido de Compra
+                    Cargar Factura de Compra
                 </h2>
             </article>
             <article class="editar__contenedor rounded-4">
@@ -35,9 +35,9 @@ if ($action == 'edit' && $id != '') {
                         <div class="my-3 d-flex flex-row w-100">
                             <div class="input-group input-group-sm ms-7">
                                 <label class="input-group-text" for="proveedor">Proveedor:</label>
-                                <select class="form-select" id="idproveedor" name="idproveedor" required>
+                                <select class="form-select" id="idproveedor" name="idproveedor" required disabled>
                                     <?php foreach ($proveedores as $proveedor) { ?>
-                                        <option value="<?php echo $proveedor['idproveedor'] ?>" <?php echo ($pedidoCompra['idproveedor'] == $proveedor['idproveedor']) ? 'selected' : ''; ?>>
+                                        <option disabled value="<?php echo $proveedor['idproveedor'] ?>" <?php echo ($pedidoCompra['idproveedor'] == $proveedor['idproveedor']) ? 'selected' : ''; ?>>
                                             <?php echo $proveedor['nombre'] ?>
                                         </option>
                                     <?php } ?>

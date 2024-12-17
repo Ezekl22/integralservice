@@ -55,13 +55,16 @@ class PedidoCompraCtr
             case 'updated':
                 $toast->mostrarToast("exito", "Pedido modificado");
                 break;
-            // case 'facturar':
-            //     if ($status != "success") {
-            //         $this->facturar($id);
-            //     } else {
-            //         $toast->mostrarToast("exito", "Pedido facturado");
-            //     }
-            //     break;
+            case 'facturar':
+                if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                    if ($status != "success") {
+                        $this->cargarFactura($id);
+                    }
+                }
+                break;
+            case 'facturado':
+                $toast->mostrarToast("exito", "Pedido facturado");
+                break;
             case 'searched':
                 $this->search();
                 break;
@@ -93,7 +96,7 @@ class PedidoCompraCtr
             $id = isset($_GET['id']) ? $_GET['id'] : '';
             $pedidoCompra = $this->getPedidoCompraById($id);
             $proveedor = $this->getProveedorById($pedidoCompra->getIdProveedor());
-            $nombreCliente = $proveedor['nombre'];
+            $nombreProveedor = $proveedor['nombre'];
             $productosPedido = $this->getProductosPedidoById($pedidoCompra->getIdPedidoCompra());
             $total = 0;
         }
@@ -279,24 +282,34 @@ class PedidoCompraCtr
         return $this->productoCtr->getAllProductos();
     }
 
-    // reveer esta funcion. Para facturar un pedido se tiene que ir a la pantalla de editar, en la cual el usuario puede cargar
-    //  la factura y pasar el estado del pedido a facturado
+    public function getPantallaCargarFactura()
+    {
+        session_start();
+        $gestionPantallaCtr = $_SESSION['session']->getGestionPantallaCtr();
+        session_write_close();
+        $this->index();
+        require_once 'vistas/pedidocompra/cargarFactura.php';
+    }
 
-    // public function facturar($id)
-    // {
-    //     $presupuesto = $this->getPedidoCompraById($id);
-    //     $estado = $presupuesto->getEstado();
-    //     if ($estado != 'Pendiente presupuesto' && $estado != 'En reparacion' && $estado != '' && $estado != 'Facturado') {
-    //         $presupuesto->setEstado('Facturado');
-    //         $presupuesto->setNroComprobante('C-' . $presupuesto->getNroComprobante() . '-0001');
-    //         $status = $this->updatePresupuesto($presupuesto);
-    //         if ($status == "") {
-    //             header("Location: index.php?module=presupuestos&action=facturar&status=success");
-    //         } else {
-    //             header("Location: index.php?module=presupuestos&status=error&description=" . $status);
-    //         }
-    //     }
-    // }
+    public function cargarFactura($id)
+    {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            if (isset($_POST["idproveedor"])) {
+                $pedidoCompra = $this->getPedidoCompraById($id);
+                $pedidoCompra->setIdProveedor($_POST['idproveedor']);
+                $pedidoCompra->setEstado("Facturado");
+                $productos_total = $this->getProductos_Total();
+                $pedidoCompra->setProductos($productos_total->productos);
+                $pedidoCompra->setTotal($productos_total->total);
+                $status = $this->updatePedidoCompra($pedidoCompra);
+            }
+        }
+        if ($status == "") {
+            header("Location: index.php?module=pedidos&action=facturado&status=success");
+        } else {
+            header("Location: index.php?module=pedidos&status=error&description=" . $status);
+        }
+    }
 
     private function updatePedidoCompra($pedidoCompra)
     {

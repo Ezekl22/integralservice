@@ -141,7 +141,6 @@ const cantidadOnChange = (idProducto ,id, esPresupuesto) =>{
     const queryString = window.location.search;
     const params = new URLSearchParams(queryString);
     const modulo = params.get('module');
-    console.log(modulo);
     const producto = productos.find(producto =>producto.idproducto === parseInt(idProducto) )
     const precioUnit = modulo === "pedidos" ? producto.preciocompra : producto.precioventa;
     inputTotal.data = currencyFormatter(precioUnit * parseInt(cantidad));

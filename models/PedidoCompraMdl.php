@@ -10,7 +10,7 @@ class PedidoCompraMdl
     private $nrocomprobante;
     private array $productos;
 
-    public function __construct($nrocomprobante, int $idproveedor, $estado, $total, array $productos)
+    public function __construct($nrocomprobante, $idproveedor, $estado, $total, array $productos)
     {
         $this->nrocomprobante = $nrocomprobante;
         $this->idproveedor = $idproveedor;
