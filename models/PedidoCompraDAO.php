@@ -14,7 +14,6 @@ class PedidoCompraDAO
 
     public function create(PedidoCompraMdl $pedidoCompra)
     {
-
         $productos = $pedidoCompra->getProductos();
         $params = [];
         for ($i = 0; $i < count($productos); $i++) {
@@ -32,12 +31,12 @@ class PedidoCompraDAO
 
         $queries = [
             [
-                'query' => 'INSERT INTO pedidoscompras (idproveedor, nrocomprobante, estado, fecha, total) VALUES ',
+                'query' => 'INSERT INTO pedidoscompras (nrocomprobante, idproveedor, estado, fecha, total) VALUES ',
                 'type' => 'INSERT',
                 'params' => [
                     [
-                        $pedidoCompra->getIdProveedor(),
-                        "'" . $pedidoCompra->getNroComprobante() . "'",
+                        $pedidoCompra->getNroComprobante(),
+                        "'" . $pedidoCompra->getIdProveedor() . "'",
                         "'" . $pedidoCompra->getEstado() . "'",
                         "'" . date("d-m-Y") . "'",
                         $pedidoCompra->getTotal(),
@@ -254,7 +253,8 @@ class PedidoCompraDAO
             $queries = [
                 [
                     'query' => "SELECT pedidoscompras.idpedidocompra, 
-                          pedidoscompras.idproveedor, pedidoscompras.nrocomprobante,
+                          pedidoscompras.nrocomprobante,
+                          pedidoscompras.idproveedor,
                           pedidoscompras.estado,
                           pedidoscompras.fecha,
                           pedidoscompras.total
