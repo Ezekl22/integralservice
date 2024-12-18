@@ -63,7 +63,7 @@ class PedidoCompraDAO
 
     private function createProductosPedido(array $productos)
     {
-        $params = "";
+        $params = [];
         for ($i = 0; $i < count($productos); $i++) {
             $param = [
                 $productos[$i]->getIdPedidoCompra(),
