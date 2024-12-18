@@ -164,4 +164,10 @@ class ProductoCtr
         }
         return $resultado;
     }
+
+    public function actualizarStockProducto($id, $cantidad){
+        $producto = $this->getProductoById($id);
+        $stockActual = $producto->getStock();
+        $producto->setStock($stockActual + $cantidad);
+    }
 }
