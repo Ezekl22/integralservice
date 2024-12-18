@@ -35,8 +35,8 @@ class PedidoCompraDAO
                 'type' => 'INSERT',
                 'params' => [
                     [
-                        $pedidoCompra->getNroComprobante(),
-                        "'" . $pedidoCompra->getIdProveedor() . "'",
+                        "'" . $pedidoCompra->getNroComprobante() . "'",
+                        $pedidoCompra->getIdProveedor(),
                         "'" . $pedidoCompra->getEstado() . "'",
                         "'" . date("d-m-Y") . "'",
                         $pedidoCompra->getTotal(),

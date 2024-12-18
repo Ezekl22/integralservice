@@ -44,11 +44,11 @@
         </article>
         <!-------------------------------------------------- Pop up ver pedido ---------------------------------------------->
         <?php if ($action == "see") {
-            include_once 'vistas/otros/popUpComprobante.php';
+            include_once 'vistas/otros/popUpComprobantePedido.php';
         } ?>
     </main>
 </body>
-<?php echo $action == 'see' ? '<script> mostrarVentanaModal("ver"); </script>' : ''; ?>
+<?php echo $action == 'see' ? '<script> mostrarVentanaModal("verpedido"); </script>' : ''; ?>
 <?php echo $action == 'annul' ? '<script> mostrarVentanaModal("annul"); </script>' : ''; ?>
 <script>clickBorrarBusqueda();</script>
 

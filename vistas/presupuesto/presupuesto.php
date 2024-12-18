@@ -45,11 +45,11 @@
         </article>
         <!-------------------------------------------------- Pop up ver presupuesto ---------------------------------------------->
         <?php if ($action == "see") {
-            include_once 'vistas/otros/popUpComprobante.php';
+            include_once 'vistas/otros/popUpComprobantePresupuesto.php';
         } ?>
     </main>
 </body>
-<?php echo $action == 'see' ? '<script> mostrarVentanaModal("ver"); </script>' : ''; ?>
+<?php echo $action == 'see' ? '<script> mostrarVentanaModal("verpresupuesto"); </script>' : ''; ?>
 <?php echo $action == 'annul' ? '<script> mostrarVentanaModal("annul"); </script>' : ''; ?>
 <script>clickBorrarBusqueda();</script>
 

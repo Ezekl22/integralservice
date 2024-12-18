@@ -23,7 +23,7 @@
 
                         <?php if (in_array($gestionPantallaCtr->getModule(), ["presupuestos", "pedidos"])) { ?>
                         <!-- VER -->
-                                <?php if (strtoupper($datoCuerpo[4]) != "PENDIENTE PRESUPUESTO") { ?>
+                                <?php if (strtoupper($datoCuerpo['estado']) != "PENDIENTE PRESUPUESTO") { ?>
                                     <a class="icono__contenedor me-2" title="ver"
                                         href="index.php?module=<?php echo $gestionPantallaCtr->getModule(); ?>&action=see&id=<?php echo $datoCuerpo[0]; ?>">
                                         <img class="icono__imagen" src="./assets/img/iconoVer.png" alt="icono de ver">
@@ -35,7 +35,7 @@
                                 <?php } ?>
                                 <?php
                                 if ($gestionPantallaCtr->getModule() === "presupuestos") {
-                                    if (strtoupper($datoCuerpo[4]) != "PRESUPUESTADO" && strtoupper($datoCuerpo[4]) != "REPARADO") { ?>
+                                    if (strtoupper($datoCuerpo['estado']) != "PRESUPUESTADO" && strtoupper($datoCuerpo['estado']) != "REPARADO") { ?>
                                         <!-- CAMBIAR ESTADO - DESACTIVADO -->
                                         <label class="icono__contenedor me-2" title="Cambiar Estado">
                                             <img class="icono__imagen" src="./assets/img/iconoCambiarEstadoDeshabilitado.svg"
@@ -77,12 +77,12 @@
                                 <!-- EDITAR - ACTIVADO-->
                                 <a class="icono__contenedor me-2"
                                     href="index.php?module=<?php echo $gestionPantallaCtr->getModule(); ?>&action=edit&id=<?php echo $datoCuerpo[0];
-                                       echo $gestionPantallaCtr->getModule() == "presupuestos" ? "&type=" . $datoCuerpo[3] : ""; ?>">
+                                       echo $gestionPantallaCtr->getModule() == "presupuestos" ? "&type=" . $datoCuerpo['tipo'] : ""; ?>">
                                     <img class="icono__imagen" src="./assets/img/iconoEditar.png" alt="icono de editar">
                                 </a>
                             <?php } ?>
                             <?php if (in_array($gestionPantallaCtr->getModule(), ["usuarios", "clientes", "proveedores", "productos"])) { ?>
-                                <?php if ($gestionPantallaCtr->getModule() === "usuarios" && strtoupper($datoCuerpo[3]) === "ADMINISTRADOR BASE") { ?>
+                                <?php if ($gestionPantallaCtr->getModule() === "usuarios" && strtoupper($datoCuerpo['tipo']) === "ADMINISTRADOR BASE") { ?>
                                     <!-- ELIMINAR - DESACTIVADO -->
                                     <label class="icono__contenedor" title="Eliminar">
                                         <img class="icono__imagen svg-disabled-color"
