@@ -99,7 +99,7 @@ const mostrarGrillaProductos = ()=>{
                                 <div class="d-flex justify-content-center">
                                     <div class="input-group input-group-sm my-3 w-25">
                                         <label class="input-group-text" for="cantidad" id="inputGroup-sizing-sm">Cantidad:</label>
-                                        <input type="number" class="form-control" aria-label="0" id="cantidadProducto" value="1">
+                                        <input type="number" class="form-control" aria-label="0" id="cantidadProducto" value="1" min="1">
                                     </div>
                                 </div>
                             </div>`;
@@ -187,7 +187,7 @@ const cargarGrillaProducto = (module, productosPrecargados = []) =>{
             contComponente.className = "grilla__cuerpo";
             contComponente.id = id;
             contComponente.innerHTML =  `<td id="producto"> ${productoSeleccionado.nombre} </td>
-                                        <td> <input type="number" value="${cantidad}" class="form-control" onchange="cantidadOnChange('${productoSeleccionado[0]}','${id}', '${module === "presupuestos"}')" id="cantidad" name="cantidad[]" min="1"</td>
+                                        <td> <input type="number" value="${cantidad}" class="form-control" onchange="cantidadOnChange('${productoSeleccionado[0]}','${id}', '${module === "presupuestos"}')" id="cantidad" name="cantidad[]" min="1"></td>
                                         <td id="valorunt"> ${currencyFormatter(precioUnit)} </td>
                                         <td id="total"> ${currencyFormatter(parseInt(cantidad) * precioUnit)} </td>
                                         <td><input class="form-check-input checksProductos" onchange="onChangeChecks()" type="checkbox"></td>
