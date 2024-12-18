@@ -37,7 +37,7 @@ if ($action == 'edit' && $id != '') {
                                 <label class="input-group-text" for="proveedor">Proveedor:</label>
                                 <select class="form-select" id="idproveedor" name="idproveedor" required>
                                     <?php foreach ($proveedores as $proveedor) { ?>
-                                        <option value="<?php echo $proveedor['idproveedor'] ?>" <?php echo ($pedidoCompra['idproveedor'] == $proveedor['idproveedor']) ? 'selected' : ''; ?>>
+                                        <option value="<?php echo $proveedor['idproveedor'] ?>" <?php echo ($pedidoCompra->getIdProveedor() == $proveedor['idproveedor']) ? 'selected' : ''; ?>>
                                             <?php echo $proveedor['nombre'] ?>
                                         </option>
                                     <?php } ?>
@@ -49,7 +49,7 @@ if ($action == 'edit' && $id != '') {
                                     Nro:</label>
                                 <input type="text" disabled class="form-control" aria-label="Sizing example input"
                                     aria-describedby="inputGroup-sizing-sm" id="nrocomprobante" name="nrocomprobante"
-                                    value="<?php echo $pedidoCompra['nrocomprobante'] ?>" required>
+                                    value="<?php echo $pedidoCompra->getNroComprobante() ?>" required>
                             </div>
                         </div>
                         <div class="my-3 d-flex flex-row w-100">
@@ -57,13 +57,13 @@ if ($action == 'edit' && $id != '') {
                                 <label class="input-group-text" for="estado" id="inputGroup-sizing-sm">Estado:</label>
                                 <input type="text" class="form-control" aria-label="Sizing example input"
                                     aria-describedby="inputGroup-sizing-sm" id="estado" name="estado"
-                                    value="<?php echo $pedidoCompra['estado'] ?>" disabled required>
+                                    value="<?php echo $pedidoCompra->getEstado() ?>" disabled required>
                             </div>
                             <div class="input-group input-group-sm mx-7">
                                 <label class="input-group-text" for="fecha" id="inputGroup-sizing-sm">Fecha:</label>
                                 <input type="text" disabled class="form-control" aria-label="Sizing example input"
                                     aria-describedby="inputGroup-sizing-sm" id="fecha" name="fecha"
-                                    value="<?php echo $pedidoCompra['fecha'] ?>" required>
+                                    value="<?php echo $pedidoCompra->getFecha() ?>" required>
                             </div>
                         </div>
                         <div class="d-flex flex-column align-items-center contenedor__mayor" id="contGrillaFormulario">
