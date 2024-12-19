@@ -166,8 +166,11 @@ class ProductoCtr
     }
 
     public function actualizarStockProducto($id, $cantidad){
-        $producto = $this->getProductoById($id);
-        $stockActual = $producto->getStock();
-        $producto->setStock($stockActual + $cantidad);
+        $productoPedido = $this->getProductoById($id);
+        $stockActual = $productoPedido['stock'];
+        $productoPedido['stock'] = $stockActual + $cantidad;
+        $producto = new ProductoMdl($productoPedido["nombre"], $productoPedido["marca"], $productoPedido["detalle"], $productoPedido["stock"], $productoPedido["tipo"], $productoPedido["preciocompra"], $productoPedido["precioventa"]);
+        $status = $this->productoDAO->update($producto);
+        UtilidadesDAO::getInstance()->showStatus("productos", $status, "edited");
     }
 }

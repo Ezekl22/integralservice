@@ -88,6 +88,7 @@ class PedidoCompraDAO
         $queries = [
             [
                 'query' => "UPDATE pedidoscompras SET 
+                            nrocomprobante = '" . $pedidoCompra->getNroComprobante() . "',
                             idproveedor = " . $pedidoCompra->getIdProveedor() . ", 
                             total=" . $pedidoCompra->getTotal() . ", 
                             estado= '" . $pedidoCompra->getEstado() . "' 

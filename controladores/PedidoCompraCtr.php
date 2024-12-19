@@ -296,12 +296,23 @@ class PedidoCompraCtr
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (isset($_POST["idproveedor"])) {
                 $pedidoCompra = $this->getPedidoCompraById($id);
+                $nroComprobante = $pedidoCompra->getNroComprobante();
+                if (!str_starts_with($nroComprobante, 'C-')) {
+                    $pedidoCompra->setNroComprobante('C-' . $nroComprobante);
+                }
                 $pedidoCompra->setIdProveedor($_POST['idproveedor']);
                 $pedidoCompra->setEstado("Facturado");
                 $productos_total = $this->getProductos_Total();
-                $pedidoCompra->setProductos($productos_total->productos);
+                $productosPedido = $productos_total->productos;
+                $pedidoCompra->setProductos($productosPedido);
                 $pedidoCompra->setTotal($productos_total->total);
                 $status = $this->updatePedidoCompra($pedidoCompra);
+                
+                // foreach($productosPedido as $productoPedido){
+                //     $id = $productoPedido->getIdProducto();
+                //     $cantidad = $productoPedido->getCantidad();
+                //     $this->productoCtr->actualizarStockProducto($id, $cantidad);
+                // }
             }
         }
         if ($status == "") {
