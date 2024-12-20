@@ -4,7 +4,7 @@ CREATE DATABASE integralservice;
 
 USE integralservice;
 
---tabla usuarios
+-- tabla usuarios
 
 DROP TABLE IF EXISTS usuarios;
 CREATE TABLE `usuarios` (
@@ -28,7 +28,7 @@ ADD PRIMARY KEY (`idusuario`);
 ALTER TABLE `usuarios`
 MODIFY `idusuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
---tabla clientes
+-- tabla clientes
 
 DROP TABLE IF EXISTS clientes;
 
@@ -85,7 +85,7 @@ ALTER TABLE `presupuestos`
 ALTER TABLE `presupuestos`
   ADD CONSTRAINT `presupuestos_ibfk_1` FOREIGN KEY (`idcliente`) REFERENCES `clientes` (`idcliente`) ON DELETE CASCADE ON UPDATE CASCADE;
 
---tabla pedidos de compra
+-- tabla pedidos de compra
 
 DROP TABLE IF EXISTS pedidoscompras;
 
@@ -110,7 +110,7 @@ ALTER TABLE `pedidoscompras`
 ALTER TABLE `pedidoscompras`
   MODIFY `idpedidocompra` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
---tabla productos
+-- tabla productos
 
 
 DROP TABLE IF EXISTS productos;
@@ -138,7 +138,7 @@ ALTER TABLE `productos`
 ALTER TABLE `productos`
   MODIFY `idproducto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
---tabla reparaciones
+-- tabla reparaciones
 
 DROP TABLE IF EXISTS reparaciones;
 CREATE TABLE `reparaciones` (
@@ -158,7 +158,7 @@ ALTER TABLE `reparaciones`
 ALTER TABLE `reparaciones`
   MODIFY `idreparacion` int(11) NOT NULL AUTO_INCREMENT;
 
---tabla proveedores
+-- tabla proveedores
 
 DROP TABLE IF EXISTS proveedores;
 
@@ -185,7 +185,7 @@ ALTER TABLE `proveedores`
 ALTER TABLE `proveedores`
   MODIFY `idproveedor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
---tabla productos-pedidos
+-- tabla productos-pedidos
 
 DROP TABLE IF EXISTS productospedidoscompras;
 
@@ -211,7 +211,7 @@ ALTER TABLE `productospedidoscompras`
 ALTER TABLE `productospedidoscompras`
   MODIFY `idproductopedidocompra` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
---tabla productos-presupuesto
+-- tabla productos-presupuesto
 
 DROP TABLE IF EXISTS productospresupuestos;
 
