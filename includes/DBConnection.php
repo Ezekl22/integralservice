@@ -25,7 +25,7 @@ class DBConnection
             $this->connection = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";port=" . DB_PORT, DB_USER, DB_PASSWORD);
             $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
-            die('Error de conexión a la base de datos: ' . $e->getMessage());
+            die('Error de conexión a la base de datos:  ' . $e->getMessage());
         }
     }
 
