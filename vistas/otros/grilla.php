@@ -68,13 +68,13 @@
                                     <img class="icono__imagen" src="./assets/img/iconoEditarDeshabilitado.png"
                                         alt="icono de editar deshabilitado">
                                 </label>
-                            <?php } else { ?>
-                                <!-- EDITAR - ACTIVADO-->
-                                <a class="icono__contenedor me-2"
-                                    href="index.php?module=<?php echo $gestionPantallaCtr->getModule(); ?>&action=edit&id=<?php echo $datoCuerpo[0];
-                                       echo $gestionPantallaCtr->getModule() == "presupuestos" ? "&type=" . $datoCuerpo[3] : ""; ?>">
-                                    <img class="icono__imagen" src="./assets/img/iconoEditar.png" alt="icono de editar">
-                                </a>
+                            <?php } else if ($gestionPantallaCtr->getModule() != "reparaciones") { ?>
+                                    <!-- EDITAR - ACTIVADO-->
+                                    <a class="icono__contenedor me-2"
+                                        href="index.php?module=<?php echo $gestionPantallaCtr->getModule(); ?>&action=edit&id=<?php echo $datoCuerpo[0];
+                                           echo $gestionPantallaCtr->getModule() == "presupuestos" ? "&type=" . $datoCuerpo[3] : ""; ?>">
+                                        <img class="icono__imagen" src="./assets/img/iconoEditar.png" alt="icono de editar">
+                                    </a>
                             <?php } ?>
                             <?php if (in_array($gestionPantallaCtr->getModule(), ["usuarios", "clientes", "proveedores", "productos"])) { ?>
                                 <?php if ($gestionPantallaCtr->getModule() === "usuarios" && strtoupper($datoCuerpo[3]) === "ADMINISTRADOR BASE") { ?>
@@ -97,13 +97,30 @@
                                         <img class="icono__imagen" src="./assets/img/iconoAnularDeshabilitar.png"
                                             alt="icono de anular">
                                     </label>
-                                <?php } else { ?>
-                                    <!-- ANULAR - ACTIVADO -->
-                                    <a class="icono__contenedor me-2" title="Anular"
-                                        href="index.php?module=presupuestos&action=annul&id=<?php echo $datoCuerpo[0]; ?>">
-                                        <img class="icono__imagen" src="./assets/img/iconoAnular.png" alt="icono de anular">
-                                    </a>
+                                <?php } else if ($gestionPantallaCtr->getModule() != "reparaciones") { ?>
+                                        <!-- ANULAR - ACTIVADO -->
+                                        <a class="icono__contenedor me-2" title="Anular"
+                                            href="index.php?module=presupuestos&action=annul&id=<?php echo $datoCuerpo[0]; ?>">
+                                            <img class="icono__imagen" src="./assets/img/iconoAnular.png" alt="icono de anular">
+                                        </a>
                                 <?php } ?>
+                            <?php }
+                            if ($gestionPantallaCtr->getModule() == "reparaciones") {
+                                //if (strtoupper($datoCuerpo[4]) == "PRESUPUESTADO") { ?>
+                                <a class="icono__contenedor me-2" title="Reparar"
+                                    href="index.php?module=reparaciones&action=repair&id=<?php echo $datoCuerpo[0]; ?>">
+                                    <img class="icono__imagen" src="./assets/img/iconoAnular.png" alt="icono de anular">
+                                </a>
+                                <?php //} else { ?>
+                                <!-- <label class="icono__contenedor me-2" title="Reparar">
+                                        <img class="icono__imagen" src="./assets/img/iconoAnularDeshabilitar.png"
+                                            alt="icono de anular">
+                                    </label> -->
+                                <?php //} ?>
+                                <a class="icono__contenedor me-2" title="Evaluar"
+                                    href="index.php?module=reparaciones&action=evaluate&id=<?php echo $datoCuerpo[0]; ?>">
+                                    <img class="icono__imagen" src="./assets/img/iconoAnular.png" alt="icono de anular">
+                                </a>
                             <?php } ?>
                         </td>
                     </tr>

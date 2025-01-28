@@ -15,25 +15,12 @@ class ReparacionCtr
     {
         $this->reparacionDAO = new ReparacionDAO();
         $this->presupuestoCtr = new PresupuestoCtr();
-        // $this->presupuestoDAO = new PresupuestoDAO();
-        // $this->clienteCtr = new ClienteCtr();
-        // $this->productoCtr = new ProductoCtr();
-        // $action = isset($_GET['action'])?$_GET['action']:'';
-        // $id = isset($_GET['id'])?$_GET['id']:'';
-        // switch ($action) {
-        //     case 'created':
-        //         $this->create();
-        //         break;
-        //     case 'canceled':
-        //         $this->canceled($id);
-        //         break;
-        //     case 'edited':
-        //         $this->update($id);
-        //         break;
-        //     case 'facturar':
-        //         $this->facturar($id);
-        //         break;
-        // }
+        $action = isset($_GET['action']) ? $_GET['action'] : '';
+        switch ($action) {
+            case 'created':
+                $this->reparar();
+                break;
+        }
     }
 
     public static function getInstance()
@@ -46,18 +33,6 @@ class ReparacionCtr
 
     public function index()
     {
-        //     // Obtener la lista de usuarios desde el modelo
-        //     $presupuestos = $this->presupuestoDAO->getAllPresupuestos();
-        //     $action = isset($_GET['action']) ? $_GET['action'] : '';
-        //     $presupuestoCtr = $this;
-        //     if ($action == 'see'){
-        //         $id = isset($_GET['id']) ? $_GET['id'] : '';
-        //         $presupuesto = $this->getPresupuestoById($id);
-        //         $cliente = $this->getClienteById($presupuesto->getIdCliente());
-        //         $nombreCliente = $cliente['nombre'].' '.$cliente['apellido'];
-        //         $productosPre = $this->getProductosPresupuestoById($presupuesto->getIdPresupuesto());
-        //         $total = 0;
-        //     }
         $reparaciones = $this->getAllReparaciones();
         for ($i = 0; $i < count($reparaciones); $i++) {
             $reparaciones[$i][1] = $this->presupuestoCtr->getNombreClienteById($reparaciones[$i][1]);
@@ -69,12 +44,18 @@ class ReparacionCtr
         $grillaMdl = new GrillaMdl(GRILLA_PRESUPUESTOS, $reparaciones, [0, 1]);
         $grillaCtr = new GrillaCtr($grillaMdl);
 
-        require_once 'vistas/reparaciones/index.php';
+        require_once 'vistas/reparaciones/reparacion.php';
     }
 
     public function getAllReparaciones()
     {
         return $this->reparacionDAO->getAllReparaciones();
+    }
+
+    public function reparar()
+    {
+        $id = isset($_GET['id']) ? $_GET['id'] : '';
+        $this->reparacionDAO->reparar($id);
     }
 
     // public function create() {

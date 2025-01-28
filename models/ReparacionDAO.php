@@ -12,12 +12,29 @@ class ReparacionDAO
 
     public function getAllReparaciones()
     {
-        $stmt = $this->db->getConnection()->prepare("SELECT * FROM presupuestos WHERE estado != 'anulado' AND tipo = 'reparacion'");
+        $queries = [
+            [
+                'query' => "SELECT * FROM presupuestos
+                            WHERE estado != 'anulado'
+                            AND tipo = 'reparacion'",
+                'type' => 'SELECT',
+                'params' => [],
+            ]
+        ];
+        return UtilidadesDAO::getInstance()->executeQuery($queries);
+    }
 
-        $stmt->execute();
-        $resultado = $stmt->fetchAll();
-        $stmt->closeCursor();
-        $stmt = null;
-        return $resultado;
+    public function reparar($id)
+    {
+        $queries = [
+            [
+                'query' => "UPDATE presupuestos SET 
+                            estado = 'Reparado'
+                            WHERE idpresupuesto= " . $id,
+                'type' => 'UPDATE',
+                'params' => [],
+            ]
+        ];
+        return UtilidadesDAO::getInstance()->executeQuery($queries);
     }
 }
