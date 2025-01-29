@@ -285,7 +285,7 @@ class PresupuestoDAO
 
     public function search()
     {
-        $termino = isset($_POST['termino']) ? '%' . $_POST['termino'] . '%' : "";
+        $termino = isset ($_POST['termino']) ? '%' . $_POST['termino'] . '%' : "";
         if ($termino != "") {
             $queries = [
                 [

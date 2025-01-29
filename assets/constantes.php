@@ -37,11 +37,12 @@ define('GRILLA_USUARIOS', array("Nombre", "Apellido", "Tipo", "Mail"));
 define('GRILLA_PRODUCTOS', array("Nombre", "Marca", "Detalle", "Stock", "Tipo", "Precio compra", "Precio venta"));
 define('GRILLA_PRESUPUESTOS', array("Cliente", "Comprobante", "Tipo", "Estado", "Fecha", "Punto de venta", "Total"));
 define('GRILLA_PROVEEDORES', array("Nombre", "Categoria fiscal", "Direccion", "Telefono", "Correo", "Cuit", "Saldo", "Fecha"));
+define('GRILLA_PEDIDOS', array("Numero de comprobante", "Proveedor", "Estado", "Total", "Fecha"));
 define('GRILLA_PRESUPUESTO_PRODUCTOS', array("Producto", "Cantidad", "Valor unitario", "Total", "Selección"));
 define('GRILLA_CLIENTES', array("Nombre", "Apellido", "Mail", "Cuit", "Categoria fiscal"));
 define('BOTONES_POPUP_ELIMINAR', array(["texto" => "Cancelar", "tipo" => "button", "href" => ""], ["texto" => "Eliminar", "tipo" => "a", "href" => "index.php?module=" . (isset($_GET["module"]) ? $_GET["module"] : "") . "&action=deleted&id=" . (isset($_GET["id"]) ? $_GET["id"] : ""), "onclick" => ""]));
 define('BOTONES_POPUP_PRODUCTOS', array(["texto" => "Cancelar", "tipo" => "button", "href" => ""], ["texto" => "Seleccionar", "tipo" => "button", "href" => "", "onclick" => "cargarGrillaProducto('" . (isset($_GET["module"]) ? $_GET["module"] : "") . "')"]));
-define('BOTONES_POPUP_ANULAR', array(["texto" => "Cancelar", "tipo" => "button", "href" => ""], ["texto" => "Anular", "tipo" => "a", "href" => "index.php?module=presupuestos&action=annulled&id=" . (isset($_GET["id"]) ? $_GET["id"] : ""), "onclick" => ""]));
+define('BOTONES_POPUP_ANULAR', array(["texto" => "Cancelar", "tipo" => "button", "href" => ""], ["texto" => "Anular", "tipo" => "a", "href" => "index.php?module=" . (isset($_GET["module"]) ? $_GET["module"] : "") . "&action=annulled&id=" . (isset($_GET["id"]) ? $_GET["id"] : ""), "onclick" => ""]));
 define('INICIO_SESION_BTN_P', array(["texto" => "Cancelar", "tipo" => "button", "href" => ""], ["texto" => "Ingresar", "tipo" => "submit", "href" => ""]));
 
 
@@ -74,7 +75,7 @@ define('POPUP_PRODUCTOS_CUERPO_I', `</table>
 <div class="d-flex justify-content-center">
     <div class="input-group input-group-sm mb-3 w-25">
         <label class="input-group-text" for="cantidad" id="inputGroup-sizing-sm">Cantidad:</label>
-        <input type="number" class="form-control" aria-label="0" id="cantidadProducto" value="1">
+        <input type="number" class="form-control" aria-label="0" id="cantidadProducto" value="1" min="1">
     </div>
 </div>
 </div>`);

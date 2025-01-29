@@ -2,14 +2,14 @@
 <html>
 
 <head>
-    <title>Presupuestos</title>
+    <title>Pedidos de Compra</title>
 </head>
 
 <body>
     <main class="main__flex">
         <article class="mt-4">
             <h2 class="main__title">
-                Presupuestos
+                Pedidos de Compra
             </h2>
         </article>
         <article class="mt-5 d-flex flex-column align-items-center">
@@ -18,7 +18,7 @@
 
                 <div class="d-flex flex-row contenedor__mayor align-items-start mt-4">
                     <div class="d-flex w-100 justify-content-end">
-                        <form action="index.php?module=presupuestos&action=searched" method="POST"
+                        <form action="index.php?module=pedidos&action=searched" method="POST"
                             class="input-group input-group-sm w-25" id="formBuscador">
                             <input type="search" id="termino" name="termino" class="form-control"
                                 placeholder="Ingrese su busqueda"
@@ -29,27 +29,26 @@
                         </form>
                     </div>
                 </div>
-                <?php if ($presupuestos && count($presupuestos) > 0) { ?>
+                <?php if ($pedidosCompras && count($pedidosCompras) > 0) { ?>
                     <?php $grillaCtr->mostrarGrilla(); ?>
                 <?php } else { ?>
                     <h3 class="grilla__mensaje-error">
-                        <?php echo $action == 'searched' ? "No se han encontrado registros para esa busqueda" : "No hay presupuestos activos cree un presupuesto nuevo" ?>
+                        <?php echo $action == 'searched' ? "No se han encontrado registros para esa busqueda" : "No hay pedidos activos, cree uno nuevo" ?>
                     </h3>
                 <?php } ?>
-
             </div>
             <?php if ($action != 'create') { ?>
-                <a class="my-5 btn button" type="button" href="index.php?module=presupuestos&action=create">Crear nuevo
-                    presupuesto</a>
+                <a class="my-5 btn button" type="button" href="index.php?module=pedidos&action=create">Crear nuevo
+                    pedido</a>
             <?php } ?>
         </article>
-        <!-------------------------------------------------- Pop up ver presupuesto ---------------------------------------------->
+        <!-------------------------------------------------- Pop up ver pedido ---------------------------------------------->
         <?php if ($action == "see") {
-            include_once 'vistas/otros/popUpComprobantePresupuesto.php';
+            include_once 'vistas/otros/popUpComprobantePedido.php';
         } ?>
     </main>
 </body>
-<?php echo $action == 'see' ? '<script> mostrarVentanaModal("verpresupuesto"); </script>' : ''; ?>
+<?php echo $action == 'see' ? '<script> mostrarVentanaModal("verpedido"); </script>' : ''; ?>
 <?php echo $action == 'annul' ? '<script> mostrarVentanaModal("annul"); </script>' : ''; ?>
 <script>clickBorrarBusqueda();</script>
 

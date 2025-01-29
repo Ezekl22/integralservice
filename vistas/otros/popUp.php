@@ -13,7 +13,6 @@
                 </div>
                 <?php if ($popUpM->getId()) { ?>
                     <div class="modal-body d-flex flex-column align-items-center">
-                        <!-- <div id="mensaje-error" class="text-danger"><?php echo $mensajeError; ?></div> -->
                         <?php switch ($popUpM->getId()) {
                             case 'inicioSesion':
                                 ?>
