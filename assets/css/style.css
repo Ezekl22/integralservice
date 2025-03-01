@@ -307,3 +307,34 @@ thead{
 .swal2-actions{
   justify-content: center !important;
 }
+
+@media print {
+  @page {
+      size: A4 landscape; /* Establece la orientación en horizontal */
+      margin: 10mm; /* Ajusta los márgenes si es necesario */
+  }
+  
+  body {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    zoom: 1; /* Asegura que no haya escalado extraño */
+}
+
+.container {
+    width: 100%;
+    max-width: 100%;
+    margin: auto;
+}
+
+.modal-content {
+    width: 100%;
+    max-width: 100%;
+    text-align: center;
+}
+
+h2, h3 {
+    text-align: center;
+    width: 100%;
+}
+}

@@ -1,5 +1,5 @@
 <div class="modal fade" id="verpedido" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog justify-content-center d-flex" style="max-width:none;">
+    <div class="modal-dialog pedido-container justify-content-center d-flex" style="max-width:none;">
         <div class="modal-content mx-3 w-90">
             <div class=" modal-header headerPop__background">
                 <img src="./assets/img/logo-IntegralService.png" class="shadow rounded-3 me-2 logo"
@@ -22,7 +22,7 @@
                                 ?>
                             </p>
                         </div>
-                        <div class="d-flex align-items-center w-30 flex-column ms-5">
+                        <div class="d-flex align-items-center w-30 flex-column px-5">
                             <div class="h2 border border-2 py-2 px-2 rounded-4">
                                 <?php echo $pedidoCompra->getEstado() != "Facturado" ? "X" : "C"; ?>
                             </div>
@@ -123,7 +123,7 @@
                 </div>
             </div>
             <div class="modal-footer d-flex justify-content-center headerPop__background">
-                <button type="button" class="btn button" data-bs-dismiss="modal">Imprimir</button>
+                <button type="button" class="btn button" data-bs-dismiss="modal" onclick="imprimirEnNuevaVentana()">Imprimir</button>
             </div>
         </div>
     </div>

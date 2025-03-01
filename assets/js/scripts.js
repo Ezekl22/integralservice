@@ -304,4 +304,71 @@ const recargarPagina = (parametros) => {
     }
   }
   window.location.href = url.toString();
-};
+}
+
+function imprimirEnNuevaVentana() {
+  const params = new URLSearchParams(window.location.search);
+  const modulo = params.get("module");
+
+  // Seleccionar el contenido dependiendo del módulo
+  let contenido = "";
+  if (modulo === "presupuestos") {
+      contenido = document.getElementById('verpresupuesto').outerHTML;
+  } else if (modulo === "pedidos") {
+      contenido = document.getElementById('verpedido').outerHTML;
+  } else {
+      alert("Error: Módulo no reconocido.");
+      return;
+  }
+
+  var nuevaVentana = window.open('', '', 'height=900,width=1000');
+
+  nuevaVentana.document.write(`
+      <html>
+      <head>
+          <title>${modulo === "presupuestos" ? "Presupuesto" : "Pedido de Compra"}</title>
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+          <link rel="stylesheet" href="./css/style.css">
+          <style>
+              .modal-header,
+              .modal-footer {
+                  display: none !important;
+              }
+                    .pedido-container,
+                    .presupuesto-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+  }
+
+          </style>
+      </head>
+      <body class="modal-open">
+          ${contenido}
+          <script>
+              document.addEventListener("DOMContentLoaded", function() {
+                  document.querySelectorAll('.modal').forEach(modal => {
+                      modal.classList.remove('fade');
+                      modal.style.display = 'block';
+                  });
+              });
+          </script>
+      </body>
+      </html>
+  `);
+
+  nuevaVentana.document.close(); // Importante para que la página termine de cargarse
+
+  nuevaVentana.onload = function () {
+      nuevaVentana.print();
+  };
+
+  nuevaVentana.onafterprint = function () {
+      nuevaVentana.close();
+  };
+
+  nuevaVentana.onbeforeunload = function () {
+      nuevaVentana.close();
+  };
+}
