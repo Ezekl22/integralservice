@@ -1,28 +1,33 @@
 <!DOCTYPE html>
 <?php
-$PresupuestoCtr = PresupuestoCtr::getInstance();
-$clientes = $PresupuestoCtr->getAllClientes();
-$json = json_encode($PresupuestoCtr->getAllProductos());
+$id = isset($_GET['id']) ? $_GET['id'] : "";
+$gestionPantallaCtr = new GestionPantallasControlador();
+$presupuestoCtr = PresupuestoCtr::getInstance();
+$presupuesto = $presupuestoCtr->getPresupuestoById($id);
+$reparacion = $presupuestoCtr->getReparacionPresupuestoById($id);
+$clientes = $presupuestoCtr->getAllClientes();
+$productoCtr = ProductoCtr::getInstance();
+$json = json_encode($productoCtr->getAllRepuestos());
 echo "<script>const productos = $json;</script>";
 ?>
 <html>
 
 <head>
-    <title>Crear Presupuesto</title>
+    <title>Evaluar</title>
 </head>
 
 <body>
     <main class="d-flex flex-column align-items-center mt-2 mb-4 main__flex" id="editPresupuesto">
         <article class="mt-4">
             <h2 class="main__title mb-5">
-                Crear Presupuesto
+                Evaluar
             </h2>
         </article>
         <article class="editar__contenedor rounded-4">
-            <form action="index.php?module=presupuestos&action=created" method="POST"
+            <form action="index.php?module=reparaciones&action=edited&id=<?php echo $id ?>" method="POST"
                 class="d-flex flex-column align-items-center border-1 border m-4 rounded-4">
                 <div class="d-flex flex-column align-items-center contenedor__mayor" id="contenedor">
-                    <div class="my-5 d-flex flex-row w-100">
+                    <div class="mt-5 d-flex flex-row w-100">
                         <div class="input-group input-group-sm mx-7">
                             <label class="input-group-text" for="cliente">Cliente:</label>
                             <select class="form-select" id="idcliente" name="idcliente" required>
@@ -34,45 +39,59 @@ echo "<script>const productos = $json;</script>";
                             </select>
                         </div>
                         <div class="input-group input-group-sm mx-7">
-                            <label class="input-group-text input-group-sm" for="tipo">Tipo:</label>
-                            <select class="form-select" id="tipo" name="tipo" onchange="tipoOnChange(event)" required>
-                                <option value="Venta" <?php echo !isset($_GET["type"]) || $_GET["type"] != "Reparacion" ? "selected" : "" ?>>Venta</option>
-                                <option value="Reparacion" <?php echo isset($_GET["type"]) && $_GET["type"] == "Reparacion" ? "selected" : "" ?>>Reparacion</option>
-                            </select>
+                            <div class="input-group input-group-sm">
+                                <label class="input-group-text" for="marca" id="inputGroup-sizing-sm">Marca:</label>
+                                <input type="text" class="form-control" aria-label="Sizing example input"
+                                    aria-describedby="inputGroup-sizing-sm" id="marca" name="marca"
+                                    value="<?php echo $reparacion['marca'] ?>" disabled required>
+                            </div>
+                        </div>
+                        <div class="input-group input-group-sm mx-7">
+                            <div class="input-group input-group-sm">
+                                <label class="input-group-text" for="modelo" id="inputGroup-sizing-sm">Modelo:</label>
+                                <input type="text" class="form-control w-25" id="modelo" name="modelo"
+                                    value="<?php echo $reparacion['modelo'] ?>" disabled required>
+                            </div>
                         </div>
                     </div>
-                    <div class="d-flex flex-column align-items-center contenedor__mayor" id="contGrillaFormulario">
-                        <h4 class="mt-2 text__white">
-                            <?php echo !isset($_GET["type"]) || $_GET["type"] != "Reparacion" ? "Productos" : "Equipo a reparar" ?>
-                        </h4>
-                        <?php if (isset($_GET['type']) && $_GET['type'] == "Reparacion") { ?>
-                            <div class="my-3 d-flex flex-row w-95">
-                                <div class="input-group input-group-sm">
-                                    <label class="input-group-text" for="marca" id="inputGroup-sizing-sm">Marca:</label>
-                                    <input type="text" class="form-control w-25" id="marca" name="marca" required>
-                                </div>
-                                <div class="input-group input-group-sm ms-3">
-                                    <label class="input-group-text" for="nroserie" id="inputGroup-sizing-sm">Numero de
-                                        serie:</label>
-                                    <input type="text" class="form-control w-25" id="nroserie" name="nroserie" required>
-                                </div>
-                                <div class="input-group input-group-sm ms-3">
-                                    <label class="input-group-text" for="modelo" id="inputGroup-sizing-sm">Modelo:</label>
-                                    <input type="text" class="form-control w-25" id="modelo" name="modelo" required>
-                                </div>
+                    <div class="mt-4 d-flex flex-row w-100">
+                        <div class="input-group input-group-sm mx-7">
+                            <div class="input-group input-group-sm">
+                                <label class="input-group-text" for="nroserie" id="inputGroup-sizing-sm">Numero de
+                                    serie:</label>
+                                <input type="text" class="form-control w-25" id="nroserie" name="nroserie"
+                                    value="<?php echo $reparacion['numeroserie'] ?>" disabled required>
                             </div>
-                            <div class="input-group w-75">
-                                <label class="input-group-text" for="descripcion" id="input-group">Descripción:</label>
-                                <textarea class="form-control" aria-label="" id="descripcion" name="descripcion"></textarea>
+                        </div>
+                        <div class="input-group input-group-sm mx-7">
+                            <div class="input-group input-group-sm">
+                                <label class="input-group-text" for="Fecha" id="inputGroup-sizing-sm">Fecha:</label>
+                                <input type="text" class="form-control w-25" id="Fecha" name="Fecha"
+                                    value="<?php echo $presupuesto->getFecha() ?>" disabled required>
                             </div>
-                        <?php } else { ?>
+                        </div>
+                        <div class="input-group input-group-sm mx-7">
+                            <div class="input-group input-group-sm">
+                                <label class="input-group-text" for="estado" id="inputGroup-sizing-sm">Estado:</label>
+                                <input type="text" class="form-control w-25" id="estado" name="estado"
+                                    value="<?php echo $presupuesto->getEstado() ?>" disabled required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-column align-items-center contenedor__mayor mt-5" id="contenedor">
+
+                        <div class="d-flex flex-column align-items-center contenedor__mayor" id="contGrillaFormulario">
+                            <h4 class="mt-2 text__white">
+                                <?php echo !isset($_GET["type"]) || $_GET["type"] != "Reparacion" ? "Productos" : "Equipo a reparar" ?>
+                            </h4>
+
                             <div class="d-flex justify-content-start w-100">
                                 <button class="btn btn-outline-secondary button align-self-start ms-5"
                                     data-bs-target="#grillaProductos" data-bs-toggle="modal" type="button" id="agregar"
-                                    onclick="mostrarGrillaProductos()">Agregar producto</button>
+                                    onclick="mostrarGrillaProductos()">Agregar repuesto</button>
                                 <button class="btn btn-outline-secondary button ms-3 align-self-start" disabled
                                     onclick="quitarComponenteProducto()" type="button" id="btnQuitar">Quitar
-                                    productos</button>
+                                    repuestos</button>
                             </div>
 
                             <div class="my-3 d-flex flex-column w-100" id="contProductos">
@@ -86,16 +105,13 @@ echo "<script>const productos = $json;</script>";
                                         value="$0,00" step="any">
                                 </div>
                             </div>
-
-                        <?php } ?>
-                        <div class="d-flex justify-content-evenly w-75">
-                            <input class="my-5 btn button w-25" type="submit" value="Guardar">
-                            <a class="my-5 btn button w-25" type="button"
-                                href="index.php?module=presupuestos">Cancelar</a>
+                            <div class="d-flex justify-content-evenly w-75">
+                                <input class="my-5 btn button w-25" type="submit" value="Guardar">
+                                <a class="my-5 btn button w-25" type="button"
+                                    href="index.php?module=reparaciones">Cancelar</a>
+                            </div>
                         </div>
                     </div>
-
-
                 </div>
             </form>
             <?php $gestionPantallaCtr->crearPopUp(new PopUpMdl('grillaProductos', 'Productos', "", BOTONES_POPUP_PRODUCTOS, '')); ?>

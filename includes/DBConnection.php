@@ -8,18 +8,18 @@ class DBConnection
     private function __construct()
     {
         //configuracion de la DB para el servidor de google cloud
-        define('DB_HOST', '127.0.0.1');
-        define('DB_PORT', '3306');
-        define('DB_NAME', 'integralservice');
-        define('DB_USER', 'integralservice');
-        define('DB_PASSWORD', 'Integralservice');
+        // define('DB_HOST', '127.0.0.1');
+        // define('DB_PORT', '3306');
+        // define('DB_NAME', 'integralservice');
+        // define('DB_USER', 'integralservice');
+        // define('DB_PASSWORD', 'Integralservice');
 
         // configuracion para ambiente local
-        // define('DB_HOST', 'localhost');
-        // define('DB_PORT', '');
-        // define('DB_NAME', 'integralservice');
-        // define('DB_USER', 'root');
-        // define('DB_PASSWORD', ''); 
+        define('DB_HOST', 'localhost');
+        define('DB_PORT', '');
+        define('DB_NAME', 'integralservice');
+        define('DB_USER', 'root');
+        define('DB_PASSWORD', '');
 
         try {
             $this->connection = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";port=" . DB_PORT, DB_USER, DB_PASSWORD);
