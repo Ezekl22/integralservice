@@ -6,6 +6,7 @@ require_once 'controladores/ToastCtr.php';
 class ProductoCtr
 {
     private $productoDAO;
+    private static $instance = null;
 
     public function __construct()
     {
@@ -59,6 +60,14 @@ class ProductoCtr
         }
     }
 
+    public static function getInstance()
+    {
+        if (self::$instance == null) {
+            self::$instance = new ProductoCtr();
+        }
+        return self::$instance;
+    }
+
     public function index()
     {
         $action = isset($_GET['action']) ? $_GET['action'] : '';
@@ -90,6 +99,16 @@ class ProductoCtr
             $toast->mostrarToast("error", "error al traer los productos", $productos);
         }
         return $productos;
+    }
+
+    public function getAllRepuestos()
+    {
+        $repuestos = $this->productoDAO->getAllRepuestos();
+        if (is_string($repuestos)) {
+            $toast = new ToastCtr();
+            $toast->mostrarToast("error", "error al traer los repuestos", $repuestos);
+        }
+        return $repuestos;
     }
 
     public function getPantallaCreate()
@@ -165,7 +184,8 @@ class ProductoCtr
         return $resultado;
     }
 
-    public function actualizarStockProducto($id, $cantidad){
+    public function actualizarStockProducto($id, $cantidad)
+    {
         $productoPedido = $this->getProductoById($id);
         $stockActual = $productoPedido['stock'];
         $productoPedido['stock'] = $stockActual + $cantidad;

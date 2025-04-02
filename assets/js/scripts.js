@@ -64,7 +64,7 @@ const currencyFormatter = (value) => {
   return formatter.format(value);
 };
 
-const mostrarGrillaProductos = () => {
+const mostrarGrillaProductos = (tipo) => {
   cerrarGrilla("contGrillaProducto");
   let contGrilla = document.getElementById("contGrillaProducto");
   let contenedor = document.createElement("div");
@@ -76,19 +76,19 @@ const mostrarGrillaProductos = () => {
     cuerpoGrilla =
       cuerpoGrilla +
       `<tr class="grilla__cuerpo">
-                                        <td>${producto[1]}</td>
-                                        <td>${producto[2]}</td>
-                                        <td>${producto[3]}</td>
-                                        <td>${producto[4]}</td>
-                                        <td>${producto[5]}</td>
-                                        <td>${producto[6]}</td>
-                                        <td>${producto[7]}</td>
-                                        <td>
-                                            <div class="form-check d-flex justify-content-center">
-                                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="seleccion${producto[0]}">
-                                            </div>
-                                        </td>
-                                    </tr>`;
+          <td>${producto[1]}</td>
+          <td>${producto[2]}</td>
+          <td>${producto[3]}</td>
+          <td>${producto[4]}</td>
+          <td>${producto[5]}</td>
+          <td>${producto[6]}</td>
+          <td>${producto[7]}</td>
+          <td>
+              <div class="form-check d-flex justify-content-center">
+                  <input class="form-check-input" type="radio" name="flexRadioDefault" id="seleccion${producto[0]}">
+              </div>
+          </td>
+      </tr>`;
   });
   contenedor.innerHTML = `<div class="d-flex mt-3 justify-content-end" style="width:90%;">
                                 <div class="input-group input-group-sm w-25">
@@ -138,12 +138,18 @@ const habilitarDeshabilitarBtn = () => {};
 const recalcularTotal = () => {
   const totalesProductos = document.querySelectorAll("#total");
   const importeTotal = document.getElementById("totalproductos");
+  const inputManoDeObra = document.getElementById("manodeobra");
 
   let total = parseFloat(0);
   totalesProductos.forEach((totalProducto) => {
     total =
       total + parseFloat(totalProducto.childNodes[0].data.replace(/[$,]/g, ""));
   });
+
+  if (inputManoDeObra != null && inputManoDeObra.value != "") {
+    total += parseFloat(inputManoDeObra.value);
+  }
+
   importeTotal.setAttribute("value", currencyFormatter(total));
 };
 
@@ -305,3 +311,28 @@ const recargarPagina = (parametros) => {
   }
   window.location.href = url.toString();
 };
+
+function formatMoney(input) {
+  // Eliminar caracteres no numéricos excepto el punto
+  input.value = input.value.replace(/[^0-9.]/g, '');
+  
+  // Asegurar solo un punto decimal
+  let parts = input.value.split('.');
+  if (parts.length > 2) {
+      input.value = parts[0] + '.' + parts.slice(1).join('');
+  }
+
+  // Limitar a 2 decimales
+  if (parts.length === 2) {
+      input.value = parts[0] + '.' + parts[1].substring(0, 2);
+  }
+
+  input.addEventListener("blur", () => {
+    let parts = input.value.split('.');
+    if(parts[0] != "" && (parts[1] === "" || parts.length === 1)){
+      input.value = parts[0] + '.00'
+    }
+    recalcularTotal();
+  });
+  
+}

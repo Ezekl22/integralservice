@@ -133,6 +133,11 @@ class GestionPantallasControlador
                         $indexPage->getPantallaCargarFactura();
                     }
                     break;
+                case 'evaluate':
+                    if ($this->getModule() == "reparaciones") {
+                        $indexPage->getPantallaEvaluar();
+                    }
+                    break;
                 default:
                     $indexPage->index();
                     break;

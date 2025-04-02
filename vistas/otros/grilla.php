@@ -73,13 +73,13 @@
                                     <img class="icono__imagen" src="./assets/img/iconoEditarDeshabilitado.png"
                                         alt="icono de editar deshabilitado">
                                 </label>
-                            <?php } else { ?>
-                                <!-- EDITAR - ACTIVADO-->
-                                <a class="icono__contenedor me-2"
-                                    href="index.php?module=<?php echo $gestionPantallaCtr->getModule(); ?>&action=edit&id=<?php echo $datoCuerpo[0];
-                                       echo $gestionPantallaCtr->getModule() == "presupuestos" ? "&type=" . $datoCuerpo[3] : ""; ?>">
-                                    <img class="icono__imagen" src="./assets/img/iconoEditar.png" alt="icono de editar">
-                                </a>
+                            <?php } else if ($gestionPantallaCtr->getModule() != "reparaciones") { ?>
+                                    <!-- EDITAR - ACTIVADO-->
+                                    <a class="icono__contenedor me-2"
+                                        href="index.php?module=<?php echo $gestionPantallaCtr->getModule(); ?>&action=edit&id=<?php echo $datoCuerpo[0];
+                                           echo $gestionPantallaCtr->getModule() == "presupuestos" ? "&type=" . $datoCuerpo[3] : ""; ?>">
+                                        <img class="icono__imagen" src="./assets/img/iconoEditar.png" alt="icono de editar">
+                                    </a>
                             <?php } ?>
                             <?php if (in_array($gestionPantallaCtr->getModule(), ["usuarios", "clientes", "proveedores", "productos"])) { ?>
                                 <?php if ($gestionPantallaCtr->getModule() === "usuarios" && strtoupper($datoCuerpo[3]) === "ADMINISTRADOR BASE") { ?>
@@ -95,20 +95,37 @@
                                         <img class="icono__imagen " src="./assets/img/iconoEliminar.svg" alt="icono de eliminar">
                                     </a>
                                 <?php } ?>
-                            <?php } else {
+                            <?php } else if ($gestionPantallaCtr->getModule() != "reparaciones") {
                                 if (strtoupper($datoCuerpo['estado']) == "FACTURADO" || strtoupper($datoCuerpo['estado']) == "ANULADO") { ?>
-                                    <!-- ANULAR - DESACTIVADO -->
-                                    <label class="icono__contenedor me-2" title="Anular">
-                                        <img class="icono__imagen" src="./assets/img/iconoAnularDeshabilitar.png"
-                                            alt="icono de anular">
-                                    </label>
+                                        <!-- ANULAR - DESACTIVADO -->
+                                        <label class="icono__contenedor me-2" title="Anular">
+                                            <img class="icono__imagen" src="./assets/img/iconoAnularDeshabilitar.png"
+                                                alt="icono de anular">
+                                        </label>
                                 <?php } else { ?>
-                                    <!-- ANULAR - ACTIVADO -->
-                                    <a class="icono__contenedor me-2" title="Anular"
-                                        href="index.php?module=<?php echo $gestionPantallaCtr->getModule(); ?>&action=annul&id=<?php echo $datoCuerpo[0]; ?>">
-                                        <img class="icono__imagen" src="./assets/img/iconoAnular.png" alt="icono de anular">
-                                    </a>
+                                        <!-- ANULAR - ACTIVADO -->
+                                        <a class="icono__contenedor me-2" title="Anular"
+                                            href="index.php?module=<?php echo $gestionPantallaCtr->getModule(); ?>&action=annul&id=<?php echo $datoCuerpo[0]; ?>">
+                                            <img class="icono__imagen" src="./assets/img/iconoAnular.png" alt="icono de anular">
+                                        </a>
                                 <?php } ?>
+                            <?php }
+                            if ($gestionPantallaCtr->getModule() == "reparaciones") {
+                                if (strtoupper($datoCuerpo[4]) == "PRESUPUESTADO") { ?>
+                                    <a class="icono__contenedor me-2" title="Reparar"
+                                        href="index.php?module=reparaciones&action=repair&id=<?php echo $datoCuerpo[0]; ?>">
+                                        <img class="icono__imagen" src="./assets/img/iconReparacion.png" alt="icono de reparar">
+                                    </a>
+                                <?php } else { ?>
+                                    <label class="icono__contenedor me-2" title="Reparar">
+                                        <img class="icono__imagen" src="./assets/img/iconReparacionDeshabilitado.jpg"
+                                            alt="icono de reparar">
+                                    </label>
+                                <?php } ?>
+                                <a class="icono__contenedor me-2" title="Evaluar"
+                                    href="index.php?module=reparaciones&action=evaluate&id=<?php echo $datoCuerpo[0]; ?>">
+                                    <img class="icono__imagen" src="./assets/img/iconoEvaluar.png" alt="icono de evaluar">
+                                </a>
                             <?php } ?>
                         </td>
                     </tr>
