@@ -5,7 +5,6 @@ require_once 'includes/DBConnection.php';
 class ReparacionDAO
 {
     private $db;
-
     public function __construct()
     {
         $this->db = DBConnection::getInstance();
