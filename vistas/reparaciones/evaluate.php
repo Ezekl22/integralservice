@@ -24,13 +24,16 @@ echo "<script>const productos = $json;</script>";
             </h2>
         </article>
         <article class="editar__contenedor rounded-4">
-            <form action="index.php?module=reparaciones&action=edited&id=<?php echo $id ?>" method="POST"
+            <form action="index.php?module=reparaciones&action=evaluated&id=<?php echo $id ?>" method="POST"
                 class="d-flex flex-column align-items-center border-1 border m-4 rounded-4">
                 <div class="d-flex flex-column align-items-center contenedor__mayor" id="contenedor">
+                    <h4 class="mt-3 text__white mt-2">
+                        Equipo a reparar
+                    </h4>
                     <div class="mt-5 d-flex flex-row w-100">
                         <div class="input-group input-group-sm mx-7">
                             <label class="input-group-text" for="cliente">Cliente:</label>
-                            <select class="form-select" id="idcliente" name="idcliente" required>
+                            <select class="form-select" id="idcliente" name="idcliente" required disabled>
                                 <?php foreach ($clientes as $cliente) { ?>
                                     <option value="<?php echo $cliente['idcliente'] ?>">
                                         <?php echo $cliente['nombre'] . ' ' . $cliente['apellido'] ?>
@@ -78,12 +81,27 @@ echo "<script>const productos = $json;</script>";
                             </div>
                         </div>
                     </div>
+                    <div class="input-group w-75 mt-4">
+                        <label class="input-group-text" for="descripcion" id="input-group">Descripción:</label>
+                        <textarea class="form-control resizeTextArea" aria-label="" id="descripcion" name="descripcion"
+                            disabled><?php echo $reparacion['descripcion'] ?></textarea>
+                    </div>
                     <div class="d-flex flex-column align-items-center contenedor__mayor mt-5" id="contenedor">
 
                         <div class="d-flex flex-column align-items-center contenedor__mayor" id="contGrillaFormulario">
-                            <h4 class="mt-2 text__white">
-                                <?php echo !isset($_GET["type"]) || $_GET["type"] != "Reparacion" ? "Productos" : "Equipo a reparar" ?>
+
+                            <h4 class=" text__white">
+                                Mano de obra y repuestos
                             </h4>
+
+                            <div class="input-group input-group-sm my-4 w-50">
+                                <div class="input-group input-group-sm">
+                                    <label class="input-group-text" for="manodeobra" id="inputGroup-sizing-sm">Valor de
+                                        la mano de obra: $</label>
+                                    <input type="text" class="form-control w-25" id="manodeobra" name="manodeobra"
+                                        placeholder="0.00" oninput="formatMoney(this)" required>
+                                </div>
+                            </div>
 
                             <div class="d-flex justify-content-start w-100">
                                 <button class="btn btn-outline-secondary button align-self-start ms-5"
@@ -102,7 +120,7 @@ echo "<script>const productos = $json;</script>";
                                     <label class="input-group-text" for="totalProductos"
                                         id="inputGroup-sizing-sm">Total:</label>
                                     <input type="text" class="form-control" disabled aria-label="0" id="totalproductos"
-                                        value="$0,00" step="any">
+                                        value="$0.00" step="any">
                                 </div>
                             </div>
                             <div class="d-flex justify-content-evenly w-75">

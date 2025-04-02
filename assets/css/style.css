@@ -307,3 +307,7 @@ thead{
 .swal2-actions{
   justify-content: center !important;
 }
+
+.resizeTextArea{
+  resize: none;
+}

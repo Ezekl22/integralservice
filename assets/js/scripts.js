@@ -138,12 +138,18 @@ const habilitarDeshabilitarBtn = () => {};
 const recalcularTotal = () => {
   const totalesProductos = document.querySelectorAll("#total");
   const importeTotal = document.getElementById("totalproductos");
+  const inputManoDeObra = document.getElementById("manodeobra");
 
   let total = parseFloat(0);
   totalesProductos.forEach((totalProducto) => {
     total =
       total + parseFloat(totalProducto.childNodes[0].data.replace(/[$,]/g, ""));
   });
+
+  if (inputManoDeObra != null && inputManoDeObra.value != "") {
+    total += parseFloat(inputManoDeObra.value);
+  }
+
   importeTotal.setAttribute("value", currencyFormatter(total));
 };
 
@@ -305,3 +311,28 @@ const recargarPagina = (parametros) => {
   }
   window.location.href = url.toString();
 };
+
+function formatMoney(input) {
+  // Eliminar caracteres no numéricos excepto el punto
+  input.value = input.value.replace(/[^0-9.]/g, '');
+  
+  // Asegurar solo un punto decimal
+  let parts = input.value.split('.');
+  if (parts.length > 2) {
+      input.value = parts[0] + '.' + parts.slice(1).join('');
+  }
+
+  // Limitar a 2 decimales
+  if (parts.length === 2) {
+      input.value = parts[0] + '.' + parts[1].substring(0, 2);
+  }
+
+  input.addEventListener("blur", () => {
+    let parts = input.value.split('.');
+    if(parts[0] != "" && (parts[1] === "" || parts.length === 1)){
+      input.value = parts[0] + '.00'
+    }
+    recalcularTotal();
+  });
+  
+}
