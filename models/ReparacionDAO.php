@@ -24,13 +24,13 @@ class ReparacionDAO
         return UtilidadesDAO::getInstance()->executeQuery($queries);
     }
 
-    public function reparar($id)
+    public function updatEstado(string $estado, int $idPresupuesto)
     {
         $queries = [
             [
                 'query' => "UPDATE presupuestos SET 
-                            estado = 'Reparado'
-                            WHERE idpresupuesto= " . $id,
+                            estado = '" . $estado . "' 
+                            WHERE idpresupuesto= " . $idPresupuesto,
                 'type' => 'UPDATE',
                 'params' => [],
             ]
@@ -38,93 +38,21 @@ class ReparacionDAO
         return UtilidadesDAO::getInstance()->executeQuery($queries);
     }
 
-    // public function repair(ReparacionMdl $reparacion)
-    // {
-    //     $id = $reparacion->getId();
-    //     //aca hay que validar que el estado de la reparacion sea "pendiente de reparacion". De lo contrario no se podrá reparar.
-    //     $stmt = $this->db->getConnection()->prepare("UPDATE reparaciones SET estado = 'reparado' WHERE idReparacion = " . $id);
 
-    //     if ($stmt->execute()) {
-
-    //         return "ok";
-
-    //     } else {
-
-    //         print_r($stmt->errorInfo());
-
-    //     }
-    //     $stmt->closeCursor();
-    //     $stmt = null;
-    // }
-
-    // public function evaluate(ReparacionMdl $reparacion)
-    // {
-    //     $id = $reparacion->getId();
-    //     //aca hay que validar que el estado de la reparacion sea "pendiente de evaluacion". De lo contrario no se podrá evaluar.
-    //     $stmt = $this->db->getConnection()->prepare("UPDATE reparaciones SET estado = 'evaluado' WHERE idReparacion = " . $id);
-    //     //aca hay que hacer la logica de que el reparador pueda dejar un comentario de la evaluacion y reflejarlo en la base de datos
-    //     //la pantalla de evaluar es como la de editar de los otros modulos, pero solo se puede modificar el campo "descripcion"
-    // }
-
-
-    // public function updateReparacion(ReparacionMdl $presupuesto)
-    // {
-    //     $stmt = $this->db->getConnection()->prepare("UPDATE reparaciones SET idcliente=:idcliente,
-    //     nrocomprobante=:nrocomprobante, estado=:estado, fecha=:fecha, puntoventa=:puntoventa,
-    //      total=:total WHERE idpresupuesto= :idpresupuesto");
-
-    //     // $idCliente = $presupuesto->getIdCliente();
-    //     // $nroComprobante = $presupuesto->getNrocomprobante();
-    //     // $estado = $presupuesto->getEstado();
-    //     // $fecha = $presupuesto->getFecha();
-    //     // $puntoVenta = $presupuesto->getPuntoVenta();
-    //     // $total = $presupuesto->getTotal();
-    //     // $idReparacion = $presupuesto->getIdReparacion();
-
-    //     $stmt->bindParam(":idcliente", $idCliente, PDO::PARAM_INT);
-    //     $stmt->bindParam(":nrocomprobante", $nroComprobante, PDO::PARAM_STR);
-    //     $stmt->bindParam(":estado", $estado, PDO::PARAM_STR);
-    //     $stmt->bindParam(":fecha", $fecha, PDO::PARAM_STR);
-    //     $stmt->bindParam(":puntoventa", $puntoVenta, PDO::PARAM_STR);
-    //     $stmt->bindParam(":total", $total, PDO::PARAM_STR_CHAR);
-    //     $stmt->bindParam(":idpresupuesto", $idReparacion, PDO::PARAM_INT);
-
-    //     if ($stmt->execute()) {
-
-    //         return "ok";
-
-    //     } else {
-
-    //         print_r($stmt->errorInfo());
-
-    //     }
-    //     $stmt->closeCursor();
-    //     $stmt = null;
-    // }
-
-    // public function getReparacionById($id)
-    // {
-    //     $stmt = $this->db->getConnection()->prepare("SELECT * FROM reparaciones WHERE idReparacion = " . $id);
-
-    //     $stmt->execute();
-    //     $resultado = $stmt->fetchAll()[0];
-    //     $stmt->closeCursor();
-    //     $stmt = null;
-    //     return $resultado;
-
-    // }
-
-    // public function getAllReparaciones()
-    // {
-    //     $stmt = $this->db->getConnection()->prepare("SELECT * FROM reparaciones WHERE estado != 'reparado' AND estado != 'facturado' AND estado != 'anulado'");
-
-    //     $stmt->execute();
-    //     $resultado = $stmt->fetchAll();
-    //     $stmt->closeCursor();
-    //     $stmt = null;
-    //     return $resultado;
-
-    // }
+    public function updatePresupuesto(PresupuestoMdl $presupuesto)
+    {
+        $queries = [
+            [
+                'query' => "UPDATE presupuestos SET
+                            total=" . $presupuesto->getTotal() . ", 
+                            estado= 'presupuestado' 
+                            WHERE idpresupuesto= " . $presupuesto->getIdPresupuesto(),
+                'type' => 'UPDATE',
+                'params' => [],
+            ]
+        ];
+        return UtilidadesDAO::getInstance()->executeQuery($queries);
+    }
 
     // public function search()
     // {
@@ -155,36 +83,4 @@ class ReparacionDAO
     //     }
     // }
 
-    // public function getProductosReparacionById($id)
-    // {
-    //     $stmt = $this->db->getConnection()->prepare("SELECT productos.idproducto, productos.nombre, productos.marca, productos.detalle, 
-    //                                                  productosreparaciones.cantidad, productos.precioventa, 
-    //                                                  productosreparaciones.cantidad * productos.precioventa AS total
-    //                                                  FROM productosreparaciones
-    //                                                  INNER JOIN productos ON productosreparaciones.idproducto = productos.idproducto
-    //                                                  WHERE productosreparaciones.idpresupuesto = " . $id);
-
-    //     $stmt->execute();
-    //     $resultado = $stmt->fetchAll();
-    //     $stmt->closeCursor();
-    //     $stmt = null;
-    //     return $resultado;
-    // }
-
-    // public function annul($id)
-    // {
-    //     $stmt = $this->db->getConnection()->prepare("UPDATE reparaciones SET estado = 'anulado' WHERE idReparacion = " . $id);
-
-    //     if ($stmt->execute()) {
-
-    //         return "ok";
-
-    //     } else {
-
-    //         print_r($stmt->errorInfo());
-
-    //     }
-    //     $stmt->closeCursor();
-    //     $stmt = null;
-    // }
 }

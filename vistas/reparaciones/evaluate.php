@@ -5,7 +5,7 @@ $gestionPantallaCtr = new GestionPantallasControlador();
 $presupuestoCtr = PresupuestoCtr::getInstance();
 $presupuesto = $presupuestoCtr->getPresupuestoById($id);
 $reparacion = $presupuestoCtr->getReparacionPresupuestoById($id);
-$clientes = $presupuestoCtr->getAllClientes();
+$cliente = $presupuestoCtr->getClienteById($presupuesto->getIdCliente());
 $productoCtr = ProductoCtr::getInstance();
 $json = json_encode($productoCtr->getAllRepuestos());
 echo "<script>const productos = $json;</script>";
@@ -32,53 +32,43 @@ echo "<script>const productos = $json;</script>";
                     </h4>
                     <div class="mt-5 d-flex flex-row w-100">
                         <div class="input-group input-group-sm mx-7">
-                            <label class="input-group-text" for="cliente">Cliente:</label>
-                            <select class="form-select" id="idcliente" name="idcliente" required disabled>
-                                <?php foreach ($clientes as $cliente) { ?>
-                                    <option value="<?php echo $cliente['idcliente'] ?>">
-                                        <?php echo $cliente['nombre'] . ' ' . $cliente['apellido'] ?>
-                                    </option>
-                                <?php } ?>
-                            </select>
+                            <label class="input-group-text" for="marca" id="inputGroup-sizing-sm">Cliente:</label>
+                            <input type="text" class="form-control" aria-label="Sizing example input"
+                                aria-describedby="inputGroup-sizing-sm" id="idcliente" name="idcliente"
+                                value="<?php echo $cliente['nombre'] . ' ' . $cliente['apellido'] ?>" disabled required>
                         </div>
                         <div class="input-group input-group-sm mx-7">
-                            <div class="input-group input-group-sm">
-                                <label class="input-group-text" for="marca" id="inputGroup-sizing-sm">Marca:</label>
-                                <input type="text" class="form-control" aria-label="Sizing example input"
-                                    aria-describedby="inputGroup-sizing-sm" id="marca" name="marca"
-                                    value="<?php echo $reparacion['marca'] ?>" disabled required>
-                            </div>
+                            <label class="input-group-text" for="marca" id="inputGroup-sizing-sm">Marca:</label>
+                            <input type="text" class="form-control" aria-label="Sizing example input"
+                                aria-describedby="inputGroup-sizing-sm" id="marca" name="marca"
+                                value="<?php echo $reparacion['marca'] ?>" disabled required>
                         </div>
                         <div class="input-group input-group-sm mx-7">
-                            <div class="input-group input-group-sm">
-                                <label class="input-group-text" for="modelo" id="inputGroup-sizing-sm">Modelo:</label>
-                                <input type="text" class="form-control w-25" id="modelo" name="modelo"
-                                    value="<?php echo $reparacion['modelo'] ?>" disabled required>
-                            </div>
+                            <label class="input-group-text" for="modelo" id="inputGroup-sizing-sm">Modelo:</label>
+                            <input type="text" class="form-control w-25" id="modelo" name="modelo"
+                                value="<?php echo $reparacion['modelo'] ?>" disabled required>
                         </div>
                     </div>
                     <div class="mt-4 d-flex flex-row w-100">
                         <div class="input-group input-group-sm mx-7">
-                            <div class="input-group input-group-sm">
-                                <label class="input-group-text" for="nroserie" id="inputGroup-sizing-sm">Numero de
-                                    serie:</label>
-                                <input type="text" class="form-control w-25" id="nroserie" name="nroserie"
-                                    value="<?php echo $reparacion['numeroserie'] ?>" disabled required>
-                            </div>
+
+                            <label class="input-group-text" for="nroserie" id="inputGroup-sizing-sm">Numero de
+                                serie:</label>
+                            <input type="text" class="form-control w-25" id="nroserie" name="nroserie"
+                                value="<?php echo $reparacion['numeroserie'] ?>" disabled required>
                         </div>
                         <div class="input-group input-group-sm mx-7">
-                            <div class="input-group input-group-sm">
-                                <label class="input-group-text" for="Fecha" id="inputGroup-sizing-sm">Fecha:</label>
-                                <input type="text" class="form-control w-25" id="Fecha" name="Fecha"
-                                    value="<?php echo $presupuesto->getFecha() ?>" disabled required>
-                            </div>
+
+                            <label class="input-group-text" for="Fecha" id="inputGroup-sizing-sm">Fecha:</label>
+                            <input type="text" class="form-control w-25" id="Fecha" name="Fecha"
+                                value="<?php echo $presupuesto->getFecha() ?>" disabled required>
                         </div>
                         <div class="input-group input-group-sm mx-7">
-                            <div class="input-group input-group-sm">
-                                <label class="input-group-text" for="estado" id="inputGroup-sizing-sm">Estado:</label>
-                                <input type="text" class="form-control w-25" id="estado" name="estado"
-                                    value="<?php echo $presupuesto->getEstado() ?>" disabled required>
-                            </div>
+
+                            <label class="input-group-text" for="estado" id="inputGroup-sizing-sm">Estado:</label>
+                            <input type="text" class="form-control w-25" id="estado" name="estado"
+                                value="<?php echo $presupuesto->getEstado() ?>" disabled required>
+
                         </div>
                     </div>
                     <div class="input-group w-75 mt-4">

@@ -6,16 +6,34 @@ class ReparacionCtr
 {
     private $reparacionDAO;
     private $presupuestoCtr;
+    private $toastCtr;
     private static $instance = null;
 
     public function __construct()
     {
         $this->reparacionDAO = new ReparacionDAO();
         $this->presupuestoCtr = new PresupuestoCtr();
+        $this->toastCtr = new ToastCtr();
         $action = isset($_GET['action']) ? $_GET['action'] : '';
+        $status = isset($_GET['status']) ? $_GET['status'] : '';
         switch ($action) {
+            case 'evaluated':
+                if ($status != "success") {
+                    $this->evaluar();
+                } else {
+                    if ($status == "success") {
+                        $this->toastCtr->mostrarToast("exito", "Presupuesto evaluado");
+                    }
+                }
+                break;
             case 'repair':
-                $this->reparar();
+                if ($status != "success") {
+                    $this->reparar();
+                } else {
+                    if ($status == "success") {
+                        $this->toastCtr->mostrarToast("exito", "Equipo reparado");
+                    }
+                }
                 break;
         }
     }
@@ -53,7 +71,7 @@ class ReparacionCtr
     {
         $id = isset($_GET['id']) ? $_GET['id'] : '';
         if ($id != "") {
-            $status = $this->reparacionDAO->reparar($id);
+            $status = $this->updateStadoPresupuesto($id);
             UtilidadesDAO::getInstance()->showStatus("reparaciones", $status, "repair");
         } else {
             $toast = new ToastCtr();
@@ -73,6 +91,35 @@ class ReparacionCtr
             $toast->mostrarToast("error al ingresar a la pantalla de evaluar", "falta el id de la reparacion");
         }
 
+    }
+
+    public function evaluar()
+    {
+        $id = isset($_GET['id']) ? $_GET['id'] : "";
+        if (empty($id)) {
+            $this->toastCtr->mostrarToast("error", "Error al actualizar la reparacion, falta id del presupuesto");
+        } else {
+            $status = $this->presupuestoCtr->update($id);
+            if (empty($status)) {
+                $status = $this->updateStadoPresupuesto($id);
+                //UtilidadesDAO::getInstance()->showStatus("reparaciones", $status, "evaluated");
+            } else {
+                $this->toastCtr->mostrarToast("error", "Error al actualizar la reparacion, " . $status);
+            }
+        }
+    }
+
+    public function updateStadoPresupuesto($id)
+    {
+        $presupuesto = $this->presupuestoCtr->getPresupuestoById($id);
+        $estado = "";
+        if ($presupuesto->getEstado() == 'pendiente presupuesto') {
+            $estado = 'presupuestado';
+        } else {
+            $estado = 'reparado';
+        }
+        $status = $this->reparacionDAO->updatEstado($estado, $id);
+        return $status;
     }
 }
 
