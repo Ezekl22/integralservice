@@ -15,7 +15,7 @@
         <article class="mt-5 d-flex flex-column align-items-center">
             <div class="grilla w-95 d-flex flex-column align-items-center rounded-4">
                 <div class="d-flex w-95 justify-content-end mt-3">
-                    <form action="index.php?module=presupuestos&action=searched" method="POST"
+                    <form action="index.php?module=reparaciones&action=searched" method="POST"
                         class="input-group input-group-sm w-25" id="formBuscador">
                         <input type="search" id="termino" name="termino" class="form-control"
                             placeholder="Ingrese su busqueda"
@@ -25,7 +25,13 @@
                             value="Buscar"></button>
                     </form>
                 </div>
-                <?php $grillaCtr->mostrarGrilla(); ?>
+                <?php if ($presupuestos && count($presupuestos) > 0) { ?>
+                    <?php $grillaCtr->mostrarGrilla(); ?>
+                <?php } else { ?>
+                    <h3 class="grilla__mensaje-error">
+                        <?php echo $action == 'searched' ? "No se han encontrado registros para esa busqueda" : "No hay reparaciones activas, cree un presupuesto de tipo reparación nuevo" ?>
+                    </h3>
+                <?php } ?>
             </div>
             <?php
             $action = $gestionPantallaCtr->getModule(); ?>
@@ -33,5 +39,6 @@
     </main>
     <?php echo $action == 'delete' ? '<script> mostrarVentanaModal("delete"); </script>' : '' ?>
 </body>
+<script>clickBorrarBusqueda();</script>
 
 </html>

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <?php
 $id = isset($_GET['id']) ? $_GET['id'] : "";
+$action = isset($_GET['action']) ? $_GET['action'] : "";
 $gestionPantallaCtr = new GestionPantallasControlador();
 $presupuestoCtr = PresupuestoCtr::getInstance();
 $presupuesto = $presupuestoCtr->getPresupuestoById($id);
@@ -8,6 +9,8 @@ $reparacion = $presupuestoCtr->getReparacionPresupuestoById($id);
 $cliente = $presupuestoCtr->getClienteById($presupuesto->getIdCliente());
 $productoCtr = ProductoCtr::getInstance();
 $json = json_encode($productoCtr->getAllRepuestos());
+$productos = $presupuestoCtr->getProductosPresupuestoById($id);
+$jsonProductosPre = json_encode(value: $productos);
 echo "<script>const productos = $json;</script>";
 ?>
 <html>
@@ -126,5 +129,9 @@ echo "<script>const productos = $json;</script>";
         </article>
     </main>
 </body>
+<?php
+if ($action == 'repair') {
+    echo "<script>cargarGrillaProducto('presupuesto', " . $jsonProductosPre . ")</script>";
+} ?>
 
 </html>

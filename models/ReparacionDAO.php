@@ -54,33 +54,48 @@ class ReparacionDAO
         return UtilidadesDAO::getInstance()->executeQuery($queries);
     }
 
-    // public function search()
-    // {
-    //     $termino = isset($_POST['termino']) ? '%' . $_POST['termino'] . '%' : "";
-    //     if ($termino != "") {
-    //         $query = "SELECT reparaciones.idpresupuesto, 
-    //                   reparaciones.idcliente, reparaciones.nrocomprobante, 
-    //                   reparaciones.tipo, reparaciones.estado,
-    //                   reparaciones.fecha,
-    //                   reparaciones.puntoventa,
-    //                   reparaciones.total
-    //                   FROM reparaciones 
-    //                   INNER JOIN clientes ON reparaciones.idcliente = clientes.idcliente
-    //                   WHERE reparaciones.estado != 'cancelado'
-    //                   AND reparaciones.nrocomprobante LIKE '$termino'
-    //                   OR reparaciones.tipo LIKE '$termino'
-    //                   OR reparaciones.estado LIKE '$termino'
-    //                   OR reparaciones.fecha LIKE '$termino'
-    //                   OR reparaciones.puntoventa LIKE '$termino'
-    //                   OR CAST(reparaciones.total AS CHAR) LIKE '$termino'
-    //                   OR CONCAT(clientes.nombre, ' ', clientes.apellido) LIKE '$termino'";
-    //         $stmt = $this->db->getConnection()->prepare($query);
-    //         $stmt->execute();
-    //         $retorno = $stmt->fetchAll();
-    //         $stmt->closeCursor();
-    //         $stmt = null;
-    //         return $retorno;
-    //     }
-    // }
+    public function updateManoDeObra($id, $manoDeObra)
+    {
+        $queries = [
+            [
+                'query' => "UPDATE reparaciones SET
+                            manodeobra=" . $manoDeObra . "
+                            WHERE idpresupuesto= " . $id,
+                'type' => 'UPDATE',
+                'params' => [],
+            ]
+        ];
+        return UtilidadesDAO::getInstance()->executeQuery($queries);
+    }
+
+    public function search()
+    {
+        $termino = isset($_POST['termino']) ? '%' . $_POST['termino'] . '%' : "";
+        if ($termino != "") {
+            $queries = [
+                [
+                    'query' => "SELECT presupuestos.idpresupuesto, 
+                          presupuestos.idcliente, presupuestos.nrocomprobante, 
+                          presupuestos.tipo, presupuestos.estado,
+                          presupuestos.fecha,
+                          presupuestos.puntoventa,
+                          presupuestos.total
+                          FROM presupuestos 
+                          INNER JOIN clientes ON presupuestos.idcliente = clientes.idcliente
+                          WHERE presupuestos.tipo = 'reparacion' 
+                          AND presupuestos.nrocomprobante LIKE '$termino'
+                          OR presupuestos.tipo LIKE '$termino'
+                          OR presupuestos.estado LIKE '$termino'
+                          OR presupuestos.fecha LIKE '$termino'
+                          OR presupuestos.puntoventa LIKE '$termino'
+                          OR CAST(presupuestos.total AS CHAR) LIKE '$termino'
+                          OR CONCAT(clientes.nombre, ' ', clientes.apellido) LIKE '$termino'",
+                    'type' => 'SELECT',
+                    'params' => [],
+                ]
+            ];
+            return UtilidadesDAO::getInstance()->executeQuery($queries);
+        }
+    }
 
 }

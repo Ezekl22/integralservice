@@ -52,7 +52,6 @@ class UtilidadesDAO
                 }
             }
             $query = $query . $subQuery;
-            echo $query;
         }
         $stmt = $this->db->getConnection()->prepare($query);
         return $this->checkExecute($stmt, $typeQuery);

@@ -26,14 +26,17 @@ class ReparacionCtr
                     }
                 }
                 break;
-            case 'repair':
+            case 'repaired':
                 if ($status != "success") {
-                    $this->reparar();
+                    //$this->reparar();
                 } else {
                     if ($status == "success") {
                         $this->toastCtr->mostrarToast("exito", "Equipo reparado");
                     }
                 }
+                break;
+            case 'searched':
+                $this->search();
                 break;
         }
     }
@@ -48,15 +51,16 @@ class ReparacionCtr
 
     public function index()
     {
-        $reparaciones = $this->getAllReparaciones();
-        for ($i = 0; $i < count($reparaciones); $i++) {
-            $reparaciones[$i][1] = $this->presupuestoCtr->getNombreClienteById($reparaciones[$i][1]);
+        $action = isset($_GET['action']) ? $_GET['action'] : '';
+        $presupuestos = $action == "searched" ? $this->search() : $this->getAllReparaciones();
+        for ($i = 0; $i < count($presupuestos); $i++) {
+            $presupuestos[$i][1] = $this->presupuestoCtr->getNombreClienteById($presupuestos[$i][1]);
         }
 
         session_start();
         $gestionPantallaCtr = $_SESSION['session']->getGestionPantallaCtr();
         session_write_close();
-        $grillaMdl = new GrillaMdl(GRILLA_PRESUPUESTOS, $reparaciones, [0, 1]);
+        $grillaMdl = new GrillaMdl(GRILLA_PRESUPUESTOS, $presupuestos, [0, 1]);
         $grillaCtr = new GrillaCtr($grillaMdl);
 
         require_once 'vistas/reparaciones/reparacion.php';
@@ -65,19 +69,6 @@ class ReparacionCtr
     public function getAllReparaciones()
     {
         return $this->reparacionDAO->getAllReparaciones();
-    }
-
-    public function reparar()
-    {
-        $id = isset($_GET['id']) ? $_GET['id'] : '';
-        if ($id != "") {
-            $status = $this->updateStadoPresupuesto($id);
-            UtilidadesDAO::getInstance()->showStatus("reparaciones", $status, "repair");
-        } else {
-            $toast = new ToastCtr();
-            $toast->mostrarToast("error al reparar", "falta el id de la reparacion");
-            return;
-        }
     }
 
     public function getPantallaEvaluar()
@@ -101,15 +92,22 @@ class ReparacionCtr
         } else {
             $status = $this->presupuestoCtr->update($id);
             if (empty($status)) {
-                $status = $this->updateStadoPresupuesto($id);
-                //UtilidadesDAO::getInstance()->showStatus("reparaciones", $status, "evaluated");
+                $status = $this->updateEstadoPresupuesto($id);
+                UtilidadesDAO::getInstance()->showStatus("reparaciones", $status, "evaluated");
             } else {
                 $this->toastCtr->mostrarToast("error", "Error al actualizar la reparacion, " . $status);
             }
         }
     }
 
-    public function updateStadoPresupuesto($id)
+    private function updateManoDeObra($id)
+    {
+        if (isset($_POST['manodeobra'])) {
+            $this->reparacionDAO->updateManoDeObra($id, $_POST['manodeobra']);
+        }
+    }
+
+    public function updateEstadoPresupuesto($id)
     {
         $presupuesto = $this->presupuestoCtr->getPresupuestoById($id);
         $estado = "";
@@ -120,6 +118,16 @@ class ReparacionCtr
         }
         $status = $this->reparacionDAO->updatEstado($estado, $id);
         return $status;
+    }
+
+    public function search()
+    {
+        $result = $this->reparacionDAO->search();
+        if (is_string($result)) {
+            $toast = new ToastCtr();
+            $toast->mostrarToast("error", "error al buscar las reparaciones", $result);
+        }
+        return $result;
     }
 }
 

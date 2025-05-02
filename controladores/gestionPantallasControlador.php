@@ -134,6 +134,7 @@ class GestionPantallasControlador
                     }
                     break;
                 case 'evaluate':
+                case 'repair':
                     if ($this->getModule() == "reparaciones") {
                         $indexPage->getPantallaEvaluar();
                     }
