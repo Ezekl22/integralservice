@@ -122,7 +122,7 @@
                                             alt="icono de reparar">
                                     </label>
                                 <?php }
-                                if (strtoupper($datoCuerpo[4]) != "REPARADO" || strtoupper($datoCuerpo[4]) != "FACTURADO" || strtoupper($datoCuerpo[4]) != "PRESUPUESTADO") { ?>
+                                if (strtoupper($datoCuerpo[4]) != "REPARADO" && strtoupper($datoCuerpo[4]) != "FACTURADO" && strtoupper($datoCuerpo[4]) != "PRESUPUESTADO") { ?>
                                     <a class="icono__contenedor me-2" title="Evaluar"
                                         href="index.php?module=reparaciones&action=evaluate&id=<?php echo $datoCuerpo[0]; ?>">
                                         <img class="icono__imagen" src="./assets/img/iconoEvaluar.png" alt="icono de evaluar">
