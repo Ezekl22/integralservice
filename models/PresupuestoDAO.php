@@ -33,7 +33,7 @@ class PresupuestoDAO
         } elseif ($presupuesto->getTipo() == "Reparacion") {
             $queryInsert = 'INSERT INTO reparaciones (idpresupuesto, modelo, marca, numeroserie, descripcion) VALUES ';
             $param = [
-                "'@idpresupuesto'",
+                '@idpresupuesto',
                 "'" . $reparacion->getModelo() . "'",
                 "'" . $reparacion->getMarca() . "'",
                 "'" . $reparacion->getNumeroSerie() . "'",
@@ -78,7 +78,6 @@ class PresupuestoDAO
 
     private function createProductosPresupuesto(array $productos)
     {
-
         $params = [];
         for ($i = 0; $i < count($productos); $i++) {
             $param = [
@@ -113,10 +112,10 @@ class PresupuestoDAO
             ]
         ];
         if (isset($_GET['action']) && $_GET['action'] != "facturar") {
-            if ($presupuesto->getTipo() == "Reparacion") {
-                $this->updateReparacionPresupuesto($presupuesto->getIdPresupuesto());
-            } else {
+            if (isset($_POST['idproductos'])) {
                 $this->updateProductosPresupuesto($presupuesto->getIdPresupuesto(), $presupuesto);
+            } else {
+                $this->updateReparacionPresupuesto($presupuesto->getIdPresupuesto());
             }
         }
         return UtilidadesDAO::getInstance()->executeQuery($queries);
@@ -143,67 +142,75 @@ class PresupuestoDAO
     public function updateProductosPresupuesto(int $idPresupuesto, PresupuestoMdl $presupuesto)
     {
         $productosPresupuestoDB = $this->getProductosPresupuestoById($idPresupuesto);
-        $productosPresupuesto = array_map(function ($producto) {
+        $productosPresupuesto = count($productosPresupuestoDB) > 0 ? array_map(function ($producto) {
             return new ProductoPresupuestoMdl(
                 $producto['idproducto'],
                 $producto['precioventa'],
                 $producto['cantidad']
             );
-        }, $productosPresupuestoDB);
-
-        $productosExistentes = array_map(function (ProductoPresupuestoMdl $producto) {
-            return $producto->getIdProducto();
-        }, $productosPresupuesto);
-
-        // Obtener los IDs de productos enviados para actualización
-        $nuevosProductos = array_map(function ($producto) {
-            return $producto->getIdProducto();
-        }, $presupuesto->getProductos());
-
-
-        // Identificar los productos que deben ser eliminados
-        $productsToDelete = array_diff($productosExistentes, $nuevosProductos);
-        // Eliminar los productos que ya no están asociados
+        }, $productosPresupuestoDB) : [];
 
         $productosAInsertar = [];
-        $productosAActualizar = [];
-        $contadorPAntiguo = 1;
 
+        if (count($productosPresupuesto) > 0) {
+            $productosExistentes = array_map(function (ProductoPresupuestoMdl $producto) {
+                return $producto->getIdProducto();
+            }, $productosPresupuesto);
+
+            // Obtener los IDs de productos enviados para actualización
+            $nuevosProductos = array_map(function ($producto) {
+                return $producto->getIdProducto();
+            }, $presupuesto->getProductos());
+
+            // Identificar los productos que deben ser eliminados
+            $productsToDelete = array_diff($productosExistentes, $nuevosProductos);
+            // Eliminar los productos que ya no están asociados
+
+            $contadorPAntiguo = 1;
+        }
+
+        $productosAActualizar = [];
         foreach ($presupuesto->getProductos() as $nuevoProducto) {
             $contadorPNuevo = 1;
             $repetido = false;
             $nuevoProducto->setIdPresupuesto($idPresupuesto);
-            foreach ($productosPresupuesto as $antiguoProducto) {
-                if ($nuevoProducto->getIdProducto() == $antiguoProducto->getIdProducto()) {
-                    $repetido = true;
-                    //si el campo de cantidad o de precio unitario es diferente, entonces lo guardo en $productosAActualizar
-                    if ($nuevoProducto->getCantidad() != $antiguoProducto->getCantidad() || $nuevoProducto->getPreciounit() != $antiguoProducto->getPreciounit()) {
-                        array_push($productosAActualizar, $nuevoProducto);
+            if (count($productosPresupuesto) > 0) {
+                foreach ($productosPresupuesto as $antiguoProducto) {
+                    if ($nuevoProducto->getIdProducto() == $antiguoProducto->getIdProducto()) {
+                        $repetido = true;
+                        //si el campo de cantidad o de precio unitario es diferente, entonces lo guardo en $productosAActualizar
+                        if ($nuevoProducto->getCantidad() != $antiguoProducto->getCantidad() || $nuevoProducto->getPreciounit() != $antiguoProducto->getPreciounit()) {
+                            array_push($productosAActualizar, $nuevoProducto);
+                        }
+                    } else {
+                        //si recorri todos los productos viejos y no esta en ese array entonces lo agrego a productosAInsertar
+                        if ($contadorPNuevo == count($productosPresupuesto) && !$repetido) {
+                            array_push($productosAInsertar, $nuevoProducto);
+                        }
                     }
-                } else {
-                    //si recorri todos los productos viejos y no esta en ese array entonces lo agrego a productosAInsertar
-                    if ($contadorPNuevo == count($productosPresupuesto) && !$repetido) {
-                        array_push($productosAInsertar, $nuevoProducto);
+                    if ($contadorPAntiguo == count($productosPresupuesto)) {
+                        $nuevoProducto->setIdPresupuesto($idPresupuesto);
                     }
+                    $contadorPNuevo++;
                 }
-                if ($contadorPAntiguo == count($productosPresupuesto)) {
-                    $nuevoProducto->setIdPresupuesto($idPresupuesto);
-                }
-                $contadorPNuevo++;
+                $contadorPAntiguo++;
+            } else {
+                array_push($productosAInsertar, $nuevoProducto);
             }
-            $contadorPAntiguo++;
         }
         //elimino los productos en la DB que ya no estan en el nuevo presupuesto
         if (!empty($productsToDelete)) {
             $this->deleteProductosPresupuesto($idPresupuesto, $productsToDelete);
         }
-        //inserto los productos en la DB que estan en el nuevo presupuesto pero no en el viejo
-        if (count($productosAInsertar) > 0) {
-            $this->createProductosPresupuesto($productosAInsertar);
-        }
+
         //actualizo los productos que estan en los dos presupuestos y que la columna preciounit o cantidad son diferentes
         if (count($productosAActualizar)) {
             $this->actualizarProductosPresupuesto($productosAActualizar);
+        }
+
+        //inserto los productos en la DB que estan en el nuevo presupuesto pero no en el viejo
+        if (count($productosAInsertar) > 0) {
+            $this->createProductosPresupuesto($productosAInsertar);
         }
         return "ok";
     }
@@ -285,7 +292,7 @@ class PresupuestoDAO
 
     public function search()
     {
-        $termino = isset ($_POST['termino']) ? '%' . $_POST['termino'] . '%' : "";
+        $termino = isset($_POST['termino']) ? '%' . $_POST['termino'] . '%' : "";
         if ($termino != "") {
             $queries = [
                 [
@@ -333,7 +340,7 @@ class PresupuestoDAO
     {
         $queries = [
             [
-                'query' => "SELECT modelo, marca, numeroserie, descripcion
+                'query' => "SELECT modelo, marca, numeroserie, descripcion, manodeobra
                             FROM reparaciones
                             WHERE reparaciones.idpresupuesto = " . $id,
                 'type' => 'SELECT',

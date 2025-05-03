@@ -338,3 +338,6 @@ h2, h3 {
     width: 100%;
 }
 }
+.resizeTextArea{
+  resize: none;
+}
