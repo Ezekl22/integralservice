@@ -16,6 +16,7 @@ class ReparacionCtr
         $this->toastCtr = new ToastCtr();
         $action = isset($_GET['action']) ? $_GET['action'] : '';
         $status = isset($_GET['status']) ? $_GET['status'] : '';
+        $id = isset($_GET['id']) ? $_GET['id'] : '';
         switch ($action) {
             case 'evaluated':
                 if ($status != "success") {
@@ -28,7 +29,7 @@ class ReparacionCtr
                 break;
             case 'repaired':
                 if ($status != "success") {
-                    //$this->reparar();
+                    $this->updateEstadoPresupuesto($id);
                 } else {
                     if ($status == "success") {
                         $this->toastCtr->mostrarToast("exito", "Equipo reparado");
@@ -93,7 +94,10 @@ class ReparacionCtr
             $status = $this->presupuestoCtr->update($id);
             if (empty($status)) {
                 $status = $this->updateEstadoPresupuesto($id);
-                UtilidadesDAO::getInstance()->showStatus("reparaciones", $status, "evaluated");
+                if (empty($status)) {
+                    $status = $this->updateManoDeObra($id);
+                    UtilidadesDAO::getInstance()->showStatus("reparaciones", $status, "evaluated");
+                }
             } else {
                 $this->toastCtr->mostrarToast("error", "Error al actualizar la reparacion, " . $status);
             }
@@ -102,9 +106,11 @@ class ReparacionCtr
 
     private function updateManoDeObra($id)
     {
+        $result = "";
         if (isset($_POST['manodeobra'])) {
-            $this->reparacionDAO->updateManoDeObra($id, $_POST['manodeobra']);
+            $result = $this->reparacionDAO->updateManoDeObra($id, $_POST['manodeobra']);
         }
+        return $result;
     }
 
     public function updateEstadoPresupuesto($id)

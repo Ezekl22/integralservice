@@ -16,22 +16,23 @@ echo "<script>const productos = $json;</script>";
 <html>
 
 <head>
-    <title>Evaluar</title>
+    <title><?php echo $action == 'repair' ? 'Reparacion' : 'Evaluación' ?></title>
 </head>
 
 <body>
     <main class="d-flex flex-column align-items-center mt-2 mb-4 main__flex" id="editPresupuesto">
         <article class="mt-4">
             <h2 class="main__title mb-5">
-                Evaluar
+                <?php echo $action == 'repair' ? 'Reparacion' : 'Evaluación'; ?>
             </h2>
         </article>
         <article class="editar__contenedor rounded-4">
-            <form action="index.php?module=reparaciones&action=evaluated&id=<?php echo $id ?>" method="POST"
-                class="d-flex flex-column align-items-center border-1 border m-4 rounded-4">
+            <form
+                action="index.php?module=reparaciones&action=<?php echo $action == 'repair' ? 'repaired' : 'evaluated' ?>&id=<?php echo $id ?>"
+                method="POST" class="d-flex flex-column align-items-center border-1 border m-4 rounded-4">
                 <div class="d-flex flex-column align-items-center contenedor__mayor" id="contenedor">
                     <h4 class="mt-3 text__white mt-2">
-                        Equipo a reparar
+                        Equipo a <?php echo $action == 'repair' ? 'reparar' : 'evaluar'; ?>
                     </h4>
                     <div class="mt-5 d-flex flex-row w-100">
                         <div class="input-group input-group-sm mx-7">
@@ -92,14 +93,16 @@ echo "<script>const productos = $json;</script>";
                                     <label class="input-group-text" for="manodeobra" id="inputGroup-sizing-sm">Valor de
                                         la mano de obra: $</label>
                                     <input type="text" class="form-control w-25" id="manodeobra" name="manodeobra"
-                                        placeholder="0.00" oninput="formatMoney(this)" required>
+                                        placeholder="0.00" oninput="formatMoney(this)"
+                                        value="<?php echo $reparacion['manodeobra'] ?>" required>
                                 </div>
                             </div>
 
                             <div class="d-flex justify-content-start w-100">
                                 <button class="btn btn-outline-secondary button align-self-start ms-5"
                                     data-bs-target="#grillaProductos" data-bs-toggle="modal" type="button" id="agregar"
-                                    onclick="mostrarGrillaProductos()">Agregar repuesto</button>
+                                    onclick="mostrarGrillaProductos()" <?php echo $action == 'repair' ? 'disabled' : "" ?>>Agregar repuesto
+                                </button>
                                 <button class="btn btn-outline-secondary button ms-3 align-self-start" disabled
                                     onclick="quitarComponenteProducto()" type="button" id="btnQuitar">Quitar
                                     repuestos</button>
@@ -117,7 +120,8 @@ echo "<script>const productos = $json;</script>";
                                 </div>
                             </div>
                             <div class="d-flex justify-content-evenly w-75">
-                                <input class="my-5 btn button w-25" type="submit" value="Guardar">
+                                <input class="my-5 btn button w-25" type="submit"
+                                    value="<?php echo $action == 'repair' ? 'Reparar' : "Guardar"; ?>">
                                 <a class="my-5 btn button w-25" type="button"
                                     href="index.php?module=reparaciones">Cancelar</a>
                             </div>

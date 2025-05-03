@@ -162,14 +162,13 @@ class PresupuestoDAO
                 return $producto->getIdProducto();
             }, $presupuesto->getProductos());
 
-
             // Identificar los productos que deben ser eliminados
             $productsToDelete = array_diff($productosExistentes, $nuevosProductos);
             // Eliminar los productos que ya no están asociados
 
-
             $contadorPAntiguo = 1;
         }
+
         $productosAActualizar = [];
         foreach ($presupuesto->getProductos() as $nuevoProducto) {
             $contadorPNuevo = 1;
@@ -203,14 +202,13 @@ class PresupuestoDAO
         if (!empty($productsToDelete)) {
             $this->deleteProductosPresupuesto($idPresupuesto, $productsToDelete);
         }
-        //inserto los productos en la DB que estan en el nuevo presupuesto pero no en el viejo
 
         //actualizo los productos que estan en los dos presupuestos y que la columna preciounit o cantidad son diferentes
         if (count($productosAActualizar)) {
             $this->actualizarProductosPresupuesto($productosAActualizar);
         }
 
-
+        //inserto los productos en la DB que estan en el nuevo presupuesto pero no en el viejo
         if (count($productosAInsertar) > 0) {
             $this->createProductosPresupuesto($productosAInsertar);
         }
@@ -342,7 +340,7 @@ class PresupuestoDAO
     {
         $queries = [
             [
-                'query' => "SELECT modelo, marca, numeroserie, descripcion
+                'query' => "SELECT modelo, marca, numeroserie, descripcion, manodeobra
                             FROM reparaciones
                             WHERE reparaciones.idpresupuesto = " . $id,
                 'type' => 'SELECT',
