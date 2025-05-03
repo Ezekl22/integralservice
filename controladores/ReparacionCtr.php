@@ -16,7 +16,6 @@ class ReparacionCtr
         $this->toastCtr = new ToastCtr();
         $action = isset($_GET['action']) ? $_GET['action'] : '';
         $status = isset($_GET['status']) ? $_GET['status'] : '';
-        $id = isset($_GET['id']) ? $_GET['id'] : '';
         switch ($action) {
             case 'evaluated':
                 if ($status != "success") {
@@ -29,7 +28,7 @@ class ReparacionCtr
                 break;
             case 'repaired':
                 if ($status != "success") {
-                    $this->updateEstadoPresupuesto($id);
+                    $this->reparar();
                 } else {
                     if ($status == "success") {
                         $this->toastCtr->mostrarToast("exito", "Equipo reparado");
@@ -83,6 +82,13 @@ class ReparacionCtr
             $toast->mostrarToast("error al ingresar a la pantalla de evaluar", "falta el id de la reparacion");
         }
 
+    }
+
+    public function reparar()
+    {
+        $id = isset($_GET['id']) ? $_GET['id'] : '';
+        $status = $this->updateEstadoPresupuesto($id);
+        UtilidadesDAO::getInstance()->showStatus("reparaciones", $status, "repaired");
     }
 
     public function evaluar()

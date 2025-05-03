@@ -13,7 +13,6 @@ class DBConnection
         define('DB_NAME', 'if0_38841179_integralservice');
         define('DB_USER', 'if0_38841179');
         define('DB_PASSWORD', 'sHGK3M45iFjB');
-        define('DB_CHARSET', 'utf8');
 
         // configuracion para ambiente local
         // define('DB_HOST', 'localhost');
@@ -21,9 +20,8 @@ class DBConnection
         // define('DB_NAME', 'integralservice');
         // define('DB_USER', 'root');
         // define('DB_PASSWORD', '');
-
         try {
-            $this->connection = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";port=" . DB_PORT . ";charset=" . DB_CHARSET, DB_USER, DB_PASSWORD);
+            $this->connection = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";port=" . DB_PORT . ";charset=utf8", DB_USER, DB_PASSWORD);
             $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
             die('Error de conexión a la base de datos:  ' . $e->getMessage());
