@@ -41,6 +41,10 @@ class GrillaCtr
                 require_once 'controladores/ProveedorCtr.php';
                 $this->controlador = ProveedorCtr::getInstance();
                 break;
+            case 'reparaciones':
+                require_once 'controladores/ReparacionCtr.php';
+                $this->controlador = ReparacionCtr::getInstance();
+                break;
             default:
                 # code...
                 break;

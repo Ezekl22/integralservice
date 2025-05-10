@@ -91,6 +91,18 @@ class ProductoDAO
         return UtilidadesDAO::getInstance()->executeQuery($queries);
     }
 
+    public function getAllRepuestos()
+    {
+        $queries = [
+            [
+                'query' => "SELECT * FROM productos WHERE tipo = 'repuesto'",
+                'type' => 'SELECT',
+                'params' => [],
+            ]
+        ];
+        return UtilidadesDAO::getInstance()->executeQuery($queries);
+    }
+
     public function delete($id)
     {
         $queries = [

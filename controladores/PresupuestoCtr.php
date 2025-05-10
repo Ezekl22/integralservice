@@ -85,9 +85,7 @@ class PresupuestoCtr
 
     public function index()
     {
-        $gestionPantallaCtr = $_SESSION['session']->getGestionPantallaCtr();
-        $action = $gestionPantallaCtr->getAction();
-
+        $action = isset($_GET['action']) ? $_GET['action'] : "";
         $presupuestos = $action == "searched" ? $this->search() : $this->presupuestoDAO->getAllPresupuestos();
         if (is_string($presupuestos)) {
             $toast = new ToastCtr();
@@ -234,33 +232,38 @@ class PresupuestoCtr
     public function update($id)
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            if (isset($_POST["idcliente"])) {
+            if (isset($_POST["idcliente"]) || isset($_POST["manodeobra"])) {
+                $module = isset($_GET['module']) ? $_GET['module'] : "";
                 $presupuesto = $this->getPresupuestoById($id);
-                $presupuesto->setIdCliente($_POST['idcliente']);
-                if ($presupuesto->getTipo() == "Venta") {
+                if (isset($_POST["idcliente"])) {
+                    $presupuesto->setIdCliente($_POST['idcliente']);
+                }
+                if (isset($_POST['idproductos'])) {
                     $productos_total = $this->getProductos_Total();
                     $presupuesto->setProductos($productos_total->productos);
                     $presupuesto->setTotal($productos_total->total);
                 }
-                $status = $this->presupuestoDAO->updatePresupuesto($presupuesto);
+                $status = $this->updatePresupuesto($presupuesto);
+                if ($module == 'presupuestos') {
+                    UtilidadesDAO::getInstance()->showStatus('presupuestos', $status, "edited");
+                } else {
+                    return $status;
+                }
             }
         }
-        UtilidadesDAO::getInstance()->showStatus("presupuestos", $status, "edited");
     }
 
     public function getPresupuestoById($id)
     {
+        $toast = new ToastCtr();
         $presupuestoBD = $this->presupuestoDAO->getPresupuestoById($id);
         if (is_string($presupuestoBD)) {
-            echo $presupuestoBD;
-            $toast = new ToastCtr();
             $toast->mostrarToast("error", "error al traer el presupuesto", $presupuestoBD);
             exit;
         }
         $productosPresupuestoBD = $this->getProductosPresupuestoById($id);
 
         if (is_string($productosPresupuestoBD)) {
-            $toast = new ToastCtr();
             $toast->mostrarToast("error", "error al buscar presupuesto: " . $presupuestoBD);
             exit;
         }
