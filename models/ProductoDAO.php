@@ -49,8 +49,6 @@ class ProductoDAO
                 ],
             ]
         ];
-
-        print_r($producto);
         return UtilidadesDAO::getInstance()->executeQuery($queries);
     }
 
