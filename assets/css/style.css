@@ -319,24 +319,24 @@ thead{
     margin: 0;
     padding: 0;
     zoom: 1; /* Asegura que no haya escalado extraño */
-}
+  }
 
-.container {
-    width: 100%;
-    max-width: 100%;
-    margin: auto;
-}
+  .container {
+      width: 100%;
+      max-width: 100%;
+      margin: auto;
+  }
 
-.modal-content {
-    width: 100%;
-    max-width: 100%;
-    text-align: center;
-}
+  .modal-content {
+      width: 100%;
+      max-width: 100%;
+      text-align: center;
+  }
 
-h2, h3 {
-    text-align: center;
-    width: 100%;
-}
+  h2, h3 {
+      text-align: center;
+      width: 100%;
+  }
 }
 .resizeTextArea{
   resize: none;
