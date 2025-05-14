@@ -77,7 +77,7 @@ class ProductoDAO
         return UtilidadesDAO::getInstance()->executeQuery($queries);
     }
 
-    public function getAllProductos()
+    public function getAllProductosRepuestos()
     {
         $queries = [
             [
@@ -89,11 +89,25 @@ class ProductoDAO
         return UtilidadesDAO::getInstance()->executeQuery($queries);
     }
 
+    public function getAllProductos()
+    {
+        $queries = [
+            [
+                'query' => "SELECT * FROM productos 
+                            WHERE tipo = 'producto'",
+                'type' => 'SELECT',
+                'params' => [],
+            ]
+        ];
+        return UtilidadesDAO::getInstance()->executeQuery($queries);
+    }
+
     public function getAllRepuestos()
     {
         $queries = [
             [
-                'query' => "SELECT * FROM productos WHERE tipo = 'repuesto'",
+                'query' => "SELECT * FROM productos 
+                            WHERE tipo = 'repuesto'",
                 'type' => 'SELECT',
                 'params' => [],
             ]

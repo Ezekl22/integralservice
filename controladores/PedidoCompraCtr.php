@@ -277,9 +277,9 @@ class PedidoCompraCtr
         return $this->proveedorCtr->getAllProveedores();
     }
 
-    public function getAllProductos()
+    public function getAllProductosRepuestos()
     {
-        return $this->productoCtr->getAllProductos();
+        return $this->productoCtr->getAllProductosRepuestos();
     }
 
     public function getPantallaCargarFactura()
@@ -307,7 +307,7 @@ class PedidoCompraCtr
                 $pedidoCompra->setProductos($productosPedido);
                 $pedidoCompra->setTotal($productos_total->total);
                 $status = $this->updatePedidoCompra($pedidoCompra);
-                
+
                 // foreach($productosPedido as $productoPedido){
                 //     $id = $productoPedido->getIdProducto();
                 //     $cantidad = $productoPedido->getCantidad();

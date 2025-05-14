@@ -2,7 +2,7 @@
 <?php
 $PedidoCompraCtr = PedidoCompraCtr::getInstance();
 $proveedores = $PedidoCompraCtr->getAllProveedores();
-$json = json_encode($PedidoCompraCtr->getAllProductos());
+$json = json_encode($PedidoCompraCtr->getAllProductosRepuestos());
 echo "<script>const productos = $json;</script>";
 ?>
 <html>

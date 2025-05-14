@@ -101,6 +101,16 @@ class ProductoCtr
         return $productos;
     }
 
+    public function getAllProductosRepuestos()
+    {
+        $productos = $this->productoDAO->getAllProductos();
+        if (is_string($productos)) {
+            $toast = new ToastCtr();
+            $toast->mostrarToast("error", "error al traer los productos", $productos);
+        }
+        return $productos;
+    }
+
     public function getAllRepuestos()
     {
         $repuestos = $this->productoDAO->getAllRepuestos();

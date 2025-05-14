@@ -7,7 +7,7 @@ $proveedores = $PedidoCompraCtr->getAllProveedores();
 $GestionPantallasCtr = new GestionPantallasControlador();
 $productos = $PedidoCompraCtr->getProductosPedidoById($id);
 $jsonProductosPedido = json_encode($productos);
-$json = json_encode($PedidoCompraCtr->getAllProductos());
+$json = json_encode($PedidoCompraCtr->getAllProductosRepuestos());
 echo "<script>const productos = $json;</script>";
 ?>
 <?php
