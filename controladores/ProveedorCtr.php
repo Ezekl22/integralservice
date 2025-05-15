@@ -21,43 +21,40 @@ class ProveedorCtr
             $description = isset($_GET['description']) ? $_GET['description'] : "";
             $toast->mostrarToast($status, $description);
         }
-        if ($module == 'proveedores') {
-            switch ($action) {
-                case 'created':
-                    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                        $status = isset($_GET['status']) ? $_GET['status'] : "";
-                        if ($status != "success") {
-                            $this->create();
-                        }
-                    } else {
-                        if ($status == "success") {
-                            $toast->mostrarToast("exito", "Proveedor creado");
-                        }
-                    }
-                    break;
-                case 'deleted':
+        switch ($action) {
+            case 'created':
+                if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     if ($status != "success") {
-                        $this->delete($id);
-                    } else if ($status == "success") {
-                        $toast->mostrarToast("exito", "Proveedor eliminado");
+                        $this->create();
                     }
-                    break;
-                case 'edited':
-                    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                        $status = isset($_GET['status']) ? $_GET['status'] : "";
-                        if ($status != "success") {
-                            $this->update($id);
-                        }
-                    } else {
-                        if ($status == "success") {
-                            $toast->mostrarToast("exito", "Proveedor editado");
-                        }
+                } else {
+                    if ($status == "success") {
+                        $toast->mostrarToast("exito", "Proveedor creado");
                     }
-                    break;
-                case 'searched':
-                    $this->search();
-                    break;
-            }
+                }
+                break;
+            case 'deleted':
+                if ($status != "success") {
+                    $this->delete($id);
+                } else if ($status == "success") {
+                    $toast->mostrarToast("exito", "Proveedor eliminado");
+                }
+                break;
+            case 'edited':
+                if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                    $status = isset($_GET['status']) ? $_GET['status'] : "";
+                    if ($status != "success") {
+                        $this->update($id);
+                    }
+                } else {
+                    if ($status == "success") {
+                        $toast->mostrarToast("exito", "Proveedor editado");
+                    }
+                }
+                break;
+            case 'searched':
+                $this->search();
+                break;
         }
     }
 
@@ -73,9 +70,6 @@ class ProveedorCtr
     {
         $action = isset($_GET['action']) ? $_GET['action'] : '';
         $termino = isset($_POST['termino']) ? $_POST['termino'] : "";
-        session_start();
-        $gestionPantallaCtr = $_SESSION['session']->getGestionPantallaCtr();
-        session_write_close();
         $grillaMdl = new GrillaMdl(GRILLA_PROVEEDORES, $action == 'searched' && $termino != "" ? $this->search() : $this->getAllProveedores(), [0, 1]);
         $grillaCtr = new GrillaCtr($grillaMdl);
 

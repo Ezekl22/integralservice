@@ -66,6 +66,7 @@ class UtilidadesDAO
             header("Location: index.php?module=$module"
                 . ($action != "" ? "&action=" . $action : $action) . "&status=error&description=" . $status);
         }
+        exit;
     }
 }
 ?>
