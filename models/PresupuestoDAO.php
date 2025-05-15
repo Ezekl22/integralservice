@@ -12,8 +12,9 @@ class PresupuestoDAO
         $this->db = DBConnection::getInstance();
     }
 
-    public function create(PresupuestoMdl $presupuesto, ReparacionMdl $reparacion = new ReparacionMdl("", "", "", ""))
+    public function create(PresupuestoMdl $presupuesto, ReparacionMdl $reparacion = null)
     {
+        $reparacion == null? $reparacion = new ReparacionMdl("", "", "", ""): $reparacion;
 
         $productos = $presupuesto->getProductos();
         $params = [];
