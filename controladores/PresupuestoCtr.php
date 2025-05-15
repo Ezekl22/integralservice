@@ -1,9 +1,11 @@
 <?php
 require_once 'models/PresupuestoMdl.php';
+require_once 'models/ReparacionMdl.php';
 require_once 'models/PresupuestoDAO.php';
 require_once 'models/ProductoPresupuestoMdl.php';
 require_once 'controladores/ClienteCtr.php';
 require_once 'controladores/ProductoCtr.php';
+require_once 'controladores/ToastCtr.php';
 
 class PresupuestoCtr
 {
@@ -11,40 +13,87 @@ class PresupuestoCtr
     private $clienteCtr;
     private $productoCtr;
 
+    private static $instance = null;
+
     public function __construct()
     {
         $this->presupuestoDAO = new PresupuestoDAO();
-        $this->clienteCtr = new ClienteCtr();
+        $this->clienteCtr = ClienteCtr::getInstance();
         $this->productoCtr = new ProductoCtr();
         $action = isset($_GET['action']) ? $_GET['action'] : '';
         $id = isset($_GET['id']) ? $_GET['id'] : '';
+        $status = isset($_GET['status']) ? $_GET['status'] : "";
+        $toast = new ToastCtr();
+        if ($status == "error") {
+            $description = isset($_GET['description']) ? $_GET['description'] : "";
+            $toast->mostrarToast($status, $description);
+        }
         switch ($action) {
             case 'created':
-                $this->create();
+                if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                    if ($status != "success") {
+                        $this->create();
+                    }
+                } else {
+                    if ($status == "success") {
+                        $toast->mostrarToast("exito", "Presupuesto creado");
+                    }
+                }
                 break;
             case 'annulled':
-                $this->annulled($id);
+                if ($status != "success") {
+                    $this->annulled($id);
+                } else {
+                    $toast->mostrarToast("exito", "Presupuesto anulado");
+                }
                 break;
             case 'edited':
-                $this->update($id);
+                if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                    if ($status != "success") {
+                        $this->update($id);
+                    }
+                } else if ($status == "success") {
+                    $toast->mostrarToast("exito", "Presupuesto modificado");
+                }
                 break;
             case 'facturar':
-                $this->facturar($id);
+                if ($status != "success") {
+                    $this->facturar($id);
+                } else {
+                    $toast->mostrarToast("exito", "Presupuesto facturado");
+                }
                 break;
+            case 'cambiarestado':
+                if ($status != "success") {
+                    $this->cambiarEstado($id);
+                } else {
+                    $toast->mostrarToast("exito", "Se cambio el estado del presupuesto");
+                }
             case 'searched':
                 $this->search();
                 break;
         }
     }
 
+    public static function getInstance()
+    {
+        if (self::$instance == null) {
+            self::$instance = new PresupuestoCtr();
+        }
+        return self::$instance;
+    }
+
     public function index()
     {
-        $gestionPantallaCtr = $_SESSION['session']->getGestionPantallaCtr();
-        $action = $gestionPantallaCtr->getAction();
-
+        $action = isset($_GET['action']) ? $_GET['action'] : "";
         $presupuestos = $action == "searched" ? $this->search() : $this->presupuestoDAO->getAllPresupuestos();
+        if (is_string($presupuestos)) {
+            $toast = new ToastCtr();
+            $toast->mostrarToast("error", "error al traer todos los presupuestos", $presupuestos);
+        }
 
-        $presupuestoCtr = $this;
+        $presupuestoCtr = $this->getInstance();
+        $productosPre = [];
         if ($action == 'see') {
             $id = isset($_GET['id']) ? $_GET['id'] : '';
             $presupuesto = $this->getPresupuestoById($id);
@@ -67,50 +116,87 @@ class PresupuestoCtr
         require_once 'vistas/presupuesto/presupuesto.php';
     }
 
+    public function getReparacionPresupuestoById($id)
+    {
+        $reparacion = $this->presupuestoDAO->getReparacionPresupuestoById($id);
+
+        if (is_string($reparacion)) {
+            $toast = new ToastCtr();
+            $toast->mostrarToast("error", "error al traer la reparacion", $reparacion);
+        }
+        return $reparacion;
+
+    }
+
     public function getPantallaCreate()
     {
         session_start();
         $gestionPantallaCtr = $_SESSION['session']->getGestionPantallaCtr();
         session_write_close();
+        $this->index();
         require_once 'vistas/presupuesto/create.php';
     }
 
     public function create()
     {
-        if (isset($_POST['idcliente'])) {
-            $productos = [];
-            $precioTotal = 0;
-            $estado = isset($_POST['tipo']) ? $_POST['tipo'] == 'Venta' ? 'Presupuestado' : 'Pendiente presupuesto' : '';
-            foreach ($_POST['idproductos'] as $index => $idproducto) {
-                $precioUnit = $this->productoCtr->getProductoById($idproducto)['precioventa'];
-                $cantidad = intval($_POST['cantidad'][$index]);
-                $producto = new ProductoPresupuestoMdl($idproducto, $precioUnit, $cantidad);
-                $precioTotal += $precioUnit * $cantidad;
-                array_push($productos, $producto);
+        if (isset($_POST['tipo'])) {
+            if ($_POST['tipo'] == "Venta") {
+                $productos_total = $this->getProductos_Total();
+                $estado = isset($_POST['tipo']) ? $_POST['tipo'] == 'Venta' ? 'Presupuestado' : 'Pendiente presupuesto' : '';
+                $presupuesto = new PresupuestoMdl(
+                    $_POST['idcliente'],
+                    $productos_total->productos,
+                    $this->getNuevoNroComprobante(),
+                    $_POST['tipo'],
+                    $estado,
+                    '0001',
+                    $productos_total->total
+                );
+                $status = $this->presupuestoDAO->create($presupuesto);
+            } else if ($_POST['tipo'] == "Reparacion") {
+                $presupuesto = new PresupuestoMdl($_POST['idcliente'], [], $this->getNuevoNroComprobante(), $_POST['tipo'], 'pendiente presupuesto', '0001', 0);
+                $reparacion = new ReparacionMdl($_POST['modelo'], $_POST['marca'], $_POST['nroserie'], $_POST['descripcion']);
+                $status = $this->presupuestoDAO->create($presupuesto, $reparacion);
             }
-            $presupuesto = new PresupuestoMdl(
-                $_POST['idcliente'],
-                $productos,
-                $this->getNuevoNroComprobante(),
-                $_POST['tipo'],
-                $estado,
-                '0001',
-                $precioTotal
-            );
-
-            $this->presupuestoDAO->create($presupuesto);
+            UtilidadesDAO::getInstance()->showStatus("presupuestos", $status, "created");
         }
+    }
+
+    private function getProductos_Total()
+    {
+        $productos = [];
+        $precioTotal = 0;
+        foreach ($_POST['idproductos'] as $index => $idproducto) {
+            $precioUnit = $this->productoCtr->getProductoById($idproducto)['precioventa'];
+            $cantidad = intval($_POST['cantidad'][$index]);
+            $producto = new ProductoPresupuestoMdl($idproducto, $precioUnit, $cantidad);
+            $precioTotal += $precioUnit * $cantidad;
+            array_push($productos, $producto);
+        }
+        $productos_Total = new stdClass();
+        $productos_Total->productos = $productos;
+        $productos_Total->total = $precioTotal;
+
+        return $productos_Total;
     }
 
     public function getPantallaEdit()
     {
+        session_start();
+        $gestionPantallaCtr = $_SESSION['session']->getGestionPantallaCtr();
+        session_write_close();
         $this->index();
         require_once 'vistas/presupuesto/edit.php';
     }
 
     public function getNuevoNroComprobante()
     {
-        $auxNroComprobante = strval($this->presupuestoDAO->getNuevoNroComprobante() + 1);
+        $nroComprobanteDB = $this->presupuestoDAO->getNuevoNroComprobante();
+        if (is_string($nroComprobanteDB)) {
+            $toast = new ToastCtr();
+            $toast->mostrarToast("error", "error al traer el numero del comprobante", $nroComprobanteDB);
+        }
+        $auxNroComprobante = strval($nroComprobanteDB + 1);
         $nroComprobante = str_pad($auxNroComprobante, 10, 0, STR_PAD_LEFT);
         return $nroComprobante;
     }
@@ -135,42 +221,74 @@ class PresupuestoCtr
 
     public function getProductosPresupuestoById($id)
     {
-        return $this->presupuestoDAO->getProductosPresupuestoById($id);
+        $productoPresupuesto = $this->presupuestoDAO->getProductosPresupuestoById($id);
+        if (is_string($productoPresupuesto)) {
+            $toast = new ToastCtr();
+            $toast->mostrarToast("error", "error al traer los productos del presupuesto", $productoPresupuesto);
+        }
+        return $productoPresupuesto;
     }
 
     public function update($id)
     {
-
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            if (isset($_POST["idcliente"])) {
-                $presupuesto = new PresupuestoMdl($_POST["idcliente"], $_POST["nrocomprobante"], $_POST['tipo'], $_POST["estado"], $_POST["fecha"], $_POST["puntoventa"], $_POST["total"]);
-                $presupuesto->setIdPresupuesto($id);
-                $this->presupuestoDAO->updatePresupuesto($presupuesto);
+            if (isset($_POST["idcliente"]) || isset($_POST["manodeobra"])) {
+                $module = isset($_GET['module']) ? $_GET['module'] : "";
+                $presupuesto = $this->getPresupuestoById($id);
+                if (isset($_POST["idcliente"])) {
+                    $presupuesto->setIdCliente($_POST['idcliente']);
+                }
+                if (isset($_POST['idproductos'])) {
+                    $productos_total = $this->getProductos_Total();
+                    $presupuesto->setProductos($productos_total->productos);
+                    $presupuesto->setTotal($productos_total->total);
+                }
+                $status = $this->updatePresupuesto($presupuesto);
+                if ($module == 'presupuestos') {
+                    UtilidadesDAO::getInstance()->showStatus('presupuestos', $status, "edited");
+                } else {
+                    return $status;
+                }
             }
         }
     }
 
     public function getPresupuestoById($id)
     {
+        $toast = new ToastCtr();
         $presupuestoBD = $this->presupuestoDAO->getPresupuestoById($id);
-        $productosPresupuestoBD = $this->presupuestoDAO->getProductosPresupuestoById($id);
+        if (is_string($presupuestoBD)) {
+            $toast->mostrarToast("error", "error al traer el presupuesto", $presupuestoBD);
+            exit;
+        }
+        $productosPresupuestoBD = $this->getProductosPresupuestoById($id);
+
+        if (is_string($productosPresupuestoBD)) {
+            $toast->mostrarToast("error", "error al buscar presupuesto: " . $presupuestoBD);
+            exit;
+        }
         $presupuesto = new PresupuestoMdl($presupuestoBD['idcliente'], $productosPresupuestoBD, $presupuestoBD['nrocomprobante'], $presupuestoBD['tipo'], $presupuestoBD['estado'], $presupuestoBD['puntoventa'], $presupuestoBD['total']);
         $presupuesto->setIdPresupuesto($id);
         $presupuesto->setFecha($presupuestoBD['fecha']);
         return $presupuesto;
     }
 
-    public function getPantallaAnnul(){
+    public function getPantallaAnnul()
+    {
         $gestionPantallaCtr = $_SESSION['session']->getGestionPantallaCtr();
-        $gestionPantallaCtr->crearPopUp(new PopUpMdl('annul','Anular Presupuesto',"",BOTONES_POPUP_ANULAR,'index.php?action=annul'));
+        $gestionPantallaCtr->crearPopUp(new PopUpMdl('annul', 'Anular Presupuesto', "", BOTONES_POPUP_ANULAR, 'index.php?action=annul'));
         $this->index();
     }
 
-    public function annulled($id){
+    public function annulled($id)
+    {
         $presupuesto = $this->getPresupuestoById($id);
         $estado = $presupuesto->getEstado();
-        if($estado != 'Pendiente presupuesto' || $estado != 'En reparacion' || $estado != '')
-            $this->presupuestoDAO->annul($id);
+
+        if ($estado != 'Pendiente presupuesto' || $estado != 'En reparacion' || $estado != '') {
+            $status = $this->presupuestoDAO->annul($id);
+            UtilidadesDAO::getInstance()->showStatus("presupuestos", $status, "annulled");
+        }
     }
 
     public function getAllClientes()
@@ -190,12 +308,54 @@ class PresupuestoCtr
         if ($estado != 'Pendiente presupuesto' && $estado != 'En reparacion' && $estado != '' && $estado != 'Facturado') {
             $presupuesto->setEstado('Facturado');
             $presupuesto->setNroComprobante('C-' . $presupuesto->getNroComprobante() . '-0001');
-            $this->presupuestoDAO->updatePresupuesto($presupuesto);
+            $status = $this->updatePresupuesto($presupuesto);
+            UtilidadesDAO::getInstance()->showStatus("presupuestos", $status, "facturar");
         }
+    }
+
+    private function updatePresupuesto($presupuesto)
+    {
+        return $this->presupuestoDAO->updatePresupuesto($presupuesto);
+    }
+
+    public function cambiarEstado($id)
+    {
+        $presupuesto = $this->getPresupuestoById($id);
+        $tipo = $presupuesto->getTipo();
+        $estado = $presupuesto->getEstado();
+        $status = "";
+        if ($tipo == "Venta") {
+            if ($estado == "Presupuestado") {
+                $presupuesto->setEstado('Facturado');
+                $presupuesto->setNroComprobante('C-' . $presupuesto->getNroComprobante() . '-0001');
+                $status = $this->updatePresupuesto($presupuesto);
+            }
+        } else {
+            if ($estado == "Presupuestado") {
+                $presupuesto->setEstado('En reparacion');
+                $status = $this->updatePresupuesto($presupuesto);
+            }
+            if ($estado == "Reparado") {
+                $presupuesto->setEstado('Facturado');
+                $presupuesto->setNroComprobante('C-' . $presupuesto->getNroComprobante() . '-0001');
+                $status = $this->updatePresupuesto($presupuesto);
+            }
+        }
+        UtilidadesDAO::getInstance()->showStatus("presupuestos", $status, "cambiarEstado");
     }
 
     public function search()
     {
-        return $this->presupuestoDAO->search();
+        $result = $this->presupuestoDAO->search();
+        if (is_string($result)) {
+            $toast = new ToastCtr();
+            $toast->mostrarToast("error", "error al buscar presupuestos", $result);
+        }
+        return $result;
+    }
+
+    public function getPresupuestoDAO()
+    {
+        return $this->presupuestoDAO;
     }
 }

@@ -1,4 +1,3 @@
-DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS usuarios;
 CREATE TABLE `usuarios` (
   `idusuario` int(11) NOT NULL,

@@ -73,12 +73,12 @@ footer{
   background-color: #0f7672;
   width: 95%;
 }
-
+.table-responsive{
+  max-height: 660px;
+}
 .grilla__contenedor{
   border: 1px solid grey;
   border-collapse: unset;
-  width: 95%;
-  margin: 1% 2.5% 1.5% 2.5%;
   text-align: center;
 }
 
@@ -89,6 +89,13 @@ footer{
 .grilla__cabecera{
   height: 2.3rem;
   line-height: 2.3rem;
+}
+
+thead{
+  top: -1px;
+  background-color: #fff;
+  z-index: 1;
+  position: sticky;
 }
 
 .grilla__fila{
@@ -221,10 +228,6 @@ footer{
     margin-left: 8%;
   }
 
-  .contenedor__mayor-grilla{
-    width: 85%;
-  }
-
   .w-85{
     width: 85%;
   }
@@ -259,7 +262,9 @@ footer{
     fill: #666;
   }
 
-  
+  .table-responsive{
+    padding: 3px;
+  }
 
   .grilla-productos__cont{
     max-height: 500px; 
@@ -284,4 +289,55 @@ footer{
 .grilla__mensaje-error{
   margin: 60px 0;
   color: #fff;
+}
+
+.NroComprobanteTxt{
+  font-size: 11px !important;
+}
+
+/* toast */
+.colored-toast{
+  margin-top: 80px;
+}
+
+.btn-position{
+  align-self: flex-start !important;
+}
+
+.swal2-actions{
+  justify-content: center !important;
+}
+
+@media print {
+  @page {
+      size: A4 landscape; /* Establece la orientación en horizontal */
+      margin: 10mm; /* Ajusta los márgenes si es necesario */
+  }
+  
+  body {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    zoom: 1; /* Asegura que no haya escalado extraño */
+  }
+
+  .container {
+      width: 100%;
+      max-width: 100%;
+      margin: auto;
+  }
+
+  .modal-content {
+      width: 100%;
+      max-width: 100%;
+      text-align: center;
+  }
+
+  h2, h3 {
+      text-align: center;
+      width: 100%;
+  }
+}
+.resizeTextArea{
+  resize: none;
 }

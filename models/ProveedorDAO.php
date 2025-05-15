@@ -2,111 +2,114 @@
 
 require_once 'includes/DBConnection.php';
 
-class ProveedorDAO {
+class ProveedorDAO
+{
     private $db;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->db = DBConnection::getInstance();
     }
 
-    public function createProveedor(ProveedorMdl $proveedor) {
-        // Código para crear un nuevo proveedor en la base de datos
-        $stmt = $this->db->getConnection()->prepare("INSERT INTO proveedores (nombre, categoria_fiscal, direccion, telefono, correo, saldo, fecha) VALUES (:nombre, :cateogria_fiscal, :direccion, :telefono, :correo, :saldo, :fechaCreacion)");
-        
-        $nombre = $proveedor->getNombre();
-        $categoria_fiscal = $proveedor->getCategoriaFiscal();
-        $direccion = $proveedor->getDireccion();
-        $telefono = $proveedor->getTelefono();
-        $correo = $proveedor->getCorreo();
-        $saldo = $proveedor->getSaldo();
-        $fechaCreacion = $proveedor->getFechaCreacion();
-        
-		$stmt->bindParam(":nombre", $nombre, PDO::PARAM_STR);
-		$stmt->bindParam(":categoria_fiscal", $categoria_fiscal, PDO::PARAM_STR);
-        $stmt->bindParam(":direccion", $direccion, PDO::PARAM_STR);
-		$stmt->bindParam(":telefono", $telefono, PDO::PARAM_INT);
-		$stmt->bindParam(":correo", $correo, PDO::PARAM_STR);
-		$stmt->bindParam(":saldo", $saldo, PDO::PARAM_STR);
-		$stmt->bindParam(":fechaCreacion", $fechaCreacion, PDO::PARAM_STR);
-
-		if($stmt->execute()){
-
-			return "ok";
-
-		}else{
-
-			print_r($stmt->errorInfo());
-
-		}
-        $stmt->closeCursor();
-        $stmt = null;
+    public function create(ProveedorMdl $proveedor)
+    {
+        $queries = [
+            [
+                'query' => 'INSERT INTO proveedores (nombre, categoria_fiscal, direccion, telefono, correo, cuit, saldo) VALUES ',
+                'type' => 'INSERT',
+                'params' => [
+                    [
+                        "'" . $proveedor->getNombre() . "'",
+                        "'" . $proveedor->getCategoriaFiscal() . "'",
+                        "'" . $proveedor->getDireccion() . "'",
+                        $proveedor->getTelefono(),
+                        "'" . $proveedor->getCorreo() . "'",
+                        $proveedor->getCuit(),
+                        $proveedor->getSaldo(),
+                    ]
+                ]
+            ]
+        ];
+        return UtilidadesDAO::getInstance()->executeQuery($queries);
     }
 
-    public function updateProveedor(ProveedorMdl $proveedor) {
-        // Código para actualizar un proveedor existente en la base de datos
-        $stmt = $this->db->getConnection()->prepare("UPDATE proveedores SET nombre=:nombre, categoria_fiscal=:categoria_fiscal, direccion=:direccion, telefono=:telefono, correo=:correo, saldo=:saldo, fechaCreacion=:fechaCreacion WHERE idproveedor= :idproveedor");
-        
-        $nombre = $proveedor->getNombre();
-        $categoria_fiscal = $proveedor->getCategoriaFiscal();
-        $direccion = $proveedor->getDireccion();
-        $telefono = $proveedor->getTelefono();
-        $correo = $proveedor->getCorreo();
-        $saldo = $proveedor->getSaldo();
-        $idproveedor = $proveedor->getId();
-        
-		$stmt->bindParam(":nombre", $nombre, PDO::PARAM_STR);
-		$stmt->bindParam(":categoria_fiscal", $categoria_fiscal, PDO::PARAM_STR);
-        $stmt->bindParam(":direccion", $direccion, PDO::PARAM_STR);
-		$stmt->bindParam(":telefono", $telefono, PDO::PARAM_STR);
-		$stmt->bindParam(":correo", $correo, PDO::PARAM_STR);
-		$stmt->bindParam(":saldo", $saldo, PDO::PARAM_STR);
-		$stmt->bindParam(":idproveedor",$idproveedor , PDO::PARAM_INT);
-
-		if($stmt->execute()){
-
-			return "ok";
-
-		}else{
-
-			print_r($stmt->errorInfo());
-
-		}
-        $stmt->closeCursor();
-        $stmt = null;
+    public function update(ProveedorMdl $proveedor)
+    {
+        $queries = [
+            [
+                'query' => "UPDATE proveedores SET 
+                        nombre='" . $proveedor->getNombre() . "', 
+                        categoria_fiscal='" . $proveedor->getCategoriaFiscal() . "', 
+                        direccion='" . $proveedor->getDireccion() . "', 
+                        telefono=" . $proveedor->getTelefono() . ", 
+                        correo='" . $proveedor->getCorreo() . "', 
+                        saldo=" . $proveedor->getSaldo() . ", 
+                        cuit=" . $proveedor->getCuit() . " WHERE 
+                        idproveedor=" . $proveedor->getId(),
+                'type' => 'UPDATE',
+                'params' => [],
+            ]
+        ];
+        return UtilidadesDAO::getInstance()->executeQuery($queries);
     }
 
-     public function deleteProveedor($id) {
-         // Código para eliminar un proveedor de la base de datos
-         $stmt = $this->db->getConnection()->prepare("DELETE FROM proveedores WHERE idproveedor = :idproveedor");
-        $stmt->bindParam(":idproveedor", $id, PDO::PARAM_INT);
-    
-        if ($stmt->execute()) {
-            // La eliminación fue exitosa
-            return "ok";
-        } else {
-            // Manejar errores si es necesario
-            print_r($this->db->getConnection()->errorInfo());
-            return "error";
-        }
-     }
-
-    public function getProveedorById($id) {
-        $stmt = $this->db->getConnection()->prepare("SELECT * FROM proveedores WHERE idproveedor = ".$id);
-
-        $stmt->execute();
-        $valor = $stmt -> fetchAll()[0];
-        $stmt->closeCursor();
-        $stmt = null;
-        return $valor;
+    public function delete($id)
+    {
+        $queries = [
+            [
+                'query' => "DELETE FROM proveedores WHERE idproveedor = " . $id,
+                'type' => 'DELETE',
+                'params' => [],
+            ]
+        ];
+        return UtilidadesDAO::getInstance()->executeQuery($queries);
     }
 
-    public function getAllProveedores() {
+    public function getProveedorById($id)
+    {
+        $queries = [
+            [
+                'query' => "SELECT * FROM proveedores WHERE idproveedor = " . $id,
+                'type' => 'SELECT',
+                'params' => [],
+            ]
+        ];
+        $proveedor = UtilidadesDAO::getInstance()->executeQuery($queries);
+        return is_array($proveedor) ? $proveedor[0] : $proveedor;
+    }
+
+    public function getAllProveedores()
+    {
         // Código para obtener todos los proveedors desde la base de datos
-        $stmt = $this->db->getConnection()->prepare("SELECT * FROM proveedores");
-        $stmt->execute();
-        $valor = $stmt -> fetchAll();
-        $stmt->closeCursor();
-        $stmt = null;
-        return $valor;
+        $queries = [
+            [
+                'query' => "SELECT * FROM proveedores",
+                'type' => 'SELECT',
+                'params' => [],
+            ]
+        ];
+        return UtilidadesDAO::getInstance()->executeQuery($queries);
+    }
+    public function search()
+    {
+        $termino = isset($_POST['termino']) ? '%' . $_POST['termino'] . '%' : "";
+        if ($termino != "") {
+            $queries = [
+                [
+                    'query' => "SELECT * FROM proveedores WHERE 
+                                nombre LIKE '$termino' OR 
+                                categoria_fiscal LIKE '$termino' OR 
+                                direccion LIKE '$termino' OR 
+                                telefono LIKE '$termino' OR 
+                                correo LIKE '$termino' OR 
+                                cuit LIKE '$termino' OR 
+                                saldo LIKE '$termino' OR 
+                                fechaCreacion LIKE '$termino' ",
+                    'type' => 'SELECT',
+                    'params' => [],
+                ]
+            ];
+            return UtilidadesDAO::getInstance()->executeQuery($queries);
+        }
     }
 }
