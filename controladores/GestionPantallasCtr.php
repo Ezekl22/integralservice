@@ -103,8 +103,8 @@ class GestionPantallasControlador
                     $indexPage = new ProductoCtr();
                     break;
                 case 'menu':
-                    include_once './controladores/MenuControlador.php';
-                    $indexPage = new MenuController();
+                    include_once './controladores/MenuCtr.php';
+                    $indexPage = new MenuCtr();
                     break;
                 default:
                     include_once './vistas/inicio/index.php';

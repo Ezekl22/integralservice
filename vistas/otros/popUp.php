@@ -18,8 +18,12 @@
                                 ?>
                                 <input id="mail" type="email" class="mb-4 mx-5 form-control w-75" name="mail" placeholder="Mail"
                                     required>
-                                <input type="text" id="contrasena" name="contrasena" class="mx-5 form-control w-75"
-                                    placeholder="Contraseña" required>
+                                <div class="input-group w-75">
+                                    <input type="password" class="form-control" id="contrasena" name="contrasena" placeholder="Contraseña" required>
+                                    <button class="btn button" type="button" id="seePassword" title="ver contraseña" onclick="togglePassword(this, event);">
+                                        <img class="icono__imagen" id="iconVerContrasena" src="./assets/img/iconoVerContrasena.png" alt="icono de ver/ocultar contraseña">
+                                    </button>
+                                </div>
                                 <div class="d-flex justify-content-center">
                                     <button type="button" class="btn btn-link btn__recuperarC" data-bs-dismiss="modal"
                                         aria-label="Close" data-bs-toggle="modal" data-bs-target="#recuperarCon">

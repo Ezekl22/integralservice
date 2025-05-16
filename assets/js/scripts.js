@@ -403,3 +403,18 @@ function formatMoney(input) {
   });
   
 }
+
+function togglePassword(button, event) {
+  event.preventDefault();
+  const input = document.getElementById("contrasena");
+  icon = button.querySelector("#iconVerContrasena");
+
+  const isHidden = input.type === "password";
+  input.type = isHidden ? "text" : "password";
+
+  // Cambia la imagen según el estado
+  icon.src = isHidden 
+    ? "./assets/img/iconoNoVerContrasena.png"
+    : "./assets/img/iconoVerContrasena.png";
+
+}

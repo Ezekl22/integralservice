@@ -20,7 +20,7 @@
 <body>
       <!-- Obtener el módulo actual -->
       <?php
-      require_once './controladores/gestionPantallasControlador.php';
+      require_once './controladores/GestionPantallasCtr.php';
       require_once './assets/constantes.php';
       $GestionPantallaCtr = new GestionPantallasControlador;
       session_start();
