@@ -63,9 +63,6 @@
             </section>
             <?php
             $GestionPantallaCtr->crearPopUp(new PopUpMdl('inicioSesion', 'Inicio de sesión', "", INICIO_SESION_BTN_P, 'index.php?action=login'));
-            $GestionPantallaCtr->crearPopUp(new PopUpMdl('recuperarCon', 'Recuperar contraseña', "", $recuperarContrasenaBotonesP));
-            $GestionPantallaCtr->crearPopUp(new PopUpMdl('ingCodigo', 'Ingresar código', "", $ingresarCodigoBotonesP));
-            $GestionPantallaCtr->crearPopUp(new PopUpMdl('nuevaCont', 'Cambiar contraseña', "", $cambiarContrasenaBotonesP));
             ?>
       </main>
       <?php $GestionPantallaCtr->cargarPantalla(); ?>

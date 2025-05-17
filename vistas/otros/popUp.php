@@ -24,26 +24,6 @@
                                         <img class="icono__imagen" id="iconVerContrasena" src="./assets/img/iconoVerContrasena.png" alt="icono de ver/ocultar contraseña">
                                     </button>
                                 </div>
-                                <div class="d-flex justify-content-center">
-                                    <button type="button" class="btn btn-link btn__recuperarC" data-bs-dismiss="modal"
-                                        aria-label="Close" data-bs-toggle="modal" data-bs-target="#recuperarCon">
-                                        Recuperar contraseña
-                                    </button>
-                                </div>
-                                <?php break;
-                            case 'recuperarCon': ?>
-                                <div class="d-flex mb-4 mx-5">Ingrese su correo electrónico y recibirá un código de verificación.
-                                </div>
-                                <input type="email" class="mb-4 mx-5 form-control w-75" placeholder="mail" required>
-                                <?php break;
-                            case 'ingCodigo': ?>
-                                <div class="d-flex mb-4 mx-5">Ingrese el codigo que se envio a su correo.</div>
-                                <input type="text" class="mx-5 mb-4" placeholder="Código" required>
-                                <?php break;
-                            case 'nuevaCont': ?>
-                                <div class="d-flex mb-4 mx-5">Ingrese la nueva contraseña.</div>
-                                <input type="password" class="mx-5 mb-4" placeholder="Nueva contraseña" required>
-                                <input type="password" class="mx-5 mb-4" placeholder="Repita la contraseña" required>
                                 <?php break;
                             case 'delete': ?>
                                 <label class="mb-4 mx-5">
@@ -52,7 +32,7 @@
                                 <?php break;
                             case 'annul': ?>
                                 <label class="mb-4 mx-5">
-                                    ¿Esta seguro/a que desea anular el elemento seleccionado?
+                                    ¿Esta seguro/a que desea anular el elemento seleccionado? 
                                 </label>
                                 <?php break;
                             case 'grillaProductos': ?>
