@@ -75,7 +75,7 @@ class PedidoCompraDAO
         }
         $queries = [
             [
-                'query' => "INSERT INTO productospedidocompra (idpedidocompra, idproducto, preciounit, cantidad) VALUES ",
+                'query' => "INSERT INTO productospedidoscompras (idpedidocompra, idproducto, preciounit, cantidad) VALUES ",
                 'type' => 'INSERT',
                 'params' => $params,
             ]
