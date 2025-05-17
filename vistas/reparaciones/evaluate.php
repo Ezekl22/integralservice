@@ -11,7 +11,7 @@ $productoCtr = ProductoCtr::getInstance();
 $json = json_encode($productoCtr->getAllRepuestos());
 $productos = $presupuestoCtr->getProductosPresupuestoById($id);
 $jsonProductosPre = json_encode(value: $productos);
-echo "<script>const productos = $json;</script>";
+echo "<script>const productos = $json; screenCenter('contenedor');</script>";
 ?>
 <html>
 

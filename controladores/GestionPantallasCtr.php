@@ -131,6 +131,10 @@ class GestionPantallasControlador
                 case 'facturar':
                     $indexPage->getPantallaCargarFactura();
                     break;
+                case 'evaluate':
+                case 'repair':
+                    $indexPage->getPantallaEvaluar();
+                    break;
                 default:
                     $indexPage->index();
                     break;
