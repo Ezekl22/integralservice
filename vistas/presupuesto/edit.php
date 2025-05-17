@@ -9,7 +9,7 @@ $GestionPantallasCtr = new GestionPantallasControlador();
 $productos = $PresupuestoCtr->getProductosPresupuestoById($id);
 $jsonProductosPre = json_encode($productos);
 $json = json_encode($PresupuestoCtr->getAllProductos());
-echo "<script>const productos = $json;</script>";
+echo "<script>const productos = $json; screenCenter('contenedor');</script>";
 ?>
 <?php
 if ($action == 'edit' && $id != '') {
@@ -21,7 +21,7 @@ if ($action == 'edit' && $id != '') {
         <title>Editar Presupuesto</title>
     </head>
 
-    <body>
+    <body id = "edit">
         <main class="d-flex flex-column align-items-center mt-2 mb-4 main__flex" id="editPresupuesto">
             <article class="mt-4">
                 <h2 class="main__title mb-5">

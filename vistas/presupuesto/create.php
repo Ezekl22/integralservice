@@ -3,7 +3,7 @@
 $PresupuestoCtr = PresupuestoCtr::getInstance();
 $clientes = $PresupuestoCtr->getAllClientes();
 $json = json_encode($PresupuestoCtr->getAllProductos());
-echo "<script>const productos = $json;</script>";
+echo "<script>const productos = $json; screenCenter('contenedor');</script>";
 ?>
 <html>
 

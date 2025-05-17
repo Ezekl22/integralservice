@@ -418,3 +418,12 @@ function togglePassword(button, event) {
     : "./assets/img/iconoVerContrasena.png";
 
 }
+
+function screenCenter(id) {
+   window.onload = () => {
+    const elemento = document.getElementById(id);
+    if (elemento) {
+      elemento.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+}
