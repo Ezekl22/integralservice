@@ -128,6 +128,9 @@ class GestionPantallasControlador
                 case 'annul':
                         $indexPage ->getPantallaAnnul();
                         break;
+                case 'facturar':
+                    $indexPage->getPantallaCargarFactura();
+                    break;
                 default:
                     $indexPage->index();
                     break;

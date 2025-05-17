@@ -8,7 +8,7 @@ $GestionPantallasCtr = new GestionPantallasControlador();
 $productos = $PedidoCompraCtr->getProductosPedidoById($id);
 $jsonProductosPedido = json_encode($productos);
 $json = json_encode($PedidoCompraCtr->getAllProductosRepuestos());
-echo "<script>const productos = $json;</script>";
+echo "<script>const productos = $json; screenCenter('contenedor');</script>";
 ?>
 <?php
 if ($action == 'facturar' && $id != '') {

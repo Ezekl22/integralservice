@@ -33,6 +33,10 @@ class PedidoCompraCtr
                     if ($status != "success") {
                         $this->create();
                     }
+                }else {
+                    if ($status == "success") {
+                        $toast->mostrarToast("exito", "Pedido de compra creado");
+                    }
                 }
                 break;
             case 'created':
@@ -135,12 +139,7 @@ class PedidoCompraCtr
             $productos_total->productos
         );
         $status = $this->pedidoCompraDAO->create($pedidoCompra);
-
-        if ($status == "") {
-            header("Location: index.php?module=pedidos&action=created&status=success");
-        } else {
-            header("Location: index.php?module=pedidos&status=error&description=" . $status);
-        }
+        UtilidadesDAO::getInstance()->showStatus("pedidos", $status, "created");
     }
 
     private function getProductos_Total()
@@ -220,12 +219,8 @@ class PedidoCompraCtr
                 $pedidoCompra->setProductos($productos_total->productos);
                 $pedidoCompra->setTotal($productos_total->total);
                 $status = $this->pedidoCompraDAO->updatePedidoCompra($pedidoCompra);
+                UtilidadesDAO::getInstance()->showStatus("pedidos", $status, "updated");
             }
-        }
-        if ($status == "") {
-            header("Location: index.php?module=pedidos&action=updated&status=success");
-        } else {
-            header("Location: index.php?module=pedidos&status=error&description=" . $status);
         }
     }
 
@@ -263,12 +258,9 @@ class PedidoCompraCtr
         $pedidoCompra = $this->getPedidoCompraById($id);
         $estado = $pedidoCompra->getEstado();
 
-        if ($estado != 'Recibido' && $estado != 'Facturado' && $estado != 'anulado' && $estado != '')
+        if ($estado != 'Recibido' && $estado != 'Facturado' && $estado != 'anulado' && $estado != ''){
             $status = $this->pedidoCompraDAO->annul($id);
-        if ($status == "") {
-            header("Location: index.php?module=pedidos&action=annulled&status=success");
-        } else {
-            header("Location: index.php?module=pedidos&action=annulled&status=error&description=" . $status);
+            UtilidadesDAO::getInstance()->showStatus("pedidos", $status, "annulled");
         }
     }
 
@@ -307,18 +299,8 @@ class PedidoCompraCtr
                 $pedidoCompra->setProductos($productosPedido);
                 $pedidoCompra->setTotal($productos_total->total);
                 $status = $this->updatePedidoCompra($pedidoCompra);
-
-                // foreach($productosPedido as $productoPedido){
-                //     $id = $productoPedido->getIdProducto();
-                //     $cantidad = $productoPedido->getCantidad();
-                //     $this->productoCtr->actualizarStockProducto($id, $cantidad);
-                // }
+                UtilidadesDAO::getInstance()->showStatus("pedidos", $status, "facturado");
             }
-        }
-        if ($status == "") {
-            header("Location: index.php?module=pedidos&action=facturado&status=success");
-        } else {
-            header("Location: index.php?module=pedidos&status=error&description=" . $status);
         }
     }
 

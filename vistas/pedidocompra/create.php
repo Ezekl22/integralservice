@@ -3,7 +3,7 @@
 $PedidoCompraCtr = PedidoCompraCtr::getInstance();
 $proveedores = $PedidoCompraCtr->getAllProveedores();
 $json = json_encode($PedidoCompraCtr->getAllProductosRepuestos());
-echo "<script>const productos = $json;</script>";
+echo "<script>const productos = $json; screenCenter('contenedor');</script>";
 ?>
 <html>
 
