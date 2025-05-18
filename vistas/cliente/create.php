@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<script>screenCenter('contenedor');</script>
 <html>
 
 <head>
@@ -16,7 +17,7 @@
             <div class="grilla w-75 d-flex flex-column align-items-center rounded-4">
                 <form action="index.php?module=clientes&action=created" method="POST"
                     class="w-100 d-flex align-items-center flex-column">
-                    <div class="border w-75 mt-5 mb-2 rounded-4 d-flex flex-column align-items-center">
+                    <div class="border w-75 mt-5 mb-2 rounded-4 d-flex flex-column align-items-center" id="contenedor">
                         <div class="w-75 d-flex mt-3">
                             <div class="input-group input-group-sm mb-3">
                                 <span class="input-group-text" id="inputGroup-sizing-sm">Nombre</span>

@@ -6,6 +6,7 @@ $cliente = $ClienteCtr->getClienteById($id);
 
 if ($action == 'edit' && $id != '') {
     ?>
+    <script>screenCenter('contenedor');</script>
     <!DOCTYPE html>
     <html>
 
