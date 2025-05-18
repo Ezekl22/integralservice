@@ -10,7 +10,7 @@ if ($action == 'edit' && $id != '') {
     ?>
     <!DOCTYPE html>
     <html>
-
+    <script>screenCenter("contenedor");</script>
     <head>
         <title>Editar Proveedor</title>
     </head>

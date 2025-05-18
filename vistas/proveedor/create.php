@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-
+<script>screenCenter("contenedor");</script>
 <head>
     <title>Proveedores</title>
 </head>
@@ -16,7 +16,7 @@
             <div class="grilla w-95 d-flex flex-column align-items-center rounded-4">
                 <form action="index.php?module=proveedores&action=created" method="POST"
                     class="w-100 d-flex align-items-center flex-column">
-                    <div class="border w-95 mt-5 mb-2 rounded-4 d-flex flex-column align-items-center">
+                    <div class="border w-95 mt-5 mb-2 rounded-4 d-flex flex-column align-items-center" id="contenedor">
                         <div class="w-95 d-flex mt-4 mb-3">
                             <div class="input-group input-group-sm mb-3">
                                 <span class="input-group-text" id="inputGroup-sizing-sm">Nombre</span>
