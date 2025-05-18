@@ -10,7 +10,7 @@ if ($action == 'edit' && $id != '') {
     ?>
     <!DOCTYPE html>
     <html>
-
+    <script>screenCenter("contenedor");</script>
     <head>
         <title>Editar producto</title>
     </head>
@@ -26,7 +26,7 @@ if ($action == 'edit' && $id != '') {
                 <div class="grilla w-85 d-flex flex-column align-items-center rounded-4">
                     <form action="index.php?module=productos&action=edited&id=<?php echo $id ?>" method="POST"
                         class="w-100 d-flex align-items-center flex-column">
-                        <div class="border w-85 mt-5 mb-2 rounded-4 d-flex flex-column align-items-center">
+                        <div class="border w-85 mt-5 mb-2 rounded-4 d-flex flex-column align-items-center" id="contenedor">
                             <div class="w-85 d-flex mt-3">
                                 <div class="input-group input-group-sm mb-3">
                                     <span class="input-group-text" id="inputGroup-sizing-sm">Nombre</span>

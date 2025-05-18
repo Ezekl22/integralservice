@@ -13,7 +13,7 @@
             </h2>
         </article>
         <article class="mt-5 d-flex flex-column align-items-center">
-            <div class="grilla w-75 d-flex flex-column align-items-center rounded-4">
+            <div class="grilla w-85 d-flex flex-column align-items-center rounded-4">
                 <div class="d-flex w-75 justify-content-end mt-3">
                     <form action="index.php?module=productos&action=searched" method="POST"
                         class="input-group input-group-sm w-30" id="formBuscador">
