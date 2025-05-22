@@ -125,7 +125,6 @@ class PresupuestoCtr
             $toast->mostrarToast("error", "error al traer la reparacion", $reparacion);
         }
         return $reparacion;
-
     }
 
     public function getPantallaCreate()
@@ -153,12 +152,29 @@ class PresupuestoCtr
                     $productos_total->total
                 );
                 $status = $this->presupuestoDAO->create($presupuesto);
+                $erroresStock = [];
+
+                foreach ($productos_total->productos as $productoVenta) {
+                    $id = $productoVenta->getIdProducto();
+                    $cantidad = $productoVenta->getCantidad();
+                    $resultado = $this->productoCtr->actualizarStockProducto($id, $cantidad, 'restar');
+
+                    if ($resultado !== "") {
+                        $erroresStock[] = "Error al actualizar stock del producto con ID $id: $resultado";
+                    }
+                }
             } else if ($_POST['tipo'] == "Reparacion") {
                 $presupuesto = new PresupuestoMdl($_POST['idcliente'], [], $this->getNuevoNroComprobante(), $_POST['tipo'], 'pendiente presupuesto', '0001', 0);
                 $reparacion = new ReparacionMdl($_POST['modelo'], $_POST['marca'], $_POST['nroserie'], $_POST['descripcion']);
                 $status = $this->presupuestoDAO->create($presupuesto, $reparacion);
             }
-            UtilidadesDAO::getInstance()->showStatus("presupuestos", $status, "created");
+            if (!empty($erroresStock)) {
+                // Mostrar los errores acumulados
+                $erroresTexto = implode(" | ", $erroresStock);
+                UtilidadesDAO::getInstance()->showStatus("presupuestos", $erroresTexto, "created");
+            } else {
+                UtilidadesDAO::getInstance()->showStatus("presupuestos", $status, "created");
+            }
         }
     }
 
@@ -232,26 +248,67 @@ class PresupuestoCtr
     public function update($id)
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            if (isset($_POST["idcliente"]) || isset($_POST["manodeobra"])) {
-                $module = isset($_GET['module']) ? $_GET['module'] : "";
+            if (isset($_POST["idcliente"])) {
                 $presupuesto = $this->getPresupuestoById($id);
-                if (isset($_POST["idcliente"])) {
-                    $presupuesto->setIdCliente($_POST['idcliente']);
-                }
-                if (isset($_POST['idproductos'])) {
+                $presupuesto->setIdCliente($_POST['idcliente']);
+
+                if ($presupuesto->getTipo() == "Venta") {
                     $productos_total = $this->getProductos_Total();
-                    $presupuesto->setProductos($productos_total->productos);
+                    $productosNuevos = $productos_total->productos;
+                    $productosViejos = $presupuesto->getProductos();
+
+                    // Crear mapas por ID para búsqueda rápida
+                    $mapaViejos = [];
+                    foreach ($productosViejos as $productoViejo) {
+                        $mapaViejos[$productoViejo["idproducto"]] = $productoViejo["cantidad"];
+                    }
+
+                    $mapaNuevos = [];
+                    foreach ($productosNuevos as $productoNuevo) {
+                        $mapaNuevos[$productoNuevo->getIdProducto()] = $productoNuevo;
+                    }
+
+                    // Recorrer nuevos productos
+                    foreach ($productosNuevos as $productoNuevo) {
+                        $id = $productoNuevo->getIdProducto();
+                        $cantidadNueva = $productoNuevo->getCantidad();
+
+                        if (isset($mapaViejos[$id])) {
+                            $cantidadVieja = $mapaViejos[$id];
+                            $diferencia = $cantidadNueva - $cantidadVieja;
+
+                            if ($diferencia != 0) {
+                                $operacion = $diferencia > 0 ? 'restar' : 'sumar';
+                                $this->productoCtr->actualizarStockProducto($id, abs($diferencia), $operacion);
+                            }
+                        } else {
+                            // Producto nuevo: restar toda la cantidad
+                            $this->productoCtr->actualizarStockProducto($id, $cantidadNueva, 'restar');
+                        }
+                    }
+
+                    // Detectar productos eliminados
+                    foreach ($productosViejos as $productoViejo) {
+                        $idViejo = $productoViejo["idproducto"];
+                        if (!isset($mapaNuevos[$idViejo])) {
+                            // Producto eliminado: se devuelve al stock
+                            $this->productoCtr->actualizarStockProducto($idViejo, $productoViejo["cantidad"], 'sumar');
+                        }
+                    }
+
+                    // Actualizar el presupuesto con los nuevos productos
+                    $presupuesto->setProductos($productosNuevos);
                     $presupuesto->setTotal($productos_total->total);
                 }
-                $status = $this->updatePresupuesto($presupuesto);
-                if ($module == 'presupuestos') {
-                    UtilidadesDAO::getInstance()->showStatus('presupuestos', $status, "edited");
-                } else {
-                    return $status;
-                }
+
+
+                $status = $this->presupuestoDAO->updatePresupuesto($presupuesto);
             }
         }
+
+        UtilidadesDAO::getInstance()->showStatus("presupuestos", $status, "edited");
     }
+
 
     public function getPresupuestoById($id)
     {
@@ -285,11 +342,22 @@ class PresupuestoCtr
         $presupuesto = $this->getPresupuestoById($id);
         $estado = $presupuesto->getEstado();
 
-        if ($estado != 'Pendiente presupuesto' || $estado != 'En reparacion' || $estado != '') {
+        if ($estado != 'Pendiente presupuesto' && $estado != 'En reparacion' && $estado != '') {
             $status = $this->presupuestoDAO->annul($id);
+
+            // Obtener productos del presupuesto ya guardado en BD
+            $productosPresupuestados = $this->presupuestoDAO->getProductosPresupuestoById($id);
+
+            foreach ($productosPresupuestados as $productoVenta) {
+                $id = $productoVenta['idproducto'];  // o el nombre correcto en tu tabla
+                $cantidad = $productoVenta['cantidad'];
+                $this->productoCtr->actualizarStockProducto($id, $cantidad, 'sumar');
+            }
+
             UtilidadesDAO::getInstance()->showStatus("presupuestos", $status, "annulled");
         }
     }
+
 
     public function getAllClientes()
     {

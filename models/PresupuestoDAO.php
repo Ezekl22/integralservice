@@ -14,7 +14,7 @@ class PresupuestoDAO
 
     public function create(PresupuestoMdl $presupuesto, ReparacionMdl $reparacion = null)
     {
-        $reparacion == null? $reparacion = new ReparacionMdl("", "", "", ""): $reparacion;
+        $reparacion == null ? $reparacion = new ReparacionMdl("", "", "", "") : $reparacion;
 
         $productos = $presupuesto->getProductos();
         $params = [];

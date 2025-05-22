@@ -194,13 +194,29 @@ class ProductoCtr
         return $resultado;
     }
 
-    public function actualizarStockProducto($id, $cantidad)
+    public function actualizarStockProducto($id, $cantidad, $operacion)
     {
-        $productoPedido = $this->getProductoById($id);
-        $stockActual = $productoPedido['stock'];
-        $productoPedido['stock'] = $stockActual + $cantidad;
-        $producto = new ProductoMdl($productoPedido["nombre"], $productoPedido["marca"], $productoPedido["detalle"], $productoPedido["stock"], $productoPedido["tipo"], $productoPedido["preciocompra"], $productoPedido["precioventa"]);
-        $status = $this->productoDAO->update($producto);
-        UtilidadesDAO::getInstance()->showStatus("productos", $status, "edited");
+        $producto = $this->getProductoById($id);
+        $stockActual = $producto['stock'];
+
+        if ($operacion == 'sumar') {
+            $producto['stock'] = $stockActual + $cantidad;
+        } else if ($operacion == 'restar') {
+            $producto['stock'] = $stockActual - $cantidad;
+        }
+
+        $productoActualizado = new ProductoMdl(
+            $producto["nombre"],
+            $producto["marca"],
+            $producto["detalle"],
+            $producto["stock"],
+            $producto["tipo"],
+            $producto["preciocompra"],
+            $producto["precioventa"]
+        );
+        $productoActualizado->setIdProducto($id);
+
+        $status = $this->productoDAO->update($productoActualizado);
+        return $status; // string vacío si está bien, o mensaje de error si falló
     }
 }
