@@ -111,7 +111,7 @@ class PedidoCompraCtr
 
         session_start();
         session_write_close();
-        $grillaMdl = new GrillaMdl(GRILLA_PEDIDOS, $pedidosCompras, [0, 1]);
+        $grillaMdl = new GrillaMdl(GRILLA_PEDIDOS, $pedidosCompras, [5, 6, 0, 2]);
         $grillaCtr = new GrillaCtr($grillaMdl);
 
         // Cargar la vista con los datos

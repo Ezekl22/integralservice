@@ -60,7 +60,7 @@ class ReparacionCtr
         session_start();
         $gestionPantallaCtr = $_SESSION['session']->getGestionPantallaCtr();
         session_write_close();
-        $grillaMdl = new GrillaMdl(GRILLA_PRESUPUESTOS, $presupuestos, [0, 1]);
+        $grillaMdl = new GrillaMdl(GRILLA_PRESUPUESTOS, $presupuestos, [7, 8]);
         $grillaCtr = new GrillaCtr($grillaMdl);
 
         require_once 'vistas/reparaciones/reparacion.php';

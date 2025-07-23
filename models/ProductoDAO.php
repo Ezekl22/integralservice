@@ -115,12 +115,12 @@ class ProductoDAO
         return UtilidadesDAO::getInstance()->executeQuery($queries);
     }
 
-    public function delete($id)
+    public function deshabilitar($id, $action)
     {
         $queries = [
             [
-                'query' => "DELETE FROM productos WHERE idproducto = " . $id,
-                'type' => 'DELETE',
+                'query'=> 'UPDATE productos SET estado = "'.$action.'" WHERE idproducto = "'.$id.'"',
+                'type'=> 'UPDATE',
                 'params' => [],
             ]
         ];
