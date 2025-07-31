@@ -15,7 +15,7 @@ echo "<script>const productos = $json; screenCenter('contenedor');</script>";
 <?php
 if ($action == 'edit' && $id != '') {
 
-    ?>
+?>
     <html>
 
     <head>
@@ -86,7 +86,7 @@ if ($action == 'edit' && $id != '') {
                                 <div class="input-group input-group-sm mb-3">
                                     <label class="input-group-text" for="totalProductos"
                                         id="inputGroup-sizing-sm">Total:</label>
-                                    <input type="text" class="form-control" disabled aria-label="0" id="totalproductos"
+                                    <input type="number" class="form-control" disabled aria-label="0" id="totalproductos"
                                         value="$0,00" step="any">
                                 </div>
                             </div>
@@ -105,7 +105,7 @@ if ($action == 'edit' && $id != '') {
     </body>
     <?php
     echo "<script>cargarGrillaProducto('pedidos', " . $jsonProductosPedido . ")</script>"
-        ?>
+    ?>
 
     </html>
 <?php } ?>
