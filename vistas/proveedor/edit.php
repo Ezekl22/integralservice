@@ -7,10 +7,13 @@ $ProveedorCtr->update($id);
 $fecha = new DateTime($proveedorr['fechaCreacion']);
 
 if ($action == 'edit' && $id != '') {
-    ?>
+?>
     <!DOCTYPE html>
     <html>
-    <script>screenCenter("contenedor");</script>
+    <script>
+        screenCenter("contenedor");
+    </script>
+
     <head>
         <title>Editar Proveedor</title>
     </head>
@@ -63,7 +66,7 @@ if ($action == 'edit' && $id != '') {
                             <div class="input-group input-group-sm mb-3 ms-5">
                                 <label class="input-group-text" for="saldo" id="inputGroup-sizing-sm">Saldo:</label>
                                 <input type="number" class="form-control" aria-label="Sizing example input"
-                                    aria-describedby="inputGroup-sizing-sm" id="saldo" name="saldo"
+                                    aria-describedby="inputGroup-sizing-sm" id="saldo" name="saldo" step="any"
                                     value="<?php echo $proveedorr['saldo']; ?>" required>
                             </div>
                             <div class="input-group input-group-sm mb-3 mx-5">
@@ -83,7 +86,9 @@ if ($action == 'edit' && $id != '') {
             </article>
         </main>
     </body>
-    <script>mostrarOcultarPantallaEditar('editProveedor')</script>
+    <script>
+        mostrarOcultarPantallaEditar('editProveedor')
+    </script>
 
     </html>
 <?php } ?>

@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html>
-<script>screenCenter("contenedor");</script>
+<script>
+    screenCenter("contenedor");
+</script>
+
 <head>
     <title>Proveedores</title>
 </head>
@@ -51,7 +54,7 @@
                             <div class="input-group input-group-sm mb-3 ms-4">
                                 <span class="input-group-text" id="inputGroup-sizing-sm">Saldo</span>
                                 <input type="number" class="form-control" aria-label="Sizing example input"
-                                    aria-describedby="inputGroup-sizing-sm" id="saldo" name="saldo" required>
+                                    aria-describedby="inputGroup-sizing-sm" id="saldo" name="saldo" step="any" required>
                             </div>
                             <div class="input-group input-group-sm mb-3 ms-4">
                                 <span class="input-group-text" id="inputGroup-sizing-sm">Cuit</span>
