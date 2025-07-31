@@ -92,8 +92,8 @@ echo "<script>const productos = $json; screenCenter('contenedor');</script>";
                                 <div class="input-group input-group-sm">
                                     <label class="input-group-text" for="manodeobra" id="inputGroup-sizing-sm">Valor de
                                         la mano de obra: $</label>
-                                    <input type="text" class="form-control w-25" id="manodeobra" name="manodeobra"
-                                        placeholder="0.00" oninput="formatMoney(this)"
+                                    <input type="number" class="form-control w-25" id="manodeobra" name="manodeobra"
+                                        step="any" placeholder="0.00" oninput="formatMoney(this)"
                                         value="<?php echo $reparacion['manodeobra'] ?>" required>
                                 </div>
                             </div>
@@ -115,7 +115,7 @@ echo "<script>const productos = $json; screenCenter('contenedor');</script>";
                                 <div class="input-group input-group-sm mb-3">
                                     <label class="input-group-text" for="totalProductos"
                                         id="inputGroup-sizing-sm">Total:</label>
-                                    <input type="text" class="form-control" disabled aria-label="0" id="totalproductos"
+                                    <input type="number" class="form-control" disabled aria-label="0" id="totalproductos"
                                         value="$0.00" step="any">
                                 </div>
                             </div>
