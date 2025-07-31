@@ -129,7 +129,11 @@ class GestionPantallasControlador
                         $indexPage ->getPantallaAnnul();
                         break;
                 case 'facturar':
-                    $indexPage->getPantallaCargarFactura();
+                    if ($this->getModule() == "pedidos") {
+                        $indexPage->getPantallaCargarFactura();
+                    }else{
+                        $indexPage ->index();
+                    }
                     break;
                 case 'evaluate':
                 case 'repair':

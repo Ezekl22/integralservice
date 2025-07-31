@@ -109,7 +109,7 @@ class PresupuestoCtr
 
         session_start();
         session_write_close();
-        $grillaMdl = new GrillaMdl(GRILLA_PRESUPUESTOS, $presupuestos, [0, 1]);
+        $grillaMdl = new GrillaMdl(GRILLA_PRESUPUESTOS, $presupuestos, [3, 4, 6, 0, 2]);
         $grillaCtr = new GrillaCtr($grillaMdl);
 
         // Cargar la vista con los datos
@@ -305,8 +305,8 @@ class PresupuestoCtr
                 $status = $this->presupuestoDAO->updatePresupuesto($presupuesto);
             }
         }
-
         UtilidadesDAO::getInstance()->showStatus("presupuestos", $status, "edited");
+        return $status;
     }
 
 

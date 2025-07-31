@@ -34,11 +34,13 @@ class ProductoCtr
                         }
                     }
                     break;
-                case 'deleted':
+                case 'habilitar':
+                case 'deshabilitar':
+                    $actionText = $action == 'habilitar'? 'habilitado':'deshabilitado';
                     if ($status != "success") {
-                        $this->delete($id);
+                        $this->deshabilitar($id, $action, $actionText);
                     } else if ($status == "success") {
-                        $toast->mostrarToast("exito", "Producto eliminado");
+                        $toast->mostrarToast("exito", "Producto ".$actionText);
                     }
                     break;
                 case 'edited':
@@ -75,7 +77,7 @@ class ProductoCtr
         session_start();
         $gestionPantallaCtr = $_SESSION['session']->getGestionPantallaCtr();
         session_write_close();
-        $grillaMdl = new GrillaMdl(GRILLA_PRODUCTOS, $action == 'searched' && $termino != "" ? $this->search() : $this->getAllProductos(), [0, 1]);
+        $grillaMdl = new GrillaMdl(GRILLA_PRODUCTOS, $action == 'searched' && $termino != "" ? $this->search() : $this->getAllProductos(), [0, 9]);
         $grillaCtr = new GrillaCtr($grillaMdl);
 
         $productos = $this->productoDAO->getAllProductos();
@@ -166,7 +168,6 @@ class ProductoCtr
         if (is_string($productos)) {
             $toast = new ToastCtr();
             $toast->mostrarToast("error", "error al traer los productos", $productos);
-            exit;
         }
         return $productos;
     }
@@ -178,10 +179,10 @@ class ProductoCtr
         $this->index();
     }
 
-    public function delete($id)
+    public function deshabilitar($id, $action, $actionText)
     {
-        $status = $this->productoDAO->delete($id);
-        UtilidadesDAO::getInstance()->showStatus("productos", $status, "deleted");
+        $status = $this->productoDAO->deshabilitar($id, $actionText);
+        UtilidadesDAO::getInstance()->showStatus("productos", $status, $action);
     }
 
     public function search()
