@@ -154,12 +154,12 @@
                                         break;
                                     case '9': //HABILITAR - DESHABILITAR
                                         if (strtoupper($datoCuerpo[8]) == 'HABILITADO') { ?>
-                                            <a class="icono__contenedor me-2" title="Habilitar"
+                                            <a class="icono__contenedor me-2" title="Deshabilitar"
                                                 href="index.php?module=productos&action=deshabilitar&id=<?php echo $datoCuerpo[0]; ?>">
                                                 <img class="icono__imagen" src="./assets/img/iconoHabilitarProducto.png" alt="icono de habilitar">
                                             </a>
                                 <?php } else { ?>
-                                            <a class="icono__contenedor me-2" title="Deshabilitar"
+                                            <a class="icono__contenedor me-2" title="Habilitar"
                                                 href="index.php?module=productos&action=habilitar&id=<?php echo $datoCuerpo[0]; ?>">
                                                 <img class="icono__imagen" src="./assets/img/iconoDeshabilitarProducto.png" alt="icono de deshabilitar">
                                             </a>
