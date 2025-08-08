@@ -73,22 +73,24 @@ const mostrarGrillaProductos = (tipo) => {
     "grilla d-flex flex-column align-items-center rounded-4 w-100";
 
   productos.forEach((producto) => {
-    cuerpoGrilla =
-      cuerpoGrilla +
-      `<tr class="grilla__cuerpo">
-          <td>${producto[1]}</td>
-          <td>${producto[2]}</td>
-          <td>${producto[3]}</td>
-          <td>${producto[4]}</td>
-          <td>${producto[5]}</td>
-          <td>${producto[6]}</td>
-          <td>${producto[7]}</td>
-          <td>
-              <div class="form-check d-flex justify-content-center">
-                  <input class="form-check-input" type="radio" name="flexRadioDefault" id="seleccion${producto[0]}">
-              </div>
-          </td>
-      </tr>`;
+    if (producto[8] == "habilitado") {
+      cuerpoGrilla =
+        cuerpoGrilla +
+        `<tr class="grilla__cuerpo">
+            <td>${producto[1]}</td>
+            <td>${producto[2]}</td>
+            <td>${producto[3]}</td>
+            <td>${producto[4]}</td>
+            <td>${producto[5]}</td>
+            <td>${producto[6]}</td>
+            <td>${producto[7]}</td>
+            <td>
+                <div class="form-check d-flex justify-content-center">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="seleccion${producto[0]}">
+                </div>
+            </td>
+        </tr>`;
+    }
   });
   contenedor.innerHTML = `<div class="d-flex mt-3 justify-content-end" style="width:90%;">
                                 <div class="input-group input-group-sm w-25">

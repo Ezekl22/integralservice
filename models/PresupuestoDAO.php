@@ -105,6 +105,7 @@ class PresupuestoDAO
             [
                 'query' => "UPDATE presupuestos SET 
                             idcliente = " . $presupuesto->getIdCliente() . ", 
+                            nrocomprobante='" . $presupuesto->getNroComprobante() . "', 
                             total=" . $presupuesto->getTotal() . ", 
                             estado= '" . $presupuesto->getEstado() . "' 
                             WHERE idpresupuesto= " . $presupuesto->getIdPresupuesto(),
