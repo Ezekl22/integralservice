@@ -162,7 +162,7 @@ const cantidadOnChange = (idProducto, id, esPresupuesto) => {
   const params = new URLSearchParams(queryString);
   const modulo = params.get("module");
   const producto = productos.find(
-    (producto) => producto.idproducto === parseInt(idProducto)
+    (producto) => parseInt(producto.idproducto) === parseInt(idProducto)
   );
   const precioUnit =
     modulo === "pedidos" ? producto.preciocompra : producto.precioventa;
