@@ -247,65 +247,68 @@ class PresupuestoCtr
 
     public function update($id)
     {
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            if (isset($_POST["idcliente"])) {
-                $presupuesto = $this->getPresupuestoById($id);
+        if (isset($_POST["idcliente"]) || !empty($id)) {
+            $presupuesto = $this->getPresupuestoById($id);
+            if ($_GET["module"] == "presupuestos") {
                 $presupuesto->setIdCliente($_POST['idcliente']);
+            }
 
-                if ($presupuesto->getTipo() == "Venta") {
-                    $productos_total = $this->getProductos_Total();
-                    $productosNuevos = $productos_total->productos;
-                    $productosViejos = $presupuesto->getProductos();
+            if ($presupuesto->getTipo() == "Venta") {
+                $productos_total = $this->getProductos_Total();
+                $productosNuevos = $productos_total->productos;
+                $productosViejos = $presupuesto->getProductos();
 
-                    // Crear mapas por ID para búsqueda rápida
-                    $mapaViejos = [];
-                    foreach ($productosViejos as $productoViejo) {
-                        $mapaViejos[$productoViejo["idproducto"]] = $productoViejo["cantidad"];
-                    }
-
-                    $mapaNuevos = [];
-                    foreach ($productosNuevos as $productoNuevo) {
-                        $mapaNuevos[$productoNuevo->getIdProducto()] = $productoNuevo;
-                    }
-
-                    // Recorrer nuevos productos
-                    foreach ($productosNuevos as $productoNuevo) {
-                        $id = $productoNuevo->getIdProducto();
-                        $cantidadNueva = $productoNuevo->getCantidad();
-
-                        if (isset($mapaViejos[$id])) {
-                            $cantidadVieja = $mapaViejos[$id];
-                            $diferencia = $cantidadNueva - $cantidadVieja;
-
-                            if ($diferencia != 0) {
-                                $operacion = $diferencia > 0 ? 'restar' : 'sumar';
-                                $this->productoCtr->actualizarStockProducto($id, abs($diferencia), $operacion);
-                            }
-                        } else {
-                            // Producto nuevo: restar toda la cantidad
-                            $this->productoCtr->actualizarStockProducto($id, $cantidadNueva, 'restar');
-                        }
-                    }
-
-                    // Detectar productos eliminados
-                    foreach ($productosViejos as $productoViejo) {
-                        $idViejo = $productoViejo["idproducto"];
-                        if (!isset($mapaNuevos[$idViejo])) {
-                            // Producto eliminado: se devuelve al stock
-                            $this->productoCtr->actualizarStockProducto($idViejo, $productoViejo["cantidad"], 'sumar');
-                        }
-                    }
-
-                    // Actualizar el presupuesto con los nuevos productos
-                    $presupuesto->setProductos($productosNuevos);
-                    $presupuesto->setTotal($productos_total->total);
+                // Crear mapas por ID para búsqueda rápida
+                $mapaViejos = [];
+                foreach ($productosViejos as $productoViejo) {
+                    $mapaViejos[$productoViejo["idproducto"]] = $productoViejo["cantidad"];
                 }
 
+                $mapaNuevos = [];
+                foreach ($productosNuevos as $productoNuevo) {
+                    $mapaNuevos[$productoNuevo->getIdProducto()] = $productoNuevo;
+                }
 
-                $status = $this->presupuestoDAO->updatePresupuesto($presupuesto);
+                // Recorrer nuevos productos
+                foreach ($productosNuevos as $productoNuevo) {
+                    $id = $productoNuevo->getIdProducto();
+                    $cantidadNueva = $productoNuevo->getCantidad();
+
+                    if (isset($mapaViejos[$id])) {
+                        $cantidadVieja = $mapaViejos[$id];
+                        $diferencia = $cantidadNueva - $cantidadVieja;
+
+                        if ($diferencia != 0) {
+                            $operacion = $diferencia > 0 ? 'restar' : 'sumar';
+                            $this->productoCtr->actualizarStockProducto($id, abs($diferencia), $operacion);
+                        }
+                    } else {
+                        // Producto nuevo: restar toda la cantidad
+                        $this->productoCtr->actualizarStockProducto($id, $cantidadNueva, 'restar');
+                    }
+                }
+
+                // Detectar productos eliminados
+                foreach ($productosViejos as $productoViejo) {
+                    $idViejo = $productoViejo["idproducto"];
+                    if (!isset($mapaNuevos[$idViejo])) {
+                        // Producto eliminado: se devuelve al stock
+                        $this->productoCtr->actualizarStockProducto($idViejo, $productoViejo["cantidad"], 'sumar');
+                    }
+                }
+
+                // Actualizar el presupuesto con los nuevos productos
+                $presupuesto->setProductos($productosNuevos);
+                $presupuesto->setTotal($productos_total->total);
             }
+
+
+            $status = $this->presupuestoDAO->updatePresupuesto($presupuesto);
         }
-        UtilidadesDAO::getInstance()->showStatus("presupuestos", $status, "edited");
+        if ($_GET["module"] == "presupuestos") {
+            UtilidadesDAO::getInstance()->showStatus("presupuestos", $status, "edited");
+        }
+        
         return $status;
     }
 
