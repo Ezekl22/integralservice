@@ -185,12 +185,15 @@ const cargarGrillaProducto = (module, productosPrecargados = []) => {
   if (productosPrecargados.length == 0) {
     let seAgregaProducto = true;
     let contComponente = document.createElement("tr");
-    const cantidad = document.getElementById("cantidadProducto").value;
+    let cantidad = document.getElementById("cantidadProducto").value;
     let productoSeleccionado;
     productos.forEach((producto) => {
       const checkSeleccion = document.getElementById("seleccion" + producto[0]);
-      if (checkSeleccion.checked) productoSeleccionado = producto;
+      if (checkSeleccion) {
+        productoSeleccionado = checkSeleccion.checked? producto : productoSeleccionado;
+      }
     });
+    cantidad = cantidad >= productoSeleccionado.stock ? productoSeleccionado.stock : cantidad 
     let id = "producto" + productoSeleccionado[0];
     if (contProductos.childElementCount > 0) {
       Array.from(contProductos.children).forEach((productoGrilla) => {
@@ -198,8 +201,9 @@ const cargarGrillaProducto = (module, productosPrecargados = []) => {
           const cantidadProducto = document.querySelector(
             "#grilla #" + id + " #cantidad"
           );
-          cantidadProducto.value =
-            Number(cantidadProducto.value) + Number(cantidad);
+          sumatoriaCantidad = Number(cantidadProducto.value) + Number(cantidad);
+          cantidadProducto.value = sumatoriaCantidad >= productoSeleccionado.stock ? productoSeleccionado.stock : sumatoriaCantidad;
+            
           cantidadOnChange(productoSeleccionado[0], productoGrilla.id, true);
           seAgregaProducto = false;
         }

@@ -127,7 +127,7 @@
                                         <?php }
                                         break;
                                     case '7': //REPARAR
-                                        if (strtoupper($datoCuerpo[4]) == "PRESUPUESTADO") { ?>
+                                        if (strtoupper($datoCuerpo[4]) == "PENDIENTE REPARACION") { ?>
                                             <a class="icono__contenedor me-2" title="Reparar"
                                                 href="index.php?module=reparaciones&action=repair&id=<?php echo $datoCuerpo[0]; ?>">
                                                 <img class="icono__imagen" src="./assets/img/iconReparacion.png" alt="icono de reparar">
