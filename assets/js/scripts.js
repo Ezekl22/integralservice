@@ -189,7 +189,9 @@ const cargarGrillaProducto = (module, productosPrecargados = []) => {
     let productoSeleccionado;
     productos.forEach((producto) => {
       const checkSeleccion = document.getElementById("seleccion" + producto[0]);
-      if (checkSeleccion.checked) productoSeleccionado = producto;
+      if (checkSeleccion) {
+        productoSeleccionado = checkSeleccion.checked? producto : productoSeleccionado;
+      }
     });
     let id = "producto" + productoSeleccionado[0];
     if (contProductos.childElementCount > 0) {
