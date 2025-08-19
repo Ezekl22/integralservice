@@ -245,10 +245,11 @@ class PresupuestoDAO
 
     private function deleteProductosPresupuesto(int $idPresupuesto, array $productos)
     {
-        $placeholders = implode(',', array_fill(0, count($productos), '?'));
+        $placeholders = implode(',', $productos);
+        
         $queries = [
             [
-                'query' => "DELETE FROM productospresupuestos WHERE idpresupuesto = ? AND idproducto IN ($placeholders) ",
+                'query' => "DELETE FROM productospresupuestos WHERE idpresupuesto = $idPresupuesto AND idproducto IN ($placeholders) ",
                 'type' => 'DELETE',
                 'params' => [],
             ]

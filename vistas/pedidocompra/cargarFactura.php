@@ -84,7 +84,7 @@ if ($action == 'facturar' && $id != '') {
                                 <div class="input-group input-group-sm mb-3">
                                     <label class="input-group-text" for="totalProductos"
                                         id="inputGroup-sizing-sm">Total:</label>
-                                    <input type="number" class="form-control" disabled aria-label="0" id="totalproductos"
+                                    <input type="text" class="form-control" disabled aria-label="0" id="totalproductos"
                                         value="$0,00" step="any">
                                 </div>
                             </div>
