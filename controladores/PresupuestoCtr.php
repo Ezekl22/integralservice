@@ -402,8 +402,9 @@ class PresupuestoCtr
                 $status = $this->updatePresupuesto($presupuesto);
             }
         } else {
-            if ($estado == "Presupuestado") {
-                $presupuesto->setEstado('En reparacion');
+           
+            if ($estado == "presupuestado") {
+                $presupuesto->setEstado('pendiente reparacion');
                 $status = $this->updatePresupuesto($presupuesto);
             }
             if ($estado == "Reparado") {
@@ -412,7 +413,7 @@ class PresupuestoCtr
                 $status = $this->updatePresupuesto($presupuesto);
             }
         }
-        UtilidadesDAO::getInstance()->showStatus("presupuestos", $status, "cambiarEstado");
+        UtilidadesDAO::getInstance()->showStatus("presupuestos", $status, "cambiarestado");
     }
 
     public function search()

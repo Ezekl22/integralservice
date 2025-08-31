@@ -113,7 +113,7 @@ class PresupuestoDAO
                 'params' => [],
             ]
         ];
-        if (isset($_GET['action']) && $_GET['action'] != "facturar") {
+        if (isset($_GET['action']) && $_GET['action'] != "facturar" && $_GET['action'] != "cambiarestado") {
             if (isset($_POST['idproductos'])) {
                 $this->updateProductosPresupuesto($presupuesto->getIdPresupuesto(), $presupuesto);
             } else {
