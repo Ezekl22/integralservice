@@ -97,6 +97,9 @@ class PresupuestoCtr
         if ($action == 'see') {
             $id = isset($_GET['id']) ? $_GET['id'] : '';
             $presupuesto = $this->getPresupuestoById($id);
+            if (strtoupper($presupuesto->getTipo()) == "REPARACION") {
+                $reparacion = $presupuestoCtr->getReparacionPresupuestoById($id);
+            }
             $cliente = $this->getClienteById($presupuesto->getIdCliente());
             $nombreCliente = $cliente['nombre'] . ' ' . $cliente['apellido'];
             $productosPre = $this->getProductosPresupuestoById($presupuesto->getIdPresupuesto());
