@@ -97,6 +97,9 @@ class PresupuestoCtr
         if ($action == 'see') {
             $id = isset($_GET['id']) ? $_GET['id'] : '';
             $presupuesto = $this->getPresupuestoById($id);
+            if (strtoupper($presupuesto->getTipo()) == "REPARACION") {
+                $reparacion = $presupuestoCtr->getReparacionPresupuestoById($id);
+            }
             $cliente = $this->getClienteById($presupuesto->getIdCliente());
             $nombreCliente = $cliente['nombre'] . ' ' . $cliente['apellido'];
             $productosPre = $this->getProductosPresupuestoById($presupuesto->getIdPresupuesto());
@@ -253,55 +256,54 @@ class PresupuestoCtr
                 $presupuesto->setIdCliente($_POST['idcliente']);
             }
 
-            if ($presupuesto->getTipo() == "Venta") {
-                $productos_total = $this->getProductos_Total();
-                $productosNuevos = $productos_total->productos;
-                $productosViejos = $presupuesto->getProductos();
+            $productos_total = $this->getProductos_Total();
+            $productosNuevos = $productos_total->productos;
+            $productosViejos = $presupuesto->getProductos();
 
-                // Crear mapas por ID para búsqueda rápida
-                $mapaViejos = [];
-                foreach ($productosViejos as $productoViejo) {
-                    $mapaViejos[$productoViejo["idproducto"]] = $productoViejo["cantidad"];
-                }
-
-                $mapaNuevos = [];
-                foreach ($productosNuevos as $productoNuevo) {
-                    $mapaNuevos[$productoNuevo->getIdProducto()] = $productoNuevo;
-                }
-
-                // Recorrer nuevos productos
-                foreach ($productosNuevos as $productoNuevo) {
-                    $id = $productoNuevo->getIdProducto();
-                    $cantidadNueva = $productoNuevo->getCantidad();
-
-                    if (isset($mapaViejos[$id])) {
-                        $cantidadVieja = $mapaViejos[$id];
-                        $diferencia = $cantidadNueva - $cantidadVieja;
-
-                        if ($diferencia != 0) {
-                            $operacion = $diferencia > 0 ? 'restar' : 'sumar';
-                            $this->productoCtr->actualizarStockProducto($id, abs($diferencia), $operacion);
-                        }
-                    } else {
-                        // Producto nuevo: restar toda la cantidad
-                        $this->productoCtr->actualizarStockProducto($id, $cantidadNueva, 'restar');
-                    }
-                }
-
-                // Detectar productos eliminados
-                foreach ($productosViejos as $productoViejo) {
-                    $idViejo = $productoViejo["idproducto"];
-                    if (!isset($mapaNuevos[$idViejo])) {
-                        // Producto eliminado: se devuelve al stock
-                        $this->productoCtr->actualizarStockProducto($idViejo, $productoViejo["cantidad"], 'sumar');
-                    }
-                }
-
-                // Actualizar el presupuesto con los nuevos productos
-                $presupuesto->setProductos($productosNuevos);
-                $presupuesto->setTotal($productos_total->total);
+            // Crear mapas por ID para búsqueda rápida
+            $mapaViejos = [];
+            foreach ($productosViejos as $productoViejo) {
+                $mapaViejos[$productoViejo["idproducto"]] = $productoViejo["cantidad"];
             }
 
+            $mapaNuevos = [];
+            foreach ($productosNuevos as $productoNuevo) {
+                $mapaNuevos[$productoNuevo->getIdProducto()] = $productoNuevo;
+            }
+
+            // Recorrer nuevos productos
+            foreach ($productosNuevos as $productoNuevo) {
+                $id = $productoNuevo->getIdProducto();
+                $cantidadNueva = $productoNuevo->getCantidad();
+
+                if (isset($mapaViejos[$id])) {
+                    $cantidadVieja = $mapaViejos[$id];
+                    $diferencia = $cantidadNueva - $cantidadVieja;
+
+                    if ($diferencia != 0) {
+                        $operacion = $diferencia > 0 ? 'restar' : 'sumar';
+                        $this->productoCtr->actualizarStockProducto($id, abs($diferencia), $operacion);
+                    }
+                } else {
+                    // Producto nuevo: restar toda la cantidad
+                    $this->productoCtr->actualizarStockProducto($id, $cantidadNueva, 'restar');
+                }
+            }
+
+            // Detectar productos eliminados
+            foreach ($productosViejos as $productoViejo) {
+                $idViejo = $productoViejo["idproducto"];
+                if (!isset($mapaNuevos[$idViejo])) {
+                    // Producto eliminado: se devuelve al stock
+                    $this->productoCtr->actualizarStockProducto($idViejo, $productoViejo["cantidad"], 'sumar');
+                }
+            }
+            
+            $total = $presupuesto->getTipo() == "Venta" ? $productos_total->total : $productos_total->total + $_POST["manodeobra"];
+
+            // Actualizar el presupuesto con los nuevos productos
+            $presupuesto->setProductos($productosNuevos);
+            $presupuesto->setTotal($total);
 
             $status = $this->presupuestoDAO->updatePresupuesto($presupuesto);
         }
@@ -402,8 +404,9 @@ class PresupuestoCtr
                 $status = $this->updatePresupuesto($presupuesto);
             }
         } else {
-            if ($estado == "Presupuestado") {
-                $presupuesto->setEstado('En reparacion');
+           
+            if ($estado == "presupuestado") {
+                $presupuesto->setEstado('pendiente reparacion');
                 $status = $this->updatePresupuesto($presupuesto);
             }
             if ($estado == "Reparado") {
@@ -412,7 +415,7 @@ class PresupuestoCtr
                 $status = $this->updatePresupuesto($presupuesto);
             }
         }
-        UtilidadesDAO::getInstance()->showStatus("presupuestos", $status, "cambiarEstado");
+        UtilidadesDAO::getInstance()->showStatus("presupuestos", $status, "cambiarestado");
     }
 
     public function search()

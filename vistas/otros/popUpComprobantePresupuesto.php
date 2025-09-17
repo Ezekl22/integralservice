@@ -108,6 +108,29 @@
                                         </td>
                                         <?php $total = $total + $productoPre['total']; ?>
                                     </tr>
+                                    <?php if (strtoupper($presupuesto->getTipo()) == "REPARACION") { ?>
+                                        <tr class="grilla__cuerpo">
+                                            <td class="border border-1 border-dark">
+                                                Mano de obra
+                                            </td>
+                                            <td class="border border-1 border-dark">
+                                                -
+                                            </td>
+                                            <td class="border border-1 border-dark">
+                                                -
+                                            </td>
+                                            <td class="border border-1 border-dark">
+                                                -
+                                            </td>
+                                            <td class="border border-1 border-dark">
+                                                <?php echo '$' . number_format($reparacion['manodeobra'], 2); ?>
+                                            </td>
+                                            <td class="border border-1 border-dark">
+                                                <?php echo '$' . number_format($reparacion['manodeobra'], 2); ?>
+                                            </td>
+                                            <?php $total = $total + $reparacion['manodeobra']; ?>
+                                        </tr>
+                                   <?php } ?>
                                 <?php } ?>
                             <?php } else { ?>
                                 <tr>
