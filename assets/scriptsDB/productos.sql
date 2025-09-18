@@ -10,7 +10,7 @@ CREATE TABLE `productos` (
   `tipo` text NOT NULL,
   `preciocompra` DECIMAL(20, 2) NOT NULL,
   `precioventa` DECIMAL(20, 2) NOT NULL,
-  `estado` text NOT NULL,
+  `estado` text NOT NULL
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 

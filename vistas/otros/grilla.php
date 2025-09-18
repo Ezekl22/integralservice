@@ -16,8 +16,20 @@
                     <tr class="grilla__cuerpo">
                         <?php $index = count($grillaMdl->getDatosCabecera());
                         for ($i = 1; $i <= $index; $i++) {
-                            echo '<td>' . $datoCuerpo[$i] . '</td>';
-                        } ?>
+                            $valor = $datoCuerpo[$i];
+                            $style = '';
+
+                            if ($gestionPantallaCtr->getModule() == "productos" && $i == 4) {
+                                if ($valor == 0) {
+                                    $style = 'style="background-color: rgba(139, 0, 0, 0.7);"';
+                                } elseif ($valor > 0 && $valor <= 5) {
+                                    $style = 'style="background-color: rgba(255, 165, 0, 0.6);"';
+                                }
+                            }
+
+                            echo "<td $style>$valor</td>";
+                        }
+                        ?>
                         <td>
                             <!--------------- ACCIONES ----------------->
                             <?php

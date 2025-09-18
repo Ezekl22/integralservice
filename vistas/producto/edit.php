@@ -7,10 +7,13 @@ $producto = $productoCtr->getProductoById($id);
 
 if ($action == 'edit' && $id != '') {
 
-    ?>
+?>
     <!DOCTYPE html>
     <html>
-    <script>screenCenter("contenedor");</script>
+    <script>
+        screenCenter("contenedor");
+    </script>
+
     <head>
         <title>Editar producto</title>
     </head>
@@ -51,7 +54,7 @@ if ($action == 'edit' && $id != '') {
                                 <div class="input-group input-group-sm mb-3">
                                     <span class="input-group-text" id="inputGroup-sizing-sm">Stock</span>
                                     <input type="number" class="form-control" aria-label="Sizing example input"
-                                        aria-describedby="inputGroup-sizing-sm" id="stock" name="stock"
+                                        aria-describedby="inputGroup-sizing-sm" id="stock" name="stock" min="0"
                                         value="<?php echo $producto['stock']; ?>" required>
                                 </div>
                                 <div class="input-group input-group-sm mb-3 ms-4">
@@ -67,13 +70,13 @@ if ($action == 'edit' && $id != '') {
                                     <span class="input-group-text" id="inputGroup-sizing-sm">Precio de compra</span>
                                     <input type="number" class="form-control" aria-label="Sizing example input"
                                         aria-describedby="inputGroup-sizing-sm" id="preciocompra" name="preciocompra"
-                                        step="any" value="<?php echo $producto['preciocompra']; ?>" required>
+                                        step="any" min="0" value="<?php echo $producto['preciocompra']; ?>" required>
                                 </div>
                                 <div class="input-group input-group-sm mb-3 ms-4">
                                     <span class="input-group-text" id="inputGroup-sizing-sm">Precio de venta</span>
                                     <input type="number" class="form-control" aria-label="Sizing example input"
                                         aria-describedby="inputGroup-sizing-sm" id="precioventa" name="precioventa"
-                                        step="any" value="<?php echo $producto['precioventa']; ?>" required>
+                                        step="any" min="0" value="<?php echo $producto['precioventa']; ?>" required>
                                 </div>
                             </div>
                         </div>
@@ -87,7 +90,9 @@ if ($action == 'edit' && $id != '') {
             </article>
         </main>
     </body>
-    <script>mostrarOcultarPantallaEditar('editUsuario')</script>
+    <script>
+        mostrarOcultarPantallaEditar('editUsuario')
+    </script>
 
     </html>
 <?php } ?>

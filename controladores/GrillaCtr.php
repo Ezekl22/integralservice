@@ -9,7 +9,6 @@ class GrillaCtr
     {
         $this->grillaMdl = $grillaMdl;
         $this->cargarDatosGrilla($grillaMdl);
-
     }
 
     private function cargarDatosGrilla(GrillaMdl $grillaMdl)
@@ -31,7 +30,7 @@ class GrillaCtr
                 break;
             case 'productos':
                 require_once 'controladores/ProductoCtr.php';
-                $this->controlador = new ProductoCtr;
+                $this->controlador = ProductoCtr::getInstance();
                 break;
             case 'clientes':
                 require_once 'controladores/ClienteCtr.php';
