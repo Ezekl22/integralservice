@@ -31,26 +31,28 @@ class ProductoDAO
     }
 
     public function create(ProductoMdl $producto)
-    {
-        $queries = [
-            [
-                'query' => "INSERT INTO productos (nombre, marca, detalle, stock, tipo, preciocompra, precioventa) VALUES ",
-                'type' => 'INSERT',
-                'params' => [
-                    [
-                        "'" . $producto->getNombre() . "'",
-                        "'" . $producto->getMarca() . "'",
-                        "'" . $producto->getDetalle() . "'",
-                        $producto->getStock(),
-                        "'" . $producto->getTipo() . "'",
-                        $producto->getPrecioCompra(),
-                        $producto->getPrecioVenta(),
-                    ]
-                ],
-            ]
-        ];
-        return UtilidadesDAO::getInstance()->executeQuery($queries);
-    }
+{
+    $queries = [
+        [
+            'query' => "INSERT INTO productos (nombre, marca, detalle, stock, tipo, preciocompra, precioventa, estado) VALUES ",
+            'type' => 'INSERT',
+            'params' => [
+                [
+                    "'" . $producto->getNombre() . "'",
+                    "'" . $producto->getMarca() . "'",
+                    "'" . $producto->getDetalle() . "'",
+                    $producto->getStock(),
+                    "'" . $producto->getTipo() . "'",
+                    $producto->getPrecioCompra(),
+                    $producto->getPrecioVenta(),
+                    "'habilitado'",
+                ]
+            ],
+        ]
+    ];
+    return UtilidadesDAO::getInstance()->executeQuery($queries);
+}
+
 
     public function getProductoById($id)
     {
