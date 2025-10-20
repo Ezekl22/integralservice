@@ -1,4 +1,25 @@
-<div class="modal fade" id="verpedido" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- convierto el objeto presupuesto de PHP a JSON para poder usarlo con JS al imprimir el comprobante -->
+<?php
+$pedidoData = [
+    "tipo" => isset($pedidoCompra) && $pedidoCompra->getEstado() == "Pedido" ? "X" : "C",
+    "nrocomprobante" => $pedidoCompra->getNroComprobante() ?? "",
+    "fecha" => $pedidoCompra->getFecha() ?? "",
+    "proveedor" => $nombreProveedor ?? "",
+    "categoriafiscal" => $proveedor["categoria_fiscal"] ?? "",
+    "cuit" => $proveedor["cuit"] ?? "",
+    "productos" => $productosPedido ?? [],
+    "total" => $pedidoCompra->getTotal() ?? 0
+];
+?>
+
+<script>
+  const pedidoData = <?php echo json_encode($pedidoData, JSON_UNESCAPED_UNICODE); ?>;
+</script>
+
+
+<!--  -->
+
+<div class="modal fade factura" id="verpedido" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog pedido-container justify-content-center d-flex" style="max-width:none;">
         <div class="modal-content mx-3 w-90">
             <div class=" modal-header headerPop__background">
@@ -123,7 +144,7 @@
                 </div>
             </div>
             <div class="modal-footer d-flex justify-content-center headerPop__background">
-                <button type="button" class="btn button" data-bs-dismiss="modal" onclick="imprimirEnNuevaVentana()">Imprimir</button>
+                <button type="button" class="btn button" data-bs-dismiss="modal" onclick="imprimirEnIframeOculto(pedidoData, 'pedido')">Imprimir</button>
             </div>
         </div>
     </div>
