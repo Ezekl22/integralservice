@@ -1,4 +1,11 @@
 <?php
+// Estados de presupuesto
+define('ESTADO_PRESUPUESTO_PENDIENTE', 1);
+define('ESTADO_PRESUPUESTO_PRESUPUESTADO', 2);
+define('ESTADO_PRESUPUESTO_PENDIENTE_REPARACION', 3);
+define('ESTADO_PRESUPUESTO_REPARADO', 4);
+define('ESTADO_PRESUPUESTO_FACTURADO', 5);
+
 define(
     'DATOS_CARDS',
     array(

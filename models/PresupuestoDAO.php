@@ -273,7 +273,9 @@ class PresupuestoDAO
     {
         $queries = [
             [
-                'query' => "SELECT * FROM presupuestos WHERE idPresupuesto = " . $id,
+                'query' => "SELECT presupuestos.idpresupuesto, presupuestos.idcliente, presupuestos.nrocomprobante, presupuestos.tipo, estadopresupuesto.nombre as estado, presupuestos.fecha, presupuestos.puntoventa, presupuestos.total FROM presupuestos
+                 INNER JOIN estadopresupuesto ON presupuestos.idestadopresupuesto = estadopresupuesto.idestadopresupuesto
+                 WHERE idPresupuesto = " . $id,
                 'type' => 'SELECT',
                 'params' => [],
             ]
@@ -285,7 +287,8 @@ class PresupuestoDAO
     {
         $queries = [
             [
-                'query' => "SELECT * FROM presupuestos",
+                'query' => "SELECT presupuestos.idpresupuesto, presupuestos.idcliente, presupuestos.nrocomprobante, presupuestos.tipo, estadopresupuesto.nombre as estado, presupuestos.fecha, presupuestos.puntoventa, presupuestos.total FROM presupuestos
+                 INNER JOIN estadopresupuesto ON presupuestos.idestadopresupuesto = estadopresupuesto.idestadopresupuesto",
                 'type' => 'SELECT',
                 'params' => [],
             ]

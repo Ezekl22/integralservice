@@ -6,16 +6,16 @@ CREATE TABLE `presupuestos` (
   `idcliente` int(11) NOT NULL,
   `nrocomprobante` text NOT NULL,
   `tipo` text NOT NULL,
-  `estado` text NOT NULL,
+  `idestadopresupuesto` int(11) NOT NULL,
   `fecha` text NOT NULL,
   `puntoventa` text NOT NULL,
   `total` DECIMAL(20, 2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-INSERT INTO `presupuestos` (`idpresupuesto`, `idcliente`,`nrocomprobante`, `tipo`, `estado`, `fecha`,`puntoventa`,`total`) VALUES
-(1, 2, '013456789', 'Venta', 'Presupuestado', '05-02-2023', '0001', 140000),
-(2, 1, '098735610', 'Venta', 'pendiente presupuesto', '09-05-2023','0001', 100000),
-(3, 1, '312751963', 'Reparacion', 'Reparado', '08-06-2023', '0001', 50000);
+INSERT INTO `presupuestos` (`idpresupuesto`, `idcliente`,`nrocomprobante`, `tipo`, `idestadopresupuesto`, `fecha`,`puntoventa`,`total`) VALUES
+(1, 2, '013456789', 'Venta', 2, '05-02-2023', '0001', 140000),
+(2, 1, '098735610', 'Venta', 1, '09-05-2023','0001', 100000),
+(3, 1, '312751963', 'Reparacion', 4, '08-06-2023', '0001', 50000);
 
 ALTER TABLE `presupuestos`
   ADD PRIMARY KEY (`idpresupuesto`),
