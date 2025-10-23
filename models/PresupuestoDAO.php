@@ -43,16 +43,18 @@ class PresupuestoDAO
             array_push($params, $param);
         }
 
+        $idestadopresupuesto = $this->getIdEstadoPresupuesto($presupuesto->getEstado());
+
         $queries = [
             [
-                'query' => 'INSERT INTO presupuestos (idcliente, nrocomprobante, tipo, estado, fecha, puntoventa, total) VALUES ',
+                'query' => 'INSERT INTO presupuestos (idcliente, nrocomprobante, tipo, idestadopresupuesto, fecha, puntoventa, total) VALUES ',
                 'type' => 'INSERT',
                 'params' => [
                     [
                         $presupuesto->getIdCliente(),
                         "'" . $presupuesto->getNroComprobante() . "'",
                         "'" . $presupuesto->getTipo() . "'",
-                        "'" . $presupuesto->getEstado() . "'",
+                        $idestadopresupuesto,
                         "'" . date("d-m-Y") . "'",
                         "'" . $presupuesto->getPuntoVenta() . "'",
                         $presupuesto->getTotal(),
@@ -75,6 +77,19 @@ class PresupuestoDAO
         $error = UtilidadesDAO::getInstance()->executeQuery($queries);
 
         return $error != "" ? "Error en la creacion del presupuesto: " . $error : $error;
+    }
+
+    private function getIdEstadoPresupuesto($estado)
+    {
+        $queries = [
+            [
+                'query' => "SELECT idestadopresupuesto FROM estadopresupuesto WHERE nombre = '" . $estado . "'",
+                'type' => 'SELECT',
+                'params' => [],
+            ]
+        ];
+        $result = UtilidadesDAO::getInstance()->executeQuery($queries);
+        return count($result) > 0 ? $result[0]['idestadopresupuesto'] : null;
     }
 
     private function createProductosPresupuesto(array $productos)
@@ -101,13 +116,14 @@ class PresupuestoDAO
 
     public function updatePresupuesto(PresupuestoMdl $presupuesto)
     {
+        $idEstadoPresupuesto = $this->getIdEstadoPresupuesto($presupuesto->getEstado());
         $queries = [
             [
                 'query' => "UPDATE presupuestos SET 
                             idcliente = " . $presupuesto->getIdCliente() . ", 
                             nrocomprobante='" . $presupuesto->getNroComprobante() . "', 
                             total=" . $presupuesto->getTotal() . ", 
-                            estado= '" . $presupuesto->getEstado() . "' 
+                            idEstadoPresupuesto = '" . $idEstadoPresupuesto . "' 
                             WHERE idpresupuesto= " . $presupuesto->getIdPresupuesto(),
                 'type' => 'UPDATE',
                 'params' => [],
@@ -303,20 +319,25 @@ class PresupuestoDAO
             $queries = [
                 [
                     'query' => "SELECT presupuestos.idpresupuesto, 
-                          presupuestos.idcliente, presupuestos.nrocomprobante, 
-                          presupuestos.tipo, presupuestos.estado,
-                          presupuestos.fecha,
-                          presupuestos.puntoventa,
-                          presupuestos.total
-                          FROM presupuestos 
-                          INNER JOIN clientes ON presupuestos.idcliente = clientes.idcliente
-                          WHERE presupuestos.nrocomprobante LIKE '$termino'
-                          OR presupuestos.tipo LIKE '$termino'
-                          OR presupuestos.estado LIKE '$termino'
-                          OR presupuestos.fecha LIKE '$termino'
-                          OR presupuestos.puntoventa LIKE '$termino'
-                          OR CAST(presupuestos.total AS CHAR) LIKE '$termino'
-                          OR CONCAT(clientes.nombre, ' ', clientes.apellido) LIKE '$termino'",
+                                presupuestos.idcliente, 
+                                presupuestos.nrocomprobante, 
+                                presupuestos.tipo, 
+                                estadopresupuesto.nombre as estado, 
+                                presupuestos.fecha, 
+                                presupuestos.puntoventa, 
+                                presupuestos.total
+                                FROM presupuestos 
+                                INNER JOIN estadopresupuesto 
+                                ON presupuestos.idestadopresupuesto = estadopresupuesto.idestadopresupuesto
+                                INNER JOIN clientes 
+                                ON presupuestos.idcliente = clientes.idcliente
+                                WHERE presupuestos.nrocomprobante LIKE '$termino'
+                                OR presupuestos.tipo LIKE '$termino'
+                                OR estadopresupuesto.nombre LIKE '$termino'
+                                OR presupuestos.fecha LIKE '$termino'
+                                OR presupuestos.puntoventa LIKE '$termino'
+                                OR CAST(presupuestos.total AS CHAR) LIKE '$termino'
+                                OR CONCAT(clientes.nombre, ' ', clientes.apellido) LIKE '$termino'",
                     'type' => 'SELECT',
                     'params' => [],
                 ]
@@ -358,9 +379,10 @@ class PresupuestoDAO
 
     public function annul($id)
     {
+        $idEstadoPresupuesto = $this->getIdEstadoPresupuesto('anulado');
         $queries = [
             [
-                'query' => "UPDATE presupuestos SET estado = 'anulado' WHERE idPresupuesto = " . $id,
+                'query' => "UPDATE presupuestos SET idestadopresupuesto = ". $idEstadoPresupuesto ." WHERE idPresupuesto = " . $id,
                 'type' => 'UPDATE',
                 'params' => [],
             ]

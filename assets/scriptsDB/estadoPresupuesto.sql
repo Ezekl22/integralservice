@@ -11,7 +11,7 @@ INSERT INTO `estadopresupuesto` (`idestadopresupuesto`, `nombre`, `descripcion`)
 (3, 'Pendiente reparacion', 'sucede cuando un presupuesto de tipo reparacion esta pendiente a reparar'),
 (4, 'Repardo', 'sucede cuando un presupuesto de tipo reparacion ya esta reparado'),
 (5, 'Facturado', 'sucede cuando un presupuesto de cualquier tipo esta facturado'),
-(6, 'Cancelado', 'sucede cuando un presupuesto de cualquier tipo se cancela');
+(6, 'Anulado', 'sucede cuando un presupuesto de cualquier tipo se cancela');
 
 ALTER TABLE `estadopresupuesto`
   ADD PRIMARY KEY (`idestadopresupuesto`);
