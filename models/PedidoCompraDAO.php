@@ -158,6 +158,7 @@ class PedidoCompraDAO
             }
             $contadorPAntiguo++;
         }
+        
         //elimino los productos en la DB que ya no estan en el nuevo pedido
         if (!empty($productsToDelete)) {
             $this->deleteProductosPedido($idPedidoCompra, $productsToDelete);
@@ -200,10 +201,10 @@ class PedidoCompraDAO
 
     private function deleteProductosPedido(int $idPedidoCompra, array $productos)
     {
-        $placeholders = implode(',', array_fill(0, count($productos), '?'));
+        $placeholders = implode(',', $productos);
         $queries = [
             [
-                'query' => "DELETE FROM productospedidoscompras WHERE idpedidocompra = ? AND idproducto IN ($placeholders) ",
+                'query' => "DELETE FROM productospedidoscompras WHERE idpedidocompra = $idPedidoCompra AND idproducto IN ($placeholders) ",
                 'type' => 'DELETE',
                 'params' => [],
             ]
