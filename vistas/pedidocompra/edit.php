@@ -15,7 +15,7 @@ echo "<script>const productos = $json; screenCenter('contenedor');</script>";
 <?php
 if ($action == 'edit' && $id != '') {
 
-    ?>
+?>
     <html>
 
     <head>
@@ -105,7 +105,7 @@ if ($action == 'edit' && $id != '') {
     </body>
     <?php
     echo "<script>cargarGrillaProducto('pedidos', " . $jsonProductosPedido . ")</script>"
-        ?>
+    ?>
 
     </html>
 <?php } ?>

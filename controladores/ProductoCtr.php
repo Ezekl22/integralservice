@@ -36,11 +36,11 @@ class ProductoCtr
                     break;
                 case 'habilitar':
                 case 'deshabilitar':
-                    $actionText = $action == 'habilitar'? 'habilitado':'deshabilitado';
+                    $actionText = $action == 'habilitar' ? 'habilitado' : 'deshabilitado';
                     if ($status != "success") {
                         $this->deshabilitar($id, $action, $actionText);
                     } else if ($status == "success") {
-                        $toast->mostrarToast("exito", "Producto ".$actionText);
+                        $toast->mostrarToast("exito", "Producto " . $actionText);
                     }
                     break;
                 case 'edited':
@@ -131,6 +131,11 @@ class ProductoCtr
 
     public function create()
     {
+        if ($_POST["stock"] < 0 || $_POST["preciocompra"] < 0 || $_POST["precioventa"] < 0) {
+            UtilidadesDAO::getInstance()->showStatus("productos", "El stock y los precios no pueden ser negativos", "created");
+            return;
+        }
+
         if (isset($_POST['nombre'])) {
             $producto = new ProductoMdl(
                 $_POST['nombre'],
@@ -154,6 +159,11 @@ class ProductoCtr
 
     public function update($id)
     {
+        if ($_POST["stock"] < 0 || $_POST["preciocompra"] < 0 || $_POST["precioventa"] < 0) {
+            UtilidadesDAO::getInstance()->showStatus("productos", "El stock y los precios no pueden ser negativos", "edited");
+            return;
+        }
+
         if (isset($_POST["nombre"])) {
             $producto = new ProductoMdl($_POST["nombre"], $_POST["marca"], $_POST["detalle"], $_POST["stock"], $_POST["tipo"], $_POST["preciocompra"], $_POST["precioventa"]);
             $producto->setIdProducto($id);

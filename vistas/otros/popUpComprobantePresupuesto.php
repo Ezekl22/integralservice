@@ -1,4 +1,24 @@
-<div class="modal fade" id="verpresupuesto" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- convierto el objeto presupuesto de PHP a JSON para poder usarlo con JS al imprimir el comprobante -->
+<?php
+$presupuestoData = [
+    "tipo" => isset($presupuesto) && $presupuesto->getEstado() != "Facturado" ? "X" : "C",
+    "nrocomprobante" => $presupuesto->getNroComprobante() ?? "",
+    "fecha" => $presupuesto->getFecha() ?? "",
+    "cliente" => $nombreCliente ?? "",
+    "categoriafiscal" => $cliente["categoriafiscal"] ?? "",
+    "cuit" => $cliente["cuit"] ?? "",
+    "productos" => $productosPre ?? [],
+    "total" => $presupuesto->getTotal() ?? 0
+];
+?>
+
+<script>
+  const presupuestoData = <?php echo json_encode($presupuestoData, JSON_UNESCAPED_UNICODE); ?>;
+</script>
+
+<!--  -->
+
+<div class="modal fade factura" id="verpresupuesto" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog presupuesto-container justify-content-center d-flex" style="max-width:none;">
         <div class="modal-content mx-3 w-90">
             <div class=" modal-header headerPop__background">
@@ -108,6 +128,29 @@
                                         </td>
                                         <?php $total = $total + $productoPre['total']; ?>
                                     </tr>
+                                    <?php if (strtoupper($presupuesto->getTipo()) == "REPARACION") { ?>
+                                        <tr class="grilla__cuerpo">
+                                            <td class="border border-1 border-dark">
+                                                Mano de obra
+                                            </td>
+                                            <td class="border border-1 border-dark">
+                                                -
+                                            </td>
+                                            <td class="border border-1 border-dark">
+                                                -
+                                            </td>
+                                            <td class="border border-1 border-dark">
+                                                -
+                                            </td>
+                                            <td class="border border-1 border-dark">
+                                                <?php echo '$' . number_format($reparacion['manodeobra'], 2); ?>
+                                            </td>
+                                            <td class="border border-1 border-dark">
+                                                <?php echo '$' . number_format($reparacion['manodeobra'], 2); ?>
+                                            </td>
+                                            <?php $total = $total + $reparacion['manodeobra']; ?>
+                                        </tr>
+                                   <?php } ?>
                                 <?php } ?>
                             <?php } else { ?>
                                 <tr>
@@ -124,7 +167,7 @@
                 </div>
             </div>
             <div class="modal-footer d-flex justify-content-center headerPop__background">
-                <button type="button" class="btn button" data-bs-dismiss="modal" onclick="imprimirEnNuevaVentana()">Imprimir</button>
+                <button type="button" class="btn button" data-bs-dismiss="modal" onclick="imprimirEnIframeOculto(presupuestoData, 'presupuesto')">Imprimir</button>
             </div>
         </div>
     </div>

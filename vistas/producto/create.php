@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html>
-<script>screenCenter("contenedor");</script>
+<script>
+    screenCenter("contenedor");
+</script>
+
 <head>
     <title>Productos</title>
 </head>
@@ -38,7 +41,7 @@
                             <div class="input-group input-group-sm mb-3">
                                 <span class="input-group-text" id="inputGroup-sizing-sm">Stock</span>
                                 <input type="number" class="form-control" aria-label="Sizing example input"
-                                    aria-describedby="inputGroup-sizing-sm" id="stock" name="stock" required>
+                                    aria-describedby="inputGroup-sizing-sm" id="stock" name="stock" min="0" required>
                             </div>
                             <div class="input-group input-group-sm mb-3 ms-4">
                                 <label class="input-group-text" for="tipo">Tipo</label>
@@ -53,13 +56,13 @@
                                 <span class="input-group-text" id="inputGroup-sizing-sm">Precio de compra</span>
                                 <input type="number" class="form-control" aria-label="Sizing example input"
                                     aria-describedby="inputGroup-sizing-sm" id="preciocompra" name="preciocompra"
-                                    step="any" required>
+                                    step="any" min="0" required>
                             </div>
                             <div class="input-group input-group-sm mb-3 ms-4">
                                 <span class="input-group-text" id="inputGroup-sizing-sm">Precio de venta</span>
                                 <input type="number" class="form-control" aria-label="Sizing example input"
                                     aria-describedby="inputGroup-sizing-sm" id="precioventa" name="precioventa"
-                                    step="any" required>
+                                    step="any" min="0" required>
                             </div>
                         </div>
                     </div>

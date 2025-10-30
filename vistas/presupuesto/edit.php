@@ -14,14 +14,14 @@ echo "<script>const productos = $json; screenCenter('contenedor');</script>";
 <?php
 if ($action == 'edit' && $id != '') {
 
-    ?>
+?>
     <html>
 
     <head>
         <title>Editar Presupuesto</title>
     </head>
 
-    <body id = "edit">
+    <body id="edit">
         <main class="d-flex flex-column align-items-center mt-2 mb-4 main__flex" id="editPresupuesto">
             <article class="mt-4">
                 <h2 class="main__title mb-5">
@@ -147,7 +147,7 @@ if ($action == 'edit' && $id != '') {
     </body>
     <?php
     echo "<script>cargarGrillaProducto('presupuesto', " . $jsonProductosPre . ")</script>"
-        ?>
+    ?>
 
     </html>
 <?php } ?>
