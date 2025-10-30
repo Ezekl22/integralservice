@@ -96,7 +96,7 @@ class PedidoCompraCtr
 
         $pedidoCompraCtr = $this->getInstance();
         $productosPre = [];
-        if ($action == 'see') {
+        if ($action == 'see' || $action == 'facturar') {
             $id = isset($_GET['id']) ? $_GET['id'] : '';
             $pedidoCompra = $this->getPedidoCompraById($id);
             $proveedor = $this->getProveedorById($pedidoCompra->getIdProveedor());
@@ -111,7 +111,7 @@ class PedidoCompraCtr
 
         session_start();
         session_write_close();
-        $grillaMdl = new GrillaMdl(GRILLA_PEDIDOS, $pedidosCompras, [5, 6, 0, 2]);
+        $grillaMdl = new GrillaMdl(GRILLA_PEDIDOS, $pedidosCompras, [5, 10, 0, 2]);
         $grillaCtr = new GrillaCtr($grillaMdl);
 
         // Cargar la vista con los datos
@@ -286,13 +286,11 @@ class PedidoCompraCtr
     public function cargarFactura($id)
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            if (isset($_POST["idproveedor"])) {
                 $pedidoCompra = $this->getPedidoCompraById($id);
                 $nroComprobante = $pedidoCompra->getNroComprobante();
                 if (!str_starts_with($nroComprobante, 'C-')) {
                     $pedidoCompra->setNroComprobante('C-' . $nroComprobante);
                 }
-                $pedidoCompra->setIdProveedor($_POST['idproveedor']);
                 $pedidoCompra->setEstado("Facturado");
                 $productos_total = $this->getProductos_Total();
                 $productosPedido = $productos_total->productos;
@@ -305,7 +303,6 @@ class PedidoCompraCtr
                     $cantidad = $productoPedido->getCantidad();
                     $this->productoCtr->actualizarStockProducto($id, $cantidad, 'sumar');
                 }
-            }
         }
         if ($status == "") {
             header("Location: index.php?module=pedidos&action=facturado&status=success");

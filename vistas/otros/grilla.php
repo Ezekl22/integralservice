@@ -152,7 +152,7 @@
                                         <?php }
                                         break;
                                     case '8': //EVALUAR
-                                        if (strtoupper($datoCuerpo[4]) != "REPARADO" && strtoupper($datoCuerpo[4]) != "FACTURADO" && strtoupper($datoCuerpo[4]) != "PRESUPUESTADO") { ?>
+                                        if (strtoupper($datoCuerpo[4]) != "REPARADO" && strtoupper($datoCuerpo[4]) != "FACTURADO" && strtoupper($datoCuerpo[4]) != "PRESUPUESTADO" && strtoupper($datoCuerpo[4]) != "PENDIENTE REPARACION") { ?>
                                             <a class="icono__contenedor me-2" title="Evaluar"
                                                 href="index.php?module=reparaciones&action=evaluate&id=<?php echo $datoCuerpo[0]; ?>">
                                                 <img class="icono__imagen" src="./assets/img/iconoEvaluar.png" alt="icono de evaluar">
@@ -176,6 +176,23 @@
                                                 <img class="icono__imagen" src="./assets/img/iconoDeshabilitarProducto.png" alt="icono de deshabilitar">
                                             </a>
                             <?php }
+                                        break;
+                                        case '10': //CARGAR FACTURA
+                                        if (strtoupper($datoCuerpo['estado']) == "PEDIDO") { ?>
+                                            <!-- CARGAR FACTURA - ACTIVO -->
+                                            <a class="icono__contenedor me-2"
+                                                title="Cargar factura"
+                                                href="index.php?module=<?php echo $gestionPantallaCtr->getModule(); ?>&action=facturar&id=<?php echo $datoCuerpo[0]; ?>">
+                                                <img class="icono__imagen" src="./assets/img/iconoFacturar.svg" alt="icono de Facturar">
+                                            </a>
+                                        <?php } else { ?>
+                                            <!-- CARGAR FACTURA - DESACTIVADO -->
+                                            <label class="icono__contenedor me-2"
+                                                title="Cargar factura">
+                                                <img class="icono__imagen" src="./assets/img/iconoFacturarDeshabilitado.svg"
+                                                    alt="icono de Facturar">
+                                            </label>
+                                        <?php }
                                         break;
                                 }
                             } ?>

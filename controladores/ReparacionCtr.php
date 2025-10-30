@@ -123,10 +123,10 @@ class ReparacionCtr
     {
         $presupuesto = $this->presupuestoCtr->getPresupuestoById($id);
         $estado = "";
-        if ($presupuesto->getEstado() == 'pendiente presupuesto') {
-            $estado = 'presupuestado';
+        if ($presupuesto->getEstado() == 'Pendiente presupuesto') {
+            $estado = 'Presupuestado';
         } else {
-            $estado = 'reparado';
+            $estado = 'Reparado';
         }
         $status = $this->reparacionDAO->updatEstado($estado, $id);
         return $status;

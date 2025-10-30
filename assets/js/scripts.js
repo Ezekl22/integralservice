@@ -182,69 +182,77 @@ const cargarGrillaProducto = (module, productosPrecargados = []) => {
   const params = new URLSearchParams(queryString);
   const modulo = params.get("module");
   let contProductos = document.getElementById("grilla");
+
   if (productosPrecargados.length == 0) {
     let seAgregaProducto = true;
     let contComponente = document.createElement("tr");
-    let cantidad = document.getElementById("cantidadProducto").value;
-    let productoSeleccionado;
-    productos.forEach((producto) => {
-      const checkSeleccion = document.getElementById("seleccion" + producto[0]);
-      if (checkSeleccion) {
-        productoSeleccionado = checkSeleccion.checked
-          ? producto
-          : productoSeleccionado;
-      }
-    });
-    cantidad =
-      cantidad >= productoSeleccionado.stock
-        ? productoSeleccionado.stock
-        : cantidad;
-    let id = "producto" + productoSeleccionado[0];
-    if (contProductos.childElementCount > 0) {
-      Array.from(contProductos.children).forEach((productoGrilla) => {
-        if (productoGrilla.id == id) {
-          const cantidadProducto = document.querySelector(
-            "#grilla #" + id + " #cantidad"
-          );
-          sumatoriaCantidad = Number(cantidadProducto.value) + Number(cantidad);
-          cantidadProducto.value =
-            sumatoriaCantidad >= productoSeleccionado.stock
-              ? productoSeleccionado.stock
-              : sumatoriaCantidad;
+    let inputCantidadProducto = document.getElementById("cantidadProducto");
+    let cantidad = inputCantidadProducto ? inputCantidadProducto.value : 0;
 
-          cantidadOnChange(productoSeleccionado[0], productoGrilla.id, true);
-          seAgregaProducto = false;
+    if (inputCantidadProducto) {
+      let productoSeleccionado;
+      productos.forEach((producto) => {
+        const checkSeleccion = document.getElementById(
+          "seleccion" + producto[0]
+        );
+        if (checkSeleccion) {
+          productoSeleccionado = checkSeleccion.checked
+            ? producto
+            : productoSeleccionado;
         }
       });
+      cantidad =
+        cantidad >= productoSeleccionado.stock
+          ? productoSeleccionado.stock
+          : cantidad;
+      let id = "producto" + productoSeleccionado[0];
+      if (contProductos.childElementCount > 0) {
+        Array.from(contProductos.children).forEach((productoGrilla) => {
+          if (productoGrilla.id == id) {
+            const cantidadProducto = document.querySelector(
+              "#grilla #" + id + " #cantidad"
+            );
+            sumatoriaCantidad =
+              Number(cantidadProducto.value) + Number(cantidad);
+            cantidadProducto.value =
+              sumatoriaCantidad >= productoSeleccionado.stock
+                ? productoSeleccionado.stock
+                : sumatoriaCantidad;
+
+            cantidadOnChange(productoSeleccionado[0], productoGrilla.id, true);
+            seAgregaProducto = false;
+          }
+        });
+      }
+      if (seAgregaProducto) {
+        let precioUnit =
+          modulo === "pedidos"
+            ? productoSeleccionado[6]
+            : productoSeleccionado[7];
+        contComponente.className = "grilla__cuerpo";
+        contComponente.id = id;
+        contComponente.innerHTML = `<td id="producto"> ${
+          productoSeleccionado.nombre
+        } </td>
+                                          <td> <input type="number" value="${cantidad}" class="form-control" onchange="cantidadOnChange('${
+          productoSeleccionado[0]
+        }','${id}', '${
+          module === "presupuestos"
+        }')" id="cantidad" name="cantidad[]" min="1"</td>
+                                          <td id="valorunt"> ${currencyFormatter(
+                                            precioUnit
+                                          )} </td>
+                                          <td id="total"> ${currencyFormatter(
+                                            parseInt(cantidad) * precioUnit
+                                          )} </td>
+                                          <td><input class="form-check-input checksProductos" onchange="onChangeChecks()" type="checkbox"></td>
+                                          <input type="hidden" class="form-control me-7" aria-label="0" value="${
+                                            productoSeleccionado[0]
+                                          }" id="idproductos" name="idproductos[]">`;
+        contProductos.appendChild(contComponente);
+      }
+      cerrarGrilla("contGrillaProducto");
     }
-    if (seAgregaProducto) {
-      let precioUnit =
-        modulo === "pedidos"
-          ? productoSeleccionado[6]
-          : productoSeleccionado[7];
-      contComponente.className = "grilla__cuerpo";
-      contComponente.id = id;
-      contComponente.innerHTML = `<td id="producto"> ${
-        productoSeleccionado.nombre
-      } </td>
-                                        <td> <input type="number" value="${cantidad}" class="form-control" onchange="cantidadOnChange('${
-        productoSeleccionado[0]
-      }','${id}', '${
-        module === "presupuestos"
-      }')" id="cantidad" name="cantidad[]" min="1"</td>
-                                        <td id="valorunt"> ${currencyFormatter(
-                                          precioUnit
-                                        )} </td>
-                                        <td id="total"> ${currencyFormatter(
-                                          parseInt(cantidad) * precioUnit
-                                        )} </td>
-                                        <td><input class="form-check-input checksProductos" onchange="onChangeChecks()" type="checkbox"></td>
-                                        <input type="hidden" class="form-control me-7" aria-label="0" value="${
-                                          productoSeleccionado[0]
-                                        }" id="idproductos" name="idproductos[]">`;
-      contProductos.appendChild(contComponente);
-    }
-    cerrarGrilla("contGrillaProducto");
   } else {
     productosPrecargados.forEach((productoPrecargado) => {
       let id = "producto" + productoPrecargado[0];

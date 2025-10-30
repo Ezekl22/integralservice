@@ -405,8 +405,8 @@ class PresupuestoCtr
             }
         } else {
            
-            if ($estado == "presupuestado") {
-                $presupuesto->setEstado('pendiente reparacion');
+            if ($estado == "Presupuestado") {
+                $presupuesto->setEstado('Pendiente reparacion');
                 $status = $this->updatePresupuesto($presupuesto);
             }
             if ($estado == "Reparado") {

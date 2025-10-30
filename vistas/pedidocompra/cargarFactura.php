@@ -3,7 +3,8 @@ $id = isset($_GET['id']) ? $_GET['id'] : '';
 $PedidoCompraCtr = new PedidoCompraCtr();
 $action = isset($_GET['action']) ? $_GET['action'] : '';
 $pedidoCompra = $PedidoCompraCtr->getPedidoCompraById($id);
-$proveedores = $PedidoCompraCtr->getAllProveedores();
+$proveedor = ProveedorCtr::getInstance()->getProveedorById($pedidoCompra->getIdProveedor());
+$nombreProveedor =  $proveedor['nombre'];
 $GestionPantallasCtr = new GestionPantallasControlador();
 $productos = $PedidoCompraCtr->getProductosPedidoById($id);
 $jsonProductosPedido = json_encode($productos);
@@ -33,13 +34,9 @@ if ($action == 'facturar' && $id != '') {
                         <div class="my-3 d-flex flex-row w-100">
                             <div class="input-group input-group-sm ms-7">
                                 <label class="input-group-text" for="proveedor">Proveedor:</label>
-                                <select class="form-select" id="idproveedor" name="idproveedor" required>
-                                    <?php foreach ($proveedores as $proveedor) { ?>
-                                        <option value="<?php echo $proveedor['idproveedor'] ?>" <?php echo ($pedidoCompra->getIdProveedor() == $proveedor['idproveedor']) ? 'selected' : ''; ?>>
-                                            <?php echo $proveedor['nombre'] ?>
-                                        </option>
-                                    <?php } ?>
-                                </select>
+                                <input type="text" disabled class="form-control" aria-label="Sizing example input"
+                                    aria-describedby="inputGroup-sizing-sm" id="proveedor" name="proveedor"
+                                    value="<?php echo $nombreProveedor ?>">
                             </div>
                             <div class="input-group input-group-sm mx-7">
                                 <label class="input-group-text NroComprobanteTxt" for="nroComprobante"
