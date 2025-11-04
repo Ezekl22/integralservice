@@ -25,7 +25,13 @@
                             value="Buscar"></button>
                     </form>
                 </div>
-                <?php $grillaCtr->mostrarGrilla(); ?>
+                <?php if (count($grillaMdl->getDatosCuerpo())>0){
+                    $grillaCtr->mostrarGrilla();
+                    }else{ ?>
+                        <h3 class="grilla__mensaje-error">
+                            <?php echo $action == 'searched' ? "No se han encontrado registros para esa busqueda" : "No hay productos cargados, cree un presupuesto nuevo" ?>
+                        </h3>
+                    <?php } ?>
             </div>
             <?php
             $action = isset($_GET['action']) ? $_GET['action'] : '';

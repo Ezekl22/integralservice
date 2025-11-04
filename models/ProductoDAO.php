@@ -83,7 +83,7 @@ class ProductoDAO
     {
         $queries = [
             [
-                'query' => "SELECT * FROM productos",
+                'query' => "SELECT * FROM productos WHERE tipo != 'mano de obra'",
                 'type' => 'SELECT',
                 'params' => [],
             ]
@@ -136,13 +136,14 @@ class ProductoDAO
             $queries = [
                 [
                     'query' => "SELECT * FROM productos WHERE 
+                                tipo != 'mano de obra' AND (
                                 nombre LIKE '$termino' OR 
                                 marca LIKE '$termino' OR 
                                 detalle LIKE '$termino' OR 
                                 stock LIKE '$termino' OR 
                                 tipo LIKE '$termino' OR 
                                 preciocompra LIKE '$termino' OR 
-                                precioventa LIKE '$termino'",
+                                precioventa LIKE '$termino')",
                     'type' => 'SELECT',
                     'params' => [],
                 ]

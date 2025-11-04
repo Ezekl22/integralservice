@@ -77,10 +77,10 @@ class ProductoCtr
         session_start();
         $gestionPantallaCtr = $_SESSION['session']->getGestionPantallaCtr();
         session_write_close();
-        $grillaMdl = new GrillaMdl(GRILLA_PRODUCTOS, $action == 'searched' && $termino != "" ? $this->search() : $this->getAllProductos(), [0, 9]);
+        $grillaMdl = new GrillaMdl(GRILLA_PRODUCTOS, $action == 'searched' && $termino != "" ? $this->search() : $this->getAllProductosRepuestos(), [0, 9]);
         $grillaCtr = new GrillaCtr($grillaMdl);
 
-        $productos = $this->productoDAO->getAllProductos();
+        $productos = $this->productoDAO->getAllProductosRepuestos();
         require_once 'vistas/producto/producto.php';
     }
     public function getProductoById($id)
