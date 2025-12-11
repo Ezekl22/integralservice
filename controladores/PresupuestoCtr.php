@@ -143,6 +143,11 @@ class PresupuestoCtr
     {
         if (isset($_POST['tipo'])) {
             if ($_POST['tipo'] == "Venta") {
+                // Validar que existan productos para presupuestos de venta
+                if (!isset($_POST['idproductos']) || empty($_POST['idproductos'])) {
+                    UtilidadesDAO::getInstance()->showStatus("presupuestos", "Debe agregar al menos un producto al presupuesto de venta", "created");
+                    return;
+                }
                 $productos_total = $this->getProductos_Total();
                 $estado = isset($_POST['tipo']) ? $_POST['tipo'] == 'Venta' ? 'Presupuestado' : 'Pendiente presupuesto' : '';
                 $presupuesto = new PresupuestoMdl(
@@ -257,6 +262,16 @@ class PresupuestoCtr
             }
 
             $tipo = $presupuesto->getTipo();
+            
+            // Validar que presupuestos de venta tengan al menos un producto
+            if ($tipo === "Venta" && (!isset($_POST['idproductos']) || empty($_POST['idproductos']))) {
+                $status = "Debe agregar al menos un producto al presupuesto de venta";
+                if ($_GET["module"] == "presupuestos") {
+                    UtilidadesDAO::getInstance()->showStatus("presupuestos", $status, "edited");
+                }
+                return $status;
+            }
+
             $productosNuevos = [];
             $productosViejos = [];
             $total = 0;
