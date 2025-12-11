@@ -256,52 +256,66 @@ class PresupuestoCtr
                 $presupuesto->setIdCliente($_POST['idcliente']);
             }
 
-            $productos_total = $this->getProductos_Total();
-            $productosNuevos = $productos_total->productos;
-            $productosViejos = $presupuesto->getProductos();
+            $tipo = $presupuesto->getTipo();
+            $productosNuevos = [];
+            $productosViejos = [];
+            $total = 0;
 
-            // Crear mapas por ID para búsqueda rápida
-            $mapaViejos = [];
-            foreach ($productosViejos as $productoViejo) {
-                $mapaViejos[$productoViejo["idproducto"]] = $productoViejo["cantidad"];
-            }
+            // Solo procesar productos si es tipo Venta
+            if ($tipo === "Venta" && isset($_POST['idproductos'])) {
+                $productos_total = $this->getProductos_Total();
+                $productosNuevos = $productos_total->productos;
+                $productosViejos = $presupuesto->getProductos();
 
-            $mapaNuevos = [];
-            foreach ($productosNuevos as $productoNuevo) {
-                $mapaNuevos[$productoNuevo->getIdProducto()] = $productoNuevo;
-            }
+                // Crear mapas por ID para búsqueda rápida
+                $mapaViejos = [];
+                foreach ($productosViejos as $productoViejo) {
+                    $mapaViejos[$productoViejo["idproducto"]] = $productoViejo["cantidad"];
+                }
 
-            // Recorrer nuevos productos
-            foreach ($productosNuevos as $productoNuevo) {
-                $id = $productoNuevo->getIdProducto();
-                $cantidadNueva = $productoNuevo->getCantidad();
+                $mapaNuevos = [];
+                foreach ($productosNuevos as $productoNuevo) {
+                    $mapaNuevos[$productoNuevo->getIdProducto()] = $productoNuevo;
+                }
 
-                if (isset($mapaViejos[$id])) {
-                    $cantidadVieja = $mapaViejos[$id];
-                    $diferencia = $cantidadNueva - $cantidadVieja;
+                // Recorrer nuevos productos
+                foreach ($productosNuevos as $productoNuevo) {
+                    $idProd = $productoNuevo->getIdProducto();
+                    $cantidadNueva = $productoNuevo->getCantidad();
 
-                    if ($diferencia != 0) {
-                        $operacion = $diferencia > 0 ? 'restar' : 'sumar';
-                        $this->productoCtr->actualizarStockProducto($id, abs($diferencia), $operacion);
+                    if (isset($mapaViejos[$idProd])) {
+                        $cantidadVieja = $mapaViejos[$idProd];
+                        $diferencia = $cantidadNueva - $cantidadVieja;
+
+                        if ($diferencia != 0) {
+                            $operacion = $diferencia > 0 ? 'restar' : 'sumar';
+                            $this->productoCtr->actualizarStockProducto($idProd, abs($diferencia), $operacion);
+                        }
+                    } else {
+                        // Producto nuevo: restar toda la cantidad
+                        $this->productoCtr->actualizarStockProducto($idProd, $cantidadNueva, 'restar');
                     }
-                } else {
-                    // Producto nuevo: restar toda la cantidad
-                    $this->productoCtr->actualizarStockProducto($id, $cantidadNueva, 'restar');
                 }
+
+                // Detectar productos eliminados
+                foreach ($productosViejos as $productoViejo) {
+                    $idViejo = $productoViejo["idproducto"];
+                    if (!isset($mapaNuevos[$idViejo])) {
+                        // Producto eliminado: se devuelve al stock
+                        $this->productoCtr->actualizarStockProducto($idViejo, $productoViejo["cantidad"], 'sumar');
+                    }
+                }
+                
+                $total = $productos_total->total;
+            } else if ($tipo === "Reparacion") {
+                // Para reparación, solo traer el total de mano de obra si existe
+                $total = isset($_POST['manodeobra']) ? floatval($_POST['manodeobra']) : 0;
+            } else {
+                // Caso genérico sin productos
+                $total = isset($_POST['manodeobra']) ? floatval($_POST['manodeobra']) : 0;
             }
 
-            // Detectar productos eliminados
-            foreach ($productosViejos as $productoViejo) {
-                $idViejo = $productoViejo["idproducto"];
-                if (!isset($mapaNuevos[$idViejo])) {
-                    // Producto eliminado: se devuelve al stock
-                    $this->productoCtr->actualizarStockProducto($idViejo, $productoViejo["cantidad"], 'sumar');
-                }
-            }
-            
-            $total = $presupuesto->getTipo() == "Venta" ? $productos_total->total : $productos_total->total + $_POST["manodeobra"];
-
-            // Actualizar el presupuesto con los nuevos productos
+            // Actualizar el presupuesto con los nuevos productos/total
             $presupuesto->setProductos($productosNuevos);
             $presupuesto->setTotal($total);
 

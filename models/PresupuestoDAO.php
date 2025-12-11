@@ -141,15 +141,27 @@ class PresupuestoDAO
 
     public function updateReparacionPresupuesto(int $idPresupuesto)
     {
-        $reparacion = new ReparacionMdl($_POST['modelo'], $_POST['marca'], $_POST['nroserie'], $_POST['descripcion']);
+        $reparacion = new ReparacionMdl(
+            $_POST['modelo'] ?? '', 
+            $_POST['marca'] ?? '', 
+            $_POST['nroserie'] ?? '', 
+            $_POST['descripcion'] ?? ''
+        );
+        
+        // Escapar valores para evitar errores SQL
+        $modelo = addslashes($reparacion->getModelo());
+        $marca = addslashes($reparacion->getMarca());
+        $numeroSerie = addslashes($reparacion->getNumeroSerie());
+        $descripcion = addslashes($reparacion->getDescripcion());
+        
         $queries = [
             [
                 'query' => "UPDATE reparaciones SET 
-                            modelo = " . $reparacion->getModelo() . ", 
-                            marca=" . $reparacion->getMarca() . ", 
-                            numeroserie=" . $reparacion->getNumeroSerie() . "
-                            descripcion=" . $reparacion->getDescripcion() . "
-                            WHERE idpresupuesto= " . $idPresupuesto,
+                            modelo = '" . $modelo . "', 
+                            marca = '" . $marca . "', 
+                            numeroserie = '" . $numeroSerie . "', 
+                            descripcion = '" . $descripcion . "' 
+                            WHERE idpresupuesto = " . $idPresupuesto,
                 'type' => 'UPDATE',
                 'params' => [],
             ]

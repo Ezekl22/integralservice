@@ -155,10 +155,9 @@ const recalcularTotal = () => {
   importeTotal.setAttribute("value", currencyFormatter(total));
 };
 
-const cantidadOnChange = (idProducto, id) => {
+const cantidadOnChange = (idProducto, id, esPresupuesto) => {
   const inputTotal = document.querySelector("#" + id + " #total").childNodes[0];
-  const inputCantidad = document.querySelector("#" + id + " #cantidad");
-  let cantidad = inputCantidad.value;
+  const cantidad = document.querySelector("#" + id + " #cantidad").value;
   const queryString = window.location.search;
   const params = new URLSearchParams(queryString);
   const modulo = params.get("module");
@@ -167,9 +166,6 @@ const cantidadOnChange = (idProducto, id) => {
   );
   const precioUnit =
     modulo === "pedidos" ? producto.preciocompra : producto.precioventa;
-  
-  cantidad = Number(cantidad) >= Number(producto.stock)? producto.stock : cantidad;
-  inputCantidad.value = cantidad
   inputTotal.data = currencyFormatter(precioUnit * parseInt(cantidad));
   recalcularTotal();
 };
@@ -186,78 +182,69 @@ const cargarGrillaProducto = (module, productosPrecargados = []) => {
   const params = new URLSearchParams(queryString);
   const modulo = params.get("module");
   let contProductos = document.getElementById("grilla");
-
   if (productosPrecargados.length == 0) {
     let seAgregaProducto = true;
     let contComponente = document.createElement("tr");
-    let inputCantidadProducto = document.getElementById("cantidadProducto");
-    let cantidad = inputCantidadProducto ? inputCantidadProducto.value : 0;
+    let cantidad = document.getElementById("cantidadProducto").value;
+    let productoSeleccionado;
+    productos.forEach((producto) => {
+      const checkSeleccion = document.getElementById("seleccion" + producto[0]);
+      if (checkSeleccion) {
+        productoSeleccionado = checkSeleccion.checked
+          ? producto
+          : productoSeleccionado;
+      }
+    });
+    cantidad =
+      cantidad >= productoSeleccionado.stock
+        ? productoSeleccionado.stock
+        : cantidad;
+    let id = "producto" + productoSeleccionado[0];
+    if (contProductos.childElementCount > 0) {
+      Array.from(contProductos.children).forEach((productoGrilla) => {
+        if (productoGrilla.id == id) {
+          const cantidadProducto = document.querySelector(
+            "#grilla #" + id + " #cantidad"
+          );
+          sumatoriaCantidad = Number(cantidadProducto.value) + Number(cantidad);
+          cantidadProducto.value =
+            sumatoriaCantidad >= productoSeleccionado.stock
+              ? productoSeleccionado.stock
+              : sumatoriaCantidad;
 
-    if (inputCantidadProducto) {
-      let productoSeleccionado;
-      productos.forEach((producto) => {
-        const checkSeleccion = document.getElementById(
-          "seleccion" + producto[0]
-        );
-        if (checkSeleccion) {
-          productoSeleccionado = checkSeleccion.checked
-            ? producto
-            : productoSeleccionado;
+          cantidadOnChange(productoSeleccionado[0], productoGrilla.id, true);
+          seAgregaProducto = false;
         }
       });
-      cantidad = modulo == "pedidos" ? cantidad :
-        Number(cantidad) >= Number(productoSeleccionado.stock)
-          ? productoSeleccionado.stock
-          : cantidad;
-
-      let id = "producto" + productoSeleccionado[0];
-      if (contProductos.childElementCount > 0) {
-        Array.from(contProductos.children).forEach((productoGrilla) => {
-          if (productoGrilla.id == id) {
-            const cantidadProducto = document.querySelector(
-              "#grilla #" + id + " #cantidad"
-            );
-               sumatoriaCantidad =
-              Number(cantidadProducto.value) + Number(cantidad);
-            cantidadProducto.value = modulo == "pedidos" ? sumatoriaCantidad: 
-               Number(sumatoriaCantidad) >=  Number(productoSeleccionado.stock)
-                ? productoSeleccionado.stock
-                : sumatoriaCantidad;
-
-            cantidadOnChange(productoSeleccionado[0], productoGrilla.id, true);
-            seAgregaProducto = false;
-          }
-        });
-      }
-      if (seAgregaProducto) {
-        let precioUnit =
-          modulo === "pedidos"
-            ? productoSeleccionado[6]
-            : productoSeleccionado[7];
-        contComponente.className = "grilla__cuerpo";
-        contComponente.id = id;
-        contComponente.innerHTML = `<td id="producto"> ${
-          productoSeleccionado.nombre
-        } </td>
-                                          <td> <input type="number" value="${cantidad}" class="form-control" onchange="cantidadOnChange('${
-          productoSeleccionado[0]
-        }','${id}', '${
-          module === "presupuestos"
-        }')" id="cantidad" name="cantidad[]" min="1"</td>
-                                          <td id="valorunt"> ${currencyFormatter(
-                                            precioUnit
-                                          )} </td>
-                                          <td id="total"> ${currencyFormatter(
-                                            parseInt(cantidad) * precioUnit
-                                          )} </td>
-                                          <td><input class="form-check-input checksProductos" onchange="onChangeChecks()" type="checkbox"></td>
-                                          <input type="hidden" class="form-control me-7" aria-label="0" value="${
-                                            productoSeleccionado[0]
-                                          }" id="idproductos" name="idproductos[]">`;
-        contProductos.appendChild(contComponente);
-      }
-      cerrarGrilla("contGrillaProducto");
     }
+    if (seAgregaProducto) {
+      let precioUnit =
+        modulo === "pedidos"
+          ? productoSeleccionado[6]
+          : productoSeleccionado[7];
+      contComponente.className = "grilla__cuerpo";
+      contComponente.id = id;
+      contComponente.innerHTML = `<td id="producto"> ${
+        productoSeleccionado.nombre
+      } </td>
+                                        <td> <input type="number" value="${cantidad}" class="form-control" onchange="cantidadOnChange('${
+        productoSeleccionado[0]
+      }','${id}', '${
+        module === "presupuestos"
+      }')" id="cantidad" name="cantidad[]" min="1"</td>
+                                        <td id="valorunt"> ${currencyFormatter(
+                                          precioUnit
+                                        )} </td>
+                                        <td id="total"> ${currencyFormatter(
+                                          parseInt(cantidad) * precioUnit
+                                        )} </td>
+                                        <td><input class="form-check-input checksProductos" onchange="onChangeChecks()" type="checkbox"></td>
+                                        <input type="hidden" class="form-control me-7" aria-label="0" value="${
+                                          productoSeleccionado[0]
+                                        }" id="idproductos" name="idproductos[]">`;
+      contProductos.appendChild(contComponente);
+    }
+    cerrarGrilla("contGrillaProducto");
   } else {
     productosPrecargados.forEach((productoPrecargado) => {
       let id = "producto" + productoPrecargado[0];
@@ -584,6 +571,338 @@ function imprimirEnIframeOculto(datos, tipoDocumento) {
     setTimeout(() => iframe.remove(), 1000);
   };
 }
+
+// function imprimirEnIframeOculto(presupuesto) {
+//   // Crear iframe oculto
+//   const iframe = document.createElement("iframe");
+//   iframe.style.position = "fixed";
+//   iframe.style.width = "0";
+//   iframe.style.height = "0";
+//   iframe.style.border = "none";
+//   document.body.appendChild(iframe);
+
+//   // Contenido HTML del presupuesto
+//   const contenido = `
+//     <html>
+//     <head>
+//       <title>Factura</title>
+//       <style>
+//         body {
+//           font-family: Arial, sans-serif;
+//           margin: 40px;
+//         }
+//         .factura {
+//           border: 1px solid #000;
+//           padding: 20px;
+//           width: 700px;
+//           margin: 0 auto;
+//         }
+//         .tipo-factura {
+//           display: inline-block;
+//           border: 2px solid #000;
+//           border-radius: 10px;
+//           padding: 8px 18px;
+//           font-weight: bold;
+//           font-size: 22px;
+//           text-align: center;
+//           margin-bottom: 10px;
+//         }
+//         h2 {
+//           text-align: center;
+//           margin: 5px 0 20px 0;
+//         }
+//         .info {
+//           display: flex;
+//           justify-content: space-between;
+//           margin-bottom: 10px;
+//         }
+//         .info p {
+//           margin: 4px 0;
+//           font-size: 14px;
+//         }
+//         table {
+//           width: 100%;
+//           border-collapse: collapse;
+//           margin-top: 20px;
+//           font-size: 14px;
+//         }
+//         th, td {
+//           border: 1px solid #000;
+//           padding: 6px;
+//           text-align: center;
+//         }
+//         th {
+//           background-color: #f2f2f2;
+//         }
+//         .total {
+//           text-align: right;
+//           font-weight: bold;
+//           margin-top: 10px;
+//           font-size: 16px;
+//         }
+//       </style>
+//     </head>
+//     <body>
+//       <div class="factura">
+//         <div style="text-align:center;">
+//           <div class="tipo-factura">${presupuesto.tipo}</div>
+//           <h2>Factura</h2>
+//         </div>
+
+//         <div class="info">
+//           <div>
+//             <p><strong>Integral Service</strong></p>
+//             <p>Servicio técnico de equipos de impresión</p>
+//             <p><strong>Condición frente al IVA:</strong> Monotributista</p>
+//             <p><strong>Fecha:</strong> ${presupuesto.fecha}</p>
+//           </div>
+//           <div>
+//             <p><strong>Punto de venta:</strong> 0001</p>
+//             <p><strong>Comp. Nro:</strong> ${presupuesto.nrocomprobante}</p>
+//             <p><strong>Dirección:</strong> Balcarce 653</p>
+//             <p><strong>Provincia:</strong> Entre Ríos</p>
+//             <p><strong>Localidad:</strong> Concordia</p>
+//             <p><strong>CUIT:</strong> 20-38926571-6</p>
+//           </div>
+//         </div>
+
+//         <div class="info">
+//           <div>
+//             <p><strong>Cliente:</strong> ${presupuesto.cliente}</p>
+//             <p><strong>Condición frente al IVA:</strong> ${
+//               presupuesto.categoriafiscal
+//             }</p>
+//           </div>
+//           <div>
+//             <p>${presupuesto.tipo} Factura</p>
+//           </div>
+//         </div>
+
+//         <table>
+//           <thead>
+//             <tr>
+//               <th>Nombre</th>
+//               <th>Marca</th>
+//               <th>Detalle</th>
+//               <th>Cantidad</th>
+//               <th>Precio unitario</th>
+//               <th>Importe</th>
+//             </tr>
+//           </thead>
+//           <tbody>
+//             ${presupuesto.productos
+//               .map(
+//                 (p) => `
+//               <tr>
+//                 <td>${p.nombre}</td>
+//                 <td>${p.marca}</td>
+//                 <td>${p.detalle}</td>
+//                 <td>${p.cantidad}</td>
+//                 <td>$${p.precioventa.toLocaleString()}</td>
+//                 <td>$${(p.cantidad * p.precioventa).toLocaleString()}</td>
+//               </tr>
+//             `
+//               )
+//               .join("")}
+//           </tbody>
+//         </table>
+
+//         <p class="total">Total: $${presupuesto.total.toLocaleString()}</p>
+//       </div>
+//     </body>
+//     </html>
+//   `;
+
+//   // Escribir contenido dentro del iframe
+//   const doc = iframe.contentWindow.document;
+//   doc.open();
+//   doc.write(contenido);
+//   doc.close();
+
+//   // Esperar a que cargue completamente el contenido antes de imprimir
+//   iframe.onload = function () {
+//     iframe.contentWindow.focus();
+//     iframe.contentWindow.print();
+
+//     // Eliminar el iframe después de imprimir o cancelar
+//     setTimeout(() => iframe.remove(), 1000);
+//   };
+// }
+
+// function imprimirEnNuevaVentana() {
+//   const contenido = document.querySelector(
+//     "#verpresupuesto .modal-body"
+//   ).innerHTML;
+
+//   const ventana = window.open("", "_blank", "width=800,height=1000");
+//   ventana.document.open();
+//   ventana.document.write(`
+//         <html>
+//         <head>
+//             <title>Presupuesto</title>
+//             <style>
+//                 @page {
+//                     size: A4 portrait;
+//                     margin: 15mm;
+//                 }
+
+//                 body {
+//                     font-family: Arial, sans-serif;
+//                     color: #000;
+//                     background-color: #fff;
+//                     margin: 0;
+//                     padding: 0;
+//                 }
+
+//                 .factura {
+//                     width: 100%;
+//                     max-width: 190mm;
+//                     margin: auto;
+//                     border: 1px solid #000;
+//                     padding: 10mm;
+//                     box-sizing: border-box;
+//                 }
+
+//                 .header-top {
+//                     text-align: center;
+//                     font-size: 20px;
+//                     font-weight: bold;
+//                     margin-bottom: 10px;
+//                 }
+
+//                 .fila {
+//                     display: flex;
+//                     justify-content: space-between;
+//                     margin-bottom: 5px;
+//                 }
+
+//                 .col {
+//                     width: 48%;
+//                 }
+
+//                 .titulo-seccion {
+//                     font-weight: bold;
+//                     font-size: 16px;
+//                     margin-top: 10px;
+//                     border-bottom: 1px solid #000;
+//                     display: inline-block;
+//                     padding-bottom: 2px;
+//                 }
+
+//                 table {
+//                     width: 100%;
+//                     border-collapse: collapse;
+//                     margin-top: 10px;
+//                 }
+
+//                 th, td {
+//                     border: 1px solid #000;
+//                     padding: 6px;
+//                     text-align: center;
+//                     font-size: 12px;
+//                 }
+
+//                 .total {
+//                     text-align: right;
+//                     font-weight: bold;
+//                     margin-top: 10px;
+//                     font-size: 14px;
+//                 }
+
+//                 .tipo-factura {
+//                   display: inline-block;
+//                   border: 2px solid #000;
+//                   border-radius: 8px;       /* <-- bordes redondeados */
+//                   padding: 6px 14px;
+//                   font-size: 22px;
+//                   font-weight: bold;
+//                   text-align: center;
+//                   margin-bottom: 5px;
+//                 }
+
+//             </style>
+//         </head>
+//         <body>
+//             <div class="factura">
+//                 <div class="header-top">
+//                   <div class="tipo-factura" style="font-size: 22px; font-weight: bold; margin-top: 4px;">
+//                     ${document
+//                       .querySelector("#verpresupuesto .h2")
+//                       .innerText.trim()}
+//                   </div>
+//                   <div style="font-size: 20px; font-weight: bold;">
+//                     ${document
+//                       .querySelector("#verpresupuesto .h3")
+//                       .innerText.trim()}
+//                   </div>
+//                 </div>
+
+//                 <div class="fila">
+//                     <div class="col">
+//                         <b>Integral Service</b><br>
+//                         Servicio técnico de equipos de impresión<br><br>
+//                         <b>Condición frente al IVA:</b> Monotributista<br>
+//                         <b>Fecha:</b> ${
+//                           document
+//                             .querySelector(".modal-body b:nth-of-type(2)")
+//                             ?.nextSibling?.textContent.trim() || ""
+//                         }
+//                     </div>
+//                     <div class="col" style="text-align:right;">
+//                         <b>Punto de venta:</b> 0001<br>
+//                         <b>Comp. Nro:</b> 013456789<br>
+//                         <b>Dirección:</b> Balcarce 653<br>
+//                         <b>Provincia:</b> Entre Ríos<br>
+//                         <b>Localidad:</b> Concordia<br>
+//                         <b>CUIT:</b> 20-38926571-6
+//                     </div>
+//                 </div>
+
+//                 <div class="titulo-seccion">Cliente</div>
+//                 <div class="fila">
+//                     <div class="col">
+//                         <b>Señor/a(es/as):</b> Daiana Romero
+//                     </div>
+//                     <div class="col" style="text-align:right;">
+//                         <b>CUIT:</b> 27-32568790-2<br>
+//                         <b>Condición frente al IVA:</b> Responsable inscripto
+//                     </div>
+//                 </div>
+
+//                 <div class="titulo-seccion">Detalle</div>
+//                 ${document.querySelector("#verpresupuesto table").outerHTML}
+
+//                 <div class="total">
+//                     ${
+//                       document.querySelector(
+//                         "#verpresupuesto .d-flex.w-100.justify-content-end.pt-4"
+//                       ).innerHTML
+//                     }
+//                 </div>
+//             </div>
+
+//             <script>
+//                 window.onload = () => {
+//   setTimeout(() => {
+//     window.focus();
+//     window.print();
+
+//     // Cerrar automáticamente al terminar o cancelar la impresión
+//     window.onafterprint = () => window.close();
+
+//     // Fallback: si el evento falla, cerrar igual después de unos segundos
+//     setTimeout(() => {
+//       if (!window.closed) window.close();
+//     }, 15000); // se cierra después de 15 segundos por seguridad
+//   }, 400);
+// };
+
+//             </script>
+//         </body>
+//         </html>
+//     `);
+//   ventana.document.close();
+// }
 
 function formatMoney(input) {
   // Eliminar caracteres no numéricos excepto el punto
