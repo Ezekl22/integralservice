@@ -321,13 +321,25 @@ class PresupuestoCtr
                     }
                 }
                 
-                $total = $productos_total->total;
+                $total = $tipo === "Reparacion"?  isset($_POST['manodeobra']) ?  floatval($productos_total->total) + floatval($_POST['manodeobra']) : $productos_total->total : $productos_total->total;
             } else if ($tipo === "Reparacion") {
-                // Para reparación, solo traer el total de mano de obra si existe
-                $total = isset($_POST['manodeobra']) ? floatval($_POST['manodeobra']) : 0;
-            } else {
-                // Caso genérico sin productos
-                $total = isset($_POST['manodeobra']) ? floatval($_POST['manodeobra']) : 0;
+                // Para reparación sin productos
+                // Si viene de reparaciones (evaluar), actualizar con manodeobra
+                // Si viene de presupuestos (editar), preservar total según estado
+                $modulo = isset($_GET['module']) ? $_GET['module'] : '';
+                
+                if ($modulo === 'reparaciones') {
+                    // Viene de reparaciones/evaluate.php - usar manodeobra para actualizar
+                    $total = isset($_POST['manodeobra']) ? floatval($_POST['manodeobra']) : $presupuesto->getTotal();
+                } else {
+                    // Viene de presupuestos/edit.php - preservar según estado
+                    $estado = $presupuesto->getEstado();
+                    if ($estado === "Pendiente presupuesto") {
+                        $total = 0;
+                    } else {
+                        $total = $presupuesto->getTotal();
+                    }
+                }
             }
 
             // Actualizar el presupuesto con los nuevos productos/total
