@@ -276,8 +276,8 @@ class PresupuestoCtr
             $productosViejos = [];
             $total = 0;
 
-            // Solo procesar productos si es tipo Venta
-            if ($tipo === "Venta" && isset($_POST['idproductos'])) {
+            // Solo procesar productos si es tipo Venta o tipo reparacion con productos
+            if (($tipo === "Venta" && isset($_POST['idproductos'])) || ($tipo === "Reparacion" && !empty($_POST['idproductos']))) {
                 $productos_total = $this->getProductos_Total();
                 $productosNuevos = $productos_total->productos;
                 $productosViejos = $presupuesto->getProductos();

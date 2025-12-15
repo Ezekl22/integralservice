@@ -141,11 +141,12 @@ class PresupuestoDAO
 
     public function updateReparacionPresupuesto(int $idPresupuesto)
     {
+        $reparacionBD = $this->getReparacionPresupuestoById($idPresupuesto);
         $reparacion = new ReparacionMdl(
-            $_POST['modelo'] ?? '', 
-            $_POST['marca'] ?? '', 
-            $_POST['nroserie'] ?? '', 
-            $_POST['descripcion'] ?? ''
+            $_POST['modelo'] ??  $reparacionBD['modelo'], 
+            $_POST['marca'] ?? $reparacionBD['marca'], 
+            $_POST['nroserie'] ?? $reparacionBD['numeroserie'], 
+            $_POST['descripcion'] ?? $reparacionBD['descripcion']
         );
         
         // Escapar valores para evitar errores SQL
