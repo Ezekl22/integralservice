@@ -46,10 +46,11 @@ class UtilidadesDAO
             $paramsList = $queryData['params'];
             $typeQuery = $queryData['type'];
             if (count($paramsList) > 0) {
-                for ($i = 0; $i < count($paramsList); $i++) {
-                    $separador = $i < count($paramsList) - 1 ? "," : "; ";
-                    $subQuery = $subQuery . "(" . implode(", ", $paramsList[$i]) . ")" . $separador;
+                for ($i = 0; $i < count($paramsList) - 1; $i++) {
+                    $subQuery = $subQuery . "(" . implode(", ", $paramsList[$i]) . "), ";
                 }
+                // Última fila sin coma final
+                $subQuery = $subQuery . "(" . implode(", ", $paramsList[count($paramsList) - 1]) . ");";
             }
             $query = $query . $subQuery;
         }

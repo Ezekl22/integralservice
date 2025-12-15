@@ -386,7 +386,8 @@ class PresupuestoDAO
                 'params' => [],
             ]
         ];
-        return UtilidadesDAO::getInstance()->executeQuery($queries)[0];
+        $result = UtilidadesDAO::getInstance()->executeQuery($queries);
+        return (count($result) > 0) ? $result[0] : [];
     }
 
     public function annul($id)

@@ -146,7 +146,10 @@ if ($action == 'edit' && $id != '') {
         </main>
     </body>
     <?php
-    echo "<script>cargarGrillaProducto('presupuesto', " . $jsonProductosPre . ")</script>"
+    // Solo cargar la grilla de productos si es una venta (no es reparación)
+    if ($presupuesto['tipo'] != "Reparacion") {
+        echo "<script>cargarGrillaProducto('presupuesto', " . $jsonProductosPre . ")</script>";
+    }
     ?>
 
     </html>

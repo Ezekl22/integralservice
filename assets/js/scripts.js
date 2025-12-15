@@ -156,8 +156,16 @@ const recalcularTotal = () => {
 };
 
 const cantidadOnChange = (idProducto, id, esPresupuesto) => {
+  const inputCantidad = document.querySelector("#" + id + " #cantidad");
+  let cantidad = parseInt(inputCantidad.value) || 0;
+  
+  // Validar que la cantidad sea al menos 1
+  if (cantidad < 1) {
+    cantidad = 1;
+    inputCantidad.value = 1;
+  }
+  
   const inputTotal = document.querySelector("#" + id + " #total").childNodes[0];
-  const cantidad = document.querySelector("#" + id + " #cantidad").value;
   const queryString = window.location.search;
   const params = new URLSearchParams(queryString);
   const modulo = params.get("module");
@@ -185,8 +193,15 @@ const cargarGrillaProducto = (module, productosPrecargados = []) => {
   if (productosPrecargados.length == 0) {
     let seAgregaProducto = true;
     let contComponente = document.createElement("tr");
-    let cantidad = document.getElementById("cantidadProducto").value;
+    let cantidad = parseInt(document.getElementById("cantidadProducto").value) || 0;
     let productoSeleccionado;
+    
+    // Validar que la cantidad sea mayor a 0
+    if (cantidad <= 0) {
+      mostrarToast("error", "La cantidad debe ser mayor a 0");
+      return;
+    }
+    
     productos.forEach((producto) => {
       const checkSeleccion = document.getElementById("seleccion" + producto[0]);
       if (checkSeleccion) {
@@ -195,6 +210,13 @@ const cargarGrillaProducto = (module, productosPrecargados = []) => {
           : productoSeleccionado;
       }
     });
+    
+    // Validar que el producto tenga stock disponible
+    if (productoSeleccionado && productoSeleccionado.stock <= 0) {
+      mostrarToast("error", "Este producto no tiene stock disponible");
+      return;
+    }
+    
     cantidad =
       cantidad >= productoSeleccionado.stock
         ? productoSeleccionado.stock
@@ -231,7 +253,7 @@ const cargarGrillaProducto = (module, productosPrecargados = []) => {
         productoSeleccionado[0]
       }','${id}', '${
         module === "presupuestos"
-      }')" id="cantidad" name="cantidad[]" min="1"</td>
+      }')" id="cantidad" name="cantidad[]" min="1" step="1" required></td>
                                         <td id="valorunt"> ${currencyFormatter(
                                           precioUnit
                                         )} </td>
@@ -260,7 +282,7 @@ const cargarGrillaProducto = (module, productosPrecargados = []) => {
         productoPrecargado.idproducto
       }','${id}', '${
         module === "presupuestos"
-      }')" id="cantidad" name="cantidad[]" min="1"</td>
+      }')" id="cantidad" name="cantidad[]" min="1" step="1" required></td>
                                  <td id="valorunt"> ${currencyFormatter(
                                    productoPrecargado[5]
                                  )} </td>
