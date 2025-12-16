@@ -33,10 +33,13 @@
                         <td>
                             <!--------------- ACCIONES ----------------->
                             <?php
+                            session_start();
+                            $sesionCtr = isset($_SESSION['session']) ? $_SESSION['session'] : "";
+                            session_write_close();
                             foreach ($grillaMdl->getAcciones() as $accion) {
                                 switch ($accion) {
                                     case '0': //EDITAR
-                                        if (in_array($gestionPantallaCtr->getModule(), ["presupuestos", "pedidos"]) && strtoupper($datoCuerpo['estado']) == "FACTURADO" || in_array($gestionPantallaCtr->getModule(), ["presupuestos", "pedidos"]) && strtoupper($datoCuerpo['estado']) == "ANULADO") { ?>
+                                        if (in_array($gestionPantallaCtr->getModule(), ["presupuestos", "pedidos"]) && strtoupper($datoCuerpo['estado']) == "FACTURADO" || in_array($gestionPantallaCtr->getModule(), ["presupuestos", "pedidos"]) && strtoupper($datoCuerpo['estado']) == "ANULADO" ||  $sesionCtr->getUsuarioSesionado()->getTipo() == "Reparador") { ?>
                                             <!-- EDITAR - DESACTIVADO-->
                                             <label class="icono__contenedor me-2" title="Editar">
                                                 <img class="icono__imagen" src="./assets/img/iconoEditarDeshabilitado.png"
@@ -165,7 +168,8 @@
                                         <?php }
                                         break;
                                     case '9': //HABILITAR - DESHABILITAR
-                                        if (strtoupper($datoCuerpo[8]) == 'HABILITADO') { ?>
+                                        if ($sesionCtr->getUsuarioSesionado()->getTipo() != "Reparador") {
+                                             if (strtoupper($datoCuerpo[8]) == 'HABILITADO') { ?>
                                             <a class="icono__contenedor me-2" title="Deshabilitar"
                                                 href="index.php?module=productos&action=deshabilitar&id=<?php echo $datoCuerpo[0]; ?>">
                                                 <img class="icono__imagen" src="./assets/img/iconoHabilitarProducto.png" alt="icono de habilitar">
@@ -175,7 +179,8 @@
                                                 href="index.php?module=productos&action=habilitar&id=<?php echo $datoCuerpo[0]; ?>">
                                                 <img class="icono__imagen" src="./assets/img/iconoDeshabilitarProducto.png" alt="icono de deshabilitar">
                                             </a>
-                            <?php }
+                                        <?php }
+                                        }
                                         break;
                                         case '10': //CARGAR FACTURA
                                         if (strtoupper($datoCuerpo['estado']) == "PEDIDO") { ?>

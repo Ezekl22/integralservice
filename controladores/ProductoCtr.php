@@ -16,6 +16,24 @@ class ProductoCtr
         $id = isset($_GET['id']) ? $_GET['id'] : '';
         $status = isset($_GET['status']) ? $_GET['status'] : "";
         $toast = new ToastCtr();
+        
+        // Bloquear acciones de crear, editar y deshabilitar para Reparadores
+        if ($module == 'productos' && in_array($action, ['created', 'edited', 'habilitar', 'deshabilitar'])) {
+            session_start();
+            if (isset($_SESSION['session']) && $_SESSION['session'] !== "") {
+                $tipoUsuario = $_SESSION['session']->getUsuarioSesionado()->getTipo();
+                session_write_close();
+                
+                if (strcasecmp($tipoUsuario, "REPARADOR") == 0) {
+                    $toast->mostrarToast("error", "Acceso denegado", "Los reparadores no pueden realizar esta acción");
+                    header("Location: index.php?module=productos");
+                    exit;
+                }
+            } else {
+                session_write_close();
+            }
+        }
+        
         if ($status == "error") {
             $description = isset($_GET['description']) ? $_GET['description'] : "";
             $toast->mostrarToast($status, "", $description);

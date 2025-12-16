@@ -34,8 +34,11 @@
                     <?php } ?>
             </div>
             <?php
+            session_start();
+            $sesionCtr = isset($_SESSION['session']) ? $_SESSION['session'] : "";
+            session_write_close();
             $action = isset($_GET['action']) ? $_GET['action'] : '';
-            if (($action != 'edit' && $action != 'create')) { ?>
+            if (($action != 'edit' && $action != 'create' && $sesionCtr->getUsuarioSesionado()->getTipo() != "Reparador")) { ?>
                 <a class="my-5 btn button" type="button" href="index.php?module=productos&action=create">Crear nuevo
                     producto</a>
             <?php } ?>
