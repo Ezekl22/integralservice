@@ -38,7 +38,7 @@ const agregarComponenteProducto = () => {
                                 <label class="input-group-text" for="cantidad" id="inputGroup-sizing-sm">Cantidad:</label>
                                 <input type="number" class="form-control" aria-label="0" onchange="cantidadOnChange('${
                                   productoSeleccionado[0]
-                                }','${id}')" id="cantidad" name="cantidad[]">
+                                }','${id}', '${modulo}')" id="cantidad" name="cantidad[]">
                                 <label class="input-group-text" for="valorunt" id="inputGroup-sizing-sm">Valor unitario:</label>
                                 <input type="text" class="form-control" disabled value= "${currencyFormatter(
                                   modulo == "pedidos"
@@ -169,10 +169,11 @@ const cantidadOnChange = (idProducto, id, esPresupuesto) => {
     inputCantidad.value = 1;
   }
   
-  // Validar que la cantidad no exceda el stock disponible
-  if (cantidad > producto.stock) {
+  // Validar que la cantidad no exceda el stock disponible (solo en presupuestos)
+  if (esPresupuesto && cantidad > parseInt(producto.stock)) {
     cantidad = producto.stock;
     inputCantidad.value = producto.stock;
+    mostrarToast("warning", "Cantidad ajustada al stock disponible (" + producto.stock + ")");
   }
   
   const inputTotal = document.querySelector("#" + id + " #total").childNodes[0];
@@ -241,15 +242,15 @@ const cargarGrillaProducto = (module, productosPrecargados = []) => {
           );
           sumatoriaCantidad = Number(cantidadProducto.value) + Number(cantidad);
           
-          // Validar que la cantidad total no exceda el stock
-          if (sumatoriaCantidad > productoSeleccionado.stock) {
+          // Validar que la cantidad total no exceda el stock (solo en presupuestos)
+          if (module === "presupuestos" && sumatoriaCantidad > productoSeleccionado.stock) {
             sumatoriaCantidad = productoSeleccionado.stock;
             mostrarToast("warning", "Cantidad total ajustada al stock disponible (" + productoSeleccionado.stock + ")");
           }
           
           cantidadProducto.value = sumatoriaCantidad;
 
-          cantidadOnChange(productoSeleccionado[0], productoGrilla.id, true);
+          cantidadOnChange(productoSeleccionado[0], productoGrilla.id, module === "presupuestos");
           seAgregaProducto = false;
         }
       });
@@ -266,9 +267,9 @@ const cargarGrillaProducto = (module, productosPrecargados = []) => {
       } </td>
                                         <td> <input type="number" value="${cantidad}" class="form-control" onchange="cantidadOnChange('${
         productoSeleccionado[0]
-      }','${id}', '${
+      }','${id}', ${
         module === "presupuestos"
-      }')" id="cantidad" name="cantidad[]" min="1" step="1" required></td>
+      })" id="cantidad" name="cantidad[]" min="1" step="1" required></td>
                                         <td id="valorunt"> ${currencyFormatter(
                                           precioUnit
                                         )} </td>
@@ -295,9 +296,9 @@ const cargarGrillaProducto = (module, productosPrecargados = []) => {
                                    productoPrecargado.cantidad
                                  }" class="form-control" onchange="cantidadOnChange('${
         productoPrecargado.idproducto
-      }','${id}', '${
+      }','${id}', ${
         module === "presupuestos"
-      }')" id="cantidad" name="cantidad[]" min="1" step="1" required></td>
+      })" id="cantidad" name="cantidad[]" min="1" step="1" required></td>
                                  <td id="valorunt"> ${currencyFormatter(
                                    productoPrecargado[5]
                                  )} </td>
