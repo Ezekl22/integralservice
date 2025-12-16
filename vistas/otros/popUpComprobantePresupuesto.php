@@ -1,5 +1,12 @@
 <!-- convierto el objeto presupuesto de PHP a JSON para poder usarlo con JS al imprimir el comprobante -->
 <?php
+// Si es una reparación, obtener los datos de la reparación
+if (strtoupper($presupuesto->getTipo()) == "REPARACION") {
+    $reparacion = isset($presupuestoCtr) ? $presupuestoCtr->getReparacionPresupuestoById($presupuesto->getIdPresupuesto()) : [];
+} else {
+    $reparacion = [];
+}
+
 $presupuestoData = [
     "tipo" => isset($presupuesto) && $presupuesto->getEstado() != "Facturado" ? "X" : "C",
     "nrocomprobante" => $presupuesto->getNroComprobante() ?? "",
@@ -8,6 +15,7 @@ $presupuestoData = [
     "categoriafiscal" => $cliente["categoriafiscal"] ?? "",
     "cuit" => $cliente["cuit"] ?? "",
     "productos" => $productosPre ?? [],
+    "manodeobra" => !empty($reparacion) ? $reparacion['manodeobra'] ?? 0 : 0,
     "total" => $presupuesto->getTotal() ?? 0
 ];
 ?>
