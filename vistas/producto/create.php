@@ -16,11 +16,11 @@
             </h2>
         </article>
         <article class="mt-5 d-flex flex-column align-items-center">
-            <div class="grilla w-75 d-flex flex-column align-items-center rounded-4">
+            <div class="grilla w-85 d-flex flex-column align-items-center rounded-4">
                 <form action="index.php?module=productos&action=created" method="POST"
                     class="w-100 d-flex align-items-center flex-column">
-                    <div class="border w-75 mt-5 mb-2 rounded-4 d-flex flex-column align-items-center" id="contenedor">
-                        <div class="w-75 d-flex mt-3">
+                    <div class="border w-85 mt-5 mb-2 rounded-4 d-flex flex-column align-items-center" id="contenedor">
+                        <div class="w-95 d-flex mt-3">
                             <div class="input-group input-group-sm mb-3">
                                 <span class="input-group-text" id="inputGroup-sizing-sm">Nombre</span>
                                 <input type="text" class="form-control" aria-label="Sizing example input"
