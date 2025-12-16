@@ -61,7 +61,7 @@ class ProveedorDAO
     {
         $queries = [
             [
-                'query' => "SELECT * FROM proveedores WHERE idproveedor = " . $id,
+                'query' => "SELECT idproveedor, nombre, categoria_fiscal, direccion, telefono, correo, cuit, saldo FROM proveedores WHERE idproveedor = " . $id,
                 'type' => 'SELECT',
                 'params' => [],
             ]
@@ -75,7 +75,7 @@ class ProveedorDAO
         // Código para obtener todos los proveedors desde la base de datos
         $queries = [
             [
-                'query' => "SELECT * FROM proveedores",
+                'query' => "SELECT idproveedor, nombre, categoria_fiscal, direccion, telefono, correo, cuit, saldo FROM proveedores",
                 'type' => 'SELECT',
                 'params' => [],
             ]
