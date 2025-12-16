@@ -37,15 +37,7 @@ class ProveedorDAO
     {
         $queries = [
             [
-                'query' => "UPDATE proveedores SET 
-                        nombre='" . $proveedor->getNombre() . "', 
-                        categoria_fiscal='" . $proveedor->getCategoriaFiscal() . "', 
-                        direccion='" . $proveedor->getDireccion() . "', 
-                        telefono=" . $proveedor->getTelefono() . ", 
-                        correo='" . $proveedor->getCorreo() . "', 
-                        saldo=" . $proveedor->getSaldo() . ", 
-                        cuit=" . $proveedor->getCuit() . " WHERE 
-                        idproveedor=" . $proveedor->getId(),
+                'query' => "UPDATE proveedores SET nombre='" . $proveedor->getNombre() . "', categoria_fiscal='" . $proveedor->getCategoriaFiscal() . "', direccion='" . $proveedor->getDireccion() . "', telefono=" . $proveedor->getTelefono() . ", correo='" . $proveedor->getCorreo() . "', saldo=" . $proveedor->getSaldo() . ", cuit=" . $proveedor->getCuit() . " WHERE idproveedor=" . $proveedor->getId(),
                 'type' => 'UPDATE',
                 'params' => [],
             ]
