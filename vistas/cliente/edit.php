@@ -41,19 +41,22 @@ if ($action == 'edit' && $id != '') {
                                     value="<?php echo $cliente['email']; ?>" required>
                             </div>
                         </div>
-                        <div class="my-3 d-flex flex-row">
-                            <div class="input-group input-group-sm mb-3 ms-5">
+                        <div class="my-3 d-flex flex-row w-100">
+                            <div class="input-group input-group-sm mb-3">
                                 <label class="input-group-text" for="cuit" id="inputGroup-sizing-sm">Cuit:</label>
-                                <input type="text" class="form-control" aria-label="Sizing example input"
+                                <input type="number" class="form-control" aria-label="Sizing example input"
                                     aria-describedby="inputGroup-sizing-sm" id="cuit" name="cuit"
                                     value="<?php echo $cliente['cuit']; ?>" required>
                             </div>
                             <div class="input-group input-group-sm mb-3 ms-5">
-                                <label class="input-group-text" for="iva" id="inputGroup-sizing-sm">Categoria
+                                <label class="input-group-text" for="categoriafiscal" id="inputGroup-sizing-sm">Categoria
                                     fiscal:</label>
-                                <input type="text" class="form-control" aria-label="Sizing example input"
-                                    aria-describedby="inputGroup-sizing-sm" id="categoriafiscal" name="categoriafiscal"
-                                    value="<?php echo $cliente['categoriafiscal']; ?>" required>
+                                <select class="form-select" id="categoriafiscal" name="categoriafiscal" required>
+                                    <option value="Monotributista" <?php echo ($cliente['categoriafiscal'] == 'Monotributista') ? 'selected' : ''; ?>>Monotributista</option>
+                                    <option value="Responsable Inscripto" <?php echo ($cliente['categoriafiscal'] == 'Responsable Inscripto') ? 'selected' : ''; ?>>Responsable Inscripto</option>
+                                    <option value="Excento" <?php echo ($cliente['categoriafiscal'] == 'Excento') ? 'selected' : ''; ?>>Excento</option>
+                                    <option value="Consumidor Final" <?php echo ($cliente['categoriafiscal'] == 'Consumidor Final') ? 'selected' : ''; ?>>Consumidor Final</option>
+                                </select>
                             </div>
                         </div>
                         <div class="d-flex justify-content-evenly w-75">

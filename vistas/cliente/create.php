@@ -36,16 +36,19 @@
                             </div>
                         </div>
                         <div class="w-75 d-flex mt-3">
-                            <div class="input-group input-group-sm mb-3 ms-4">
+                            <div class="input-group input-group-sm mb-3">
                                 <span class="input-group-text" id="inputGroup-sizing-sm">Cuit</span>
-                                <input type="text" class="form-control" aria-label="Sizing example input"
+                                <input type="number" class="form-control" aria-label="Sizing example input"
                                     aria-describedby="inputGroup-sizing-sm" id="cuit" name="cuit" required>
                             </div>
                             <div class="input-group input-group-sm mb-3 ms-4">
-                                <span class="input-group-text" id="inputGroup-sizing-sm">Categoria Fiscal</span>
-                                <input type="text" class="form-control" aria-label="Sizing example input"
-                                    aria-describedby="inputGroup-sizing-sm" id="categoriafiscal" name="categoriafiscal"
-                                    required>
+                                <label class="input-group-text" for="categoriafiscal">Categoria Fiscal</label>
+                                <select class="form-select" id="categoriafiscal" name="categoriafiscal" required>
+                                    <option value="Monotributista">Monotributista</option>
+                                    <option value="Responsable Inscripto">Responsable Inscripto</option>
+                                    <option value="Excento">Excento</option>
+                                    <option value="Consumidor Final">Consumidor Final</option>
+                                </select>
                             </div>
                         </div>
                     </div>
