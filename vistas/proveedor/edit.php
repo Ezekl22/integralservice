@@ -36,10 +36,8 @@ if ($action == 'edit' && $id != '') {
                             <div class="input-group input-group-sm mb-2 ms-5">
                                 <label class="input-group-text" for="categoria_fiscal">Categoria Fiscal:</label>
                                 <select class="form-select" id="categoria_fiscal" name="categoria_fiscal" required>
-                                    <option value="Monotributista" <?php echo ($proveedorr['categoria_fiscal'] == 'Monotributista') ? 'selected' : ''; ?>>
-                                        Monotributista</option>
-                                    <option value="Responsable Inscripto" <?php echo ($proveedorr['categoria_fiscal'] == 'Responsable inscripto') ? 'selected' : ''; ?>>
-                                        Responsable Inscripto</option>
+                                    <option value="Monotributista" <?php echo ($proveedorr['categoria_fiscal'] == 'Monotributista') ? 'selected' : ''; ?>>Monotributista</option>
+                                    <option value="Responsable Inscripto" <?php echo ($proveedorr['categoria_fiscal'] == 'Responsable Inscripto') ? 'selected' : ''; ?>>Responsable Inscripto</option>
                                     <option value="Excento" <?php echo ($proveedorr['categoria_fiscal'] == 'Excento') ? 'selected' : ''; ?>>Excento</option>
                                 </select>
                             </div>
