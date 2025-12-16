@@ -60,7 +60,7 @@ if ($action == 'edit' && $id != '') {
                                 <div class="input-group input-group-sm mb-3 ms-4">
                                     <label class="input-group-text" for="tipo">Tipo</label>
                                     <select class="form-select" id="tipo" name="tipo" required>
-                                        <option value="Producto" <?php echo ($producto['tipo'] == 'Producto') ? 'selected' : ''; ?> selected>Producto</option>
+                                        <option value="Producto" <?php echo ($producto['tipo'] == 'Producto') ? 'selected' : ''; ?>>Producto</option>
                                         <option value="Repuesto" <?php echo ($producto['tipo'] == 'Repuesto') ? 'selected' : ''; ?>>Repuesto</option>
                                     </select>
                                 </div>
