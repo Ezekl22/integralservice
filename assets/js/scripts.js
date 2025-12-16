@@ -159,19 +159,26 @@ const cantidadOnChange = (idProducto, id, esPresupuesto) => {
   const inputCantidad = document.querySelector("#" + id + " #cantidad");
   let cantidad = parseInt(inputCantidad.value) || 0;
   
+  const producto = productos.find(
+    (producto) => parseInt(producto.idproducto) === parseInt(idProducto)
+  );
+  
   // Validar que la cantidad sea al menos 1
   if (cantidad < 1) {
     cantidad = 1;
     inputCantidad.value = 1;
   }
   
+  // Validar que la cantidad no exceda el stock disponible
+  if (cantidad > producto.stock) {
+    cantidad = producto.stock;
+    inputCantidad.value = producto.stock;
+  }
+  
   const inputTotal = document.querySelector("#" + id + " #total").childNodes[0];
   const queryString = window.location.search;
   const params = new URLSearchParams(queryString);
   const modulo = params.get("module");
-  const producto = productos.find(
-    (producto) => parseInt(producto.idproducto) === parseInt(idProducto)
-  );
   const precioUnit =
     modulo === "pedidos" ? producto.preciocompra : producto.precioventa;
   inputTotal.data = currencyFormatter(precioUnit * parseInt(cantidad));
@@ -229,10 +236,14 @@ const cargarGrillaProducto = (module, productosPrecargados = []) => {
             "#grilla #" + id + " #cantidad"
           );
           sumatoriaCantidad = Number(cantidadProducto.value) + Number(cantidad);
-          cantidadProducto.value =
-            sumatoriaCantidad >= productoSeleccionado.stock
-              ? productoSeleccionado.stock
-              : sumatoriaCantidad;
+          
+          // Validar que la cantidad total no exceda el stock
+          if (sumatoriaCantidad > productoSeleccionado.stock) {
+            sumatoriaCantidad = productoSeleccionado.stock;
+            mostrarToast("warning", "Cantidad total ajustada al stock disponible (" + productoSeleccionado.stock + ")");
+          }
+          
+          cantidadProducto.value = sumatoriaCantidad;
 
           cantidadOnChange(productoSeleccionado[0], productoGrilla.id, true);
           seAgregaProducto = false;
