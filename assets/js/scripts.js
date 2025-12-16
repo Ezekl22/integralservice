@@ -158,13 +158,13 @@ const recalcularTotal = () => {
 const cantidadOnChange = (idProducto, id, esPresupuesto) => {
   const inputCantidad = document.querySelector("#" + id + " #cantidad");
   let cantidad = parseInt(inputCantidad.value) || 0;
-  
+
   // Validar que la cantidad sea al menos 1
   if (cantidad < 1) {
     cantidad = 1;
     inputCantidad.value = 1;
   }
-  
+
   const inputTotal = document.querySelector("#" + id + " #total").childNodes[0];
   const queryString = window.location.search;
   const params = new URLSearchParams(queryString);
@@ -193,15 +193,16 @@ const cargarGrillaProducto = (module, productosPrecargados = []) => {
   if (productosPrecargados.length == 0) {
     let seAgregaProducto = true;
     let contComponente = document.createElement("tr");
-    let cantidad = parseInt(document.getElementById("cantidadProducto").value) || 0;
+    let cantidad =
+      parseInt(document.getElementById("cantidadProducto").value) || 0;
     let productoSeleccionado;
-    
+
     // Validar que la cantidad sea mayor a 0
     if (cantidad <= 0) {
       mostrarToast("error", "La cantidad debe ser mayor a 0");
       return;
     }
-    
+
     productos.forEach((producto) => {
       const checkSeleccion = document.getElementById("seleccion" + producto[0]);
       if (checkSeleccion) {
@@ -210,17 +211,20 @@ const cargarGrillaProducto = (module, productosPrecargados = []) => {
           : productoSeleccionado;
       }
     });
-    
+
     // Validar que el producto tenga stock disponible
     if (productoSeleccionado && productoSeleccionado.stock <= 0) {
       mostrarToast("error", "Este producto no tiene stock disponible");
       return;
     }
-    
-    cantidad =
-      cantidad >= productoSeleccionado.stock
-        ? productoSeleccionado.stock
-        : cantidad;
+    if (module === "presupuestos") {
+      cantidad =
+        cantidad >= productoSeleccionado.stock
+          ? productoSeleccionado.stock
+          : cantidad;
+    } else {
+      cantidad = cantidad;
+    }
     let id = "producto" + productoSeleccionado[0];
     if (contProductos.childElementCount > 0) {
       Array.from(contProductos.children).forEach((productoGrilla) => {
@@ -229,6 +233,7 @@ const cargarGrillaProducto = (module, productosPrecargados = []) => {
             "#grilla #" + id + " #cantidad"
           );
           sumatoriaCantidad = Number(cantidadProducto.value) + Number(cantidad);
+
           cantidadProducto.value =
             sumatoriaCantidad >= productoSeleccionado.stock
               ? productoSeleccionado.stock
@@ -573,7 +578,9 @@ function imprimirEnIframeOculto(datos, tipoDocumento) {
             `
               )
               .join("")}
-            ${datos.manodeobra && datos.manodeobra > 0 ? `
+            ${
+              datos.manodeobra && datos.manodeobra > 0
+                ? `
               <tr>
                 <td>Mano de obra</td>
                 <td>-</td>
@@ -582,7 +589,9 @@ function imprimirEnIframeOculto(datos, tipoDocumento) {
                 <td>$${parseFloat(datos.manodeobra).toLocaleString()}</td>
                 <td>$${parseFloat(datos.manodeobra).toLocaleString()}</td>
               </tr>
-            ` : ''}
+            `
+                : ""
+            }
           </tbody>
         </table>
 
