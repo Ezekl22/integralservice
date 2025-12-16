@@ -5,7 +5,7 @@ CREATE TABLE `proveedores` (
   `nombre` text DEFAULT NULL,
   `categoria_fiscal` text DEFAULT NULL,
   `direccion` text DEFAULT NULL,
-  `telefono` int DEFAULT NULL,
+  `telefono` VARCHAR(20) DEFAULT NULL,
   `correo` text DEFAULT NULL,
   `cuit` int(11) NOT NULL,
   `saldo` DECIMAL(20, 2) DEFAULT NULL,
