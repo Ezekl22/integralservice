@@ -1,0 +1,110 @@
+%% Diagrama ER para integralservice
+erDiagram
+    usuarios {
+        int idusuario PK
+        text nombre
+        text apellido
+        text tipo
+        text mail
+        text contrasena
+    }
+
+    clientes {
+        int idcliente PK
+        text nombre
+        text apellido
+        text email
+        text cuit
+        text categoriafiscal
+        timestamp fechaCreacion
+    }
+
+    estadopresupuesto {
+        int idestadopresupuesto PK
+        text nombre
+        text descripcion
+    }
+
+    presupuestos {
+        int idpresupuesto PK
+        int idcliente FK
+        text nrocomprobante
+        text tipo
+        int idestadopresupuesto FK
+        text fecha
+        text puntoventa
+        decimal total
+    }
+
+    reparaciones {
+        int idreparacion PK
+        int idpresupuesto FK
+        text modelo
+        text marca
+        text numeroserie
+        text descripcion
+        decimal manodeobra
+    }
+
+    proveedores {
+        int idproveedor PK
+        text nombre
+        text categoria_fiscal
+        text direccion
+        text telefono
+        text correo
+        text cuit
+        decimal saldo
+        timestamp fechaCreacion
+    }
+
+    pedidoscompras {
+        int idpedidocompra PK
+        text nrocomprobante
+        int idproveedor FK
+        text estado
+        decimal total
+        text fecha
+    }
+
+    productos {
+        int idproducto PK
+        text nombre
+        text marca
+        text detalle
+        int stock
+        text tipo
+        decimal preciocompra
+        decimal precioventa
+        text estado
+    }
+
+    productospedidoscompras {
+        int idproductopedidocompra PK
+        int idpedidocompra FK
+        int idproducto FK
+        decimal preciounit
+        int cantidad
+    }
+
+    productospresupuestos {
+        int idpresupuestoproducto PK
+        int idpresupuesto FK
+        int idproducto FK
+        decimal preciounit
+        int cantidad
+    }
+
+    %% Relaciones
+    presupuestos ||--o{ clientes : "idcliente -> idcliente"
+    presupuestos }o--|| estadopresupuesto : "idestadopresupuesto -> idestadopresupuesto"
+    reparaciones }o--|| presupuestos : "idpresupuesto -> idpresupuesto"
+
+    pedidoscompras }o--|| proveedores : "idproveedor -> idproveedor"
+    productospedidoscompras }o--|| pedidoscompras : "idpedidocompra -> idpedidocompra"
+    productospedidoscompras }o--|| productos : "idproducto -> idproducto"
+
+    productospresupuestos }o--|| presupuestos : "idpresupuesto -> idpresupuesto"
+    productospresupuestos }o--|| productos : "idproducto -> idproducto"
+
+%% Fin del archivo
